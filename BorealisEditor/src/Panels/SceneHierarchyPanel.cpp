@@ -1,0 +1,591 @@
+/******************************************************************************/
+/*!
+\file		SceneHierarchyPanel.cpp
+\author 	Chua Zheng Yang
+\par    	email: c.zhengyang\@digipen.edu
+\date   	July 13, 2024
+\brief		Defines the class Scene Hierarchy in Level Editor
+
+Copyright (C) 2023 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ *
+ /******************************************************************************/
+
+#include "Panels/SceneHierarchyPanel.hpp"
+#include <ImGui/ImGuiFontLib.hpp>
+#include <imgui.h>
+#include <Scene/Components.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+
+namespace Borealis
+{
+	static void DrawVec3Controller(const std::string& label, glm::vec3& values, float resetValue = 0.f, float columnWidth = 100.f)
+	{
+		ImGuiIO& io = ImGui::GetIO();
+		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
+
+		ImGui::PushID(label.c_str());
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, columnWidth);
+		ImGui::Text(label.c_str());
+		ImGui::NextColumn();
+
+		ImGui::PushItemWidth(ImGui::CalcItemWidth()/3);
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 10, 0 }); // Spacing between Items
+
+		float lineHeight = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.f,lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.8f, 0.1f, 0.15f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.9f, 0.2f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.7f, 0.05f, 0.1f, 1.0f));
+		ImGui::PushFont(bold);
+		if (ImGui::Button("X", buttonSize))
+		{
+			values.x = resetValue;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &values.x, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushItemWidth(ImGui::CalcItemWidth()/3);
+
+		ImGui::PushFont(bold);
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.2f, 0.7f, 0.2f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.3f, 0.8f, 0.3f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.1f, 0.6f, 0.1f, 1.0f));
+		if (ImGui::Button("Y", buttonSize))
+		{
+			values.y = resetValue;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &values.y, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushItemWidth(ImGui::CalcItemWidth()/3);
+
+		ImGui::PushFont(bold);
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.2f, 0.8f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.3f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.05f, 0.1f, 0.7f, 1.0f));
+		if (ImGui::Button("Z", buttonSize))
+		{
+			values.z = resetValue;
+		}
+		ImGui::PopStyleColor(3);
+		ImGui::PopFont();
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &values.z, 0.1f, 0.0f, 0.0f, "%.2f");
+		ImGui::PopItemWidth();
+
+		ImGui::PopStyleVar();
+
+		ImGui::Columns(1);
+		ImGui::PopID();
+	}
+
+	template <typename T, typename UIFunction>
+	static void DrawComponent(const std::string& name, Entity entity, UIFunction uiFunction, bool allowDelete = true)
+	{
+		if (entity.HasComponent<T>())
+		{
+			ImGui::Spacing();
+			auto& component = entity.GetComponent<T>();
+
+			bool deleteComponent = false;
+			bool open;
+
+			if (allowDelete)
+			{
+				auto ContentRegionAvailable = ImGui::GetContentRegionAvail();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+				float lineHeight = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+				ImGui::Separator();
+				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+				ImGui::PopStyleVar();
+				ImGui::SameLine(ContentRegionAvailable.x - lineHeight * 0.5f); // Align to right (Button)
+				if (ImGui::Button("+", ImVec2{lineHeight,lineHeight}))
+				{
+					ImGui::OpenPopup("ComponentSettingsPopup");
+				}
+				
+
+				if (ImGui::BeginPopup("ComponentSettingsPopup"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						deleteComponent = true;
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+			else
+			{
+				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+			}
+
+			if (open)
+			{
+				ImGui::Spacing();
+				uiFunction(component);
+			}
+
+			if (deleteComponent)
+			{
+				entity.RemoveComponent<T>();
+			}
+		}
+	}
+
+
+	SceneHierarchyPanel::SceneHierarchyPanel(const Ref<Scene>& scene)
+	{
+		SetContext(scene);
+	}
+	void SceneHierarchyPanel::SetContext(const Ref<Scene>& scene)
+	{
+		mContext = scene;
+		mSelectedEntity = {};
+	}
+	void SceneHierarchyPanel::ImGuiRender()
+	{
+
+		ImGui::Begin("Scene Hierarchy");
+
+		for (auto& item : mContext->mRegistry.view<entt::entity>())
+		{
+			Entity entity { item, mContext.get() };
+			DrawEntityNode(entity);
+		}
+
+		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) // Deselect
+		{
+			mSelectedEntity = {};
+		}
+
+		// Right click on blank space	
+		if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
+		{
+			if (ImGui::MenuItem("Create Empty Entity"))
+			{
+				mContext->CreateEntity("Empty");
+			}
+			ImGui::EndPopup();
+		}
+		
+
+		ImGui::End();
+
+		ImGui::Begin("Inspector");
+		if (mSelectedEntity)
+		{
+			DrawComponents(mSelectedEntity);
+		}
+		ImGui::End();
+
+	}
+	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
+	{
+		auto& tag = entity.GetComponent<TagComponent>().Tag;
+		ImGuiTreeNodeFlags flags = ((mSelectedEntity == entity) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
+		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
+		uint64_t entityID = static_cast<uint64_t>((uint32_t)entity);
+		bool opened = ImGui::TreeNodeEx((void*)entityID, flags, tag.c_str());
+		if (ImGui::IsItemClicked())
+		{
+			mSelectedEntity = entity;
+		}
+
+		bool entityDeleted = false;
+		if (ImGui::BeginPopupContextItem())
+		{
+			if (ImGui::MenuItem("Destroy Entity"))
+			{
+				mSelectedEntity = entity;
+				entityDeleted = true;
+			}
+
+			if (ImGui::MenuItem("Create Empty Entity"))
+			{
+				mContext->CreateEntity("Empty");
+			}
+
+			if (ImGui::MenuItem("Duplicate Entity"))
+			{
+				mContext->DuplicateEntity(mSelectedEntity);
+			}
+			ImGui::EndPopup();
+		}
+
+		if (opened)
+		{
+			ImGui::TreePop();
+		}
+
+		if(entityDeleted)
+		{
+			mContext->DestroyEntity(mSelectedEntity);
+			mSelectedEntity = {};
+		}
+	}
+
+	template <typename T>
+	static void SearchBar(std::string& SearchList, Entity& mSelectedEntity, const char* menuText, char* search_buffer)
+	{
+		std::string MenuConverter(menuText);
+		std::transform(MenuConverter.begin(), MenuConverter.end(), MenuConverter.begin(), ::tolower);
+		if (SearchList.empty() || MenuConverter.find(SearchList) != std::string::npos)
+			if (ImGui::MenuItem(menuText))
+			{
+				if (!mSelectedEntity.HasComponent<T>())
+				{
+					mSelectedEntity.AddComponent<T>();
+				}
+				ImGui::CloseCurrentPopup();
+				memset(search_buffer, 0, sizeof(search_buffer));
+			}
+	}
+
+	void SceneHierarchyPanel::DrawComponents(Entity entity)
+	{
+		if (entity.HasComponent<TagComponent>())
+		{
+			auto& tag = entity.GetComponent<TagComponent>().Tag;
+			char buffer[256];
+			memset(buffer, 0, sizeof(buffer));
+			strcpy_s(buffer, sizeof(buffer), tag.c_str());
+			if (ImGui::InputText("##Tag", buffer, sizeof(buffer)))
+			{
+				tag = std::string(buffer);
+			}
+		}
+
+		ImGui::SameLine();
+		ImGui::PushItemWidth(-1);
+
+		if (ImGui::Button("Add Component"))
+		{
+			ImGui::OpenPopup("AddComponentPopup");
+		}
+
+		ImGui::PopItemWidth();
+
+		static char search_buffer[128] = "";
+		if (ImGui::BeginPopup("AddComponentPopup"))
+		{
+			ImGui::InputText("Search", search_buffer, IM_ARRAYSIZE(search_buffer));
+
+			std::string search_text = search_buffer;
+			std::transform(search_text.begin(), search_text.end(), search_text.begin(), ::tolower);
+
+	
+			SearchBar<SpriteRendererComponent>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
+			SearchBar<CircleRendererComponent>( search_text, mSelectedEntity, "Circle Renderer", search_buffer);
+			SearchBar<CameraComponent>(search_text, mSelectedEntity, "Camera", search_buffer);
+			SearchBar<MeshFilterComponent	  >(search_text, mSelectedEntity,"Mesh Filter", search_buffer);
+			SearchBar<MeshRendererComponent	  >(search_text, mSelectedEntity,"Mesh Renderer", search_buffer);
+			SearchBar<BoxColliderComponent	  >(search_text, mSelectedEntity,"Box Collider", search_buffer);
+			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
+			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
+			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
+
+			ImGui::EndPopup();
+			
+		}
+
+		DrawComponent<TransformComponent>("Transform", mSelectedEntity, [](auto& transformComponent)
+			{
+				ImGuiIO& io = ImGui::GetIO();
+				float textScale = io.FontGlobalScale;
+				DrawVec3Controller("Translation", transformComponent.Translate,0.f, textScale * 100.f);
+				DrawVec3Controller("Rotation", transformComponent.Rotation,0.f, textScale * 100.f);
+				DrawVec3Controller("Scale", transformComponent.Scale, 1.f, textScale * 100.f);
+			}, false);
+		
+
+		DrawComponent<CameraComponent>("Camera", mSelectedEntity, [](auto& cameraComponent)
+			{
+				const char* CameraTypeStr[]{ "Perspective", "Orthographic" };
+				const char* currentCameraTypeStr = CameraTypeStr[(int)cameraComponent.Camera.GetCameraType()];
+				if (ImGui::BeginCombo("Projection", currentCameraTypeStr))
+				{
+					for (int i = 0; i < 2; i++)
+					{
+						bool isSelected = currentCameraTypeStr == CameraTypeStr[i];
+						if (ImGui::Selectable(CameraTypeStr[i], isSelected))
+						{
+							currentCameraTypeStr = CameraTypeStr[i];
+							cameraComponent.Camera.SetCameraType((SceneCamera::CameraType)i);
+						}
+						if (isSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+
+
+				if (cameraComponent.Camera.GetCameraType() == SceneCamera::CameraType::Perspective)
+				{
+					float perspectiveFOV = glm::degrees(cameraComponent.Camera.GetPerspFOV());
+					if (ImGui::DragFloat("FOV", &perspectiveFOV))
+					{
+						cameraComponent.Camera.SetPerspFOV(glm::radians(perspectiveFOV));
+					}
+					float perspectiveNear = cameraComponent.Camera.GetPerspNear();
+					if (ImGui::DragFloat("Near", &perspectiveNear))
+					{
+						cameraComponent.Camera.SetPerspNear(perspectiveNear);
+					}
+					float perspectiveFar = cameraComponent.Camera.GetPerspFar();
+					if (ImGui::DragFloat("Far", &perspectiveFar))
+					{
+						cameraComponent.Camera.SetPerspFar(perspectiveFar);
+					}
+				}
+				else if (cameraComponent.Camera.GetCameraType() == SceneCamera::CameraType::Orthographic)
+				{
+					float orthographicSize = cameraComponent.Camera.GetOrthoSize();
+					if (ImGui::DragFloat("Size", &orthographicSize))
+					{
+						cameraComponent.Camera.SetOrthoSize(orthographicSize);
+					}
+					float orthographicNear = cameraComponent.Camera.GetOrthoNear();
+					if (ImGui::DragFloat("Near", &orthographicNear))
+					{
+						cameraComponent.Camera.SetOrthoNear(orthographicNear);
+					}
+					float orthographicFar = cameraComponent.Camera.GetOrthoFar();
+					if (ImGui::DragFloat("Far", &orthographicFar))
+					{
+						cameraComponent.Camera.SetOrthoFar(orthographicFar);
+					}
+
+					ImGui::Checkbox("Fixed Aspect Ratio", &cameraComponent.FixedAspectRatio);
+				}
+			});
+
+		DrawComponent<SpriteRendererComponent>("Sprite Renderer", mSelectedEntity, [](auto& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Colour));
+				ImGui::Button("Texture");
+				if(ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
+					{
+						const char* data = (const char*)payload->Data;
+						std::string imageName = "assets/";
+						imageName += data;
+						component.Texture = Texture2D::Create(imageName);
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::DragFloat("Tiling Factor", &component.TilingFactor, 0.1f, 0.0f, 100.f);
+			});
+
+		DrawComponent<CircleRendererComponent>("Circle Renderer", mSelectedEntity, [](auto& component)
+			{
+				ImGui::ColorEdit4("Color", glm::value_ptr(component.Colour));
+				ImGui::DragFloat("Thickness", &component.thickness, 0.025f, 0.0f, 1.0f);
+				ImGui::DragFloat("fade", &component.fade, 0.005f, 0.0f, 1.0f);
+			});
+
+		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Button("Mesh");
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
+					{
+						const char* data = (const char*)payload->Data;
+						std::string imageName = "assets/";
+						imageName += data;
+					}
+					ImGui::EndDragDropTarget();
+				}
+			});
+		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Button("Material");
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
+					{
+						const char* data = (const char*)payload->Data;
+						std::string imageName = "assets/";
+						imageName += data;
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::Checkbox("Cast Shadow", &component.castShadow);
+			});
+
+		DrawComponent<BoxColliderComponent>("Box Collider", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Is Trigger", &component.isTrigger);
+				ImGui::Checkbox("Provides Contact", &component.providesContact);
+
+				float textScale = ImGui::GetIO().FontGlobalScale;
+				DrawVec3Controller("Center", component.Center, 0.f, textScale * 100.f);
+				DrawVec3Controller("Size", component.Size, 1.f, textScale * 100.f);
+			});
+
+		DrawComponent<CapsuleColliderComponent>("Capsule Collider", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Is Trigger##capsule", &component.isTrigger);
+				ImGui::Checkbox("Provides Contact##capsule", &component.providesContact);
+				ImGui::DragFloat("Radius", &component.radius, 0.025f);
+				ImGui::DragFloat("Height", &component.height, 0.025f);
+
+				const char* DirectionTypeStr[]{ "X-Axis", "Y-Axis", "Z-Axis"};
+				const char* currentDirectionTypeStr = DirectionTypeStr[(int)component.direction];
+				if (ImGui::BeginCombo("Direction", currentDirectionTypeStr))
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						bool isSelected = currentDirectionTypeStr == DirectionTypeStr[i];
+						if (ImGui::Selectable(DirectionTypeStr[i], isSelected))
+						{
+							currentDirectionTypeStr = DirectionTypeStr[i];
+							component.direction = (CapsuleColliderComponent::Direction)(i);
+						}
+						if (isSelected)
+						{
+							ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+			});
+
+		DrawComponent<RigidBodyComponent>("Rigidbody", mSelectedEntity, [](auto& component)
+			{
+				ImGui::DragFloat("Mass", &component.mass, 0.025f);
+				ImGui::DragFloat("Drag", &component.drag, 0.025f);
+				ImGui::DragFloat("Angular Drag", &component.angularDrag, 0.025f);
+				ImGui::Checkbox("Automatic Center of Mass", &component.AutomaticCenterOfMass);
+				if (!component.AutomaticCenterOfMass)
+				{
+					float textScale = ImGui::GetIO().FontGlobalScale;
+					DrawVec3Controller("Center of Mass", component.centerOfMass, 0.f, textScale * 100.f);
+				}
+				ImGui::Checkbox("Automatic Tensor", &component.AutomaticTensor);
+				if (!component.AutomaticTensor)
+				{
+					float textScale = ImGui::GetIO().FontGlobalScale;
+					DrawVec3Controller("Inertia Tensor", component.inertiaTensor, 1.f, textScale * 100.f);
+					DrawVec3Controller("Inertia Tensor Rotation", component.inertiaTensorRotation, 0.f, textScale * 100.f);
+				}
+				ImGui::Checkbox("Use Gravity", &component.useGravity);
+				ImGui::Checkbox("Kinematic", &component.isKinematic);
+			});
+
+		DrawComponent<LightComponent>("Light", mSelectedEntity, [](auto& component)
+			{
+				if (ImGui::CollapsingHeader("General", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				{
+					const char* LightTypeStr[]{ "Spot", "Directional", "Point" };
+					const char* currentLightTypeStr = LightTypeStr[(int)component.type];
+					if (ImGui::BeginCombo("Type", currentLightTypeStr))
+					{
+						for (int i = 0; i < 3; i++)
+						{
+							bool isSelected = currentLightTypeStr == LightTypeStr[i];
+							if (ImGui::Selectable(LightTypeStr[i], isSelected))
+							{
+								currentLightTypeStr = LightTypeStr[i];
+								component.type = (LightComponent::Type)(i);
+							}
+							if (isSelected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+
+					if (component.type == LightComponent::Type::Spot)
+					{
+						ImGui::DragFloat("Inner Spot", &component.InnerOuterSpot.x, 0.025f);
+						ImGui::DragFloat("Outer Spot", &component.InnerOuterSpot.y, 0.025f);
+					}
+				}
+
+				if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				{
+					const char* LightAppearanceStr[]{ "Colour", "Filter and Temperature" };
+					const char* currentLightAppearanceStr = LightAppearanceStr[(int)component.lightAppearance];
+					if (ImGui::BeginCombo("Light Appearance", currentLightAppearanceStr))
+					{
+						for (int i = 0; i < 2; i++)
+						{
+							bool isSelected = currentLightAppearanceStr == LightAppearanceStr[i];
+							if (ImGui::Selectable(LightAppearanceStr[i], isSelected))
+							{
+								currentLightAppearanceStr = LightAppearanceStr[i];
+								component.lightAppearance = (LightComponent::LightAppearance)(i);
+							}
+							if (isSelected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+
+					if (component.lightAppearance == LightComponent::LightAppearance::Colour)
+					{
+						ImGui::ColorEdit4("Colour", glm::value_ptr(component.Colour));
+					}
+					else
+					{
+						ImGui::ColorEdit4("Filter", glm::value_ptr(component.Colour));
+						ImGui::DragFloat("Temperature", &component.Temperature, 0.025f);
+					}
+
+					ImGui::DragFloat("Intensity", &component.Intensity, 0.025f);
+					ImGui::DragFloat("Indirect Multiplier", &component.IndirectMultiplier, 0.025f);
+					ImGui::DragFloat("Range", &component.Range, 0.025f);
+				}
+
+				
+				if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				{
+					const char* ShadowStr[]{ "No Shadows", "Soft Shadows", "Hard Shadows" };
+					const char* currentShadowStr = ShadowStr[(int)component.shadowType];
+					if (ImGui::BeginCombo("Shadow Type", currentShadowStr))
+					{
+						for (int i = 0; i < 3; i++)
+						{
+							bool isSelected = currentShadowStr == ShadowStr[i];
+							if (ImGui::Selectable(ShadowStr[i], isSelected))
+							{
+								currentShadowStr = ShadowStr[i];
+								component.shadowType = (LightComponent::ShadowType)(i);
+							}
+							if (isSelected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+				}
+			});
+
+
+	}
+}
