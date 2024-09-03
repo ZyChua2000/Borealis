@@ -81,6 +81,10 @@ namespace Borealis
 		*************************************************************************/
 		virtual void EventFn(Event& e) {}
 
+		/*!***********************************************************************
+			\brief
+				ImGui Rendering function of the layer
+		*************************************************************************/
 		virtual void ImGuiRender() {};
 
 #ifndef _DIST

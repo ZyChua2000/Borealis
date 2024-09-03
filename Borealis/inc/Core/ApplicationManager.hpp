@@ -50,6 +50,10 @@ namespace Borealis {
 		*************************************************************************/
 		void Run();
 
+		/*!***********************************************************************
+			\brief
+				Closes the application.
+		*************************************************************************/
 		void Close();
 
 		/*!***********************************************************************
@@ -95,6 +99,14 @@ namespace Borealis {
 		*************************************************************************/
 		bool WindowCloseHandler(EventWindowClose& e);
 
+		/*!***********************************************************************
+			\brief
+				Handles the window resize event
+			\param e
+				The window resize event
+			\return
+				True if the event is handled
+		*************************************************************************/
 		bool WindowResizeHandler(EventWindowResize& e);
 		
 		LayerSystem mLayerSystem; //<! Layer system of the application

@@ -21,10 +21,48 @@ namespace Borealis
 	class BOREALIS_API InputSystem
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Checks if a key is pressed
+			\param key
+				Keycode of the key
+			\return
+				True if pressed, false if not
+		*************************************************************************/
 		static bool IsKeyPressed(int key);
+
+		/*!***********************************************************************
+			\brief
+				Checks if a mouse button is pressed
+			\param key
+				Keycode of the mouse button
+			\return
+				True if pressed, false if not
+		*************************************************************************/
 		static bool IsMouseButtonPressed(int key);
+
+		/*!***********************************************************************
+			\brief
+				Get the current mouse position
+			\return
+				Pair of x and y floats of the mouse position
+		*************************************************************************/
 		static std::pair<float, float> GetMousePos();
+
+		/*!***********************************************************************
+			\brief
+				Get the current mouse x position
+			\return
+				y position of the mouse
+		*************************************************************************/
 		static float GetMouseX();
+
+		/*!***********************************************************************
+			\brief
+				Get the current mouse y position
+			\return
+				y position of the mouse
+		*************************************************************************/
 		static float GetMouseY();
 	};
 

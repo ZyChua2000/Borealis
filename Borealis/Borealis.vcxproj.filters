@@ -7,8 +7,8 @@
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="inc\Debug">
-      <UniqueIdentifier>{D5E5DF74-4150-94EB-8A8E-4591F6377240}</UniqueIdentifier>
+    <Filter Include="inc\Debugging">
+      <UniqueIdentifier>{9A10930B-06D1-0E42-CF0B-58BF3B8B531E}</UniqueIdentifier>
     </Filter>
     <Filter Include="inc\Events">
       <UniqueIdentifier>{23F36614-0FAB-A861-78B2-81BD64894352}</UniqueIdentifier>
@@ -169,8 +169,8 @@
     <ClInclude Include="inc\Core\WindowManager.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Debug\Profiler.hpp">
-      <Filter>inc\Debug</Filter>
+    <ClInclude Include="inc\Debugging\Profiler.hpp">
+      <Filter>inc\Debugging</Filter>
     </ClInclude>
     <ClInclude Include="inc\Events\EventInput.hpp">
       <Filter>inc\Events</Filter>

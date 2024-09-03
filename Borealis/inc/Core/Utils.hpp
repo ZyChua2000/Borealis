@@ -21,13 +21,27 @@ namespace Borealis
 {
 	struct FileDialogs
 	{
+		/*!***********************************************************************
+			\brief
+				Opens a dialog box to open a file
+			\param[in] filter
+				The filter for the file dialog box
+		*************************************************************************/
 		static std::string OpenFile(const char* filter);
+
+		/*!***********************************************************************
+			\brief
+				Opens a dialog box to save a file
+			\param[in] filter
+				The filter for the file dialog box
+		*************************************************************************/
 		static std::string SaveFile(const char* filter);
 	};
 
 
 	struct GraphicsUtils
 	{
+
 		static bool IsDepthFormat(FramebufferTextureFormat format);
 		static unsigned TextureTarget(bool multiSampled);
 		static void CreateTextures(bool multiSampled, uint32_t* colorAttachmentData, size_t colorAttachmentSize);

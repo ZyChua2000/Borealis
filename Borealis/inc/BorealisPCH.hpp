@@ -41,5 +41,5 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <unordered_set>
 #include <initializer_list>
 
-#include <Debug/Profiler.hpp>
+#include <Debugging/Profiler.hpp>
 #endif

@@ -157,7 +157,7 @@
     <ClInclude Include="inc\Core\UUID.hpp" />
     <ClInclude Include="inc\Core\Utils.hpp" />
     <ClInclude Include="inc\Core\WindowManager.hpp" />
-    <ClInclude Include="inc\Debug\Profiler.hpp" />
+    <ClInclude Include="inc\Debugging\Profiler.hpp" />
     <ClInclude Include="inc\Events\EventInput.hpp" />
     <ClInclude Include="inc\Events\EventWindow.hpp" />
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
