@@ -26,6 +26,23 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define ENGINE_LOGLEVEL_ERROR spdlog::level::err
 #define ENGINE_LOGLEVEL_CRITICAL spdlog::level::critical
 
+#ifdef BOREALIS_ENABLE_ASSERTS
+#include <filesystem>
+#define BOREALIS_INTERNAL_ASSERT_IMPL(type, check, msg, ...) { if(!(check)) { BOREALIS##type##ERROR(msg, __VA_ARGS__); BOREALIS_DEBUGBREAK(); } }
+#define BOREALIS_INTERNAL_ASSERT_WITH_MSG(type, check, ...) BOREALIS_INTERNAL_ASSERT_IMPL(type, check, "Assertion failed: {0}", __VA_ARGS__)
+#define BOREALIS_INTERNAL_ASSERT_NO_MSG(type, check) BOREALIS_INTERNAL_ASSERT_IMPL(type, check, "Assertion '{0}' failed at {1}:{2}", BOREALIS_STRINGIFY_MACRO(check), std::filesystem::path(__FILE__).filename().string(), __LINE__)
+
+#define BOREALIS_INTERNAL_ASSERT_GET_MACRO_NAME(arg1, arg2, macro, ...) macro
+#define BOREALIS_INTERNAL_ASSERT_GET_MACRO(...) BOREALIS_EXPAND_MACRO( BOREALIS_INTERNAL_ASSERT_GET_MACRO_NAME(__VA_ARGS__, BOREALIS_INTERNAL_ASSERT_WITH_MSG, BOREALIS_INTERNAL_ASSERT_NO_MSG) )
+
+// Currently accepts at least the condition and one additional parameter (the message) being optional
+#define BOREALIS_ASSERT(...) BOREALIS_EXPAND_MACRO( BOREALIS_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_, __VA_ARGS__) )
+#define BOREALIS_CORE_ASSERT(...) BOREALIS_EXPAND_MACRO( BOREALIS_INTERNAL_ASSERT_GET_MACRO(__VA_ARGS__)(_CORE_, __VA_ARGS__) )
+#else
+#define BOREALIS_ASSERT(...)
+#define BOREALIS_CORE_ASSERT(...)
+#endif
+
 namespace Borealis {
 
 	/*!***********************************************************************
@@ -89,11 +106,11 @@ namespace Borealis {
 }
 
 // Define the log macros
-#define ENGINE_LOG_INFO(...)     ::Borealis::LoggerSystem::GetEngineLogger()->info(__VA_ARGS__)
-#define ENGINE_LOG_TRACE(...)    ::Borealis::LoggerSystem::GetEngineLogger()->trace(__VA_ARGS__)
-#define ENGINE_LOG_WARN(...)     ::Borealis::LoggerSystem::GetEngineLogger()->warn(__VA_ARGS__)
-#define ENGINE_LOG_ERROR(...)    ::Borealis::LoggerSystem::GetEngineLogger()->error(__VA_ARGS__)
-#define ENGINE_LOG_CRITICAL(...) ::Borealis::LoggerSystem::GetEngineLogger()->critical(__VA_ARGS__)
+#define BOREALIS_CORE_INFO(...)     ::Borealis::LoggerSystem::GetEngineLogger()->info(__VA_ARGS__)
+#define BOREALIS_CORE_TRACE(...)    ::Borealis::LoggerSystem::GetEngineLogger()->trace(__VA_ARGS__)
+#define BOREALIS_CORE_WARN(...)     ::Borealis::LoggerSystem::GetEngineLogger()->warn(__VA_ARGS__)
+#define BOREALIS_CORE_ERROR(...)    ::Borealis::LoggerSystem::GetEngineLogger()->error(__VA_ARGS__)
+#define BOREALIS_CORE_CRITICAL(...) ::Borealis::LoggerSystem::GetEngineLogger()->critical(__VA_ARGS__)
 
 #define APP_LOG_INFO(...)        ::Borealis::LoggerSystem::GetApplicationLogger()->info(__VA_ARGS__)
 #define APP_LOG_TRACE(...)       ::Borealis::LoggerSystem::GetApplicationLogger()->trace(__VA_ARGS__)

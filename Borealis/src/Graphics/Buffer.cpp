@@ -38,10 +38,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 			case RendererAPI::API::OpenGL: return MakeRef<OpenGLVertexBuffer>(size);
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 
@@ -49,10 +49,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 			case RendererAPI::API::OpenGL: return MakeRef<OpenGLVertexBuffer>(vertices, size);
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 	
@@ -60,10 +60,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 			case RendererAPI::API::OpenGL: return MakeRef<OpenGLElementBuffer>(indices, count);
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 	uint32_t BufferElement::GetComponentCount() const
@@ -83,7 +83,7 @@ namespace Borealis
 		case ShaderDataType::Bool:     return 1;
 		}
 
-		ENGINE_LOG_ERROR("Unknown ShaderDataType!");
+		BOREALIS_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 

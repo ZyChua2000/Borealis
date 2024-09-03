@@ -66,7 +66,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_WARN("Mesh::SetVertices() - No vertices to set");
+			BOREALIS_CORE_WARN("Mesh::SetVertices() - No vertices to set");
 			return;
 		}
 		mVerticesCount = (uint32_t)size;
@@ -90,7 +90,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_WARN("Mesh::SetIndices() - No index to set");
+			BOREALIS_CORE_WARN("Mesh::SetIndices() - No index to set");
 			return;
 		}
 		mIndicesCount = (uint32_t)size;
@@ -114,7 +114,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_WARN("Mesh::SetNormals() - No normals to set");
+			BOREALIS_CORE_WARN("Mesh::SetNormals() - No normals to set");
 			return;
 		}
 		mNormalsCount = (uint32_t)size;
@@ -138,7 +138,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_WARN("Mesh::SetTexCoords() - No TexCoords to set");
+			BOREALIS_CORE_WARN("Mesh::SetTexCoords() - No TexCoords to set");
 			return;
 		}
 		mTexCoordsCount = (uint32_t)size;

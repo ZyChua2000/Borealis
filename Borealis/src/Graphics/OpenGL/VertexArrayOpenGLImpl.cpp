@@ -32,7 +32,7 @@ namespace Borealis {
 		case ShaderDataType::Int4:     return GL_INT;
 		case ShaderDataType::Bool:     return GL_BOOL;
 		}
-		ENGINE_LOG_ERROR("Unknown ShaderDataType!");
+		BOREALIS_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 
@@ -65,8 +65,7 @@ namespace Borealis {
 	{
 		PROFILE_FUNCTION();
 
-		if (VBO->GetLayout().GetElements().empty())
-			ENGINE_LOG_ERROR("Vertex Buffer Layout is empty!");
+		BOREALIS_CORE_ASSERT(!VBO->GetLayout().GetElements().empty(), "Vertex Buffer Layout is empty!");
 
 		glBindVertexArray(mRendererID);
 		VBO->Bind();

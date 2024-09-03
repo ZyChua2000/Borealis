@@ -42,7 +42,7 @@ namespace Borealis
 		case ShaderDataType::Bool:     return 1;
 		}
 
-		ENGINE_LOG_ERROR("Unknown ShaderDataType!");
+		BOREALIS_CORE_ASSERT(false, "Unknown ShaderDataType!");
 		return 0;
 	}
 

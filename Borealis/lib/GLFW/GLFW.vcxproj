@@ -54,20 +54,20 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>bin\Debug-x86_64\GLFW\</OutDir>
-    <IntDir>bin-int\Debug-x86_64\GLFW\</IntDir>
+    <OutDir>build\Debug-x86_64\GLFW\</OutDir>
+    <IntDir>build-int\Debug-x86_64\GLFW\</IntDir>
     <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>bin\Release-x86_64\GLFW\</OutDir>
-    <IntDir>bin-int\Release-x86_64\GLFW\</IntDir>
+    <OutDir>build\Release-x86_64\GLFW\</OutDir>
+    <IntDir>build-int\Release-x86_64\GLFW\</IntDir>
     <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
-    <OutDir>bin\Distribution-x86_64\GLFW\</OutDir>
-    <IntDir>bin-int\Distribution-x86_64\GLFW\</IntDir>
+    <OutDir>build\Distribution-x86_64\GLFW\</OutDir>
+    <IntDir>build-int\Distribution-x86_64\GLFW\</IntDir>
     <TargetName>GLFW</TargetName>
     <TargetExt>.lib</TargetExt>
   </PropertyGroup>

@@ -699,7 +699,7 @@ namespace Borealis {
 
 		if (!hasRuntimeCamera)
 		{
-			ENGINE_LOG_WARN("Cannot start scene without camera");
+			BOREALIS_CORE_TRACE("Cannot start scene without camera");
 			return;
 		}
 		mSceneState = SceneState::Play;

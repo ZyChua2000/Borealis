@@ -111,88 +111,80 @@ namespace Borealis
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform1i(location, value);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const int* values, const uint32_t count)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform1iv(location, count, values);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const float& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform1f(location, value);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const glm::vec2& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform2f(location, value.x, value.y);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const glm::vec3& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform3f(location, value.x, value.y, value.z);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const glm::vec4& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniform4f(location, value.x, value.y, value.z, value.w);
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const glm::mat3& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniformMatrix3fv(location, 1, GL_FALSE, glm::value_ptr(value));
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Error pushing uniform into shader");
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	void OpenGLShader::PushUniform(const char* name, const glm::mat4& value)
 	{
 		auto location = glGetUniformLocation(mRendererID, name);
 		if (location == -1)
 		{
-			ENGINE_LOG_ERROR("Invalid uniform name: {}", name);
+			BOREALIS_CORE_ERROR("Invalid uniform name: {}", name);
 		}
 		glUniformMatrix4fv(glGetUniformLocation(mRendererID, name), 1, GL_FALSE, glm::value_ptr(value));
-		if (glGetError() != GL_NO_ERROR)
-			ENGINE_LOG_ERROR("Uniform {} not found in shader", name);
+		BOREALIS_CORE_ASSERT(glGetError() == GL_NO_ERROR, "Error pushing uniform into shader");
 	}
 	GLenum OpenGLShader::ShaderTypeFromString(const std::string& type)
 	{
@@ -201,7 +193,7 @@ namespace Borealis
 		if (type == "fragment")
 			return GL_FRAGMENT_SHADER;
 
-		ENGINE_LOG_ERROR("Invalid Shader Type: {}", type);
+		BOREALIS_CORE_ERROR("Invalid Shader Type: {}", type);
 		return 0;
 	}
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
@@ -220,7 +212,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_ERROR("Shader file {} not found", filepath);
+			BOREALIS_CORE_ERROR("Shader file {} not found", filepath);
 		}
 		return result;
 	}
@@ -236,17 +228,12 @@ namespace Borealis
 		while (pos != std::string::npos)
 		{
 			size_t endOfLine = source.find("\r\n", pos);
-			if (endOfLine == std::string::npos)
-			{
-				ENGINE_LOG_ERROR("Syntax Error when Preprocessing shader");
-			}
+			BOREALIS_CORE_ASSERT(endOfLine != std::string::npos, "Syntax Error when Preprocessing shader");
+			
 			size_t begin = pos + typeStrLen + 1;
 			std::string type = source.substr(begin, endOfLine - begin);
-			if (ShaderTypeFromString(type) == 0)
-			{
-				ENGINE_LOG_ERROR("Invalid Shader type specified");
-			}
-
+			BOREALIS_CORE_ASSERT(ShaderTypeFromString(type) != 0, "Invalid Shader type specified");
+			
 			size_t nextLinePos = source.find_first_not_of("\r\n", endOfLine);
 			pos = source.find(typeStr, nextLinePos);
 			result[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
@@ -259,10 +246,7 @@ namespace Borealis
 		PROFILE_FUNCTION();
 
 		GLuint program = glCreateProgram();
-		if (shaderSources.size() > 2)
-		{
-			ENGINE_LOG_ERROR("More than 2 shaders detected in 1 glsl");
-		}
+		BOREALIS_CORE_ASSERT(shaderSources.size() <= 2, "More than 2 shaders detected in 1 glsl");
 		std::array<GLenum,2> shaderIDs;
 		int index = 0;
 		for (auto& kv : shaderSources)
@@ -293,7 +277,7 @@ namespace Borealis
 				glDeleteShader(shader);
 
 				// Use the infoLog as you see fit.
-				ENGINE_LOG_ERROR("Shader Compilation Error: {}", infoLog.data());
+				BOREALIS_CORE_ERROR("Shader Compilation Error: {}", infoLog.data());
 
 				// In this simple program, we'll just leave
 				break;
@@ -324,7 +308,7 @@ namespace Borealis
 				glDeleteShader(id);
 			}
 			// Use the infoLog as you see fit.
-			ENGINE_LOG_ERROR("Shader Program Linking Error: {}", infoLog.data());
+			BOREALIS_CORE_ERROR("Shader Program Linking Error: {}", infoLog.data());
 			// In this simple program, we'll just leave
 			return;
 		}

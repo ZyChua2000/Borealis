@@ -349,12 +349,12 @@ namespace Borealis
 		YAML::Node data = YAML::Load(ss.str());
 		if (!data["Scene"])
 		{
-			ENGINE_LOG_ERROR("Scene not found in file: {}", filepath);
+			BOREALIS_CORE_ERROR("Scene not found in file: {}", filepath);
 			return false;
 		}
 
 		std::string sceneName = data["Scene"].as<std::string>();
-		ENGINE_LOG_INFO("Deserialising scene: {}", sceneName);
+		BOREALIS_CORE_INFO("Deserialising scene: {}", sceneName);
 
 		auto entities = data["Entities"];
 		if (entities)
@@ -499,7 +499,7 @@ namespace Borealis
 		YAML::Node data = YAML::Load(ss.str());
 		if (!data["Styles"])
 		{
-			ENGINE_LOG_ERROR("Style not found in file: {}", filepath);
+			BOREALIS_CORE_ERROR("Style not found in file: {}", filepath);
 			return false;
 		}
 

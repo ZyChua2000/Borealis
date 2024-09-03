@@ -25,6 +25,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define BOREALIS_API
 #endif
 
+#ifdef _DEB
+	#define BOREALIS_DEBUGBREAK() __debugbreak()
+	#define BOREALIS_ENABLE_ASSERTS
+#else
+	#define BOREALIS_DEBUGBREAK()
+#endif
+
+#define BOREALIS_EXPAND_MACRO(x) x
+#define BOREALIS_STRINGIFY_MACRO(x) #x
+
+
 #define BIND_EVENT(fn) [this](auto&&... args) -> decltype(auto) { return this->fn(std::forward<decltype(args)>(args)...); }
 
 namespace Borealis

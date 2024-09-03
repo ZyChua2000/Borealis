@@ -22,7 +22,7 @@ namespace Borealis
 	{
 		if (!mWindowHandle)
 		{
-			ENGINE_LOG_CRITICAL("Failed to create GLFW window!");
+			BOREALIS_CORE_CRITICAL("Failed to create GLFW window!");
 			glfwTerminate();
 			return;
 		}
@@ -36,15 +36,15 @@ namespace Borealis
 
 		if (status == 0)
 		{
-			ENGINE_LOG_CRITICAL("Failed to initialize GLAD!");
+			BOREALIS_CORE_CRITICAL("Failed to initialize GLAD!");
 			glfwTerminate();
 			return;
 		}
 
-		ENGINE_LOG_INFO("OpenGL Info:");
-		ENGINE_LOG_INFO("  Vendor: {}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
-		ENGINE_LOG_INFO("  Renderer: {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
-		ENGINE_LOG_INFO("  Version: {}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
+		BOREALIS_CORE_INFO("OpenGL Info:");
+		BOREALIS_CORE_INFO("  Vendor: {}", reinterpret_cast<const char*>(glGetString(GL_VENDOR)));
+		BOREALIS_CORE_INFO("  Renderer: {}", reinterpret_cast<const char*>(glGetString(GL_RENDERER)));
+		BOREALIS_CORE_INFO("  Version: {}", reinterpret_cast<const char*>(glGetString(GL_VERSION)));
 	}
 	void OpenGLContext::SwapBuffers()
 	{

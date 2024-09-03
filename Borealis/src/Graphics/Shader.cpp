@@ -24,10 +24,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+		case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 		case RendererAPI::API::OpenGL: return MakeRef<OpenGLShader>(filepath);
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 
@@ -35,10 +35,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+		case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 		case RendererAPI::API::OpenGL: return MakeRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 	void ShaderAPI::Add(const Ref<Shader>& shader)
@@ -46,7 +46,7 @@ namespace Borealis
 		auto& name = shader->GetName();
 		if (hasShader(name))
 		{
-			ENGINE_LOG_WARN("Shader {} already exists!", shader->GetName());
+			BOREALIS_CORE_WARN("Shader {} already exists!", shader->GetName());
 		}
 		mShaders[name] = shader;
 
@@ -55,7 +55,7 @@ namespace Borealis
 	{
 		if (hasShader(name))
 		{
-			ENGINE_LOG_WARN("Shader {} already exists!", shader->GetName());
+			BOREALIS_CORE_WARN("Shader {} already exists!", shader->GetName());
 		}
 		mShaders[name] = shader;
 	}
@@ -75,7 +75,7 @@ namespace Borealis
 	{
 		if (!hasShader(name))
 		{
-			ENGINE_LOG_ERROR("Shader name not found in library!");
+			BOREALIS_CORE_ASSERT(false, "Shader name not found in library!");
 			return nullptr;
 		}
 		return mShaders[name];

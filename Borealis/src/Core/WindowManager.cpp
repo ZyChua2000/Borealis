@@ -29,7 +29,7 @@ namespace Borealis
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
-		ENGINE_LOG_ERROR("GLFW Error ({0}): {1}", error, description);
+		BOREALIS_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
 	}
 
 	/*!***********************************************************************
@@ -110,7 +110,7 @@ namespace Borealis
 		mData.mHeight = properties.mHeight;
 		mData.mTitle = properties.mTitle.c_str();
 
-		ENGINE_LOG_INFO("Creating window {0} with width ({1} and height {2})", mData.mTitle, mData.mWidth, mData.mHeight);
+		BOREALIS_CORE_INFO("Creating window {0} with width ({1} and height {2})", mData.mTitle, mData.mWidth, mData.mHeight);
 
 		
 
@@ -119,8 +119,7 @@ namespace Borealis
 			PROFILE_SCOPE("glfwInit");
 			int success = glfwInit();
 
-			if (!success)
-			ENGINE_LOG_CRITICAL("Failed to initialize GLFW!");
+			BOREALIS_CORE_ASSERT(success, "Failed to initialize GLFW!");
 
 			sGLFWInitialized = true;
 		}

@@ -56,7 +56,7 @@ namespace Borealis
 	{
 		if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
 		{
-			ENGINE_LOG_WARN("Framebuffer size is invalid, Width: {}, Height {}", width, height);
+			BOREALIS_CORE_WARN("Framebuffer size is invalid, Width: {}, Height {}", width, height);
 			return;
 		}
 		mProps.Width = width;
@@ -129,24 +129,17 @@ namespace Borealis
 
 		if (mColorAttachments.size() > 1)
 		{
-			if (mColorAttachments.size() > 4)
-				ENGINE_LOG_ERROR("Too many color attachments!");
-			else
-			{
-				GLenum buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
-				glDrawBuffers((GLsizei)mColorAttachments.size(), buffers);
-			}
+			BOREALIS_CORE_ASSERT(mColorAttachments.size() <= 4,"Too many color attachments!");
+			GLenum buffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
+			glDrawBuffers((GLsizei)mColorAttachments.size(), buffers);
+
 		}
 		else if (mColorAttachments.empty())
 		{
 			glDrawBuffer(GL_NONE);
 		}
 
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			ENGINE_LOG_ERROR("Framebuffer is incomplete!");
-		}
-
+		BOREALIS_CORE_ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE, "Framebuffer is incomplete!");
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	}

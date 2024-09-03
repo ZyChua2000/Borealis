@@ -24,10 +24,10 @@ namespace Borealis
 	{
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: ENGINE_LOG_ERROR("RendererAPI::None is not supported"); return nullptr;
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 			case RendererAPI::API::OpenGL: return MakeRef<OpenGLVertexArray>();
 		}
-		ENGINE_LOG_ERROR("Unknown RendererAPI");
+		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
 }

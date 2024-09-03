@@ -30,7 +30,7 @@ namespace Borealis
 		}
 		if (!data)
 		{
-			ENGINE_LOG_ERROR("Failed to load image: {}", path);
+			BOREALIS_CORE_ERROR("Failed to load image: {}", path);
 		}
 		mWidth = width;
 		mHeight = height;
@@ -48,7 +48,7 @@ namespace Borealis
 		}
 		else
 		{
-			ENGINE_LOG_ERROR("Unsupported image format: {}", path);
+			BOREALIS_CORE_ERROR("Unsupported image format: {}", path);
 		}
 
 
@@ -98,10 +98,9 @@ namespace Borealis
 		PROFILE_FUNCTION();
 
 		uint32_t bpp = mDataFormat == GL_RGBA ? 4 : 3;
-		if (size != mWidth * mHeight * bpp)
-		{
-			ENGINE_LOG_ERROR("Data must be entire texture!");
-		}
+
+		BOREALIS_CORE_ASSERT(size == mWidth * mHeight * bpp, "Data must be entire texture!");
+		
 		glBindTexture(GL_TEXTURE_2D, mRendererID);
 		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mWidth, mHeight, mDataFormat, GL_UNSIGNED_BYTE, data);
 		glBindTexture(GL_TEXTURE_2D, 0);

@@ -21,8 +21,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 	int main(int argc, char** argv)
 	{
 		Borealis::LoggerSystem::Init();
-		ENGINE_LOG_INFO("Logger System Initialized");
-		ENGINE_LOG_TRACE("Welcome to the Borealis");
+		BOREALIS_CORE_INFO("Logger System Initialized");
+		BOREALIS_CORE_TRACE("Welcome to the Borealis");
 
 		PROFILE_START("Borealis Startup", "Profile-Startup.json");
 		auto app = Borealis::CreateApplication();
