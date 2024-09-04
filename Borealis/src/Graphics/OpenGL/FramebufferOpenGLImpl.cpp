@@ -12,9 +12,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 #include <BorealisPCH.hpp>
+#include <glad/glad.h>
 #include <Graphics/OpenGL/FramebufferOpenGLImpl.hpp>
 #include <Core/Core.hpp>
-#include <glad/glad.h>
 #include <Core/LoggerSystem.hpp>
 #include <Core/Utils.hpp>
 namespace Borealis

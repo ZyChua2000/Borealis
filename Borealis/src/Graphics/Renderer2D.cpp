@@ -13,11 +13,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include "BorealisPCH.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 #include "Graphics/Renderer2D.hpp"
 #include <Graphics/VertexArray.hpp>
 #include <Graphics/Shader.hpp>
 #include <Graphics/RenderCommand.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+
 namespace Borealis
 {
 	struct QuadData

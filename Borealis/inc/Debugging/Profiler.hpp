@@ -12,6 +12,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
+
+#define ENGINE_PROFILE 0
+
 #ifndef PROFILER_HPP
 #define PROFILER_HPP
 
@@ -24,20 +27,34 @@ namespace Borealis
 {
 	struct ProfileResult
 	{
-		std::string mName;
-		long long mStart, mEnd;
-		size_t mThreadID;
+		std::string mName; // Name of the profile
+		long long mStart, mEnd; // Start and end time of the profile
+		size_t mThreadID; // Thread ID of the profile
 	};
 
-	struct InstrumentationScope
+	struct InstrumentationScope 
 	{
-		std::string mName;
+		std::string mName; // Name of the scope
 	};
 
 	class Instrumentor
 	{
 	public:
+
+		/*!***********************************************************************
+			\brief
+				Default constructor for the Instrumentor class
+		*************************************************************************/
 		Instrumentor() : mScope(nullptr), mProfileCount(0) {}
+
+		/*!***********************************************************************
+			\brief
+				Starts the instrumentation process
+			\param[in] name
+				The name of the scope
+			\param[in] filepath
+				The filepath to write the results to
+		*************************************************************************/
 		void Start(const std::string& name, const std::string& filepath = "results.json")
 		{
 			mOutputStream.open(filepath);
@@ -45,6 +62,10 @@ namespace Borealis
 			mScope = new InstrumentationScope{ name };
 		}
 
+		/*!***********************************************************************
+			\brief
+				Ends the instrumentation process
+		*************************************************************************/
 		void End()
 		{
 			WriteFooter();
@@ -54,6 +75,12 @@ namespace Borealis
 			mProfileCount = 0;
 		}
 
+		/*!***********************************************************************
+			\brief
+				Writes the profile results to the output stream
+			\param[in] result
+				The profile result to write
+		*************************************************************************/
 		void WriteProfile(const ProfileResult& result)
 		{
 			if (mProfileCount++ > 0)
@@ -87,43 +114,68 @@ namespace Borealis
 			mOutputStream.flush();
 		}
 
+		/*!***********************************************************************
+			\brief
+				Writes the header of the output stream
+		*************************************************************************/
 		void WriteHeader()
 		{
 			mOutputStream << "{\"otherData\": {},\"traceEvents\":[";
 			mOutputStream.flush();
 		}
 
+		/*!***********************************************************************
+			\brief
+				Writes the footer of the output stream
+		*************************************************************************/
 		void WriteFooter()
 		{
 			mOutputStream << "]}";
 			mOutputStream.flush();
 		}
 
+		/*!***********************************************************************
+			\brief
+				Returns the instance of the Instrumentor
+		*************************************************************************/
 		static Instrumentor& Get()
 		{
 			static Instrumentor instance;
 			return instance;
 		}
 	private:
-		InstrumentationScope* mScope;
-		std::ofstream mOutputStream;
-		int mProfileCount;
+		InstrumentationScope* mScope; // The current scope
+		std::ofstream mOutputStream; // The output stream
+		int mProfileCount; // The number of profiles
 	};
 
 	class InstrumentationTimer
 	{
 		public:
+
+		/*!***********************************************************************
+			\brief
+				Default constructor of the InstrumentationTimer
+		*************************************************************************/
 		InstrumentationTimer(const char* name) : mName(name), mStopped(false)
 		{
 			mStartTimepoint = std::chrono::high_resolution_clock::now();
 		}
 
+		/*!***********************************************************************
+			\brief
+				Default destructor of the InstrumentationTimer
+		*************************************************************************/
 		~InstrumentationTimer()
 		{
 			if (!mStopped)
 				Stop();
 		}
 
+		/*!***********************************************************************
+			\brief
+				Stops the timer
+		*************************************************************************/
 		void Stop()
 		{
 			auto endTimepoint = std::chrono::high_resolution_clock::now();
@@ -137,15 +189,14 @@ namespace Borealis
 		}
 
 		private:
-			const char* mName;
-			std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint;
-			bool mStopped;
+			const char* mName; // The name of the timer
+			std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint; // The start timepoint
+			bool mStopped; // Whether the timer has stopped
 
 	};
 }
 
-#define ENGINE_PROFILE 0
-
+// Macros for profiling
 #if ENGINE_PROFILE
 #define PROFILE_START(name, filepath) ::Borealis::Instrumentor::Get().Start(name, filepath)
 #define PROFILE_END() ::Borealis::Instrumentor::Get().End()

@@ -1,5 +1,19 @@
-#include "BorealisPCH.hpp"
-#include "Events/EventInput.hpp"
+/******************************************************************************/
+/*!
+\file		EventInput.cpp
+\author 	Chua Zheng Yang
+\par    	email: c.zhengyang\@digipen.edu
+\date   	February 17, 2024
+\brief		Defines the functions and class for Input Events
+
+Copyright (C) 2023 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
+#include <BorealisPCH.hpp>
+#include <Events/EventInput.hpp>
 
 namespace Borealis {
 

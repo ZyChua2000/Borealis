@@ -16,8 +16,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define SCENE_HIERARCHY_PANEL_HPP
 
 #include <Scene/scene.hpp>
-#include <Core/core.hpp>
 #include <Scene/Entity.hpp>
+#include <Core/core.hpp>
 
 namespace Borealis {
 	class SceneHierarchyPanel

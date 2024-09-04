@@ -16,9 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <Core/LoggerSystem.hpp>
-
 #include "Core/WindowManager.hpp"
-
 #include <Events/EventWindow.hpp>
 #include <Events/EventInput.hpp>
 #include <Graphics/OpenGL/GraphicsContextOpenGLImpl.hpp>

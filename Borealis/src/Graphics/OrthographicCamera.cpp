@@ -13,9 +13,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
-#include "Graphics/OrthographicCamera.hpp"
+#include <BorealisPCH.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <Graphics/OrthographicCamera.hpp>
+
 namespace Borealis
 {
 	OrthographicCamera::OrthographicCamera(float left, float right, float bottom, float top) : mProjectionMatrix(glm::ortho(left,right,bottom,top,-1.0f,1.0f)),

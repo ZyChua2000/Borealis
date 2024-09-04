@@ -12,13 +12,14 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
+#include <BorealisPCH.hpp>
+#include <windows.h>
+#include <GLFW/glfw3.h>
 #include <Core/LoggerSystem.hpp>
 #include <Core/ApplicationManager.hpp>
 #include <Core/InputSystem.hpp>
 #include <Graphics/Renderer.hpp>
-#include <windows.h>
-#include <GLFW/glfw3.h>
+
 namespace Borealis
 {
 	ApplicationManager* ApplicationManager::sInstance = nullptr;
@@ -175,8 +176,8 @@ namespace Borealis
 		}
 
 		mIsMinimized = false;
-		Renderer::onWindowResize(e.GetWidth(), e.GetHeight());
-		mImGuiLayer->onWindowResize(static_cast<float>(e.GetWidth()), static_cast<float>(e.GetHeight()));
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+		mImGuiLayer->OnWindowResize(static_cast<float>(e.GetWidth()), static_cast<float>(e.GetHeight()));
 		return false;
 	}
 }

@@ -12,13 +12,14 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
 
-#include "EditorLayer.hpp"
+
 #include <imgui.h>
+#include <ImGuizmo.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGui/ImGuiLayer.hpp>
 #include <Scene/Serialiser.hpp>	
-#include <ImGuizmo.h>
+#include <EditorLayer.hpp>
 
 
 namespace Borealis {
@@ -579,7 +580,7 @@ namespace Borealis {
 			{
 				if (shift) // minus key
 				{
-					imGuizmoClipSpace = std::max(0.1f, imGuizmoClipSpace - 0.1f);
+					imGuizmoClipSpace = max(0.1f, imGuizmoClipSpace - 0.1f);
 					ImGuizmo::SetGizmoSizeClipSpace(imGuizmoClipSpace);
 				}
 			}

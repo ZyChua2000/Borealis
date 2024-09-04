@@ -12,8 +12,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 #include <BorealisPCH.hpp>
-#include <Graphics/Framebuffer.hpp>
 #include <Core/Core.hpp>
+#include <Graphics/Framebuffer.hpp>
 #include <Graphics/Renderer.hpp>
 #include <Graphics/OpenGL/FrameBufferOpenGLImpl.hpp>
 namespace Borealis

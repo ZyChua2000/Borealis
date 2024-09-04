@@ -12,7 +12,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
+#include <BorealisPCH.hpp>
 #include <Events/EventWindow.hpp>
 
 

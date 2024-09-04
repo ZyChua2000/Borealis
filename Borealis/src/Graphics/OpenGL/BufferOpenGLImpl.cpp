@@ -13,9 +13,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 
-#include "BorealisPCH.hpp"
-#include "Graphics/OpenGL/BufferOpenGLImpl.hpp"
+#include <BorealisPCH.hpp>
 #include <glad/glad.h>
+#include <Graphics/OpenGL/BufferOpenGLImpl.hpp>
+
 namespace Borealis
 {
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)

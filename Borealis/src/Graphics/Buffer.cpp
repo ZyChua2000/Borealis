@@ -12,13 +12,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include <Graphics/Buffer.hpp>
+
 #include <BorealisPCH.hpp>
 #include <glad/glad.h>
 #include <Graphics/Renderer.hpp>
+#include <Graphics/OpenGL/BufferOpenGLImpl.hpp>
+#include <Graphics/Buffer.hpp>
 #include <Core/LoggerSystem.hpp>
 
-#include <Graphics/OpenGL/BufferOpenGLImpl.hpp>
+
 namespace Borealis
 {
 	void BufferLayout::CalculateOffsetsAndStride()

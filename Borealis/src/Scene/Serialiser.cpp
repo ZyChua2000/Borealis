@@ -13,12 +13,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
+#include <yaml-cpp/yaml.h>
+#include <imgui.h>
 #include <Scene/Serialiser.hpp>
 #include <Scene/Entity.hpp>
 #include <Scene/Components.hpp>
 #include <Core/LoggerSystem.hpp>
-#include <yaml-cpp/yaml.h>
-#include <imgui.h>
 #include <ImGui/ImGuiFontLib.hpp>
 
 namespace YAML

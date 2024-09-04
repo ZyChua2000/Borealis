@@ -22,12 +22,29 @@ namespace Borealis
 	class OpenGLContext : public GraphicsContext
 	{
 	public:
+
+		/*!***********************************************************************
+			\brief
+				Constructor for OpenGLContext
+			\param windowHandle
+				The window handle for the context
+		*************************************************************************/
 		OpenGLContext(GLFWwindow* windowHandle);
+
+		/*!***********************************************************************
+			\brief
+				Initialise the context
+		*************************************************************************/
 		virtual void Init() override;
+
+		/*!***********************************************************************
+			\brief
+				Swap the buffers
+		*************************************************************************/
 		virtual void SwapBuffers() override;
 	private:
-		GLFWwindow* mWindowHandle;
-	};
-}
+		GLFWwindow* mWindowHandle; //!< The window handle for the context
+	}; // class OpenGLContext
+} // namespace Borealis
 
 #endif

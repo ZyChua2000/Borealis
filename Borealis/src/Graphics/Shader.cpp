@@ -13,8 +13,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-#include <Graphics/Shader.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Graphics/Shader.hpp>
 #include <Graphics/Renderer.hpp>
 #include <Graphics/OpenGL/ShaderOpenGLImpl.hpp>
 

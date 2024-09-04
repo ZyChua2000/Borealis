@@ -11,12 +11,11 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
-
-#include "Panels/SceneHierarchyPanel.hpp"
-#include <ImGui/ImGuiFontLib.hpp>
 #include <imgui.h>
-#include <Scene/Components.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <Panels/SceneHierarchyPanel.hpp>
+#include <ImGui/ImGuiFontLib.hpp>
+#include <Scene/Components.hpp>
 
 
 namespace Borealis

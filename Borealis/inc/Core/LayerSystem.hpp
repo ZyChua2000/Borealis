@@ -14,9 +14,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef LAYER_SYSTEM_HPP
 #define LAYER_SYSTEM_HPP
+#include <vector>
 #include <Core/Core.hpp>
 #include <Core/Layer.hpp>
-#include <vector>
+
 namespace Borealis
 {
 	class BOREALIS_API LayerSystem
@@ -75,8 +76,8 @@ namespace Borealis
 		std::vector<Layer*>::reverse_iterator rend() { return mLayers->rend(); }
 
 	private:
-		std::vector<Layer*>* mLayers;
-		unsigned mLayerInsertIndex = 0;
+		std::vector<Layer*>* mLayers; // Vector of layers data structure
+		unsigned mLayerInsertIndex = 0; // Index of the layer to be inserted
 
 	}; // End of LayerSystem Class
 

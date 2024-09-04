@@ -14,12 +14,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-#include <Core/ApplicationManager.hpp>
-#include <ImGui/ImGuiLayer.hpp>
-#include <ImGui/ImGuiFontLib.hpp>
 #include <imgui.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
+#include <Core/ApplicationManager.hpp>
+#include <ImGui/ImGuiLayer.hpp>
+#include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Serialiser.hpp>
 
 #include <GLFW/glfw3.h>
@@ -184,7 +184,7 @@ namespace Borealis
 
 	}
 
-	void ImGuiLayer::onWindowResize(float width, float height)
+	void ImGuiLayer::OnWindowResize(float width, float height)
 	{
 		if (width > height)
 		{

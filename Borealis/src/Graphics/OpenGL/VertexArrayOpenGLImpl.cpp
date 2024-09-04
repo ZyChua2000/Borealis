@@ -13,8 +13,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-#include <Graphics/OpenGL/VertexArrayOpenGLImpl.hpp>
 #include <glad/glad.h>
+#include <Graphics/OpenGL/VertexArrayOpenGLImpl.hpp>
 namespace Borealis {
 	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
 	{

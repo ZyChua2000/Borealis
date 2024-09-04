@@ -15,9 +15,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef LOGGER_SYSTEM_HPP
 #define LOGGER_SYSTEM_HPP
 
-#include <Core/Core.hpp>
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/ostr.h>
+#include <Core/Core.hpp>
 
 // Define the log levels
 #define ENGINE_LOGLEVEL_INFO spdlog::level::info
@@ -99,12 +99,12 @@ namespace Borealis {
 		void SetApplicationLogLevel(spdlog::level::level_enum level);
 
 	private:
-		static spdlog::logger* sEngineLogger;
-		static spdlog::logger* sApplicationLogger;
+		static spdlog::logger* sEngineLogger; // The Borealis Logger
+		static spdlog::logger* sApplicationLogger; // The Application Logger
 	}; // End of Class LoggerSystem
 
-}
-
+} // End of namespace Borealis
+ 
 // Define the log macros
 #define BOREALIS_CORE_INFO(...)     ::Borealis::LoggerSystem::GetEngineLogger()->info(__VA_ARGS__)
 #define BOREALIS_CORE_TRACE(...)    ::Borealis::LoggerSystem::GetEngineLogger()->trace(__VA_ARGS__)

@@ -88,10 +88,17 @@ namespace Borealis
 		virtual void ImGuiRender() {};
 
 #ifndef _DIST
+
+		/*!***********************************************************************
+			\brief
+				Get the name of the layer
+			\return
+				Name of the layer
+		*************************************************************************/
 		const std::string& GetName() const { return *mName; }
 
 	protected:
-		std::string* mName;
+		std::string* mName; //!< Name of the layer
 	}; // End of Layer Class
 #endif
 

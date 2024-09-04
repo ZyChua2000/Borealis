@@ -51,23 +51,63 @@ namespace Borealis
 		*************************************************************************/
 		void Free();
 
+		/*!***********************************************************************
+			\brief
+				Begins the Frame
+		*************************************************************************/
 		void BeginFrame();
+
+		/*!***********************************************************************
+			\brief
+				Ends the Frame
+		*************************************************************************/
 		void EndFrame();
 
+		/*!***********************************************************************
+			\brief
+				Renders the ImGui elements.
+		*************************************************************************/
 		void ImGuiRender() override;
 
+		/*!***********************************************************************
+			\brief
+				Handles the events for the ImGuiLayer.
+		*************************************************************************/
 		void EventFn(Event& e) override;
 
+		/*!***********************************************************************
+			\brief
+				Set whether to block events
+			\param[in] block
+				Whether to block events.
+		*************************************************************************/
 		void SetBlockEvents(bool block) { mBlockEvents = block; }
 
-		void onWindowResize(float width, float height);
+		/*!***********************************************************************
+			\brief
+				Window Resize Event Function
+			\param[in] width
+				Width of the window.
+			\param[in] height
+				Height of the window.
+		*************************************************************************/
+		void OnWindowResize(float width, float height);
 
+		/*!***********************************************************************
+			\brief
+				Set ImGui to Dark Theme Colours
+		*************************************************************************/
 		static void SetDarkThemeColours();
+
+		/*!***********************************************************************
+			\brief
+				Set ImGui to Light Theme Colours
+		*************************************************************************/
 		static void SetLightThemeColours();
 
 	private:
-		bool mBlockEvents = true;
-		float mTime;
+		bool mBlockEvents = true; /*!< Whether to block events. */
+		float mTime; /*!< Time for the ImGuiLayer. */
 	};
 } // End of namespace Borealis
 

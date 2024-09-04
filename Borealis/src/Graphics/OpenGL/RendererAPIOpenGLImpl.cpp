@@ -12,9 +12,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
-#include "Graphics/OpenGL/RendererAPIOpenGLImpl.hpp"
+#include <BorealisPCH.hpp>
 #include <glad/glad.h>
+#include "Graphics/OpenGL/RendererAPIOpenGLImpl.hpp"
 namespace Borealis
 {
 	void OpenGLRendererAPI::Init()

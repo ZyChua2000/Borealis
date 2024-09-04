@@ -11,10 +11,10 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-#include "BorealisPCH.hpp"
-#include "Graphics/OpenGL/GraphicsContextOpenGLImpl.hpp"
+#include <BorealisPCH.hpp>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <Graphics/OpenGL/GraphicsContextOpenGLImpl.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {

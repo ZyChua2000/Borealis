@@ -13,11 +13,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
+#include <glad/glad.h>
+#include <glm/gtc/type_ptr.hpp>
 #include <Graphics/OpenGL/ShaderOpenGLImpl.hpp>
 #include <Core/LoggerSystem.hpp>
 
-#include <glad/glad.h>
-#include <glm/gtc/type_ptr.hpp>
 namespace Borealis
 {
 	OpenGLShader::OpenGLShader(const std::string& filepath)

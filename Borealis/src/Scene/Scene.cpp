@@ -13,12 +13,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
+#include <glm/glm.hpp>
 #include <Scene/Scene.hpp>
 #include <Scene/Entity.hpp>
 #include <Scene/ScriptEntity.hpp>
-#include <glm/glm.hpp>
-#include <Graphics/Renderer2D.hpp>
 #include <Scene/Components.hpp>
+#include <Graphics/Renderer2D.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {

@@ -14,9 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 
 #include <Borealis.hpp>
-#include <EditorLayer.hpp>
 #include <Core/EntryPoint.hpp>
-
+#include <EditorLayer.hpp>
 namespace Borealis
 {
 	class LevelEditor : public ApplicationManager

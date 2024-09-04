@@ -137,7 +137,7 @@ namespace Borealis {
 		}
 
 	private:
-		Event& mEvent;
+		Event& mEvent; // The event to dispatch
 	}; // End of class EventDispatcher
 
 	/*!***********************************************************************

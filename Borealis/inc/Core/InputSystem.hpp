@@ -14,8 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef INPUT_SYSTEM_HPP
 #define INPUT_SYSTEM_HPP
-#include <Core/Core.hpp>
 #include <utility>
+#include <Core/Core.hpp>
 namespace Borealis
 {
 	class BOREALIS_API InputSystem

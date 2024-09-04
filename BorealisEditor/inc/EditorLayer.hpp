@@ -15,11 +15,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef EDITOR_LAYER_HPP
 #define EDITOR_LAYER_HPP
+#include <vector>
 #include <Borealis.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Graphics/EditorCamera.hpp>
-#include <vector>
 namespace Borealis {
 	class EditorLayer : public Layer
 	{

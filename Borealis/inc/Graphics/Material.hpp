@@ -14,8 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef MATERIAL_HPP
 #define MATERIAL_HPP
-#include <glm/glm.hpp>
 #include <unordered_map>
+#include <glm/glm.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/Shader.hpp>
 #include <Core/Core.hpp>
@@ -48,14 +48,25 @@ namespace Borealis
 			HasDetailMask,
 		};
 	
+		/*!***********************************************************************
+			\brief
+				Constructor for a Material with a shader
+			\param[in] shader
+				Shader to be used for rendering
+		*************************************************************************/
 		Material(Ref<Shader> shader) : mShader(shader) {};
+
+		/*!***********************************************************************
+			\brief
+				Destructor for Material
+		*************************************************************************/
 		~Material() {};
 	private:
-		std::unordered_map<TextureMaps, Ref<Texture2D>> mTextureMaps;
-		std::unordered_map<TextureMaps, glm::vec4> mTextureMapColor;
-		std::unordered_map<TextureMaps, float> mTextureMapFloat;
-		std::unordered_map<Props, float> mProperties;
-		Ref<Shader> mShader;
-	};
-}
+		std::unordered_map<TextureMaps, Ref<Texture2D>> mTextureMaps; //Texture maps
+		std::unordered_map<TextureMaps, glm::vec4> mTextureMapColor; //Texture map colors
+		std::unordered_map<TextureMaps, float> mTextureMapFloat; //Texture map floats
+		std::unordered_map<Props, float> mProperties; //Properties
+		Ref<Shader> mShader; //Shader
+	}; //class Material
+} //namespace Borealis
 #endif

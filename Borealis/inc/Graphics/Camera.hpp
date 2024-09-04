@@ -21,15 +21,44 @@ namespace Borealis
 	class Camera
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Constructor for Camera
+		*************************************************************************/
 		Camera() : mProjectionMatrix(glm::mat4(1.0f)) {};
+
+		/*!***********************************************************************
+			\brief
+				Constructor for Camera
+			\param projection
+				Projection matrix for the camera
+		*************************************************************************/
 		Camera(glm::mat4 projection) : mProjectionMatrix(projection) {};
+
+		/*!***********************************************************************
+			\brief
+				Destructor for Camera
+		*************************************************************************/
 		virtual ~Camera() = default;
 
+		/*!***********************************************************************
+			\brief
+				Sets the projection matrix for the camera
+			\param projectionMatrix
+				Projection matrix for the camera
+		*************************************************************************/
 		void SetProjectionMatrix(const glm::mat4& projectionMatrix) { mProjectionMatrix = projectionMatrix; };
+
+		/*!***********************************************************************
+			\brief
+				Gets the projection matrix for the camera
+			\return
+				Projection matrix for the camera
+		*************************************************************************/
 		const glm::mat4& GetProjectionMatrix() const { return mProjectionMatrix; };
 	protected:
-		glm::mat4 mProjectionMatrix;
-	};
-}
+		glm::mat4 mProjectionMatrix; //!< Projection matrix for the camera
+	}; // class Camera
+} // namespace Borealis
 
 #endif

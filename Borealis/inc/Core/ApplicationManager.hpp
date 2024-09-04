@@ -18,8 +18,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/Core.hpp>
 #include <Core/WindowManager.hpp>
 #include <Core/EventSystem.hpp>
-#include <Events/EventWindow.hpp>
 #include <Core/LayerSystem.hpp>
+#include <Events/EventWindow.hpp>
 #include <ImGui/ImGuiLayer.hpp>
 
 namespace Borealis {
@@ -80,12 +80,29 @@ namespace Borealis {
 		*************************************************************************/
 		void PushOverlay(Layer* overlay);
 
+		/*!***********************************************************************
+			\brief
+				Gets the singleton class instance for the application manager
+			\return
+				The instance of the application manager
+		*************************************************************************/
 		inline static ApplicationManager& Get() { return *sInstance; } //<! Returns the instance of the application manager
 
+		/*!***********************************************************************
+			\brief
+				Gets the window manager
+			\return
+				The window manager
+		*************************************************************************/
 		inline WindowManager* GetWindow() const { return mWindowManager; }
 
+		/*!***********************************************************************
+			\brief
+				Gets the ImGui layer
+			\return
+				The ImGui layer
+		*************************************************************************/
 		ImGuiLayer* GetImGuiLayer() const { return mImGuiLayer; }
-
 
 	private:
 

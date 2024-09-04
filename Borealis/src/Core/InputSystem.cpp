@@ -12,8 +12,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
-#include "Core/InputSystem.hpp"
+#include <BorealisPCH.hpp>
+#include <Core/InputSystem.hpp>
 #include <GLFW/glfw3.h>
 #include <Core/ApplicationManager.hpp>
 

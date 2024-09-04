@@ -12,9 +12,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
-#include <Core/LoggerSystem.hpp>
+#include <BorealisPCH.hpp>
 #include <spdlog\sinks\stdout_color_sinks.h>
+#include <Core/LoggerSystem.hpp>
 
 namespace Borealis 
 {

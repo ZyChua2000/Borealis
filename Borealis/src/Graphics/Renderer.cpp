@@ -12,14 +12,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 
-#include "BorealisPCH.hpp"
-#include "Graphics/Renderer.hpp"
+#include <BorealisPCH.hpp>
+#include <Core/Core.hpp>
+#include <Graphics/Renderer.hpp>
 #include <Graphics/OpenGL/ShaderOpenGLImpl.hpp>
 #include <Graphics/Renderer2D.hpp>
 
 namespace Borealis
 {
-	 std::unique_ptr<Renderer::Scene> Renderer::sSceneData = std::make_unique<Renderer::Scene>();
+	 Scope<Renderer::Scene> Renderer::sSceneData = MakeScope<Renderer::Scene>();
 	 void Renderer::Init()
 	 {
 		 PROFILE_FUNCTION();
@@ -46,7 +47,7 @@ namespace Borealis
 		 VAO->Bind();
 		 RenderCommand::DrawElements(VAO);
 	 }
-	 void Renderer::onWindowResize(const uint32_t& width, const uint32_t& height)
+	 void Renderer::OnWindowResize(const uint32_t& width, const uint32_t& height)
 	 {
 		 RenderCommand::SetViewport(0, 0, width, height);
 	 }

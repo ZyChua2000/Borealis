@@ -19,10 +19,24 @@ namespace Borealis
 	class GraphicsContext
 	{
 	public:
+
+		/*!***********************************************************************
+			\brief
+				Destructor of the Graphics Context
+		*************************************************************************/
 		virtual ~GraphicsContext() {};
 
+		/*!***********************************************************************
+			\brief
+				Initializes the Graphics Context
+		*************************************************************************/
 		virtual void Init() = 0;
+
+		/*!***********************************************************************
+			\brief
+				Swap the Buffers
+		*************************************************************************/
 		virtual void SwapBuffers() = 0;
-	};
-}
+	}; // class GraphicsContext
+} // namespace Borealis
 #endif

@@ -14,11 +14,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef CONTENT_BROWSER_PANEL_HPP
 #define CONTENT_BROWSER_PANEL_HPP
-
-#include <Scene/scene.hpp>
-#include <Core/core.hpp>
-#include <Scene/Entity.hpp>
 #include <filesystem>
+#include <Scene/scene.hpp>
+#include <Scene/Entity.hpp>
+#include <Core/core.hpp>
 #include <Graphics/Texture.hpp>
 
 namespace Borealis

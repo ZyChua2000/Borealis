@@ -11,15 +11,14 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
-#include "BorealisPCH.hpp"
-#include <Core/Utils.hpp>
-
+#include <BorealisPCH.hpp>
 #include <commdlg.h>
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 #include <Core/ApplicationManager.hpp>
-#include <glad/glad.h>
+#include <Core/Utils.hpp>
 
 
 namespace Borealis

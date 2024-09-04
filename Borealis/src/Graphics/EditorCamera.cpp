@@ -13,14 +13,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include "BorealisPCH.hpp"
-#include <Core/Core.hpp>
-#include <Graphics/EditorCamera.hpp>
-#include <Graphics/Camera.hpp>
-#include <Core/KeyCodes.hpp>
-#include <Core/InputSystem.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+#include <Core/Core.hpp>
+#include <Core/KeyCodes.hpp>
+#include <Core/InputSystem.hpp>
+#include <Graphics/EditorCamera.hpp>
+#include <Graphics/Camera.hpp>
+
 
 
 namespace Borealis

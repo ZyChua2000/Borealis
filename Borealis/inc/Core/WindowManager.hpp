@@ -93,6 +93,12 @@ namespace Borealis
 		*************************************************************************/
 		inline unsigned int GetHeight() const { return mData.mHeight; }
 
+		/*!***********************************************************************
+			\brief
+				Setter for event callback function
+			\param[in] callback
+				Function to be called when an event occurs
+		*************************************************************************/
 		inline void SetEventCallback(const EventCallbackFn& callback) { mData.mEventCallback = callback; }
 
 		/*!***********************************************************************
@@ -111,6 +117,12 @@ namespace Borealis
 		*************************************************************************/
 		bool IsVSync() const;
 
+		/*!***********************************************************************
+			\brief
+				Getter for the native window
+			\return
+				Pointer to the native window
+		*************************************************************************/
 		void* GetNativeWindow() const { return mWindow; }
 
 	private:
@@ -127,20 +139,21 @@ namespace Borealis
 				Shuts down the window
 		*************************************************************************/
 		virtual void Shutdown();
-		void* mWindow;
-		GraphicsContext* mContext;
+
+		void* mWindow; // Pointer to the native window
+		GraphicsContext* mContext; // Pointer to the graphics context
 
 		struct WindowData
 		{
-			const char* mTitle;
-			unsigned mWidth;
-			unsigned mHeight;
-			bool mIsVSync;
+			const char* mTitle; // Title of the window
+			unsigned mWidth;	// Width of the window
+			unsigned mHeight;	// Height of the window
+			bool mIsVSync;		// Whether VSync is enabled
 
-			EventCallbackFn mEventCallback;
+			EventCallbackFn mEventCallback; // Callback function for events
 		};
 
-		WindowData mData;
+		WindowData mData; // Data of the window
 	}; // End of Class WindowManager
 
 } // End of namespace Borealis

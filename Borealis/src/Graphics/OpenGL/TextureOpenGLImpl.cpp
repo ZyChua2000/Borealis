@@ -12,8 +12,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
 #include <BorealisPCH.hpp>
-#include <Graphics/OpenGL/TextureOpenGLImpl.hpp>
 #include <stb_image.h>
+#include <Graphics/OpenGL/TextureOpenGLImpl.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {

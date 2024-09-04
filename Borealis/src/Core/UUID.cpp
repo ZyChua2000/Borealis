@@ -13,9 +13,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include "BorealisPCH.hpp"
-#include <Core/UUID.hpp>
 #include <random>
 #include <limits>
+#include <Core/UUID.hpp>
+
 namespace Borealis
 {
 	static std::random_device sRandomDevice;
