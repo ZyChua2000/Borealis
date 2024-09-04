@@ -13,6 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include "BorealisPCH.hpp"
+#include <FMOD/fmod.h>
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <Core/LoggerSystem.hpp>
@@ -109,8 +110,8 @@ namespace Borealis
 		mData.mTitle = properties.mTitle.c_str();
 
 		BOREALIS_CORE_INFO("Creating window {0} with width ({1} and height {2})", mData.mTitle, mData.mWidth, mData.mHeight);
-
 		
+		FMOD_File_SetDiskBusy(1);
 
 		if (!sGLFWInitialized)
 		{
