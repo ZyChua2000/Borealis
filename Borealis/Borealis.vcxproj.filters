@@ -34,6 +34,12 @@
     <Filter Include="lib\ENTT\include">
       <UniqueIdentifier>{F98B3D78-E584-5CCA-0EB7-414FFA0E3CD6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\FMOD">
+      <UniqueIdentifier>{F1C52FA2-DD92-8AAD-06AC-7855F2D7BF3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\FMOD\FMOD">
+      <UniqueIdentifier>{C6587815-3219-F44B-FB53-3DC967D33828}</UniqueIdentifier>
+    </Filter>
     <Filter Include="lib\assimp">
       <UniqueIdentifier>{D85BF82E-C413-3A7C-2D1B-13D819F2D46C}</UniqueIdentifier>
     </Filter>
@@ -276,6 +282,12 @@
     </ClInclude>
     <ClInclude Include="lib\ENTT\include\entt.hpp">
       <Filter>lib\ENTT\include</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\FMOD\FMOD\fmod.hpp">
+      <Filter>lib\FMOD\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp">
+      <Filter>lib\FMOD\FMOD</Filter>
     </ClInclude>
     <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter.hpp">
       <Filter>lib\assimp\code\AssetLib\AMF</Filter>

@@ -23,6 +23,7 @@ workspace "Borealis"
 	IncludeDir["YAML"] = "Borealis/lib/yaml-cpp/include"
 	IncludeDir["ImGuizmo"] = "Borealis/lib/ImGuizmo"
 	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
+	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -73,7 +74,13 @@ workspace "Borealis"
 			"%{IncludeDir.ENTT}",
 			"%{IncludeDir.YAML}",
 			"%{IncludeDir.ImGuizmo}",
-			"%{IncludeDir.assimp}"
+			"%{IncludeDir.assimp}",
+			"%{IncludeDir.FMOD}"
+		}
+
+		libdirs 
+		{
+			"Borealis/lib/FMOD/lib"
 		}
 
 		links
@@ -104,16 +111,31 @@ workspace "Borealis"
 			defines "_DEB"
 			symbols "On"
 			runtime "Debug"
+			links
+			{
+				"fmodL_vc.lib",
+				"fmodstudioL_vc.lib"
+			}
 
 		filter "configurations:Release"
 			defines "_REL"
 			optimize "On"
 			runtime "Release"
+			links
+			{
+				"fmod_vc.lib",
+				"fmodstudio_vc.lib"
+			}
 
 		filter "configurations:Distribution"
 			defines "_DIST"
 			optimize "On"
 			runtime "Release"
+			links
+			{
+				"fmod_vc.lib",
+				"fmodstudio_vc.lib"
+			}
 
 	project "BorealisEditor"
 		location "BorealisEditor"
@@ -163,16 +185,28 @@ workspace "Borealis"
 			defines "_DEB"
 			symbols "On"
 			runtime "Debug"
+			postbuildcommands {
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmodL.dll $(TargetDir)",
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmodstudioL.dll $(TargetDir)"
+			 }
 
 		filter "configurations:Release"
 			defines "_REL"
 			optimize "On"
 			runtime "Release"
+			postbuildcommands {
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmod.dll $(TargetDir)",
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmodstudio.dll $(TargetDir)"
+			 }
 
 		filter "configurations:Distribution"
 			defines "_DIST"
 			optimize "On"
 			runtime "Release"
+			postbuildcommands {
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmod.dll $(TargetDir)",
+				"{COPYFILE} ../Borealis/lib/FMOD/bin/fmodstudio.dll $(TargetDir)"
+			 }
 
 			project "Sandbox"
 			location "Sandbox"
