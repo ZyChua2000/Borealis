@@ -24,6 +24,7 @@ workspace "Borealis"
 	IncludeDir["ImGuizmo"] = "Borealis/lib/ImGuizmo"
 	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
+	IncludeDir["Tracy"] = "Borealis/lib/Tracy"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -31,6 +32,7 @@ workspace "Borealis"
 		include "Borealis/lib/ImGui"
 		include "Borealis/lib/yaml-cpp"
 		include "Borealis/lib/assimp"
+		include "Borealis/lib/Tracy"
 	group ""
 
 	project "Borealis"
@@ -75,7 +77,8 @@ workspace "Borealis"
 			"%{IncludeDir.YAML}",
 			"%{IncludeDir.ImGuizmo}",
 			"%{IncludeDir.assimp}",
-			"%{IncludeDir.FMOD}"
+			"%{IncludeDir.FMOD}",
+			"%{IncludeDir.Tracy}"
 		}
 
 		libdirs 
@@ -90,7 +93,8 @@ workspace "Borealis"
 			"ImGui",
 			"yaml-cpp",
 			"opengl32.lib",
-			"Assimp"
+			"Assimp",
+			"Tracy"
 		}
 
 

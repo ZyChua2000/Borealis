@@ -23,6 +23,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <algorithm>
 #include <fstream>
 #include <thread>
+#include <Tracy.hpp>
 namespace Borealis
 {
 	struct ProfileResult
@@ -35,6 +36,7 @@ namespace Borealis
 	struct InstrumentationScope 
 	{
 		std::string mName; // Name of the scope
+		
 	};
 
 	class Instrumentor

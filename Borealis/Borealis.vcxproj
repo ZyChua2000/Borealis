@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,7 +125,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\Tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -637,6 +637,45 @@
     <ClInclude Include="lib\glm\glm\vector_relational.hpp" />
     <ClInclude Include="lib\imGuizmo\imGuizmo.h" />
     <ClInclude Include="lib\stb_image\stb_image.h" />
+    <ClInclude Include="lib\tracy\Tracy.hpp" />
+    <ClInclude Include="lib\tracy\TracyD3D11.hpp" />
+    <ClInclude Include="lib\tracy\TracyD3D12.hpp" />
+    <ClInclude Include="lib\tracy\TracyLua.hpp" />
+    <ClInclude Include="lib\tracy\TracyOpenCL.hpp" />
+    <ClInclude Include="lib\tracy\TracyOpenGL.hpp" />
+    <ClInclude Include="lib\tracy\TracyVulkan.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyArmCpuTable.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyCallstack.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyCpuid.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyDebug.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyDxt1.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyFastVector.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyKCore.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyLock.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyProfiler.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyRingBuffer.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyScoped.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyStringHelpers.hpp" />
+    <ClInclude Include="lib\tracy\client\TracySysPower.hpp" />
+    <ClInclude Include="lib\tracy\client\TracySysTime.hpp" />
+    <ClInclude Include="lib\tracy\client\TracySysTrace.hpp" />
+    <ClInclude Include="lib\tracy\client\TracyThread.hpp" />
+    <ClInclude Include="lib\tracy\client\tracy_rpmalloc.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyAlign.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyAlloc.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyColor.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyForceInline.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyMutex.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyProtocol.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyQueue.hpp" />
+    <ClInclude Include="lib\tracy\common\TracySocket.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyStackFrames.hpp" />
+    <ClInclude Include="lib\tracy\common\TracySystem.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyUwp.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyVersion.hpp" />
+    <ClInclude Include="lib\tracy\common\TracyYield.hpp" />
+    <ClInclude Include="lib\tracy\common\tracy_lz4.hpp" />
+    <ClInclude Include="lib\tracy\common\tracy_lz4hc.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -700,6 +739,9 @@
     </ProjectReference>
     <ProjectReference Include="lib\assimp\Assimp.vcxproj">
       <Project>{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}</Project>
+    </ProjectReference>
+    <ProjectReference Include="lib\Tracy\Tracy.vcxproj">
+      <Project>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
