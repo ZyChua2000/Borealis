@@ -40,54 +40,6 @@
     <Filter Include="lib\FMOD\FMOD">
       <UniqueIdentifier>{C6587815-3219-F44B-FB53-3DC967D33828}</UniqueIdentifier>
     </Filter>
-    <Filter Include="lib\assimp">
-      <UniqueIdentifier>{D85BF82E-C413-3A7C-2D1B-13D819F2D46C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\code">
-      <UniqueIdentifier>{8231CE8A-EEBC-3B4F-F7CD-BE4363D8974F}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\code\AssetLib">
-      <UniqueIdentifier>{28F351AD-1418-A12D-3D63-86BD29E79F4B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\code\AssetLib\AMF">
-      <UniqueIdentifier>{AB2B021E-97E6-F1C9-409E-6A142C383C5A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\code\AssetLib\X3D">
-      <UniqueIdentifier>{268A021E-1245-F2C9-BBFC-6A14A7963C5A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\contrib">
-      <UniqueIdentifier>{D8FBF25B-C4DF-B3B1-2D40-AE0419439E33}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\contrib\clipper">
-      <UniqueIdentifier>{F66C31A2-E27C-DD72-4B36-42913765CC0B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\contrib\pugixml">
-      <UniqueIdentifier>{CD0BBD9F-B91B-6970-22D5-CD8E0E045809}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\contrib\pugixml\src">
-      <UniqueIdentifier>{64E8E30B-500E-AE72-3954-333E2519D33E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\include">
-      <UniqueIdentifier>{4BDBAF26-37BF-707C-A01F-6BCF8C225BFE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\include\assimp">
-      <UniqueIdentifier>{0744CC80-7306-000B-BCB6-8E9728B8D8E8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\samples">
-      <UniqueIdentifier>{1C2BDA0A-080F-9B60-716F-95B35D7285E2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\samples\SimpleTexturedDirectx11">
-      <UniqueIdentifier>{DF03CEA8-CB6B-9476-34D7-A88C205EAB62}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\samples\SimpleTexturedDirectx11\SimpleTexturedDirectx11">
-      <UniqueIdentifier>{A21551AC-8E01-E91B-F777-A86EE382894C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\tools">
-      <UniqueIdentifier>{7832C8E5-642B-E737-8D5D-CCBC79B5C643}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="lib\assimp\tools\assimp_cmd">
-      <UniqueIdentifier>{271C9E45-9329-CC2B-1C10-C816881C98E2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lib\glm">
       <UniqueIdentifier>{8BD44779-F7B3-C614-00CC-51EB6C2A2D76}</UniqueIdentifier>
     </Filter>
@@ -297,69 +249,6 @@
     </ClInclude>
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp">
       <Filter>lib\FMOD\FMOD</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter.hpp">
-      <Filter>lib\assimp\code\AssetLib\AMF</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter_Node.hpp">
-      <Filter>lib\assimp\code\AssetLib\AMF</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DExporter.hpp">
-      <Filter>lib\assimp\code\AssetLib\X3D</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter.hpp">
-      <Filter>lib\assimp\code\AssetLib\X3D</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Macro.hpp">
-      <Filter>lib\assimp\code\AssetLib\X3D</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Node.hpp">
-      <Filter>lib\assimp\code\AssetLib\X3D</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\contrib\clipper\clipper.hpp">
-      <Filter>lib\assimp\contrib\clipper</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugiconfig.hpp">
-      <Filter>lib\assimp\contrib\pugixml\src</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugixml.hpp">
-      <Filter>lib\assimp\contrib\pugixml\src</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\Base64.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\DefaultLogger.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\Exporter.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\IOStream.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\IOSystem.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\Importer.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\LogStream.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\Logger.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\NullLogger.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\include\assimp\ProgressHandler.hpp">
-      <Filter>lib\assimp\include\assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\samples\SimpleTexturedDirectx11\SimpleTexturedDirectx11\SafeRelease.hpp">
-      <Filter>lib\assimp\samples\SimpleTexturedDirectx11\SimpleTexturedDirectx11</Filter>
-    </ClInclude>
-    <ClInclude Include="lib\assimp\tools\assimp_cmd\generic_inserter.hpp">
-      <Filter>lib\assimp\tools\assimp_cmd</Filter>
     </ClInclude>
     <ClInclude Include="lib\glm\glm\common.hpp">
       <Filter>lib\glm\glm</Filter>

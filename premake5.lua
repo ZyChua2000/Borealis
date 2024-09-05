@@ -18,13 +18,14 @@ workspace "Borealis"
 	IncludeDir["GLAD"] = "Borealis/lib/GLAD/include"
 	IncludeDir["ImGui"] = "Borealis/lib/imgui"
 	IncludeDir["GLM"] = "Borealis/lib/glm"
-	IncludeDir["STBI"] = "Borealis/lib/stb_image"
 	IncludeDir["ENTT"] = "Borealis/lib/ENTT/include"
 	IncludeDir["YAML"] = "Borealis/lib/yaml-cpp/include"
 	IncludeDir["ImGuizmo"] = "Borealis/lib/ImGuizmo"
-	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
 	IncludeDir["Tracy"] = "Borealis/lib/tracy"
+	IncludeDir["STBI"] = "Borealis/lib/stb_image"
+
+	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
 
 	group "Dependencies"
@@ -32,8 +33,8 @@ workspace "Borealis"
 		include "Borealis/lib/GLAD"
 		include "Borealis/lib/ImGui"
 		include "Borealis/lib/yaml-cpp"
-		include "Borealis/lib/assimp"
 		include "Borealis/lib/Tracy"
+		include "BorealisEditor/lib/assimp"
 		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
@@ -52,12 +53,12 @@ workspace "Borealis"
 		{
 			"%{prj.name}/**.hpp",
 			"%{prj.name}/src/**.cpp",
-			"%{prj.name}/lib/stb_image/**.h",
-			"%{prj.name}/lib/stb_image/**.cpp",
 			"%{prj.name}/lib/glm/glm/**.hpp",
 			"%{prj.name}/lib/glm/glm/**.inl",
 			"%{prj.name}/lib/imGuizmo/imGuizmo.h",
-			"%{prj.name}/lib/imGuizmo/imGuizmo.cpp"
+			"%{prj.name}/lib/imGuizmo/imGuizmo.cpp",
+			"%{prj.name}/lib/stb_image/**.h",
+			"%{prj.name}/lib/stb_image/**.cpp"
 		}
 
 		defines
@@ -74,13 +75,12 @@ workspace "Borealis"
 			"%{IncludeDir.GLAD}",
 			"%{IncludeDir.ImGui}",
 			"%{IncludeDir.GLM}",
-			"%{IncludeDir.STBI}",
 			"%{IncludeDir.ENTT}",
 			"%{IncludeDir.YAML}",
 			"%{IncludeDir.ImGuizmo}",
-			"%{IncludeDir.assimp}",
 			"%{IncludeDir.FMOD}",
-			"%{IncludeDir.Tracy}"
+			"%{IncludeDir.Tracy}",
+			"%{IncludeDir.STBI}"
 		}
 
 		libdirs 
@@ -95,7 +95,6 @@ workspace "Borealis"
 			"ImGui",
 			"yaml-cpp",
 			"opengl32.lib",
-			"Assimp",
 			"Tracy"
 		}
 
@@ -170,7 +169,8 @@ workspace "Borealis"
 			"%{prj.name}/inc",
 			"%{IncludeDir.ENTT}",
 			"%{IncludeDir.ImGuizmo}",
-			"%{IncludeDir.ImGuiNodeEditor}"
+			"%{IncludeDir.ImGuiNodeEditor}",
+			"%{IncludeDir.assimp}",
 		}
 
 		defines
@@ -181,6 +181,7 @@ workspace "Borealis"
 		links
 		{
 			"Borealis",
+			"Assimp",
 			"ImGuiNodeEditor"
 		}
 

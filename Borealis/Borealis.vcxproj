@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -99,7 +99,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -125,7 +125,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -198,27 +198,6 @@
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter_Node.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DExporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Macro.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Node.hpp" />
-    <ClInclude Include="lib\assimp\contrib\clipper\clipper.hpp" />
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugiconfig.hpp" />
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugixml.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Base64.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\DefaultLogger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Exporter.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\IOStream.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\IOSystem.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Importer.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\LogStream.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Logger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\NullLogger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\ProgressHandler.hpp" />
-    <ClInclude Include="lib\assimp\samples\SimpleTexturedDirectx11\SimpleTexturedDirectx11\SafeRelease.hpp" />
-    <ClInclude Include="lib\assimp\tools\assimp_cmd\generic_inserter.hpp" />
     <ClInclude Include="lib\glm\glm\common.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_features.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_fixes.hpp" />
@@ -736,9 +715,6 @@
     </ProjectReference>
     <ProjectReference Include="lib\yaml-cpp\yaml-cpp.vcxproj">
       <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\assimp\Assimp.vcxproj">
-      <Project>{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}</Project>
     </ProjectReference>
     <ProjectReference Include="lib\Tracy\Tracy.vcxproj">
       <Project>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</Project>
