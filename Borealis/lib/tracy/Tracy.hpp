@@ -1,8 +1,8 @@
 #ifndef __TRACY_HPP__
 #define __TRACY_HPP__
 
-#include "../common/TracyColor.hpp"
-#include "../common/TracySystem.hpp"
+#include "common/TracyColor.hpp"
+#include "common/TracySystem.hpp"
 
 #ifndef TracyFunction
 #  define TracyFunction __FUNCTION__

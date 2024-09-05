@@ -24,7 +24,7 @@ workspace "Borealis"
 	IncludeDir["ImGuizmo"] = "Borealis/lib/ImGuizmo"
 	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
-	IncludeDir["Tracy"] = "Borealis/lib/Tracy"
+	IncludeDir["Tracy"] = "Borealis/lib/tracy"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
