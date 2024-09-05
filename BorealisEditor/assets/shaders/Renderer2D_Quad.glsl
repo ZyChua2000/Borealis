@@ -12,9 +12,9 @@ uniform mat4 u_ViewProjection;
 
 out vec2 v_TexCoord;
 out vec4 v_Color;
-out flat int v_TexIndex;
+flat out int v_TexIndex;
 out float v_TilingFactor;
-out flat int v_EntityID;
+flat out int v_EntityID;
 
 void main()
 {
@@ -33,9 +33,9 @@ layout(location = 1) out int entityIDs;
 
 in vec2 v_TexCoord;
 in vec4 v_Color;
-in flat int v_TexIndex;
+flat in int v_TexIndex;
 in float v_TilingFactor;
-in flat int v_EntityID;
+flat in int v_EntityID;
 			
 uniform sampler2D u_Texture[16];
 
