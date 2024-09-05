@@ -24,6 +24,7 @@ workspace "Borealis"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
 	IncludeDir["Tracy"] = "Borealis/lib/tracy"
 	IncludeDir["STBI"] = "Borealis/lib/stb_image"
+	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
@@ -34,6 +35,7 @@ workspace "Borealis"
 		include "Borealis/lib/ImGui"
 		include "Borealis/lib/yaml-cpp"
 		include "Borealis/lib/Tracy"
+		include "Borealis/lib/JoltPhysics"
 		include "BorealisEditor/lib/assimp"
 		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
@@ -80,7 +82,8 @@ workspace "Borealis"
 			"%{IncludeDir.ImGuizmo}",
 			"%{IncludeDir.FMOD}",
 			"%{IncludeDir.Tracy}",
-			"%{IncludeDir.STBI}"
+			"%{IncludeDir.STBI}",
+			"%{IncludeDir.JoltPhysics}"
 		}
 
 		libdirs 
@@ -95,7 +98,8 @@ workspace "Borealis"
 			"ImGui",
 			"yaml-cpp",
 			"opengl32.lib",
-			"Tracy"
+			"Tracy",
+			"JoltPhysics"
 		}
 
 
