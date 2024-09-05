@@ -228,6 +228,8 @@ namespace Borealis
 		while (pos != std::string::npos)
 		{
 			size_t endOfLine = source.find("\r\n", pos);
+			if (endOfLine == std::string::npos)
+				endOfLine = source.find("\n");
 			BOREALIS_CORE_ASSERT(endOfLine != std::string::npos, "Syntax Error when Preprocessing shader");
 			
 			size_t begin = pos + typeStrLen + 1;
@@ -235,6 +237,8 @@ namespace Borealis
 			BOREALIS_CORE_ASSERT(ShaderTypeFromString(type) != 0, "Invalid Shader type specified");
 			
 			size_t nextLinePos = source.find_first_not_of("\r\n", endOfLine);
+			if (nextLinePos == std::string::npos)
+				nextLinePos = source.find_first_not_of("\n", nextLinePos);
 			pos = source.find(typeStr, nextLinePos);
 			result[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
 		}
