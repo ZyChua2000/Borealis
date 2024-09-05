@@ -92,8 +92,8 @@
       <AdditionalOptions>/NODEFAULTLIB:library %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\Borealis\lib\FMOD\bin\fmodL.dll $(TargetDir)
-copy /B /Y ..\Borealis\lib\FMOD\bin\fmodstudioL.dll $(TargetDir)</Command>
+      <Command>copy /B /Y ..\Borealis\lib\FMOD\dll\fmodL.dll $(TargetDir)
+copy /B /Y ..\Borealis\lib\FMOD\dll\fmodstudioL.dll $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -118,8 +118,8 @@ copy /B /Y ..\Borealis\lib\FMOD\bin\fmodstudioL.dll $(TargetDir)</Command>
       <AdditionalOptions>/NODEFAULTLIB:library %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\Borealis\lib\FMOD\bin\fmod.dll $(TargetDir)
-copy /B /Y ..\Borealis\lib\FMOD\bin\fmodstudio.dll $(TargetDir)</Command>
+      <Command>copy /B /Y ..\Borealis\lib\FMOD\dll\fmod.dll $(TargetDir)
+copy /B /Y ..\Borealis\lib\FMOD\dll\fmodstudio.dll $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -144,8 +144,8 @@ copy /B /Y ..\Borealis\lib\FMOD\bin\fmodstudio.dll $(TargetDir)</Command>
       <AdditionalOptions>/NODEFAULTLIB:library %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
-      <Command>copy /B /Y ..\Borealis\lib\FMOD\bin\fmod.dll $(TargetDir)
-copy /B /Y ..\Borealis\lib\FMOD\bin\fmodstudio.dll $(TargetDir)</Command>
+      <Command>copy /B /Y ..\Borealis\lib\FMOD\dll\fmod.dll $(TargetDir)
+copy /B /Y ..\Borealis\lib\FMOD\dll\fmodstudio.dll $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
