@@ -186,8 +186,8 @@ workspace "Borealis"
 			symbols "On"
 			runtime "Debug"
 			postbuildcommands {
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" $(TargetDir)",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudioL.dll\" $(TargetDir)"
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudioL.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Release"
@@ -195,8 +195,8 @@ workspace "Borealis"
 			optimize "On"
 			runtime "Release"
 			postbuildcommands {
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" $(TargetDir)",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" $(TargetDir)"
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Distribution"
@@ -204,8 +204,8 @@ workspace "Borealis"
 			optimize "On"
 			runtime "Release"
 			postbuildcommands {
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" $(TargetDir)",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" $(TargetDir)"
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
 			 }
 
 			project "Sandbox"
