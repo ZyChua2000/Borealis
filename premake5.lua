@@ -25,6 +25,7 @@ workspace "Borealis"
 	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
 	IncludeDir["Tracy"] = "Borealis/lib/tracy"
+	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -33,6 +34,7 @@ workspace "Borealis"
 		include "Borealis/lib/yaml-cpp"
 		include "Borealis/lib/assimp"
 		include "Borealis/lib/Tracy"
+		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
 	project "Borealis"
@@ -167,7 +169,8 @@ workspace "Borealis"
 			"%{IncludeDir.ImGui}",
 			"%{prj.name}/inc",
 			"%{IncludeDir.ENTT}",
-			"%{IncludeDir.ImGuizmo}"
+			"%{IncludeDir.ImGuizmo}",
+			"%{IncludeDir.ImGuiNodeEditor}"
 		}
 
 		defines
@@ -177,7 +180,8 @@ workspace "Borealis"
 
 		links
 		{
-			"Borealis"
+			"Borealis",
+			"ImGuiNodeEditor"
 		}
 
 		linkoptions
