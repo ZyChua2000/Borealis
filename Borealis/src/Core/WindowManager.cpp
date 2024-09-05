@@ -126,6 +126,12 @@ namespace Borealis
 
 		{
 			PROFILE_SCOPE("glfwCreateWindow");
+
+			//lock the version of opengl to 4.1
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 			mWindow = (void*)(glfwCreateWindow((int)mData.mWidth, (int)mData.mHeight, mData.mTitle, nullptr, nullptr));
 			mContext = new OpenGLContext((GLFWwindow*)mWindow);
 			mContext->Init();

@@ -15,7 +15,7 @@ out vec2 v_LocalPosition;
 out vec4 v_Color;
 out float v_Thickness;
 out float v_Fade;
-out flat int v_EntityID;
+flat out int v_EntityID;
 
 void main()
 {
@@ -36,7 +36,7 @@ in vec2 v_LocalPosition;
 in vec4 v_Color;
 in float v_Thickness;
 in float v_Fade;
-in flat int v_EntityID;
+flat in int v_EntityID;
 			
 void main()
 {
