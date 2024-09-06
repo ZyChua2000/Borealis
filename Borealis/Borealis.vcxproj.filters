@@ -25,6 +25,9 @@
     <Filter Include="inc\Scene">
       <UniqueIdentifier>{7C48EE75-E8B2-A2EC-31F1-53929D9A8041}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Scripting">
+      <UniqueIdentifier>{E1E7A9BA-4DA8-25F1-16E3-6E6E82626ACD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="lib">
       <UniqueIdentifier>{3C8C880B-A895-887C-3111-9F7C9D19947C}</UniqueIdentifier>
     </Filter>
@@ -93,6 +96,9 @@
     </Filter>
     <Filter Include="src\Scene">
       <UniqueIdentifier>{0A06D2B3-7670-862A-BFAE-37D02B58647F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scripting">
+      <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -240,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="inc\Scene\Serialiser.hpp">
       <Filter>inc\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptingSystem.hpp">
+      <Filter>inc\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="lib\ENTT\include\entt.hpp">
       <Filter>lib\ENTT\include</Filter>
@@ -1745,6 +1754,9 @@
     </ClCompile>
     <ClCompile Include="src\Scene\Serialiser.cpp">
       <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptingSystem.cpp">
+      <Filter>src\Scripting</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/ApplicationManager.hpp>
 #include <Core/InputSystem.hpp>
 #include <Graphics/Renderer.hpp>
+#include <Scripting/ScriptingSystem.hpp>
 
 namespace Borealis
 {
@@ -41,6 +42,8 @@ namespace Borealis
 		PushOverlay(mImGuiLayer);
 
 		Renderer::Init();
+
+		ScriptingSystem::Init();
 	}
 
 	/*!***********************************************************************
@@ -53,6 +56,7 @@ namespace Borealis
 
 		Renderer::Free();
 		mLayerSystem.Clear();
+		ScriptingSystem::Free();
 		delete mWindowManager;
 		glfwTerminate(); // Terminate after system shuts down
 

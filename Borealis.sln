@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BorealisEditor", "BorealisE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Borealis", "Borealis\Borealis.vcxproj", "{765073D6-621D-CEE1-8B36-BC8977620370}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BorealisScriptCore", "BorealisScriptCore\BorealisScriptCore.csproj", "{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dependencies", "Dependencies", "{53E47842-3FC8-3998-A828-34EB942B241A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Assimp", "BorealisEditor\lib\assimp\Assimp.vcxproj", "{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}"
@@ -44,6 +46,12 @@ Global
 		{765073D6-621D-CEE1-8B36-BC8977620370}.Distribution|x64.Build.0 = Distribution|x64
 		{765073D6-621D-CEE1-8B36-BC8977620370}.Release|x64.ActiveCfg = Release|x64
 		{765073D6-621D-CEE1-8B36-BC8977620370}.Release|x64.Build.0 = Release|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Debug|x64.ActiveCfg = Debug|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Debug|x64.Build.0 = Debug|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Distribution|x64.ActiveCfg = Distribution|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Distribution|x64.Build.0 = Distribution|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Release|x64.ActiveCfg = Release|x64
+		{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}.Release|x64.Build.0 = Release|x64
 		{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}.Debug|x64.ActiveCfg = Debug|x64
 		{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}.Debug|x64.Build.0 = Debug|x64
 		{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}.Distribution|x64.ActiveCfg = Distribution|x64

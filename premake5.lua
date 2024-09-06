@@ -25,9 +25,22 @@ workspace "Borealis"
 	IncludeDir["Tracy"] = "Borealis/lib/tracy"
 	IncludeDir["STBI"] = "Borealis/lib/stb_image"
 	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
+	IncludeDir["Mono"] = "Borealis/lib/mono/include"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
+
+	LibraryDir = {}
+	LibraryDir["FMOD"] = "lib/FMOD/lib"
+	LibraryDir["Mono_Debug"] = "lib/mono/lib/Deb"
+	LibraryDir["Mono_Release"] = "lib/mono/lib/Rel"
+
+	Library = {}
+	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
+	Library["FMOD_Release"] = "%{LibraryDir.FMOD}/fmod_vc.lib"
+	Library["Mono_Debug"] = "%{LibraryDir.Mono_Debug}/mono-2.0-sgen.lib"
+	Library["Mono_Release"] = "%{LibraryDir.Mono_Release}/mono-2.0-sgen.lib"
+
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -83,13 +96,10 @@ workspace "Borealis"
 			"%{IncludeDir.FMOD}",
 			"%{IncludeDir.Tracy}",
 			"%{IncludeDir.STBI}",
-			"%{IncludeDir.JoltPhysics}"
+			"%{IncludeDir.JoltPhysics}",
+			"%{IncludeDir.Mono}"
 		}
 
-		libdirs 
-		{
-			"Borealis/lib/FMOD/lib"
-		}
 
 		links
 		{
@@ -122,8 +132,8 @@ workspace "Borealis"
 			runtime "Debug"
 			links
 			{
-				"fmodL_vc.lib",
-				"fmodstudioL_vc.lib"
+				"%{Library.FMOD_Debug}",
+				"%{Library.Mono_Debug}"
 			}
 
 		filter "configurations:Release"
@@ -132,8 +142,8 @@ workspace "Borealis"
 			runtime "Release"
 			links
 			{
-				"fmod_vc.lib",
-				"fmodstudio_vc.lib"
+				"%{Library.FMOD_Release}",
+				"%{Library.Mono_Release}"
 			}
 
 		filter "configurations:Distribution"
@@ -142,8 +152,8 @@ workspace "Borealis"
 			runtime "Release"
 			links
 			{
-				"fmod_vc.lib",
-				"fmodstudio_vc.lib"
+				"%{Library.FMOD_Release}",
+				"%{Library.Mono_Release}"
 			}
 
 	project "BorealisEditor"
@@ -191,7 +201,7 @@ workspace "Borealis"
 
 		linkoptions
 		{
-			"/NODEFAULTLIB:library"
+			"/NODEFAULTLIB:LIBCMTD"
 		}
 
 		filter "configurations:Debug"
@@ -200,7 +210,8 @@ workspace "Borealis"
 			runtime "Debug"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudioL.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Release"
@@ -209,7 +220,8 @@ workspace "Borealis"
 			runtime "Release"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Distribution"
@@ -218,7 +230,8 @@ workspace "Borealis"
 			runtime "Release"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 			project "Sandbox"
@@ -261,7 +274,7 @@ workspace "Borealis"
 			
 			linkoptions
 			{
-				"/NODEFAULTLIB:library"
+				"/NODEFAULTLIB:LIBCMTD"
 			}
 			
 			filter "configurations:Debug"
@@ -278,3 +291,30 @@ workspace "Borealis"
 				defines "_DIST"
 				optimize "On"
 				runtime "Release"
+
+	project "BorealisScriptCore"
+		location "BorealisScriptCore"
+		kind "SharedLib"
+		language "C#"
+		dotnetframework "4.7.2"
+
+		targetdir("BorealisEditor/Resources/Scripts")
+		objdir ("BorealisEditor/Resources/Scripts/Intermediate")
+
+		files
+		{
+			"%{prj.name}/src/**.cs",
+			"%{prj.name}/props/**.cs"
+		}
+
+		filter "configurations:Debug"
+			optimize "Off"
+			symbols "Default"
+
+		filter "configurations:Release"
+			optimize "On"
+			symbols "Default"
+
+		filter "configurations:Distribution"
+			optimize "Full"
+			symbols "Off"

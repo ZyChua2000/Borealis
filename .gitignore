@@ -400,4 +400,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
 !BorealisEditor/lib/assimp/code/AssetLib/Obj/
+!Borealis/lib/mono/lib/
