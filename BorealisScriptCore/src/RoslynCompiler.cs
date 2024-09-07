@@ -11,6 +11,14 @@ public class RoslynCompiler
     {
     }
 
+    /*!***********************************************************************
+        \brief
+            Compiles a C# code into an assembly.
+        \param code
+            The C# code to compile.
+        \param assemblyName
+            The name of the assembly to create.
+    *************************************************************************/
     public byte[] CompileCode(string code, string assemblyName)
     {
         var syntaxTree = CSharpSyntaxTree.ParseText(code);
