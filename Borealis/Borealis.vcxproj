@@ -193,6 +193,7 @@
     <ClInclude Include="inc\Scene\ScriptEntity.hpp" />
     <ClInclude Include="inc\Scene\Serialiser.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingUtils.hpp" />
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp" />
@@ -701,6 +702,7 @@
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Scene\Serialiser.cpp" />
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="lib\GLFW\GLFW.vcxproj">

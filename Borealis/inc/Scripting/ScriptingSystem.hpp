@@ -4,7 +4,7 @@
 \author 	Chua Zheng Yang
 \par    	email: c.zhengyang\@digipen.edu
 \date   	September 06, 2024
-\brief		Declares the class for the Scripting System
+\brief		Declares the class for the Scripting System: Singleton Class
 
 Copyright (C) 2024 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
@@ -21,6 +21,7 @@ namespace Borealis
 	public:
 		static void Init();
 		static void Free();
+
 	private:
 		static void InitMono();
 		static void FreeMono();

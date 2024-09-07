@@ -250,6 +250,9 @@
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp">
       <Filter>inc\Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptingUtils.hpp">
+      <Filter>inc\Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="lib\ENTT\include\entt.hpp">
       <Filter>lib\ENTT\include</Filter>
     </ClInclude>
@@ -1756,6 +1759,9 @@
       <Filter>src\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp">
+      <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
   </ItemGroup>

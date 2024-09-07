@@ -298,13 +298,26 @@ workspace "Borealis"
 		language "C#"
 		dotnetframework "4.7.2"
 
-		targetdir("BorealisEditor/Resources/Scripts")
-		objdir ("BorealisEditor/Resources/Scripts/Intermediate")
+		targetdir("BorealisEditor/Resources/Scripts/Core")
+		objdir ("BorealisEditor/Resources/Scripts/Core/Intermediate")
 
 		files
 		{
 			"%{prj.name}/src/**.cs",
 			"%{prj.name}/props/**.cs"
+		}
+
+		links
+		{
+			"packages/Microsoft.CodeAnalysis.Common.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis",
+			"packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
+			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
+			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
+			"System.Buffers",
+			"System.Collections.Immutable",
+			"System.Memory",
+			"System.Reflection.Metadata",
+			"System.Runtime.CompilerServices.Unsafe"
 		}
 
 		filter "configurations:Debug"
