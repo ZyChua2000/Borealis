@@ -201,7 +201,6 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
 # except build/, which is used as an MSBuild target.
 !**/[Pp]ackages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
@@ -400,4 +399,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-!Borealis/lib/assimp/code/AssetLib/Obj/
+
+!BorealisEditor/lib/assimp/code/AssetLib/Obj/
+!Borealis/lib/mono/lib/

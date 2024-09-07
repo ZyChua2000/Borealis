@@ -18,21 +18,40 @@ workspace "Borealis"
 	IncludeDir["GLAD"] = "Borealis/lib/GLAD/include"
 	IncludeDir["ImGui"] = "Borealis/lib/imgui"
 	IncludeDir["GLM"] = "Borealis/lib/glm"
-	IncludeDir["STBI"] = "Borealis/lib/stb_image"
 	IncludeDir["ENTT"] = "Borealis/lib/ENTT/include"
 	IncludeDir["YAML"] = "Borealis/lib/yaml-cpp/include"
 	IncludeDir["ImGuizmo"] = "Borealis/lib/ImGuizmo"
-	IncludeDir["assimp"] = "Borealis/lib/assimp/include"
 	IncludeDir["FMOD"] = "Borealis/lib/FMOD"
 	IncludeDir["Tracy"] = "Borealis/lib/tracy"
+	IncludeDir["STBI"] = "Borealis/lib/stb_image"
+	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
+	IncludeDir["Mono"] = "Borealis/lib/mono/include"
+	IncludeDir["xproperty"] = "Borealis/lib/xproperty/include"
+
+	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
+	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
+
+	LibraryDir = {}
+	LibraryDir["FMOD"] = "lib/FMOD/lib"
+	LibraryDir["Mono_Debug"] = "lib/mono/lib/Deb"
+	LibraryDir["Mono_Release"] = "lib/mono/lib/Rel"
+
+	Library = {}
+	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
+	Library["FMOD_Release"] = "%{LibraryDir.FMOD}/fmod_vc.lib"
+	Library["Mono_Debug"] = "%{LibraryDir.Mono_Debug}/mono-2.0-sgen.lib"
+	Library["Mono_Release"] = "%{LibraryDir.Mono_Release}/mono-2.0-sgen.lib"
+
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
 		include "Borealis/lib/GLAD"
 		include "Borealis/lib/ImGui"
 		include "Borealis/lib/yaml-cpp"
-		include "Borealis/lib/assimp"
 		include "Borealis/lib/Tracy"
+		include "Borealis/lib/JoltPhysics"
+		include "BorealisEditor/lib/assimp"
+		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
 	project "Borealis"
@@ -50,12 +69,12 @@ workspace "Borealis"
 		{
 			"%{prj.name}/**.hpp",
 			"%{prj.name}/src/**.cpp",
-			"%{prj.name}/lib/stb_image/**.h",
-			"%{prj.name}/lib/stb_image/**.cpp",
 			"%{prj.name}/lib/glm/glm/**.hpp",
 			"%{prj.name}/lib/glm/glm/**.inl",
 			"%{prj.name}/lib/imGuizmo/imGuizmo.h",
-			"%{prj.name}/lib/imGuizmo/imGuizmo.cpp"
+			"%{prj.name}/lib/imGuizmo/imGuizmo.cpp",
+			"%{prj.name}/lib/stb_image/**.h",
+			"%{prj.name}/lib/stb_image/**.cpp"
 		}
 
 		defines
@@ -72,19 +91,17 @@ workspace "Borealis"
 			"%{IncludeDir.GLAD}",
 			"%{IncludeDir.ImGui}",
 			"%{IncludeDir.GLM}",
-			"%{IncludeDir.STBI}",
 			"%{IncludeDir.ENTT}",
 			"%{IncludeDir.YAML}",
 			"%{IncludeDir.ImGuizmo}",
-			"%{IncludeDir.assimp}",
 			"%{IncludeDir.FMOD}",
-			"%{IncludeDir.Tracy}"
+			"%{IncludeDir.Tracy}",
+			"%{IncludeDir.STBI}",
+			"%{IncludeDir.JoltPhysics}",
+			"%{IncludeDir.Mono}",
+			"%{IncludeDir.xproperty}"
 		}
 
-		libdirs 
-		{
-			"Borealis/lib/FMOD/lib"
-		}
 
 		links
 		{
@@ -93,8 +110,8 @@ workspace "Borealis"
 			"ImGui",
 			"yaml-cpp",
 			"opengl32.lib",
-			"Assimp",
-			"Tracy"
+			"Tracy",
+			"JoltPhysics"
 		}
 
 
@@ -117,8 +134,8 @@ workspace "Borealis"
 			runtime "Debug"
 			links
 			{
-				"fmodL_vc.lib",
-				"fmodstudioL_vc.lib"
+				"%{Library.FMOD_Debug}",
+				"%{Library.Mono_Debug}"
 			}
 
 		filter "configurations:Release"
@@ -127,8 +144,8 @@ workspace "Borealis"
 			runtime "Release"
 			links
 			{
-				"fmod_vc.lib",
-				"fmodstudio_vc.lib"
+				"%{Library.FMOD_Release}",
+				"%{Library.Mono_Release}"
 			}
 
 		filter "configurations:Distribution"
@@ -137,8 +154,8 @@ workspace "Borealis"
 			runtime "Release"
 			links
 			{
-				"fmod_vc.lib",
-				"fmodstudio_vc.lib"
+				"%{Library.FMOD_Release}",
+				"%{Library.Mono_Release}"
 			}
 
 	project "BorealisEditor"
@@ -167,7 +184,9 @@ workspace "Borealis"
 			"%{IncludeDir.ImGui}",
 			"%{prj.name}/inc",
 			"%{IncludeDir.ENTT}",
-			"%{IncludeDir.ImGuizmo}"
+			"%{IncludeDir.ImGuizmo}",
+			"%{IncludeDir.ImGuiNodeEditor}",
+			"%{IncludeDir.assimp}",
 		}
 
 		defines
@@ -177,12 +196,14 @@ workspace "Borealis"
 
 		links
 		{
-			"Borealis"
+			"Borealis",
+			"Assimp",
+			"ImGuiNodeEditor"
 		}
 
 		linkoptions
 		{
-			"/NODEFAULTLIB:library"
+			"/NODEFAULTLIB:LIBCMTD"
 		}
 
 		filter "configurations:Debug"
@@ -191,7 +212,8 @@ workspace "Borealis"
 			runtime "Debug"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudioL.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Release"
@@ -200,7 +222,8 @@ workspace "Borealis"
 			runtime "Release"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Distribution"
@@ -209,7 +232,8 @@ workspace "Borealis"
 			runtime "Release"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodstudio.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 			project "Sandbox"
@@ -252,7 +276,7 @@ workspace "Borealis"
 			
 			linkoptions
 			{
-				"/NODEFAULTLIB:library"
+				"/NODEFAULTLIB:LIBCMTD"
 			}
 			
 			filter "configurations:Debug"
@@ -269,3 +293,43 @@ workspace "Borealis"
 				defines "_DIST"
 				optimize "On"
 				runtime "Release"
+
+	project "BorealisScriptCore"
+		location "BorealisScriptCore"
+		kind "SharedLib"
+		language "C#"
+		dotnetframework "4.7.2"
+
+		targetdir("BorealisEditor/Resources/Scripts/Core")
+		objdir ("BorealisEditor/Resources/Scripts/Core/Intermediate")
+
+		files
+		{
+			"%{prj.name}/src/**.cs",
+			"%{prj.name}/props/**.cs"
+		}
+
+		links
+		{
+			"packages/Microsoft.CodeAnalysis.Common.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis",
+			"packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
+			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
+			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
+			"System.Buffers",
+			"System.Collections.Immutable",
+			"System.Memory",
+			"System.Reflection.Metadata",
+			"System.Runtime.CompilerServices.Unsafe"
+		}
+
+		filter "configurations:Debug"
+			optimize "Off"
+			symbols "Default"
+
+		filter "configurations:Release"
+			optimize "On"
+			symbols "Default"
+
+		filter "configurations:Distribution"
+			optimize "Full"
+			symbols "Off"

@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -89,8 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\FMOD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -99,7 +98,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -115,8 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\FMOD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -125,7 +123,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\stb_image;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\assimp\include;lib\FMOD;lib\tracy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -141,8 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;fmod_vc.lib;fmodstudio_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>lib\FMOD\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -195,30 +192,11 @@
     <ClInclude Include="inc\Scene\SceneCamera.hpp" />
     <ClInclude Include="inc\Scene\ScriptEntity.hpp" />
     <ClInclude Include="inc\Scene\Serialiser.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingSystem.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingUtils.hpp" />
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\AMF\AMFImporter_Node.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DExporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Macro.hpp" />
-    <ClInclude Include="lib\assimp\code\AssetLib\X3D\X3DImporter_Node.hpp" />
-    <ClInclude Include="lib\assimp\contrib\clipper\clipper.hpp" />
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugiconfig.hpp" />
-    <ClInclude Include="lib\assimp\contrib\pugixml\src\pugixml.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Base64.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\DefaultLogger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Exporter.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\IOStream.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\IOSystem.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Importer.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\LogStream.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\Logger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\NullLogger.hpp" />
-    <ClInclude Include="lib\assimp\include\assimp\ProgressHandler.hpp" />
-    <ClInclude Include="lib\assimp\samples\SimpleTexturedDirectx11\SimpleTexturedDirectx11\SafeRelease.hpp" />
-    <ClInclude Include="lib\assimp\tools\assimp_cmd\generic_inserter.hpp" />
     <ClInclude Include="lib\glm\glm\common.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_features.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_fixes.hpp" />
@@ -676,6 +654,10 @@
     <ClInclude Include="lib\tracy\common\TracyYield.hpp" />
     <ClInclude Include="lib\tracy\common\tracy_lz4.hpp" />
     <ClInclude Include="lib\tracy\common\tracy_lz4hc.hpp" />
+    <ClInclude Include="lib\xproperty\include\xproperty\xjson.hpp" />
+    <ClInclude Include="lib\xproperty\include\xproperty\xobserved.hpp" />
+    <ClInclude Include="lib\xproperty\include\xproperty\xproperty.hpp" />
+    <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -723,6 +705,8 @@
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Scene\Serialiser.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="lib\GLFW\GLFW.vcxproj">
@@ -737,11 +721,11 @@
     <ProjectReference Include="lib\yaml-cpp\yaml-cpp.vcxproj">
       <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
-    <ProjectReference Include="lib\assimp\Assimp.vcxproj">
-      <Project>{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}</Project>
-    </ProjectReference>
     <ProjectReference Include="lib\Tracy\Tracy.vcxproj">
       <Project>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="lib\JoltPhysics\JoltPhysics.vcxproj">
+      <Project>{812AB974-EDDF-316A-76D4-2B41E288286E}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

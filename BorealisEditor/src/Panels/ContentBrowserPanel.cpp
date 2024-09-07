@@ -15,10 +15,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 
-
 namespace Borealis
 {
-
 	static std::string sAssetsDir = "assets";
 
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir(sAssetsDir)
