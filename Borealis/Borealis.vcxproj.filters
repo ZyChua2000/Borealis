@@ -76,6 +76,15 @@
     <Filter Include="lib\tracy\common">
       <UniqueIdentifier>{E6C34FFF-D2BC-6E51-FBEE-53D6E7464E5D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\xproperty">
+      <UniqueIdentifier>{0882F411-7442-7048-3D7D-B9C5A9FCB424}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\xproperty\include">
+      <UniqueIdentifier>{7B31C795-E79D-8290-B091-1AEE1CBDA4F8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\xproperty\include\xproperty">
+      <UniqueIdentifier>{07025694-73E5-64D4-7CE8-9210E84A2B25}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
@@ -1632,6 +1641,18 @@
     </ClInclude>
     <ClInclude Include="lib\tracy\common\tracy_lz4hc.hpp">
       <Filter>lib\tracy\common</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\xproperty\include\xproperty\xjson.hpp">
+      <Filter>lib\xproperty\include\xproperty</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\xproperty\include\xproperty\xobserved.hpp">
+      <Filter>lib\xproperty\include\xproperty</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\xproperty\include\xproperty\xproperty.hpp">
+      <Filter>lib\xproperty\include\xproperty</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
+      <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
