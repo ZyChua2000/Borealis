@@ -53,7 +53,7 @@ namespace Borealis
 		outStream << out.c_str();
 		outStream.close();
 
-		mProjectPath = path;
+		mProjectPath = path + "\\" + name;
 		mProjectName = name;
 	}
 	void Project::SetProjectPath(std::string path)

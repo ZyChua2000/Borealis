@@ -776,6 +776,9 @@ namespace Borealis {
 			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 
+			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+			CBPanel.SetCurrDir(assetsPath);
+
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
 		}
