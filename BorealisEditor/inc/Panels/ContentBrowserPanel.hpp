@@ -27,9 +27,11 @@ namespace Borealis
 	public:
 		ContentBrowserPanel();
 		void ImGuiRender();
+		void SetCurrDir(std::string path);
 
 	private:
 		 std::filesystem::path mCurrDir;
+		 std::string mAssetsDir;
 		 int mThumbnailSize = 256;
 		 int mPadding = 2;
 		 const int mMinThumbnailSize = 62;

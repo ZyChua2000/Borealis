@@ -180,6 +180,7 @@ workspace "Borealis"
 			"Borealis",
 			"Borealis/inc",
 			"Borealis/lib/spdlog/include",
+			"%{IncludeDir.YAML}",
 			"%{IncludeDir.GLM}",
 			"%{IncludeDir.ImGui}",
 			"%{prj.name}/inc",
@@ -192,12 +193,14 @@ workspace "Borealis"
 		defines
 		{
 			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+			"YAML_CPP_STATIC_DEFINE"
 		}
 
 		links
 		{
 			"Borealis",
 			"Assimp",
+			"yaml-cpp",
 			"ImGuiNodeEditor"
 		}
 
