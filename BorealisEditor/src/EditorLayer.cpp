@@ -20,6 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiLayer.hpp>
 #include <Scene/Serialiser.hpp>	
 #include <EditorLayer.hpp>
+#include <Project/Project.hpp>
 
 
 namespace Borealis {
@@ -212,6 +213,15 @@ namespace Borealis {
 						SaveScene();
 					}
 
+					if (ImGui::MenuItem("New Project"))
+					{
+						NewProject();
+					}
+
+					if (ImGui::MenuItem("Open Project"))
+					{
+						LoadProject();
+					}
 					
 
 					if (ImGui::MenuItem("Quit", "Ctrl+Q")) { ApplicationManager::Get().Close(); }
@@ -737,6 +747,39 @@ namespace Borealis {
 	void EditorLayer::SceneResume()
 	{
 		mSceneState = SceneState::Play;
+	}
+
+	void EditorLayer::LoadProject()
+	{
+		std::string filepath = FileDialogs::OpenFile("Borealis Project File (*.brproj)\0*.brproj\0");
+		if (!filepath.empty())
+		{
+			Project::SetProjectPath(filepath.c_str());
+			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+			CBPanel.SetCurrDir(assetsPath);
+
+			// Clear Scenes in Scene Manager
+			// Clear Assets in Assets Manager
+			// Load Scenes in Assets Manager
+			// Load Assets in Assets Manager
+		}
+	}
+
+	void EditorLayer::NewProject()
+	{
+		std::string filepath = FileDialogs::SaveFile("Folder");
+		if (!filepath.empty())
+		{
+			// extract last part of the path
+			std::string projectName = filepath.substr(filepath.find_last_of("/\\") + 1);
+			// exclude project name from file path
+			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
+			Project::CreateProject(projectName.c_str(), filepath.c_str());
+
+			// Clear Scenes in Scene Manager
+			// Clear Assets in Assets Manager
+		}
+	
 	}
 
 	void EditorLayer::UIToolbar()

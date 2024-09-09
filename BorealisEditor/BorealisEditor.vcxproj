@@ -78,8 +78,8 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -101,8 +101,8 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -128,8 +128,8 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -155,12 +155,14 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
+    <ClInclude Include="inc\Project\Project.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="src\Project\Project.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Borealis\Borealis.vcxproj">
@@ -168,6 +170,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     </ProjectReference>
     <ProjectReference Include="lib\assimp\Assimp.vcxproj">
       <Project>{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Borealis\lib\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>

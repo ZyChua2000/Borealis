@@ -46,6 +46,9 @@ namespace Borealis {
 		void ScenePause();
 		void SceneResume();
 
+		void LoadProject();
+		void NewProject();
+
 		void UIToolbar();
 
 

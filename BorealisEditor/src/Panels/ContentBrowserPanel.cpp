@@ -17,11 +17,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
-	static std::string sAssetsDir = "assets";
-
-	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir(sAssetsDir)
+	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
 		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
+		mAssetsDir = "assets";
 	}
 
 	void ContentBrowserPanel::ImGuiRender() 
@@ -35,7 +34,7 @@ namespace Borealis
 		// Begin the upper scrollable section
 
 
-		if (mCurrDir != std::filesystem::path(sAssetsDir))
+		if (mCurrDir != std::filesystem::path(mAssetsDir))
 		{
 			if (ImGui::Button("<-"))
 			{
@@ -115,7 +114,7 @@ namespace Borealis
 			}
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, sAssetsDir);
+				auto relativePath = std::filesystem::relative(path, mAssetsDir);
 				std::string itemPath = relativePath.string();
 				const char* itemPathcStr = itemPath.c_str();
 
@@ -173,5 +172,10 @@ namespace Borealis
 			mPadding = mThumbnailSize/10;
 		}
 		ImGui::End();
+	}
+	void ContentBrowserPanel::SetCurrDir(std::string path)
+	{
+		mCurrDir = std::filesystem::path(path);
+		mAssetsDir = path;
 	}
 }
