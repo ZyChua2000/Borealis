@@ -1654,6 +1654,11 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Scripting\MonoBehaviour.hpp" />
+    <ClInclude Include="inc\Scripting\Behaviour.hpp" />
+    <ClInclude Include="inc\Scripting\Object.hpp" />
+    <ClInclude Include="inc\Scripting\Component.hpp" />
+    <ClInclude Include="inc\Scripting\GameObject.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">

@@ -22,16 +22,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Mesh.hpp>
 #include <Graphics/Material.hpp>
 #include <Core/UUID.hpp>
+#include <Scripting/Component.hpp>
 namespace Borealis
 {
-	struct IDComponent
+	struct IDComponent : public Component
 	{
 		UUID ID;
 		IDComponent() = default;
 		IDComponent(const IDComponent&) = default;
 		IDComponent(uint64_t uuid) : ID(uuid) {}
 	};
-	struct TagComponent
+	struct TagComponent : public Component
 	{
 		std::string Tag;
 
@@ -40,7 +41,7 @@ namespace Borealis
 		TagComponent(const std::string& tag)
 			: Tag(tag) {}
 	};
-	struct TransformComponent
+	struct TransformComponent : public Component
 	{
 		glm::vec3 Translate { 0.0f, 0.0f ,0.0f };
 		glm::vec3 Rotation{ 0.0f, 0.0f ,0.0f };
@@ -62,7 +63,7 @@ namespace Borealis
 		operator glm::mat4() { return GetTransform(); }
 	};
 
-	struct SpriteRendererComponent
+	struct SpriteRendererComponent : public Component
 	{
 		glm::vec4 Colour {1.0f,1.0f,1.0f,1.0f};
 		Ref<Texture2D> Texture;
@@ -74,7 +75,7 @@ namespace Borealis
 			: Colour(colour) {}
 	};
 
-	struct CircleRendererComponent
+	struct CircleRendererComponent : public Component
 	{
 		glm::vec4 Colour{ 1.0f,1.0f,1.0f,1.0f };
 		float thickness = 1.0;
@@ -86,7 +87,7 @@ namespace Borealis
 			: Colour(colour), thickness(thickness), fade(fade) {}
 	};
 
-	struct CameraComponent
+	struct CameraComponent : public Component
 	{
 		SceneCamera Camera;
 		bool Primary = false;
@@ -243,6 +244,7 @@ namespace Borealis
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
 	};
+
 
 }
 

@@ -1,10 +1,7 @@
 // File: RoslynCompiler.cs
-using System;
 using System.IO;
-using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-
 public class RoslynCompiler
 {
     public RoslynCompiler()

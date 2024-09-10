@@ -18,10 +18,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <mono/metadata/assembly.h>
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptingUtils.hpp>
+#include <Scripting/MonoBehaviour.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Scene/SceneManager.hpp>
 
 namespace Borealis
 {
+	 Ref<Scene> SceneManager::mActiveScene;
+	 std::vector<Ref<Scene>> SceneManager::mScenes;
+	 int Object::mInstanceCounter = 0;
 
 	struct ScriptingSystemData
 	{
@@ -44,6 +49,16 @@ namespace Borealis
 	{
 		FreeMono();
 		delete sData;
+	}
+
+	void ScriptingSystem::Update(float deltaTime)
+	{
+		auto entities = SceneManager::GetActiveScene()->GetRegistry().view<MonoBehaviour>();
+		for (auto entity : entities)
+		{
+			auto& monoBehaviour = entities.get<MonoBehaviour>(entity);
+			// Update via invoke
+		}
 	}
 
 	void ScriptingSystem::InitMono()
