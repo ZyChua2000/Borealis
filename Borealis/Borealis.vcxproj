@@ -58,18 +58,24 @@
     <IntDir>..\build-int\Debug-x86_64\Borealis\</IntDir>
     <TargetName>Borealis</TargetName>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\build\Release-x86_64\Borealis\</OutDir>
     <IntDir>..\build-int\Release-x86_64\Borealis\</IntDir>
     <TargetName>Borealis</TargetName>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <OutDir>..\build\Distribution-x86_64\Borealis\</OutDir>
     <IntDir>..\build-int\Distribution-x86_64\Borealis\</IntDir>
     <TargetName>Borealis</TargetName>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>$(SolutionDir)inc;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>$(SolutionDir)lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -89,7 +95,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\FMOD\lib\fmodstudioL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -114,7 +120,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\FMOD\lib\fmodstudio_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -144,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\Audio\AudioEngine.hpp" />
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />
@@ -664,6 +671,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\Audio\AudioEngine.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
