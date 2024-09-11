@@ -20,6 +20,7 @@ namespace Borealis
     Implementation::Implementation()
     {
         mpSystem = NULL;
+        mnNextChannelId = 1;
         // Create FMOD Core system
         AudioEngine::ErrorCheck(FMOD::System_Create(&mpSystem));
         // Initialize FMOD Core system
