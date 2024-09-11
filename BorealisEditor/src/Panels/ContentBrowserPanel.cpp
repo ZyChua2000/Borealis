@@ -125,6 +125,8 @@ namespace Borealis
 				}
 				else
 				{
+					// convert extension to all lower case
+					std::transform(extension.begin(), extension.end(), extension.begin(), [](unsigned char c) { return std::tolower(c); });
 					if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 					{
 						payloadName = "DragDropImageItem";
@@ -132,6 +134,10 @@ namespace Borealis
 					else if (extension == ".sc")
 					{
 						payloadName = "DragDropSceneItem";
+					}
+					else if (extension == ".fbx" || extension == ".obj")
+					{
+						payloadName = "DragDropMeshItem";
 					}
 				}
 

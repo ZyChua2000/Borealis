@@ -412,6 +412,12 @@ namespace Borealis
 						const char* data = (const char*)payload->Data;
 						std::string imageName = "assets/";
 						imageName += data;
+						component.Mesh = MakeRef<Mesh>(); 
+						// Should reference off asset manager's mesh
+						// imageName += ".meta";
+						// Read UUID from .meta
+						// Example Interface: component.mesh = AssetManager::GetMesh(UUID);
+						//component.mesh->Load(filename);
 					}
 					ImGui::EndDragDropTarget();
 				}
