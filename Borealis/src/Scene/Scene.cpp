@@ -19,6 +19,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/ScriptEntity.hpp>
 #include <Scene/Components.hpp>
 #include <Graphics/Renderer2D.hpp>
+#include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
@@ -93,6 +94,15 @@ namespace Borealis
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
+				MeshRendererComponent meshRenderer;
+				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
+			}
+		}
 
 		Renderer2D::Begin(camera);
 		{

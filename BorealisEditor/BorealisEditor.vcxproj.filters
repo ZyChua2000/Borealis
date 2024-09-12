@@ -19,6 +19,12 @@
     <Filter Include="src\Project">
       <UniqueIdentifier>{732C2D2D-DFE1-A522-68D6-9FF9D48A9C26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Assets">
+      <UniqueIdentifier>{13e72be5-33dc-4738-a543-5ae2c23f5261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Assets">
+      <UniqueIdentifier>{35f09847-b55a-41a4-9643-92231e5814ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inc\EditorLayer.hpp">
@@ -32,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="inc\Project\Project.hpp">
       <Filter>inc\Project</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\MeshImporter.hpp">
+      <Filter>inc\Assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +58,9 @@
     </ClCompile>
     <ClCompile Include="src\Project\Project.cpp">
       <Filter>src\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\MeshImporter.cpp">
+      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

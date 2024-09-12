@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
 
+#include <Assets/MeshImporter.hpp>
 
 namespace Borealis
 {
@@ -404,20 +405,28 @@ namespace Borealis
 
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
-				ImGui::Button("Mesh");
+				if (ImGui::Button("Mesh"))
+				{
+					//Model model;
+					//LoadModel("assets/meshes/dragon.fbx", model);
+					//component.Model = MakeRef<Model>(model);
+					component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
+				}
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
 						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
-						component.Mesh = MakeRef<Mesh>(); 
+						std::string meshName = "assets/";
+						meshName += data;
 						// Should reference off asset manager's mesh
 						// imageName += ".meta";
 						// Read UUID from .meta
 						// Example Interface: component.mesh = AssetManager::GetMesh(UUID);
 						//component.mesh->Load(filename);
+						//Model model;
+						//LoadModel(meshName, model);
+						//component.Model = MakeRef<Model>(model); 
 					}
 					ImGui::EndDragDropTarget();
 				}
