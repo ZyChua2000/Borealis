@@ -21,9 +21,23 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	struct Renderer3DData
+	{
+		Ref<Shader> mModelShader;
+	};
+
+	static Renderer3DData* sData;
+
+	void Renderer3D::Init()
+	{
+		sData = new Renderer3DData();
+		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Model.glsl");
+	}
+
 	void Renderer3D::Begin(const EditorCamera& camera)
 	{
-
+		sData->mModelShader->Bind();
+		sData->mModelShader->Set("u_ViewProjection", camera.GetViewProjectionMatrix());
 	}
 
 	void Renderer3D::Begin(const Camera& camera, const glm::mat4& transform)
@@ -34,7 +48,7 @@ namespace Borealis
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID)
 	{
 		if(meshFilter.Model)
-			meshFilter.Model->Draw();
+			meshFilter.Model->Draw(transform, sData->mModelShader);
 	}
 
 }

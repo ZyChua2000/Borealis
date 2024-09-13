@@ -405,13 +405,7 @@ namespace Borealis
 
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
-				if (ImGui::Button("Mesh"))
-				{
-					//Model model;
-					//LoadModel("assets/meshes/dragon.fbx", model);
-					//component.Model = MakeRef<Model>(model);
-					component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
-				}
+				ImGui::Button("Mesh");
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
@@ -427,6 +421,7 @@ namespace Borealis
 						//Model model;
 						//LoadModel(meshName, model);
 						//component.Model = MakeRef<Model>(model); 
+						component.Model = MeshImporter::LoadFBXModel(meshName);
 					}
 					ImGui::EndDragDropTarget();
 				}

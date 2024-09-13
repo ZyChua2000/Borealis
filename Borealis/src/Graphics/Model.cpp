@@ -22,11 +22,11 @@ namespace Borealis
 
 	}
 
-	void Model::Draw()
+	void Model::Draw(const glm::mat4& transform, Ref<Shader> shader)
 	{
 		for (auto mesh : mMeshes)
 		{
-			mesh.Draw();
+			mesh.Draw(transform, shader);
 		}
 	}
 }

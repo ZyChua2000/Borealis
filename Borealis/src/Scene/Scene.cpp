@@ -94,6 +94,7 @@ namespace Borealis
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
+		Renderer3D::Begin(camera);
 		{
 			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
 			for (auto& entity : group)

@@ -16,6 +16,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define MESH_HPP
 #include <vector>
 #include <glm/glm.hpp>
+
+#include <Graphics/Shader.hpp>
+
 namespace Borealis
 {
 	struct Vertex {
@@ -60,7 +63,7 @@ namespace Borealis
 
 		void SetupMesh();
 
-		void Draw();
+		void Draw(const glm::mat4& transform, Ref<Shader> shader);
 
 		///*!***********************************************************************
 		//	\brief

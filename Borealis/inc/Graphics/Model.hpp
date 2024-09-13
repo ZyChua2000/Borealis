@@ -17,14 +17,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "Mesh.hpp"
+#include <Core/Core.hpp>
+#include <Graphics/Shader.hpp>
+#include <Graphics/Mesh.hpp>
+
 namespace Borealis
 {
 	class Model
 	{
 	public:
 		void Load();
-		void Draw();
+		void Draw(const glm::mat4& transform, Ref<Shader> shader);
 		std::vector<Mesh> mMeshes;
 	private:
 	}; // class Model

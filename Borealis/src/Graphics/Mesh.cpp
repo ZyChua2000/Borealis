@@ -110,8 +110,12 @@ namespace Borealis
 		glBindVertexArray(0);
 	}
 
-	void Mesh::Draw()
+	void Mesh::Draw(const glm::mat4& transform, Ref<Shader> shader)
 	{
+		shader->Bind();
+
+		shader->Set("u_ModelTransform", transform);
+
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);

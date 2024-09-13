@@ -24,6 +24,8 @@ namespace Borealis
 	class Renderer3D
 	{
 	public:
+
+		static void Init();
 		static void Begin(const EditorCamera& camera);
 
 		static void Begin(const Camera& camera, const glm::mat4& transform);

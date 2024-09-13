@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer.hpp>
 #include <Graphics/OpenGL/ShaderOpenGLImpl.hpp>
 #include <Graphics/Renderer2D.hpp>
+#include <Graphics/Renderer3D.hpp>
 
 namespace Borealis
 {
@@ -27,6 +28,7 @@ namespace Borealis
 
 		 RenderCommand::Init();
 		 Renderer2D::Init();
+		 Renderer3D::Init();
 	 }
 	 void Renderer::Free()
 	 {
