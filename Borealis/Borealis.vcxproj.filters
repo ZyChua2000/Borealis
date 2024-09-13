@@ -4,6 +4,9 @@
     <Filter Include="inc">
       <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\AI">
+      <UniqueIdentifier>{5850CA04-44F2-F4DA-2DAD-082F19EE7B2B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -88,6 +91,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\AI">
+      <UniqueIdentifier>{A648661C-92EA-90F2-7BA5-A44667E61743}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -112,6 +118,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\AI\BehaviorTreeBuilder.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourNode.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTreePrototype.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -1661,6 +1679,18 @@
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp">
       <Filter>lib\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviorTreeBuilder.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourNode.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTreePrototype.cpp">
+      <Filter>src\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>
