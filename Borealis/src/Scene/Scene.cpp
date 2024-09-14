@@ -122,6 +122,7 @@ namespace Borealis
 		entity.AddComponent<IDComponent>();
 		name == "" ? entity.AddComponent<TagComponent>("unnamedEntity" + std::to_string(unnamedID++)) : entity.AddComponent<TagComponent>(name);
 		entity.AddComponent<TransformComponent>();
+		mEntityMap[entity.GetUUID()] = entity;
 		return entity;
 	}
 	Entity Scene::CreateEntityWithUUID(const std::string& name, uint64_t UUID)
@@ -131,10 +132,19 @@ namespace Borealis
 		entity.AddComponent<IDComponent>(UUID);
 		name == "" ? entity.AddComponent<TagComponent>("unnamedEntity" + std::to_string(unnamedID++)) : entity.AddComponent<TagComponent>(name);
 		entity.AddComponent<TransformComponent>();
+		mEntityMap[UUID] = entity;
 		return entity;
+	}
+	Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		if (mEntityMap.find(uuid) != mEntityMap.end())
+			return { mEntityMap.at(uuid), this };
+
+		return {};
 	}
 	void Scene::DestroyEntity(Entity entity)
 	{		
+		mEntityMap.erase(entity.GetUUID());
 		mRegistry.destroy(entity);
 	}
 

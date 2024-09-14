@@ -25,6 +25,12 @@
     <Filter Include="inc\Scene">
       <UniqueIdentifier>{7C48EE75-E8B2-A2EC-31F1-53929D9A8041}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Scene\Object">
+      <UniqueIdentifier>{82525293-6E4B-71E5-977D-566A83D550F1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Scene\Object\Components">
+      <UniqueIdentifier>{5762BDC8-C36F-EBAE-4C56-E799B862B765}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Scripting">
       <UniqueIdentifier>{E1E7A9BA-4DA8-25F1-16E3-6E6E82626ACD}</UniqueIdentifier>
     </Filter>
@@ -235,11 +241,23 @@
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp">
       <Filter>inc\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scene\Components.hpp">
-      <Filter>inc\Scene</Filter>
+    <ClInclude Include="inc\Scene\Object\Behaviour.hpp">
+      <Filter>inc\Scene\Object</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scene\Entity.hpp">
-      <Filter>inc\Scene</Filter>
+    <ClInclude Include="inc\Scene\Object\Component.hpp">
+      <Filter>inc\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scene\Object\Components\Components.hpp">
+      <Filter>inc\Scene\Object\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scene\Object\Entity.hpp">
+      <Filter>inc\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scene\Object\MonoBehaviour.hpp">
+      <Filter>inc\Scene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scene\Object\Object.hpp">
+      <Filter>inc\Scene\Object</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp">
       <Filter>inc\Scene</Filter>
@@ -248,6 +266,9 @@
       <Filter>inc\Scene</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\SceneCamera.hpp">
+      <Filter>inc\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scene\SceneManager.hpp">
       <Filter>inc\Scene</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\ScriptEntity.hpp">
@@ -1654,11 +1675,9 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scripting\MonoBehaviour.hpp" />
-    <ClInclude Include="inc\Scripting\Behaviour.hpp" />
-    <ClInclude Include="inc\Scripting\Object.hpp" />
-    <ClInclude Include="inc\Scripting\Component.hpp" />
-    <ClInclude Include="inc\Scripting\GameObject.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
+    <ClInclude Include="inc\Scene\Components.hpp" />
+    <ClInclude Include="inc\Scene\Entity.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1790,5 +1809,7 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
+    <ClCompile Include="inc\Scene\SceneManager.cpp" />
   </ItemGroup>
 </Project>

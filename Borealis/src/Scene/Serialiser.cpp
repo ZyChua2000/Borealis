@@ -20,7 +20,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Components.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
-#include <Scripting/GameObject.hpp>
 
 namespace YAML
 {
@@ -372,12 +371,11 @@ namespace Borealis
 				}
 
 				Entity loadedEntity = mScene->CreateEntityWithUUID(name, uuid);
-				GameObject gameEntity (loadedEntity);
 
 				auto transformComponent = entity["TransformComponent"];
 				if (transformComponent)
 				{
-					auto& tc = gameEntity.GetComponent<TransformComponent>();
+					auto& tc = loadedEntity.GetComponent<TransformComponent>();
 					tc.Translate = entity["TransformComponent"]["Translate"].as<glm::vec3>();
 					tc.Rotation = entity["TransformComponent"]["Rotation"].as<glm::vec3>();
 					tc.Scale = entity["TransformComponent"]["Scale"].as<glm::vec3>();
@@ -386,14 +384,14 @@ namespace Borealis
 				auto spriteRendererComponent = entity["SpriteRendererComponent"];
 				if (spriteRendererComponent)
 				{
-					auto& src = gameEntity.AddComponent<SpriteRendererComponent>();
+					auto& src = loadedEntity.AddComponent<SpriteRendererComponent>();
 					src.Colour = entity["SpriteRendererComponent"]["Colour"].as<glm::vec4>();
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];
 				if (circleRendererComponent)
 				{
-					auto& src = gameEntity.AddComponent<CircleRendererComponent>();
+					auto& src = loadedEntity.AddComponent<CircleRendererComponent>();
 					src.Colour = entity["CircleRendererComponent"]["Colour"].as<glm::vec4>();
 					src.thickness = entity["CircleRendererComponent"]["Thickness"].as<float>();
 					src.fade = entity["CircleRendererComponent"]["Fade"].as<float>();
@@ -402,7 +400,7 @@ namespace Borealis
 				auto cameraComponent = entity["CameraComponent"];
 				if (cameraComponent)
 				{
-					auto& cc = gameEntity.AddComponent<CameraComponent>();
+					auto& cc = loadedEntity.AddComponent<CameraComponent>();
 					cc.Camera.SetCameraType((SceneCamera::CameraType)cameraComponent["Camera"]["CameraType"].as<int>());
 					cc.Camera.SetOrthoSize(cameraComponent["Camera"]["OrthoSize"].as<float>());
 					cc.Camera.SetOrthoNear(cameraComponent["Camera"]["OrthoNear"].as<float>());

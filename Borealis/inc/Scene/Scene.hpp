@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef SCENE_HPP
 #define SCENE_HPP
+#include <Core/UUID.hpp>
 #include <entt.hpp>
 #include <Graphics/EditorCamera.hpp>
 namespace Borealis
@@ -37,6 +38,7 @@ namespace Borealis
 
 		Entity CreateEntity(const std::string& name);
 		Entity CreateEntityWithUUID(const std::string& name, uint64_t UUID);
+		Entity GetEntityByUUID(UUID uuid);
 		void DestroyEntity(Entity entity);
 		void DuplicateEntity(Entity entity);
 
@@ -56,6 +58,7 @@ namespace Borealis
 
 		entt::registry mRegistry;
 		uint32_t mViewportWidth = 0, mViewportHeight = 0;
+		std::unordered_map<UUID, entt::entity> mEntityMap;
 
 	};
 }

@@ -14,6 +14,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef SCRIPTING_SYSTEM_HPP
 #define SCRIPTING_SYSTEM_HPP
+#include <unordered_map>
+#include <functional>
+#include <Scene/Entity.hpp>
 namespace Borealis
 {
 	class ScriptingSystem

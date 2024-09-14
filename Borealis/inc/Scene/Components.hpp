@@ -22,17 +22,16 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Mesh.hpp>
 #include <Graphics/Material.hpp>
 #include <Core/UUID.hpp>
-#include <Scripting/Component.hpp>
 namespace Borealis
 {
-	struct IDComponent : public Component
+	struct IDComponent
 	{
 		UUID ID;
 		IDComponent() = default;
 		IDComponent(const IDComponent&) = default;
 		IDComponent(uint64_t uuid) : ID(uuid) {}
 	};
-	struct TagComponent : public Component
+	struct TagComponent
 	{
 		std::string Tag;
 
@@ -41,7 +40,8 @@ namespace Borealis
 		TagComponent(const std::string& tag)
 			: Tag(tag) {}
 	};
-	struct TransformComponent : public Component
+
+	struct TransformComponent
 	{
 		glm::vec3 Translate { 0.0f, 0.0f ,0.0f };
 		glm::vec3 Rotation{ 0.0f, 0.0f ,0.0f };
@@ -63,7 +63,7 @@ namespace Borealis
 		operator glm::mat4() { return GetTransform(); }
 	};
 
-	struct SpriteRendererComponent : public Component
+	struct SpriteRendererComponent
 	{
 		glm::vec4 Colour {1.0f,1.0f,1.0f,1.0f};
 		Ref<Texture2D> Texture;
@@ -75,7 +75,7 @@ namespace Borealis
 			: Colour(colour) {}
 	};
 
-	struct CircleRendererComponent : public Component
+	struct CircleRendererComponent 
 	{
 		glm::vec4 Colour{ 1.0f,1.0f,1.0f,1.0f };
 		float thickness = 1.0;
@@ -87,7 +87,7 @@ namespace Borealis
 			: Colour(colour), thickness(thickness), fade(fade) {}
 	};
 
-	struct CameraComponent : public Component
+	struct CameraComponent 
 	{
 		SceneCamera Camera;
 		bool Primary = false;

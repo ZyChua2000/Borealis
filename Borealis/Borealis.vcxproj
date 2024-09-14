@@ -187,16 +187,19 @@
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp" />
     <ClInclude Include="inc\Scene\Components.hpp" />
     <ClInclude Include="inc\Scene\Entity.hpp" />
+    <ClInclude Include="inc\Scene\Object\Behaviour.hpp" />
+    <ClInclude Include="inc\Scene\Object\Component.hpp" />
+    <ClInclude Include="inc\Scene\Object\Components\Components.hpp" />
+    <ClInclude Include="inc\Scene\Object\Entity.hpp" />
+    <ClInclude Include="inc\Scene\Object\MonoBehaviour.hpp" />
+    <ClInclude Include="inc\Scene\Object\Object.hpp" />
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
     <ClInclude Include="inc\Scene\Scene.hpp" />
     <ClInclude Include="inc\Scene\SceneCamera.hpp" />
+    <ClInclude Include="inc\Scene\SceneManager.hpp" />
     <ClInclude Include="inc\Scene\ScriptEntity.hpp" />
     <ClInclude Include="inc\Scene\Serialiser.hpp" />
-    <ClInclude Include="inc\Scripting\Behaviour.hpp" />
-    <ClInclude Include="inc\Scripting\Component.hpp" />
-    <ClInclude Include="inc\Scripting\GameObject.hpp" />
-    <ClInclude Include="inc\Scripting\MonoBehaviour.hpp" />
-    <ClInclude Include="inc\Scripting\Object.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingUtils.hpp" />
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
@@ -665,6 +668,7 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="inc\Scene\SceneManager.cpp" />
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -710,6 +714,7 @@
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
     <ClCompile Include="src\Scene\Serialiser.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>
