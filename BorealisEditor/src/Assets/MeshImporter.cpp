@@ -13,7 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <Assets/MeshImporter.hpp>
-
+#include <Graphics/Animation/VertexBone.hpp>
 
 
 namespace Borealis
@@ -41,6 +41,8 @@ namespace Borealis
 		std::vector<unsigned int> indices;
 		std::vector<glm::vec3> normals;
 		std::vector<glm::vec2> texCoords;
+
+		std::vector<VertexBoneData> bones(mesh->mNumVertices);
 
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -75,6 +77,20 @@ namespace Borealis
 				indices.push_back(face.mIndices[j]);
 		}
 
+		for (unsigned int i{}; i < mesh->mNumBones; ++i) 
+		{
+			aiBone* bone = mesh->mBones[i];
+			int boneid = GetBoneId(bone);
+
+			for (unsigned int j{}; j < bone->mNumWeights; ++j) 
+			{
+				aiVertexWeight const& vw = bone->mWeights[j];
+				unsigned int vertexid = vw.mVertexId;
+
+				bones[vertexid].AddBoneData(boneid, vw.mWeight);
+			}
+		}
+		// need to add bones to mesh
 		return Mesh(vertices, indices, normals, texCoords);
 	}
 
@@ -89,6 +105,23 @@ namespace Borealis
 		for (int i{}; i < node->mNumChildren; ++i)
 		{
 			ProcessNode(node->mChildren[i], scene, model);
+		}
+	}
+
+	int MeshImporter::GetBoneId(const aiBone* pbone) 
+	{
+		static std::unordered_map<std::string, int> nametoindexmap;
+		std::string bonename(pbone->mName.C_Str());
+
+		if (nametoindexmap.find(bonename) == nametoindexmap.end())
+		{
+			int boneid = static_cast<int>(nametoindexmap.size());
+			nametoindexmap[bonename] = boneid;
+			return boneid;
+		}
+		else
+		{
+			return nametoindexmap[bonename];
 		}
 	}
 }

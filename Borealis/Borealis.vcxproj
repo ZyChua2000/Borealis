@@ -160,6 +160,8 @@
     <ClInclude Include="inc\Debugging\Profiler.hpp" />
     <ClInclude Include="inc\Events\EventInput.hpp" />
     <ClInclude Include="inc\Events\EventWindow.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\Bone.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp" />
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
@@ -679,6 +681,7 @@
     <ClCompile Include="src\Core\WindowManager.cpp" />
     <ClCompile Include="src\Events\EventInput.cpp" />
     <ClCompile Include="src\Events\EventWindow.cpp" />
+    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
