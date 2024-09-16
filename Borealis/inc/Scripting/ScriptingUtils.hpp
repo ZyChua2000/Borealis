@@ -15,8 +15,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef SCRIPTING_UTILS_HPP
 #define SCRIPTING_UTILS_HPP
 #include <string>
-#include <mono/metadata/assembly.h>
-#include <mono/metadata/object.h>
+#include <Scripting/ScriptField.hpp>
+
+extern "C" {
+	typedef struct _MonoClass MonoClass;
+	typedef struct _MonoObject MonoObject;
+	typedef struct _MonoAssembly MonoAssembly;
+	typedef struct _MonoType MonoType;
+	typedef struct _MonoArray MonoArray;
+	typedef struct _MonoDomain MonoDomain;
+}
+
 
 namespace Borealis
 {
@@ -74,6 +83,14 @@ namespace Borealis
 
 	/*!***********************************************************************
 		\brief
+			Instantiates a class object in C#
+		\param[in] klass
+			The class to instantiate
+	*************************************************************************/
+	MonoObject* InstantiateClass(MonoClass* klass);
+
+	/*!***********************************************************************
+		\brief
 			Converts a monoArray to a vector of char
 		\param[in] monoArray
 			MonoArray* to convert
@@ -90,6 +107,11 @@ namespace Borealis
 			MonoAssembly* to the assembly
 	*************************************************************************/
 	void PrintAssemblyTypes(MonoAssembly* assembly);
+
+	std::string ScriptFieldType2String(ScriptFieldType type);
+	ScriptFieldType MonoType2ScriptFieldType(MonoType* type);
+	MonoType* ScriptFieldType2MonoType(ScriptFieldType type);
+
 }
 
 #endif //SCRIPTING_UTILS_HPP

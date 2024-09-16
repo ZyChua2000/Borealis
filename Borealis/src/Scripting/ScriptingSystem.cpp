@@ -17,9 +17,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <typeinfo>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
+#include <mono/metadata/metadata.h>
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptingUtils.hpp>
 #include <Scripting/ScriptingExposedInternal.hpp>
+#include <Scripting/ScriptInstance.hpp>
+#include <Core/Core.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Scene/Components.hpp>
@@ -27,8 +30,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
-	 Ref<Scene> SceneManager::mActiveScene;
-	 std::vector<Ref<Scene>> SceneManager::mScenes;
+
+	 std::unordered_map<std::string, Ref<ScriptClass>> ScriptingSystem::mScriptClasses;
+
 
 	struct ScriptingSystemData
 	{
@@ -38,7 +42,58 @@ namespace Borealis
 		std::vector<MonoAssembly*> mAssemblies;
 	};
 
+
 	static ScriptingSystemData* sData;
+
+	void ScriptingSystem::RegisterCSharpClass(ScriptClass klass)
+	{
+		auto scriptClass = MakeRef<ScriptClass>(klass);
+		mScriptClasses[klass.GetKlassName()] = scriptClass;
+		void* iterator = nullptr;
+		while (MonoClassField* field = mono_class_get_fields(scriptClass->GetMonoClass(), &iterator))
+		{
+			auto fieldName = mono_field_get_name(field);
+			auto fieldType = mono_field_get_type(field);
+
+			ScriptFieldType SFType = MonoType2ScriptFieldType(fieldType);
+			scriptClass->mFields[fieldName] = ScriptField{ SFType, fieldName, field };
+		}
+	}
+
+	static void RegisterCSharpScriptsFromAssembly(MonoAssembly* assembly)
+	{
+		MonoImage* image = mono_assembly_get_image(assembly);
+		void* iterator = nullptr;
+		auto assemblyImage = mono_assembly_get_image(sData->mRoslynAssembly);
+
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(assemblyImage, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+		MonoClass* behaviourClass = mono_class_from_name(assemblyImage, "Borealis", "MonoBehaviour");
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(assemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* className = mono_metadata_string_heap(assemblyImage, cols[MONO_TYPEDEF_NAME]);
+
+			MonoClass* currClass = mono_class_from_name(assemblyImage, nameSpace, className);
+			if (currClass == behaviourClass)
+			{
+				continue;
+			}
+			if (mono_class_is_subclass_of(currClass, behaviourClass, false))
+			{
+				ScriptingSystem::RegisterCSharpClass(ScriptClass(nameSpace, className, assembly));
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
+	
 
 	template <typename T>
 	static void RegisterComponent()
@@ -127,6 +182,9 @@ namespace Borealis
 		
 		// Add all internal functions here
 		RegisterComponents();
+
+		// From Runtime assemblies as well
+		RegisterCSharpScriptsFromAssembly(sData->mRoslynAssembly);
 	}
 	void ScriptingSystem::FreeMono()
 	{

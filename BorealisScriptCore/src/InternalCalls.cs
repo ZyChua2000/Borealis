@@ -50,5 +50,14 @@ namespace Borealis
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void SpriteRendererComponent_SetColor(ulong id, ref Color color);
         #endregion
+
+        #region ScriptComponent
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void ScriptComponent_AddComponent(ulong entityID, Type type);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool ScriptComponent_HasComponent(ulong entityID, Type type);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void ScriptComponent_RemoveComponent(ulong entityID, Type type);
+        #endregion
     }
 }

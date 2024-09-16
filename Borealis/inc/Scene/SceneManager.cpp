@@ -3,6 +3,8 @@
 
 namespace Borealis
 {
+    Ref<Scene> SceneManager::mActiveScene;
+    std::vector<Ref<Scene>> SceneManager::mScenes;
     Entity SceneManager::GetEntity(uint64_t entityID)
     {
         return mActiveScene->GetEntityByUUID(entityID);

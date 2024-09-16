@@ -14,6 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <BorealisPCH.hpp>
 #include <Scripting/ScriptingExposedInternal.hpp>
+#include <Scripting/ScriptingSystem.hpp>
+#include <Scripting/ScriptInstance.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Core/UUID.hpp>
 #include <Core/LoggerSystem.hpp>
@@ -45,6 +47,10 @@ namespace Borealis
 
 		BOREALIS_ADD_INTERNAL_CALL(SpriteRendererComponent_GetColor);
 		BOREALIS_ADD_INTERNAL_CALL(SpriteRendererComponent_SetColor);
+
+		BOREALIS_ADD_INTERNAL_CALL(ScriptComponent_AddComponent);
+		BOREALIS_ADD_INTERNAL_CALL(ScriptComponent_RemoveComponent);
+		BOREALIS_ADD_INTERNAL_CALL(ScriptComponent_HasComponent);
 	}
 	uint64_t GenerateUUID()
 	{
@@ -218,5 +224,80 @@ namespace Borealis
 		Entity entity = scene->GetEntityByUUID(uuid);
 		BOREALIS_CORE_ASSERT(entity, "Entity is null");
 		entity.GetComponent<SpriteRendererComponent>().Colour = *color;
+	}
+	void ScriptComponent_AddComponent(uint64_t entityID, MonoReflectionType* reflectionType)
+	{
+		auto Entity = SceneManager::GetEntity(entityID);
+
+		if (!Entity)
+		{
+			BOREALIS_CORE_WARN("Entity does not exist: ScriptComponent.AddComponent");
+			return;
+		}
+
+		if (reflectionType == nullptr)
+		{
+			BOREALIS_CORE_WARN("Reflection type is null: ScriptComponent.AddComponent");
+			return;
+		}
+
+		MonoClass* klass = mono_class_from_mono_type(mono_reflection_type_get_type(reflectionType));
+		std::string className = mono_class_get_name(klass);
+
+		if (ScriptingSystem::mScriptClasses.find(className) == ScriptingSystem::mScriptClasses.end())
+		{
+			BOREALIS_CORE_WARN("Failed to create component: ScriptComponent.AddComponent"); // Not a mono behaviour
+			return;
+		}
+
+		Ref<ScriptInstance> instance = MakeRef<ScriptInstance>(ScriptingSystem::mScriptClasses.at(className));
+		mono_runtime_object_init(instance->GetInstance());
+		if (Entity.HasComponent<ScriptComponent>() == false)
+		{
+			Entity.AddComponent<ScriptComponent>();
+		}
+		Entity.GetComponent<ScriptComponent>().AddScript(instance->GetKlassName(), instance);
+	}
+	void ScriptComponent_RemoveComponent(uint64_t entityID, MonoReflectionType* reflectionType)
+	{
+		if (ScriptComponent_HasComponent(entityID, reflectionType))
+		{
+			Entity entity = SceneManager::GetEntity(entityID);
+			entity.GetComponent<ScriptComponent>().RemoveScript(mono_class_get_name(mono_class_from_mono_type(mono_reflection_type_get_type(reflectionType))));
+			if (entity.GetComponent<ScriptComponent>().mScripts.empty())
+			{
+				entity.RemoveComponent<ScriptComponent>();
+			}
+		}
+		else
+		{
+			BOREALIS_CORE_WARN("Component does not exist!");
+		}
+	}
+	bool ScriptComponent_HasComponent(uint64_t entityID, MonoReflectionType* reflectionType)
+	{
+		auto Entity = SceneManager::GetEntity(entityID);
+
+		if (!Entity)
+		{
+			BOREALIS_CORE_WARN("Entity does not exist: ScriptComponent.AddComponent");
+			return false;
+		}
+
+		if (reflectionType == nullptr)
+		{
+			BOREALIS_CORE_WARN("Reflection type is null: ScriptComponent.AddComponent");
+			return false;
+		}
+
+		if (Entity.HasComponent<ScriptComponent>() == false)
+		{
+			return false;
+		}
+
+		MonoClass* klass = mono_class_from_mono_type(mono_reflection_type_get_type(reflectionType));
+		std::string className = mono_class_get_name(klass);
+
+		return Entity.GetComponent<ScriptComponent>().HasScript(className);
 	}
 }

@@ -54,6 +54,10 @@ namespace Borealis
 	void SpriteRendererComponent_GetColor(UUID uuid, glm::vec4* outColor);
 	void SpriteRendererComponent_SetColor(UUID uuid, glm::vec4* color);
 
+	void ScriptComponent_AddComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+	void ScriptComponent_RemoveComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+	bool ScriptComponent_HasComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+
 
 
 }

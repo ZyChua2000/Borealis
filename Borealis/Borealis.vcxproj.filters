@@ -1678,6 +1678,9 @@
     <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
     <ClInclude Include="inc\Scene\Components.hpp" />
     <ClInclude Include="inc\Scene\Entity.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptClass.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptInstance.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptField.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1811,5 +1814,8 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
     <ClCompile Include="inc\Scene\SceneManager.cpp" />
+    <ClCompile Include="src\Scripting\ScriptClass.cpp" />
+    <ClCompile Include="src\Scripting\ScriptInstance.cpp" />
+    <ClCompile Include="src\Scripting\ScriptField.cpp" />
   </ItemGroup>
 </Project>

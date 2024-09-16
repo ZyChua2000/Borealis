@@ -8,19 +8,12 @@ namespace Borealis
 {
     public class RoslynCompiler
     {
-        
         public RoslynCompiler()
         {
-            GameObject Object = new GameObject("name");
-            Transform transform = Object.AddComponent<Transform>();
-            SpriteRenderer sr = Object.AddComponent<SpriteRenderer>();
-            Color color = new Color ( 0.5f, 0.5f, 0.5f, 1.0f );
-            sr.Color = color;
-
-            //Vector3 position = new Vector3(1, 2, 3);
-            //transform.position = position;           
+            GameObject gameObject = new GameObject();
+            gameObject.AddComponent<ExampleScript>();
+            gameObject.AddComponent<ExampleScript2>();
         }
-
         /*!***********************************************************************
             \brief
                 Compiles a C# code into an assembly.
@@ -43,7 +36,6 @@ namespace Borealis
                 var emitResult = compilation.Emit(dllStream);
                 if (!emitResult.Success)
                 {
-                    // emitResult.Diagnostics
                 }
                 return dllStream.ToArray();
             }

@@ -329,4 +329,10 @@ namespace Borealis
 	{
 
 	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+
+	}
 }

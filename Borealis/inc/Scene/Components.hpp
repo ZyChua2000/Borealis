@@ -245,6 +245,27 @@ namespace Borealis
 		LightAppearance lightAppearance = LightAppearance::Colour;
 	};
 
+	class ScriptInstance;
+	struct ScriptComponent
+	{
+		std::unordered_map <std::string, Ref<ScriptInstance>> mScripts;
+
+		void AddScript(const std::string& name, const Ref<ScriptInstance>& script)
+		{
+			mScripts[name] = script;
+		}
+
+		void RemoveScript(const std::string& name)
+		{
+			mScripts.erase(name);
+		}
+
+		bool HasScript(const std::string& name)
+		{
+			return mScripts.find(name) != mScripts.end();
+		}
+	};
+
 
 }
 

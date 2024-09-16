@@ -1,7 +1,7 @@
 ﻿
 namespace Borealis
 {
-    public class Behaviour
+    public class Behaviour : Component
     {
         public bool enabled;
     }

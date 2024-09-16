@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/SceneHierarchyPanel.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
+#include <Scripting/ScriptInstance.hpp>
 
 
 namespace Borealis
@@ -257,6 +258,205 @@ namespace Borealis
 			}
 	}
 
+	
+
+	static void DrawScriptField(Ref<ScriptInstance> component)
+	{
+		for (const auto& [name, field] : component->GetScriptClass()->mFields) // name of script field, script field
+		{
+			if (field.mType == ScriptFieldType::Bool)
+			{
+				bool Data = component->GetFieldValue<bool>(name);
+				if (ImGui::Checkbox((name + "##" + component->GetKlassName()).c_str(), &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+			if (field.mType == ScriptFieldType::Float)
+			{
+				float Data = component->GetFieldValue<float>(name);
+				if (ImGui::DragFloat((name + "##" + component->GetKlassName()).c_str(), &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Int)
+			{
+				int Data = component->GetFieldValue<int>(name);
+				if (ImGui::DragInt((name + "##" + component->GetKlassName()).c_str(), &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::String)
+			{
+				std::string Data = component->GetFieldValue<std::string>(name);
+				char buffer[256];
+				memset(buffer, 0, sizeof(buffer));
+				strcpy_s(buffer, sizeof(buffer), Data.c_str());
+				if (ImGui::InputText((name + "##" + component->GetKlassName()).c_str(), buffer, sizeof(buffer)))
+				{
+					Data = std::string(buffer);
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Vector2)
+			{
+				glm::vec2 Data = component->GetFieldValue<glm::vec2>(name);
+				if (ImGui::DragFloat2((name + "##" + component->GetKlassName()).c_str(), glm::value_ptr(Data)))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Vector3)
+			{
+				glm::vec3 Data = component->GetFieldValue<glm::vec3>(name);
+				if (ImGui::DragFloat3((name + "##" + component->GetKlassName()).c_str(), glm::value_ptr(Data)))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Vector4)
+			{
+				glm::vec4 Data = component->GetFieldValue<glm::vec4>(name);
+				if (ImGui::DragFloat4((name + "##" + component->GetKlassName()).c_str(), glm::value_ptr(Data)))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::UChar)
+			{
+				unsigned char Data = component->GetFieldValue<unsigned char>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_U8, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Char)
+			{
+				char Data = component->GetFieldValue<char>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_S8, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::UShort)
+			{
+				unsigned short Data = component->GetFieldValue<unsigned short>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_U16, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Short)
+			{
+				short Data = component->GetFieldValue<short>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_S16, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::UInt)
+			{
+				unsigned int Data = component->GetFieldValue<unsigned int>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_U32, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Long)
+			{
+				int Data = component->GetFieldValue<int>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_S64, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::ULong)
+			{
+				unsigned long Data = component->GetFieldValue<unsigned long>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_U64, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+
+			if (field.mType == ScriptFieldType::Double)
+			{
+				double Data = component->GetFieldValue<double>(name);
+				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_Double, &Data))
+				{
+					component->SetFieldValue(name, &Data);
+				}
+			}
+		}
+	}
+	static void DrawScriptComponent(ScriptComponent& component, Entity& entity, bool allowDelete = true)
+	{
+		for (auto& [name, script] : component.mScripts)
+		{
+			ImGui::Spacing();
+			bool deleteComponent = false;
+			bool open;
+
+			if (allowDelete)
+			{
+				auto ContentRegionAvailable = ImGui::GetContentRegionAvail();
+				ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2{ 4,4 });
+				float lineHeight = ImGui::GetFontSize() + ImGui::GetStyle().FramePadding.y * 2.0f;
+				ImGui::Separator();
+				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+				ImGui::PopStyleVar();
+				ImGui::SameLine(ContentRegionAvailable.x - lineHeight * 0.5f); // Align to right (Button)
+				if (ImGui::Button("+", ImVec2{ lineHeight,lineHeight }))
+				{
+					ImGui::OpenPopup("ComponentSettingsPopup");
+				}
+
+
+				if (ImGui::BeginPopup("ComponentSettingsPopup"))
+				{
+					if (ImGui::MenuItem("Remove Component"))
+					{
+						deleteComponent = true;
+					}
+
+					ImGui::EndPopup();
+				}
+			}
+			else
+			{
+				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
+			}
+
+			if (open)
+			{
+				ImGui::Spacing();
+				DrawScriptField(script);
+			}
+
+			if (deleteComponent)
+			{
+				component.RemoveScript(name);
+				if (component.mScripts.empty())
+				{
+					entity.RemoveComponent<ScriptComponent>();
+				}
+			}
+		}
+	}
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
 		if (entity.HasComponent<TagComponent>())
@@ -491,6 +691,11 @@ namespace Borealis
 				ImGui::Checkbox("Use Gravity", &component.useGravity);
 				ImGui::Checkbox("Kinematic", &component.isKinematic);
 			});
+
+		if (mSelectedEntity.HasComponent<ScriptComponent>())
+		{
+			DrawScriptComponent(mSelectedEntity.GetComponent<ScriptComponent>(), mSelectedEntity);
+		}
 
 		DrawComponent<LightComponent>("Light", mSelectedEntity, [](auto& component)
 			{
