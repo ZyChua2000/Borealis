@@ -61,6 +61,7 @@ namespace std
 		\param[in] id
 			The UUID to be hashed
 	*************************************************************************/
+	template <typename T> struct hash;
 	template <>
 	struct hash<Borealis::UUID>
 	{

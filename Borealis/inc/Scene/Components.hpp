@@ -40,6 +40,7 @@ namespace Borealis
 		TagComponent(const std::string& tag)
 			: Tag(tag) {}
 	};
+
 	struct TransformComponent
 	{
 		glm::vec3 Translate { 0.0f, 0.0f ,0.0f };
@@ -74,7 +75,7 @@ namespace Borealis
 			: Colour(colour) {}
 	};
 
-	struct CircleRendererComponent
+	struct CircleRendererComponent 
 	{
 		glm::vec4 Colour{ 1.0f,1.0f,1.0f,1.0f };
 		float thickness = 1.0;
@@ -86,7 +87,7 @@ namespace Borealis
 			: Colour(colour), thickness(thickness), fade(fade) {}
 	};
 
-	struct CameraComponent
+	struct CameraComponent 
 	{
 		SceneCamera Camera;
 		bool Primary = false;
@@ -243,6 +244,28 @@ namespace Borealis
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
 	};
+
+	class ScriptInstance;
+	struct ScriptComponent
+	{
+		std::unordered_map <std::string, Ref<ScriptInstance>> mScripts;
+
+		void AddScript(const std::string& name, const Ref<ScriptInstance>& script)
+		{
+			mScripts[name] = script;
+		}
+
+		void RemoveScript(const std::string& name)
+		{
+			mScripts.erase(name);
+		}
+
+		bool HasScript(const std::string& name)
+		{
+			return mScripts.find(name) != mScripts.end();
+		}
+	};
+
 
 }
 
