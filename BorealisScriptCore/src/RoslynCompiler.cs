@@ -12,7 +12,6 @@ namespace Borealis
         {
             GameObject gameObject = new GameObject();
             gameObject.AddComponent<ExampleScript>();
-            gameObject.AddComponent<ExampleScript2>();
         }
         /*!***********************************************************************
             \brief

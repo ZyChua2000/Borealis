@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Entity.hpp>
 namespace Borealis
 {
+	// Specifically meant for MonoBehaviours, not for other classes
 	class ScriptInstance
 	{
 	public:
@@ -50,6 +51,39 @@ namespace Borealis
 				BOREALIS_CORE_WARN("Failed to set field {0} in class {1}", name, mScriptClass->GetKlassName());
 			}
 		}
+
+		void Awake();
+		void Start();
+		void Update();
+		void FixedUpdate();
+		void LateUpdate();
+		void OnEnable();
+		void OnDisable();
+		void OnDestroy();
+		void OnApplicationQuit();
+		void OnApplicationPause();
+		void OnApplicationFocus();
+		void OnGUI();
+		void OnDrawGizmos();
+		void OnDrawGizmosSelected();
+		void OnValidate();
+		void Reset();
+		void OnBecameVisible();
+		void OnBecameInvisible();
+		void OnPreCull();
+		void OnPreRender();
+		void OnPostRender();
+		void OnRenderObject();
+		void OnWillRenderObject();
+		void OnRenderImage();
+		void OnAudioFilterRead();
+		void OnParticleCollision();
+		void OnJointBreak();
+		void OnAnimatorMove();
+		void OnAnimatorIK();
+
+
+
 	private:
 
 		bool SetFieldValueInternal(const std::string& name, void* value);
@@ -57,9 +91,6 @@ namespace Borealis
 
 		Ref<ScriptClass> mScriptClass;
 		MonoObject* mInstance;
-
-		MonoMethod* mConstructor = nullptr;
-
 		inline static char s_fieldValueBuffer[16];
 	};
 }

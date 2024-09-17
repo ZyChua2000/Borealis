@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneManager.hpp>
 #include <Scene/Serialiser.hpp>	
 #include <Scripting/ScriptingSystem.hpp>
+#include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
 
 
@@ -624,7 +625,7 @@ namespace Borealis {
 		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		SCPanel.SetContext(mEditorScene);
 		mLatestFilePath.clear();
-		SceneManager::GetActiveScene() = mEditorScene;
+		SceneManager::SetActiveScene(mEditorScene);
 	}
 
 	void EditorLayer::OpenScene()
@@ -666,7 +667,7 @@ namespace Borealis {
 			Serialiser serialiser(mEditorScene);
 			serialiser.DeserialiseScene(filepath);
 			mLatestFilePath = filepath;
-			SceneManager::GetActiveScene() = mEditorScene;
+			SceneManager::SetActiveScene(mEditorScene);
 		}
 	}
 
@@ -712,6 +713,16 @@ namespace Borealis {
 		SceneManager::GetActiveScene() = Scene::Copy(mEditorScene);
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 		SceneManager::GetActiveScene()->RuntimeStart();
+
+		auto view = SceneManager::GetActiveScene()->GetRegistry().view<ScriptComponent>();
+		for (auto entity : view)
+		{
+			auto& scriptComponent = view.get<ScriptComponent>(entity);
+			for (auto& [name,script] : scriptComponent.mScripts)
+			{
+				script->Start();
+			}
+		}
 	}
 
 	void EditorLayer::SceneStop()

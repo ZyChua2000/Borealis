@@ -13,18 +13,22 @@ namespace Borealis
             speed = true;
         }
         
-       
-    }
-
-    public class ExampleScript2 : MonoBehaviour
-    {
-        float speed;
-
-        public ExampleScript2()
+        public override void Start()
         {
-            speed = 5f;
+            Console.WriteLine("Hello World!");
         }
 
-
+        public override void Update()
+        {
+            if (speed)
+            {
+                Console.WriteLine("Speed is true");
+            }
+            else
+            {
+                Console.WriteLine("Speed is false");
+            }
+        }
+       
     }
 }

@@ -60,6 +60,8 @@ namespace Borealis
 		uint32_t mViewportWidth = 0, mViewportHeight = 0;
 		std::unordered_map<UUID, entt::entity> mEntityMap;
 
+		bool hasRuntimeStarted = false;
+
 	};
 }
 
