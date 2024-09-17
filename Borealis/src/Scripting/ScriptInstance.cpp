@@ -89,12 +89,12 @@ namespace Borealis
 
 #else
 #define DefineMonoBehaviourMethod(methodName) \
-	if (mScriptClass->GetMethod( #methodName, 0) == nullptr) \
+	void ScriptInstance::methodName() \
+	{\
+		if (mScriptClass->GetMethod(#methodName, 0) == nullptr) \
 		{ \
 			return; \
 		} \
-	void ScriptInstance::methodName() \
-	{\
 		mono_runtime_invoke(mScriptClass->GetMethod(#methodName, 0), mInstance, nullptr, nullptr); \
 	}\
 
