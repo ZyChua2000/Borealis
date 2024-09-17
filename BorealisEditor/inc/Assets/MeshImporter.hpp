@@ -30,6 +30,8 @@ namespace Borealis
 	class MeshImporter
 	{
 	public:
+		static Ref<Texture2D> generateAtlas(const char* fontFilename);
+
 		static Ref<Model> LoadFBXModel(const std::string& path);
 	private:
 		static void ProcessNode(aiNode* node, const aiScene* scene, Model& model);

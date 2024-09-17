@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;lib\MSDF\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -89,6 +89,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>msdf-atlas-gen.lib;msdfgen-core.lib;msdfgen-ext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\MSDF\Build;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -102,7 +104,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\MonoPosixHelper.dll" "$(TargetDir)"</Co
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;lib\MSDF\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,6 +118,8 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\MonoPosixHelper.dll" "$(TargetDir)"</Co
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>msdf-atlas-gen.lib;msdfgen-core.lib;msdfgen-ext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\MSDF\Build;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>
@@ -129,7 +133,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;YAML_CPP_STATIC_DEFINE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;lib\MSDF\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -143,6 +147,8 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>msdf-atlas-gen.lib;msdfgen-core.lib;msdfgen-ext.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>lib\MSDF\Build;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <PostBuildEvent>

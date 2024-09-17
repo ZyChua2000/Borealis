@@ -30,6 +30,7 @@ workspace "Borealis"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
+	IncludeDir["MSDF"] = "BorealisEditor/lib/MSDF/Include"
 
 	LibraryDir = {}
 	LibraryDir["FMOD"] = "lib/FMOD/lib"
@@ -188,6 +189,7 @@ workspace "Borealis"
 			"%{IncludeDir.ImGuizmo}",
 			"%{IncludeDir.ImGuiNodeEditor}",
 			"%{IncludeDir.assimp}",
+			"%{IncludeDir.MSDF}",
 		}
 
 		defines
@@ -196,12 +198,22 @@ workspace "Borealis"
 			"YAML_CPP_STATIC_DEFINE"
 		}
 
+		libdirs
+		{
+			"BorealisEditor/lib/MSDF/Build"
+		}
+
 		links
 		{
 			"Borealis",
 			"Assimp",
 			"yaml-cpp",
-			"ImGuiNodeEditor"
+			"ImGuiNodeEditor",
+			"msdf-atlas-gen",
+			"msdfgen-core",
+			"msdfgen-ext",
+			"skia.dll"
+
 		}
 
 		linkoptions

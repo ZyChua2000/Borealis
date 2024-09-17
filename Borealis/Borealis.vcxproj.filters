@@ -181,6 +181,9 @@
     <ClInclude Include="inc\Graphics\Mesh.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\Model.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="inc\Graphics\OpenGL\BufferOpenGLImpl.hpp">
       <Filter>inc\Graphics\OpenGL</Filter>
     </ClInclude>
@@ -212,6 +215,9 @@
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\Renderer2D.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\Renderer3D.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\RendererAPI.hpp">
@@ -1654,12 +1660,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Graphics\Renderer3D.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\Model.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1713,6 +1713,9 @@
     <ClCompile Include="src\Graphics\Mesh.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Model.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp">
       <Filter>src\Graphics\OpenGL</Filter>
     </ClCompile>
@@ -1744,6 +1747,9 @@
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Renderer2D.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Renderer3D.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\RendererAPI.cpp">
@@ -1790,12 +1796,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Renderer3D.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Model.cpp">
-      <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
