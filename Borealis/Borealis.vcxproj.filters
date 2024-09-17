@@ -25,12 +25,6 @@
     <Filter Include="inc\Scene">
       <UniqueIdentifier>{7C48EE75-E8B2-A2EC-31F1-53929D9A8041}</UniqueIdentifier>
     </Filter>
-    <Filter Include="inc\Scene\Object">
-      <UniqueIdentifier>{82525293-6E4B-71E5-977D-566A83D550F1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="inc\Scene\Object\Components">
-      <UniqueIdentifier>{5762BDC8-C36F-EBAE-4C56-E799B862B765}</UniqueIdentifier>
-    </Filter>
     <Filter Include="inc\Scripting">
       <UniqueIdentifier>{E1E7A9BA-4DA8-25F1-16E3-6E6E82626ACD}</UniqueIdentifier>
     </Filter>
@@ -241,23 +235,11 @@
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp">
       <Filter>inc\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scene\Object\Behaviour.hpp">
-      <Filter>inc\Scene\Object</Filter>
+    <ClInclude Include="inc\Scene\Components.hpp">
+      <Filter>inc\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scene\Object\Component.hpp">
-      <Filter>inc\Scene\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Scene\Object\Components\Components.hpp">
-      <Filter>inc\Scene\Object\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Scene\Object\Entity.hpp">
-      <Filter>inc\Scene\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Scene\Object\MonoBehaviour.hpp">
-      <Filter>inc\Scene\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Scene\Object\Object.hpp">
-      <Filter>inc\Scene\Object</Filter>
+    <ClInclude Include="inc\Scene\Entity.hpp">
+      <Filter>inc\Scene</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp">
       <Filter>inc\Scene</Filter>
@@ -276,6 +258,18 @@
     </ClInclude>
     <ClInclude Include="inc\Scene\Serialiser.hpp">
       <Filter>inc\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptClass.hpp">
+      <Filter>inc\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptField.hpp">
+      <Filter>inc\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptInstance.hpp">
+      <Filter>inc\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp">
+      <Filter>inc\Scripting</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp">
       <Filter>inc\Scripting</Filter>
@@ -1675,12 +1669,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
-    <ClInclude Include="inc\Scene\Components.hpp" />
-    <ClInclude Include="inc\Scene\Entity.hpp" />
-    <ClInclude Include="inc\Scripting\ScriptClass.hpp" />
-    <ClInclude Include="inc\Scripting\ScriptInstance.hpp" />
-    <ClInclude Include="inc\Scripting\ScriptField.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1803,8 +1791,23 @@
     <ClCompile Include="src\Scene\SceneCamera.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\SceneManager.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scene\Serialiser.cpp">
       <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptClass.cpp">
+      <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptField.cpp">
+      <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptInstance.cpp">
+      <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp">
+      <Filter>src\Scripting</Filter>
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp">
       <Filter>src\Scripting</Filter>
@@ -1812,10 +1815,5 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
-    <ClCompile Include="inc\Scene\SceneManager.cpp" />
-    <ClCompile Include="src\Scripting\ScriptClass.cpp" />
-    <ClCompile Include="src\Scripting\ScriptInstance.cpp" />
-    <ClCompile Include="src\Scripting\ScriptField.cpp" />
   </ItemGroup>
 </Project>

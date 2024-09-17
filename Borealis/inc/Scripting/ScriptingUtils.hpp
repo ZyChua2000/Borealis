@@ -108,9 +108,21 @@ namespace Borealis
 	*************************************************************************/
 	void PrintAssemblyTypes(MonoAssembly* assembly);
 
+	/*!***********************************************************************
+		\brief
+			Converts a ScriptFieldType to a corresponding string
+		\return
+			String of the ScriptFieldType
+	*************************************************************************/
 	std::string ScriptFieldType2String(ScriptFieldType type);
+
+	/*!***********************************************************************
+		\brief
+			Converts a MonoType to a ScriptFieldType
+		\return
+			ScriptFieldType of the MonoType
+	*************************************************************************/
 	ScriptFieldType MonoType2ScriptFieldType(MonoType* type);
-	MonoType* ScriptFieldType2MonoType(ScriptFieldType type);
 
 }
 

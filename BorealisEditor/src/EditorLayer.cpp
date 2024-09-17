@@ -51,7 +51,7 @@ namespace Borealis {
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
-		ScriptingSystem::Update(1.f);
+		ScriptingSystem::InitCoreAssembly();
 	}
 
 	void EditorLayer::Free()

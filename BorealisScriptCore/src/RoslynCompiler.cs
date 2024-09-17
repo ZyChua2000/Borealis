@@ -10,8 +10,9 @@ namespace Borealis
     {
         public RoslynCompiler()
         {
-            GameObject gameObject = new GameObject();
+            GameObject gameObject = new GameObject("C#Creation");
             gameObject.AddComponent<ExampleScript>();
+            InternalCalls.Log("ExampleScript Loaded to Game Object");
         }
         /*!***********************************************************************
             \brief

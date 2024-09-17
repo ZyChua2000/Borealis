@@ -40,6 +40,9 @@ namespace Borealis
 
 		static void RegisterCSharpClass(ScriptClass klass);
 
+		// Temp
+		static void InitCoreAssembly();
+
 		static std::unordered_map<std::string, Ref<ScriptClass>> mScriptClasses; // Library of available scripts
 
 

@@ -198,7 +198,8 @@ workspace "Borealis"
 		{
 			"Borealis",
 			"Assimp",
-			"ImGuiNodeEditor"
+			"ImGuiNodeEditor",
+			"BorealisScriptCore"
 		}
 
 		linkoptions

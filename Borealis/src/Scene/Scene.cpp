@@ -62,7 +62,6 @@ namespace Borealis
 			}
 
 			int timeStep = dt / 1.66667f;
-			auto view = mRegistry.view<ScriptComponent>();
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);

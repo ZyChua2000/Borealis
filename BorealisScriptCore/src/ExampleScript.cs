@@ -15,19 +15,12 @@ namespace Borealis
         
         public override void Start()
         {
-            Console.WriteLine("Hello World!");
+            InternalCalls.Log("ExampleScriptStart");
         }
 
         public override void Update()
         {
-            if (speed)
-            {
-                Console.WriteLine("Speed is true");
-            }
-            else
-            {
-                Console.WriteLine("Speed is false");
-            }
+            InternalCalls.Log("ExampleScriptUpdate");
         }
        
     }

@@ -34,15 +34,71 @@ namespace Borealis
 		static std::unordered_map<MonoType*, RemoveComponentFn> mRemoveComponentFunctions;
 	} GCFM;
 
+	/*!***********************************************************************
+		\brief
+			Registers all the internal functions that are written in this
+			file
+	*************************************************************************/
 	void RegisterInternals();
-	// Functions
+	
+	/*!***********************************************************************
+		\brief
+			Generates a UUID
+		\return
+			uint64_t of the generated UUID
+	*************************************************************************/
 	uint64_t GenerateUUID();
-	void Log(MonoString* text);
-	uint64_t CreateEntity(MonoString* text);
 
+	/*!***********************************************************************
+		\brief
+			Logs a text to the console
+		\param[in] text
+			Text to log
+	*************************************************************************/
+	void Log(MonoString* text);
+
+	/*!***********************************************************************
+		\brief
+			Creates an Entity
+		\param[in] name
+			Name of the Entity
+		\return 
+			uint64_t of the Entity ID
+	*************************************************************************/
+	uint64_t CreateEntity(MonoString* name);
+
+	/*!***********************************************************************
+		\brief
+			Removes a Component from an Entity
+		\param[in] entityID
+			Entity ID to remove the component from
+		\param[in] reflectionType
+			Type of the component to remove
+	*************************************************************************/
 	void Entity_RemoveComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+
+	/*!***********************************************************************
+		\brief
+			Add a Component from an Entity
+		\param[in] entityID
+			Entity ID to add the component from
+		\param[in] reflectionType
+			Type of the component to add
+	*************************************************************************/
 	void Entity_AddComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+
+	/*!***********************************************************************
+		\brief
+			Checks if an Entity has a specific component
+		\param[in] entityID
+			Entity ID to check the component from
+		\param[in] reflectionType
+			Type of the component to check
+		\return
+			True if has, false if not
+	*************************************************************************/
 	bool Entity_HasComponent(uint64_t entityID, MonoReflectionType* reflectionType);
+
 
 	void TransformComponent_GetTranslation(UUID uuid, glm::vec3* outTranslation);
 	void TransformComponent_SetTranslation(UUID uuid, glm::vec3* translation);

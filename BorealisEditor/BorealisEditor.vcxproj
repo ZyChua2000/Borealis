@@ -169,6 +169,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\BorealisScriptCore\BorealisScriptCore.csproj">
+      <Project>{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

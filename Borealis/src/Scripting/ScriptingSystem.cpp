@@ -60,6 +60,13 @@ namespace Borealis
 		}
 	}
 
+	void ScriptingSystem::InitCoreAssembly()
+	{
+		
+		InstantiateClass(sData->mRoslynAssembly, sData->mAppDomain, "Borealis", "RoslynCompiler");
+		
+	}
+
 	static void RegisterCSharpScriptsFromAssembly(MonoAssembly* assembly)
 	{
 		MonoImage* image = mono_assembly_get_image(assembly);
@@ -153,7 +160,6 @@ namespace Borealis
 
 	void ScriptingSystem::Update(float deltaTime)
 	{
-		InstantiateClass(sData->mRoslynAssembly, sData->mAppDomain, "Borealis", "RoslynCompiler");
 	}
 
 	template <typename T>
