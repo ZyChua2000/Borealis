@@ -81,7 +81,7 @@ namespace Borealis
 				int width, height;
 				packer.getDimensions(width, height);
 
-				atlas = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>("Test", (float)packer.getScale(), glyphs, fontGeometry, width, height);
+				atlas = CreateAndCacheAtlas<uint8_t, float, 4, msdf_atlas::mtsdfGenerator>("Test", (float)packer.getScale(), glyphs, fontGeometry, width, height);
 
 				msdfgen::destroyFont(font);
 			}
@@ -92,25 +92,6 @@ namespace Borealis
 	}
 	Ref<Model> MeshImporter::LoadFBXModel(const std::string& path)
 	{
-		//if (msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype()) {
-		//	if (msdfgen::FontHandle* font = loadFont(ft, "C:\\Windows\\Fonts\\arialbd.ttf")) {
-		//		msdfgen::Shape shape;
-		//		if (loadGlyph(shape, font, 'B', msdfgen::FONT_SCALING_EM_NORMALIZED)) {
-		//			shape.normalize();
-		//			//                      max. angle
-		//			edgeColoringSimple(shape, 3.0);
-		//			//          output width, height
-		//			msdfgen::Bitmap<float, 3> msdf(32, 32);
-		//			//                            scale, translation (in em's)
-		//			msdfgen::SDFTransformation t(msdfgen::Projection(32.0, msdfgen::Vector2(0.125, 0.125)), msdfgen::Range(0.125));
-		//			msdfgen::generateMSDF(msdf, shape, t);
-		//			msdfgen::savePng(msdf, "output.png");
-		//		}
-		//		msdfgen::destroyFont(font);
-		//	}
-		//	msdfgen::deinitializeFreetype(ft);
-		//}
-
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
