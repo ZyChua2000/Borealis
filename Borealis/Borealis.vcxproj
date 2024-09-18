@@ -194,8 +194,13 @@
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
     <ClInclude Include="inc\Scene\Scene.hpp" />
     <ClInclude Include="inc\Scene\SceneCamera.hpp" />
+    <ClInclude Include="inc\Scene\SceneManager.hpp" />
     <ClInclude Include="inc\Scene\ScriptEntity.hpp" />
     <ClInclude Include="inc\Scene\Serialiser.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptClass.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptField.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptInstance.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingUtils.hpp" />
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
@@ -712,7 +717,12 @@
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Scene\Serialiser.cpp" />
+    <ClCompile Include="src\Scripting\ScriptClass.cpp" />
+    <ClCompile Include="src\Scripting\ScriptField.cpp" />
+    <ClCompile Include="src\Scripting\ScriptInstance.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>

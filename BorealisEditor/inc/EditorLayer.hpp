@@ -57,7 +57,6 @@ namespace Borealis {
 		Ref<SubTexture2D> mSubTexture;
 		Ref<FrameBuffer> mViewportFrameBuffer;
 		Ref<FrameBuffer> mRuntimeFrameBuffer;
-		Ref<Scene> mActiveScene;
 		Ref<Scene> mEditorScene;
 
 		glm::vec2 mViewportSize = { 0.0f, 0.0f };
