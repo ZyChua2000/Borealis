@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Components.hpp>
 
 #include <Assets/MeshImporter.hpp>
+#include <Assets/FontImporter.hpp>
 
 namespace Borealis
 {
@@ -411,7 +412,7 @@ namespace Borealis
 			{
 				if (ImGui::Button("Mesh"))
 				{
-					atlas = MeshImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
+					atlas = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
 				}
 				if (ImGui::BeginDragDropTarget())
 				{

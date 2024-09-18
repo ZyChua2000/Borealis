@@ -42,6 +42,9 @@
     <ClInclude Include="inc\Project\Project.hpp">
       <Filter>inc\Project</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\FontImporter.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Assets\MeshImporter.cpp">
@@ -61,6 +64,9 @@
     </ClCompile>
     <ClCompile Include="src\Project\Project.cpp">
       <Filter>src\Project</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\FontImporter.cpp">
+      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
