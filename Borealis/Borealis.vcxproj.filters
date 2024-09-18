@@ -1672,6 +1672,9 @@
     <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp">
       <Filter>inc\Graphics\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1811,6 +1814,9 @@
     </ClCompile>
     <ClCompile Include="src\Graphics\Animation\VertexBone.cpp">
       <Filter>src\Graphics\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\SkinnedMesh.cpp">
+      <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

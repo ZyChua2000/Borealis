@@ -14,10 +14,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Assets/MeshImporter.hpp>
 #include <Graphics/Animation/VertexBone.hpp>
-
+#include <map>
 
 namespace Borealis
 {
+	std::map<std::string, unsigned int> MeshImporter::mBoneToIndexMap;
+
 	Ref<Model> MeshImporter::LoadFBXModel(const std::string& path)
 	{
 		Assimp::Importer importer;
@@ -90,8 +92,8 @@ namespace Borealis
 				bones[vertexid].AddBoneData(boneid, vw.mWeight);
 			}
 		}
-		// need to add bones to mesh
-		return Mesh(vertices, indices, normals, texCoords);
+	
+		return Mesh(vertices, indices, normals, texCoords, bones);
 	}
 
 	void MeshImporter::ProcessNode(aiNode* node, const aiScene* scene, Model& model)
@@ -108,20 +110,17 @@ namespace Borealis
 		}
 	}
 
-	int MeshImporter::GetBoneId(const aiBone* pbone) 
+	int MeshImporter::GetBoneId(const aiBone* pBone) 
 	{
-		static std::unordered_map<std::string, int> nametoindexmap;
-		std::string bonename(pbone->mName.C_Str());
+		std::string boneName(pBone->mName.C_Str());
 
-		if (nametoindexmap.find(bonename) == nametoindexmap.end())
+		if (mBoneToIndexMap.find(boneName) == mBoneToIndexMap.end())
 		{
-			int boneid = static_cast<int>(nametoindexmap.size());
-			nametoindexmap[bonename] = boneid;
+			int boneid = static_cast<int>(mBoneToIndexMap.size());
+			mBoneToIndexMap[boneName] = boneid;
 			return boneid;
 		}
-		else
-		{
-			return nametoindexmap[bonename];
-		}
+	
+		return mBoneToIndexMap[boneName];
 	}
 }
