@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file		AudioEngine.h
+\file		AudioEngine.hpp
 \author 	Valerie Koh
 \par    	email: v.koh\@digipen.edu
 \date   	September 11, 2024
