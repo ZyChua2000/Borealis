@@ -46,8 +46,15 @@ namespace Borealis {
 		void ScenePause();
 		void SceneResume();
 
+		void AddScene(std::string scenename, std::string scenepath);
+		void RemoveScene(std::string sceneName);
+		void DeserialiseEditorScene();
+
 		void LoadProject();
 		void NewProject();
+		void SaveProject();
+
+		void BuildProject();
 
 		void UIToolbar();
 

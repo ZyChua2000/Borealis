@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
+#include <string>
 #include <Core/Core.hpp>
 namespace Borealis
 {

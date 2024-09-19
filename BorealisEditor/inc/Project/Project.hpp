@@ -13,6 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <string>
+#include <filesystem>
 #ifndef PROJECT_HPP
 #define PROJECT_HPP
 namespace Borealis
@@ -24,6 +25,10 @@ namespace Borealis
 		static void SetProjectPath(std::string path);
 		static std::string GetProjectPath();
 		static std::string GetProjectName();
+		static void SaveProject();
+
+		static void BuildExportSettings(std::string buildPath, std::string buildName);
+		static void CopyFolder(const std::filesystem::path& source, const std::filesystem::path& destination);
 	private:
 		static std::string mProjectPath;
 		static std::string  mProjectName;

@@ -14,6 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef SCENE_MANAGER_HPP
 #define SCENE_MANAGER_HPP
+#include <unordered_map>
+#include <unordered_set>
 #include <Scene/Scene.hpp>
 #include <Scene/Entity.hpp>
 namespace Borealis
@@ -21,19 +23,17 @@ namespace Borealis
 	class SceneManager
 	{
 	public:
-		SceneManager();
-		~SceneManager();
-
-		static Ref<Scene> CreateScene(const std::string& name);
-		static void DestroyScene(Ref<Scene> scene);
-		static void SetActiveScene(Ref<Scene> scene);
+		static void AddScene(std::string sceneName, std::string scenePath);
+		static void RemoveScene(std::string sceneName);
+		static void SetActiveScene(std::string sceneName);
 		static Ref<Scene> GetActiveScene() { return mActiveScene; };
-		static void Update(float deltaTime);
-		static void Render();
 		static Entity GetEntity(uint64_t entityID);
+		static std::unordered_set<std::string> GetSceneNames();
+		static std::unordered_map<std::string, std::string>& GetSceneLibrary() { return mSceneLibrary; }
+		static void ClearSceneLibrary() { mSceneLibrary.clear(); }
 	private:
 		static Ref<Scene> mActiveScene;
-		static std::vector<Ref<Scene>> mScenes;
+		static std::unordered_map<std::string, std::string> mSceneLibrary; // Key: Scene Name, Value: Scene Path
 	};
 }
 

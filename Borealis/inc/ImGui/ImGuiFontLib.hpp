@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef IMGUI_FONT_LIB_HPP
 #define IMGUI_FONT_LIB_HPP
+#include <map>
 #include <imgui.h>
 namespace Borealis
 {
@@ -21,7 +22,7 @@ namespace Borealis
     public:
         enum Value {
             bold,
-            regular
+            regular,
         };
 
         ImGuiFonts(Value v) : value(v) {}
