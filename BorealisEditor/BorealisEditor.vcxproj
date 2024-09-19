@@ -152,14 +152,12 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
-    <ClInclude Include="inc\Project\Project.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
-    <ClCompile Include="src\Project\Project.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Borealis\Borealis.vcxproj">
@@ -176,6 +174,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </ProjectReference>
     <ProjectReference Include="..\BorealisScriptCore\BorealisScriptCore.csproj">
       <Project>{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BorealisRuntime\BorealisRuntime.vcxproj">
+      <Project>{9A670CF1-06F3-79B5-0F04-FDA97B0ED6B5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

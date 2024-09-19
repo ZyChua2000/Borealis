@@ -202,7 +202,8 @@ workspace "Borealis"
 			"Assimp",
 			"yaml-cpp",
 			"ImGuiNodeEditor",
-			"BorealisScriptCore"
+			"BorealisScriptCore",
+			"BorealisRuntime"
 		}
 
 		linkoptions
@@ -334,3 +335,61 @@ workspace "Borealis"
 		filter "configurations:Distribution"
 			optimize "Full"
 			symbols "Off"
+
+	project "BorealisRuntime"
+		location "BorealisRuntime"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++20"
+		staticruntime "off"
+		systemversion "latest"
+
+		targetdir("BorealisEditor")
+		objdir ("BorealisEditor/Resources/Scripts/Core/Intermediate")
+
+		files
+		{
+			"%{prj.name}/inc/**.hpp",
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"Borealis",
+			"Borealis/inc",
+			"Borealis/lib/spdlog/include",
+			"%{IncludeDir.GLM}",
+			"%{IncludeDir.ImGui}",
+			"%{prj.name}/inc",
+			"%{IncludeDir.ENTT}"
+		}
+
+		defines
+		{
+			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		}
+
+		links
+		{
+			"Borealis"
+		}
+		
+		linkoptions
+		{
+			"/NODEFAULTLIB:LIBCMTD"
+		}
+		
+		filter "configurations:Debug"
+			defines "_DEB"
+			symbols "On"
+			runtime "Debug"
+
+		filter "configurations:Release"
+			defines "_REL"
+			optimize "On"
+			runtime "Release"
+
+		filter "configurations:Distribution"
+			defines "_DIST"
+			optimize "On"
+			runtime "Release"

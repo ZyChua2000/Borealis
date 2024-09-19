@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Debug\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Debug\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -31,7 +31,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Release\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Release\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -43,7 +43,7 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Distribution\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Distribution\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>

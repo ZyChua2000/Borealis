@@ -18,12 +18,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGui/ImGuiLayer.hpp>
+#include <Core/Project.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Scene/Serialiser.hpp>	
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
-#include <Project/Project.hpp>
 
 
 namespace Borealis {
@@ -33,6 +33,12 @@ namespace Borealis {
 
 	void EditorLayer::Init()
 	{
+
+		if (Serialiser::DeserialiseEditorStyle())
+		{
+			ImGuiLayer::SetLightThemeColours();
+		}
+
 		PROFILE_FUNCTION();
 		mTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
 		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
@@ -740,6 +746,19 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+
+			// copy fmod dll and mono dll from editor
+			// Editor directory
+			std::string editorPath = std::filesystem::current_path().string();
+#ifndef _DEB
+			Project::CopyIndividualFile(editorPath + "\\fmod.dll", filepath + "\\fmod.dll");
+#else
+			Project::CopyIndividualFile(editorPath + "\\fmodL.dll", filepath + "\\fmodL.dll");
+#endif
+			Project::CopyIndividualFile(editorPath + "\\mono-2.0-sgen.dll", filepath + "\\mono-2.0-sgen.dll");
+			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
+			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
+			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
 			// Copy and paste .exe file
 		}
 	}
