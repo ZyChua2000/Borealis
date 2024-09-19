@@ -19,9 +19,12 @@ namespace BorealisRuntime
 {
 	class RuntimeLayer : public Borealis::Layer
 	{
+	public:
 		void Init() override;
 		void UpdateFn(float dt) override;
 		void Free() override;
+	private:
+		Borealis::Ref<Borealis::FrameBuffer> mRuntimeFrameBuffer;
 	};
 }
 
