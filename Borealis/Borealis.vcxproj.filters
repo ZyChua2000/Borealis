@@ -1818,5 +1818,8 @@
     <ClCompile Include="src\Graphics\SkinnedMesh.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Material.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,25 +1,27 @@
 /******************************************************************************/
 /*!
-\file		SkinnedMesh.hpp
+\file		Material.cpp
 \author 	Vanesius Faith Cheong
 \par    	email: vanesiusfaith.c\@digipen.edu
-\date   	September 15, 2024
-\brief		Declares the class for Skinned Mesh for rendering
+\date   	September 18, 2024
+\brief		Declares the class for Material for rendering
 
 Copyright (C) 2023 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-#ifndef SKINNEDMESH_HPP
-#define SKINNEDMESH_HPP
 
-class SkinnedMesh
+#include "BorealisPCH.hpp"
+#include "Graphics/Material.hpp"
+
+namespace Borealis
 {
-public:
-	
+	void Material::SetUniforms()
+	{
+		mShader->Bind();
+		// set all material uniforms
 
-private:
-
-};
-#endif
+		mShader->Unbind();
+	}
+}

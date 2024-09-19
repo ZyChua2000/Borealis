@@ -61,6 +61,9 @@ namespace Borealis
 				Destructor for Material
 		*************************************************************************/
 		~Material() {};
+
+		void SetUniforms();
+
 	private:
 		std::unordered_map<TextureMaps, Ref<Texture2D>> mTextureMaps; //Texture maps
 		std::unordered_map<TextureMaps, glm::vec4> mTextureMapColor; //Texture map colors

@@ -1,6 +1,6 @@
 /******************************************************************************/
 /*!
-\file		SkinnedMesh.hpp
+\file		SkinnedMeshImporter.hpp
 \author 	Vanesius Faith Cheong
 \par    	email: vanesiusfaith.c\@digipen.edu
 \date   	September 15, 2024
@@ -11,13 +11,13 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-#ifndef SKINNEDMESH_HPP
-#define SKINNEDMESH_HPP
+#ifndef SKINNEDMESHIMPORTER_HPP
+#define SKINNEDMESHIMPORTER_HPP
 
-class SkinnedMesh
+class SkinnedMeshImporter
 {
 public:
-	
+
 
 private:
 

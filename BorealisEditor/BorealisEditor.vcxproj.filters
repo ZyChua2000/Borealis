@@ -27,9 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\EditorLayer.hpp">
-      <Filter>inc</Filter>
-    </ClInclude>
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp">
       <Filter>inc\Panels</Filter>
     </ClInclude>
@@ -41,6 +38,12 @@
     </ClInclude>
     <ClInclude Include="inc\Assets\MeshImporter.hpp">
       <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\SkinnedMeshImporter.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EditorLayer.hpp">
+      <Filter>inc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +63,9 @@
       <Filter>src\Project</Filter>
     </ClCompile>
     <ClCompile Include="src\Assets\MeshImporter.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
