@@ -35,10 +35,26 @@ namespace Borealis
 
 		msdfgen::BitmapConstRef<T, N> bitmap = (msdfgen::BitmapConstRef<T, N>)generator.atlasStorage();
 
-		msdfgen::savePng(bitmap, "Test.png");
+		msdfgen::savePng(bitmap, "assets/fonts/FontAtlas/Test.png");
 
-		Ref<Texture2D> texture = Texture2D::Create(bitmap.width, bitmap.width);
-		texture->SetData((void*)bitmap.pixels, bitmap.width * bitmap.height * 4);
+		TextureInfo textureInfo;
+		textureInfo.width = bitmap.width;
+		textureInfo.height = bitmap.height;
+
+		switch (N)
+		{
+		case 3:
+			textureInfo.imageFormat = ImageFormat::RGB8;
+			break;
+		case 4:
+			textureInfo.imageFormat = ImageFormat::RGBA8;
+			break;
+		default:
+			break;
+		}
+
+		Ref<Texture2D> texture = Texture2D::Create(textureInfo);
+		texture->SetData((void*)bitmap.pixels, bitmap.width * bitmap.height * N);
 		return texture;
 	}
 
@@ -91,7 +107,7 @@ namespace Borealis
 						unsigned long long glyphSeed = (LCG_MULTIPLIER * (coloringSeed ^ i) + LCG_INCREMENT) * !!coloringSeed;
 						glyphs[i].edgeColoring(msdfgen::edgeColoringInkTrap, ANGLE_THRESHOULD, glyphSeed);
 						return true;
-						}, glyphs.size()).finish(threadCount);
+						}, (int)glyphs.size()).finish(threadCount);
 				}
 				else {
 					unsigned long long glyphSeed = coloringSeed;

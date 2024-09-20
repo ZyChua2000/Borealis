@@ -17,12 +17,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/OpenGL/TextureOpenGLImpl.hpp>
 namespace Borealis
 {
-	Ref<Texture2D> Texture2D::Create(const uint32_t& width, const uint32_t& height)
+	Ref<Texture2D> Texture2D::Create(const TextureInfo& textureInfo)
 	{
 		switch (Renderer::GetAPI())
 		{
 			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
-			case RendererAPI::API::OpenGL: return MakeRef<OpenGLTexture2D>(width,height);
+			case RendererAPI::API::OpenGL: return MakeRef<OpenGLTexture2D>(textureInfo);
 		}
 		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;

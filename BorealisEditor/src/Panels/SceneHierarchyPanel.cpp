@@ -607,8 +607,7 @@ namespace Borealis
 				}
 
 				char inputText[256] = "";
-				strncpy(inputText, component.text.c_str(), sizeof(inputText) - 1);
-				inputText[sizeof(inputText) - 1] = '\0';
+				strncpy_s(inputText, sizeof(inputText), component.text.c_str(), _TRUNCATE);
 				int textSize = component.fontSize;
 
 				ImGui::InputText("Text Input", inputText, IM_ARRAYSIZE(inputText));

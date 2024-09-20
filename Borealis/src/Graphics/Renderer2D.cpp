@@ -203,7 +203,7 @@ namespace Borealis
 
 
 
-		sData->mWhiteTexture = Texture2D::Create(1, 1);
+		sData->mWhiteTexture = Texture2D::Create(TextureInfo{});
 		uint32_t whiteTexData = 0xFFFFFFFF;
 		sData->mWhiteTexture->SetData(&whiteTexData, sizeof(uint32_t));
 
