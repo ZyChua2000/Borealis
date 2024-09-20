@@ -22,10 +22,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	struct FontInfo;
 	class FontImporter
 	{
 	public:
-		static Ref<Texture2D> generateAtlas(const char* fontFilename);
+		static Ref<FontInfo> generateAtlas(const char* fontFilename);
 	private:
 	};
 }

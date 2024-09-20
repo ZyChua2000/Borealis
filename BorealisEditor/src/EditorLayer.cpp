@@ -23,7 +23,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Project/Project.hpp>
 
 
+#include <Graphics/Font.hpp>
+#include <Assets/FontImporter.hpp>
+
 namespace Borealis {
+	Ref<Font> font = nullptr;
+
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
@@ -48,6 +53,10 @@ namespace Borealis {
 		SCPanel.SetContext(mActiveScene);
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
+		if (!font)
+			font = MakeRef<Font>(fontInfo);
 	}
 
 	void EditorLayer::Free()
@@ -104,6 +113,8 @@ namespace Borealis {
 			PROFILE_SCOPE("Renderer::Draw");
 			mViewportFrameBuffer->Bind();
 			mActiveScene->UpdateEditor(dt,mEditorCamera);
+
+			Renderer2D::DrawString("Hui Yan", font, glm::mat4(1.f), 0);
 
 			auto[mx,my] = ImGui::GetMousePos();
 			mx -= mViewportBounds[0].x;

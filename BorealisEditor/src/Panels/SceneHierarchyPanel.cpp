@@ -20,9 +20,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
 
+
 namespace Borealis
 {
-	Ref<Texture2D> atlas = nullptr;
 	static void DrawVec3Controller(const std::string& label, glm::vec3& values, float resetValue = 0.f, float columnWidth = 100.f)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -262,9 +262,6 @@ namespace Borealis
 
 	void SceneHierarchyPanel::DrawComponents(Entity entity)
 	{
-		//TODO STOPPED HERE
-		if(atlas)
-			ImGui::Image((ImTextureID)atlas->GetRendererID(), { 512,512 }, {0, 1}, {1, 0});
 		if (entity.HasComponent<TagComponent>())
 		{
 			auto& tag = entity.GetComponent<TagComponent>().Tag;
@@ -410,10 +407,8 @@ namespace Borealis
 
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
-				if (ImGui::Button("Mesh"))
-				{
-					atlas = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
-				}
+				ImGui::Button("Mesh");
+				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))

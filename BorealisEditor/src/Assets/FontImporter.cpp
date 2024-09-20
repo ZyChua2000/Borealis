@@ -16,6 +16,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <msdf-atlas-gen/msdf-atlas-gen.h>
 
+#include <Graphics/Font.hpp>
+
 namespace Borealis
 {
 	template<typename T, typename S, int N, msdf_atlas::GeneratorFunction<S, N> GenFunc>
@@ -40,9 +42,9 @@ namespace Borealis
 		return texture;
 	}
 
-	Ref<Texture2D> FontImporter::generateAtlas(const char* fontFilename)
+	Ref<FontInfo> FontImporter::generateAtlas(const char* fontFilename)
 	{
-		Ref<Texture2D> atlas = nullptr;
+		FontInfo fontInfo;
 		if (msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype())
 		{
 			if (msdfgen::FontHandle* font = loadFont(ft, "C:\\Windows\\Fonts\\arialbd.ttf"))
@@ -67,11 +69,11 @@ namespace Borealis
 				msdf_atlas::FontGeometry fontGeometry = msdf_atlas::FontGeometry(&glyphs);
 				int loadedGlyphs = fontGeometry.loadCharset(font, fontScale, charSet);
 
+				
 				msdf_atlas::TightAtlasPacker packer;
 				packer.setPixelRange(2.0);
 				packer.setMiterLimit(1.0);
-				packer.setOuterPixelPadding(0);
-				packer.setScale(40.0);
+				packer.setMinimumScale(24.0);
 				int remain = packer.pack(glyphs.data(), (int)glyphs.size());
 
 				int width, height;
@@ -99,13 +101,38 @@ namespace Borealis
 					}
 				}
 
-				atlas = CreateAndCacheAtlas<uint8_t, float, 4, msdf_atlas::mtsdfGenerator>("Test", (float)packer.getScale(), glyphs, fontGeometry, width, height);
+				fontInfo.ascenderY = fontGeometry.getMetrics().ascenderY;
+				fontInfo.descenderY = fontGeometry.getMetrics().descenderY;
+
+				fontInfo.fontAtlas = CreateAndCacheAtlas<uint8_t, float, 4, msdf_atlas::mtsdfGenerator>("Test", (float)packer.getScale(), glyphs, fontGeometry, width, height);
+
+				for (auto glyph1 = charSet.begin(); glyph1 != charSet.end(); glyph1++)
+				{
+					FontGlyph glyph;
+					const msdf_atlas::GlyphGeometry* glyphGeometry = fontGeometry.getGlyph(*glyph1);
+					if (glyphGeometry)
+					{
+						glyph.advance = fontGeometry.getGlyph(*glyph1)->getAdvance();
+						fontGeometry.getGlyph(*glyph1)->getQuadAtlasBounds(glyph.altasBound.left, glyph.altasBound.bottom, glyph.altasBound.right, glyph.altasBound.top);
+						fontGeometry.getGlyph(*glyph1)->getQuadPlaneBounds(glyph.planeBound.left, glyph.planeBound.bottom, glyph.planeBound.right, glyph.planeBound.top);
+						fontInfo.glyphs.insert({ *glyph1, glyph });
+					}
+
+					for (auto glyph2 = charSet.begin(); glyph2 != charSet.end(); glyph2++)
+					{
+						double glyphAdvance;
+						if (fontGeometry.getAdvance(glyphAdvance, *glyph1, *glyph2))
+						{
+							fontInfo.kernings.insert({ {*glyph1, *glyph2}, glyphAdvance });
+						}
+					}
+				}
 
 				msdfgen::destroyFont(font);
 			}
 			msdfgen::deinitializeFreetype(ft);
 		}
 
-		return atlas;
+		return MakeRef<FontInfo>(fontInfo);
 	}
 }
