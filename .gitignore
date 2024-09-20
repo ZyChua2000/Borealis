@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 !BorealisEditor/lib/assimp/code/AssetLib/Obj/
 !Borealis/lib/mono/lib/
+!BorealisEditor/lib/MSDF/Build/
+!BorealisEditor/lib/MSDF/Build/Debug/
+!BorealisEditor/lib/MSDF/Build/Release/

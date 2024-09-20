@@ -36,13 +36,20 @@ workspace "Borealis"
 	LibraryDir["FMOD"] = "lib/FMOD/lib"
 	LibraryDir["Mono_Debug"] = "lib/mono/lib/Deb"
 	LibraryDir["Mono_Release"] = "lib/mono/lib/Rel"
+	LibraryDir["MSDF_Debug"] = "lib/MSDF/Build/Debug"
+	LibraryDir["MSDF_Release"] = "lib/MSDF/Build/Release"
 
 	Library = {}
 	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
 	Library["FMOD_Release"] = "%{LibraryDir.FMOD}/fmod_vc.lib"
 	Library["Mono_Debug"] = "%{LibraryDir.Mono_Debug}/mono-2.0-sgen.lib"
 	Library["Mono_Release"] = "%{LibraryDir.Mono_Release}/mono-2.0-sgen.lib"
-
+	Library["MSDF_Debug_atlas"] = "%{LibraryDir.MSDF_Debug}/msdf-atlas-gen.lib"
+	Library["MSDF_Debug_core"] = "%{LibraryDir.MSDF_Debug}/msdfgen-core.lib"
+	Library["MSDF_Debug_ext"] = "%{LibraryDir.MSDF_Debug}/msdfgen-ext.lib"
+	Library["MSDF_Release_atlas"] = "%{LibraryDir.MSDF_Release}/msdf-atlas-gen.lib"
+	Library["MSDF_Release_core"] = "%{LibraryDir.MSDF_Release}/msdfgen-core.lib"
+	Library["MSDF_Release_ext"] = "%{LibraryDir.MSDF_Release}/msdfgen-ext.lib"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -198,20 +205,12 @@ workspace "Borealis"
 			"YAML_CPP_STATIC_DEFINE"
 		}
 
-		libdirs
-		{
-			"BorealisEditor/lib/MSDF/Build"
-		}
-
 		links
 		{
 			"Borealis",
 			"Assimp",
 			"yaml-cpp",
 			"ImGuiNodeEditor",
-			"msdf-atlas-gen",
-			"msdfgen-core",
-			"msdfgen-ext",
 			"BorealisScriptCore"
 		}
 
@@ -228,6 +227,12 @@ workspace "Borealis"
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
 			 }
+			links
+			{
+				"%{Library.MSDF_Debug_atlas}",
+				"%{Library.MSDF_Debug_core}",
+				"%{Library.MSDF_Debug_ext}"
+			}
 
 		filter "configurations:Release"
 			defines "_REL"
@@ -237,6 +242,12 @@ workspace "Borealis"
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
 			 }
+			 links
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}"
+			}
 
 		filter "configurations:Distribution"
 			defines "_DIST"
@@ -246,6 +257,12 @@ workspace "Borealis"
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
 			 }
+			 links
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}"
+			}
 
 			project "Sandbox"
 			location "Sandbox"
