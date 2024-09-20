@@ -661,7 +661,6 @@ namespace Borealis {
 		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		SCPanel.SetContext(mEditorScene);
 		mLatestFilePath.clear();
-		//SceneManager::SetActiveScene(mEditorScene);
 	}
 
 	void EditorLayer::OpenScene()

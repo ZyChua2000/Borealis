@@ -196,6 +196,7 @@ namespace Borealis
 					{
 						SceneManager::SetActiveScene(name);
 						mContext = SceneManager::GetActiveScene();
+						mSelectedEntity = {};
 					}
 					ImGui::EndPopup();
 				}
