@@ -47,7 +47,7 @@ namespace Borealis
 		FontInfo fontInfo;
 		if (msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype())
 		{
-			if (msdfgen::FontHandle* font = loadFont(ft, "C:\\Windows\\Fonts\\arialbd.ttf"))
+			if (msdfgen::FontHandle* font = loadFont(ft, fontFilename))
 			{
 				std::vector<msdf_atlas::GlyphGeometry> glyphs;
 
@@ -73,7 +73,7 @@ namespace Borealis
 				msdf_atlas::TightAtlasPacker packer;
 				packer.setPixelRange(2.0);
 				packer.setMiterLimit(1.0);
-				packer.setMinimumScale(24.0);
+				packer.setScale(40.0);
 				int remain = packer.pack(glyphs.data(), (int)glyphs.size());
 
 				int width, height;
@@ -82,10 +82,10 @@ namespace Borealis
 
 #define LCG_MULTIPLIER 6364136223846793005ull
 #define LCG_INCREMENT 1442695040888963407ull
-#define ANGLE_THRESHOULD 3
+#define ANGLE_THRESHOULD 3.0
 				int threadCount = 8;
 				uint64_t coloringSeed = 0;
-				bool expensiveColoring = false;
+				bool expensiveColoring = true;
 				if (expensiveColoring) {
 					msdf_atlas::Workload([&glyphs, &coloringSeed](int i, int threadNo) -> bool {
 						unsigned long long glyphSeed = (LCG_MULTIPLIER * (coloringSeed ^ i) + LCG_INCREMENT) * !!coloringSeed;

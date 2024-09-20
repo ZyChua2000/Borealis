@@ -45,7 +45,8 @@ float median(float r, float g, float b) {
 
 void main()
 {
-	vec4 texColor = v_Color * texture(u_Texture, v_TexCoord);
+	entityIDs = v_EntityID;
+
 	vec3 msd = texture(u_Texture, v_TexCoord).rgb;
 	float sd = median(msd.r, msd.g, msd.b);
 	float screenPxDistance = screenPxRange()*(sd - 0.5);
@@ -54,9 +55,7 @@ void main()
 		discard;
 
 	vec4 bgColor = vec4(0.0);
-    color = mix(bgColor, v_Color, opacity);
+    color = mix(bgColor, v_Color, opacity);	
 	if (color.a == 0.0)
 		discard;
-
-	//color = texture(u_Texture, v_TexCoord) * v_Color;
 }

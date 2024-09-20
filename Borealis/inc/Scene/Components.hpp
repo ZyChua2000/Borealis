@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Mesh.hpp>
 #include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
+#include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
 namespace Borealis
 {
@@ -245,6 +246,16 @@ namespace Borealis
 		Type type = Type::Point;
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
+	};
+
+	struct TextComponent
+	{
+		std::string text{};
+		uint32_t fontSize = 16;
+		Ref<Font> font;
+
+		TextComponent() = default;
+		TextComponent(const TextComponent&) = default;
 	};
 
 }

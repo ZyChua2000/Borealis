@@ -122,6 +122,14 @@ namespace Borealis
 				Renderer2D::DrawCircle(transform, circle.Colour, circle.thickness, circle.fade, (int)entity);
 			}
 		}
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
+				Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
+			}
+		}
 
 		Renderer2D::End();
 
@@ -172,6 +180,7 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newEntity, entity);
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
+		CopyComponent<TextComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -233,6 +242,7 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
@@ -327,6 +337,12 @@ namespace Borealis
 
 	template<>
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component)
 	{
 
 	}

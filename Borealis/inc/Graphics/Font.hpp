@@ -15,10 +15,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef Font_HPP
 #define Font_HPP
 
-#include <Graphics/Texture.hpp>
+#include <map>
 
 namespace Borealis
 {
+	class Texture2D; //forward declare
 	struct FontQuadBound
 	{
 		double top;
@@ -50,13 +51,14 @@ namespace Borealis
 		~Font();
 
 		Ref<FontInfo> GetFontInfo() const;
-		void SetAtlasTexture(Ref<Texture2D> atlas); // TEMP to remove
 
 		Ref<Texture2D> GetAtlasTexture() const;
 
+		static void SetDefaultFont(Ref<Font> defaultFont);
+		static Ref<Font> GetDefaultFont();
+
 	private:
-		Ref<FontInfo> mFontInfo;
-		Ref<Texture2D> mAtlasTexture = nullptr;
+		Ref<FontInfo> mFontInfo = nullptr;
 	};
 }
 

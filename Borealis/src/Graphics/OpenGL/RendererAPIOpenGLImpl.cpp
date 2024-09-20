@@ -41,7 +41,7 @@ namespace Borealis
 	void OpenGLRendererAPI::DrawElements(const Ref<VertexArray>& VAO, uint32_t count)
 	{
 		VAO->Bind();
-		uint32_t indexCount = count ? VAO->GetElementBuffer()->GetCount() : count; 
+		uint32_t indexCount = count ? count : VAO->GetElementBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, nullptr);
 	}
 

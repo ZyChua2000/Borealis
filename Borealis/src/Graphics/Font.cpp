@@ -14,13 +14,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <BorealisPCH.hpp>
 
+
+#include <Graphics/Texture.hpp>
 #include <Graphics/Font.hpp>
 
 namespace Borealis
 {
+	static Ref<Font> font;
+
 	Font::Font()
 	{
-		mAtlasTexture = nullptr;
+		mFontInfo = nullptr;
 	}
 
 	Font::Font(Ref<FontInfo> fontInfo)
@@ -38,14 +42,21 @@ namespace Borealis
 		return mFontInfo;
 	}
 
-	void Font::SetAtlasTexture(Ref<Texture2D> atlas)
-	{
-		mAtlasTexture = atlas;
-	}
-
 	Ref<Texture2D> Font::GetAtlasTexture() const
 	{
 		return mFontInfo->fontAtlas;
+	}
+
+	void Font::SetDefaultFont(Ref<Font> defaultFont)
+	{
+		font = defaultFont;
+	}
+
+	Ref<Font> Font::GetDefaultFont()
+	{
+		if (!font)
+			return nullptr;
+		return font;
 	}
 }
 

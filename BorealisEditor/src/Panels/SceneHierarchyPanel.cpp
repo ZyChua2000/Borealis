@@ -302,6 +302,7 @@ namespace Borealis
 			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
+			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
 
 			ImGui::EndPopup();
 			
@@ -598,6 +599,24 @@ namespace Borealis
 				}
 			});
 
+		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)
+			{
+				if (!component.font)
+				{
+					component.font = Font::GetDefaultFont();
+				}
 
+				char inputText[256] = "";
+				strncpy(inputText, component.text.c_str(), sizeof(inputText) - 1);
+				inputText[sizeof(inputText) - 1] = '\0';
+				int textSize = component.fontSize;
+
+				ImGui::InputText("Text Input", inputText, IM_ARRAYSIZE(inputText));
+
+				ImGui::InputInt("Text Size", &textSize);
+
+				component.text = inputText;
+				component.fontSize = textSize;
+			});
 	}
 }
