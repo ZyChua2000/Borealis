@@ -235,6 +235,7 @@ namespace Borealis
 		delete[] sData->QuadBufferBase;	
 		delete[] sData->CircleBufferBase;
 		delete[] sData->LineBufferBase;
+		delete[] sData->FontBufferBase;
 		delete sData;	
 	}
 	void Renderer2D::Begin(const OrthographicCamera& camera)
