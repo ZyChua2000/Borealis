@@ -212,8 +212,7 @@ workspace "Borealis"
 			"msdf-atlas-gen",
 			"msdfgen-core",
 			"msdfgen-ext",
-			"skia.dll"
-
+			"BorealisScriptCore"
 		}
 
 		linkoptions
@@ -228,7 +227,6 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Release"
@@ -238,7 +236,6 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 		filter "configurations:Distribution"
@@ -248,7 +245,6 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
 
 			project "Sandbox"

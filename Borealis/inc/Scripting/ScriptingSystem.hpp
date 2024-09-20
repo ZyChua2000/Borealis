@@ -14,8 +14,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef SCRIPTING_SYSTEM_HPP
 #define SCRIPTING_SYSTEM_HPP
+#include <unordered_map>
+#include <functional>
+#include <Core/Core.hpp>
+#include <Scene/Entity.hpp>
 namespace Borealis
 {
+	class ScriptClass;
 	class ScriptingSystem
 	{
 	public:
@@ -31,6 +36,16 @@ namespace Borealis
 		*************************************************************************/
 		static void Free();
 
+		static void Update(float deltaTime);
+
+		static void RegisterCSharpClass(ScriptClass klass);
+
+		// Temp
+		static void InitCoreAssembly();
+
+		static std::unordered_map<std::string, Ref<ScriptClass>> mScriptClasses; // Library of available scripts
+
+
 	private:
 
 		/*!***********************************************************************
@@ -44,6 +59,7 @@ namespace Borealis
 				Frees the Mono Runtime
 		*************************************************************************/
 		static void FreeMono();
+
 	};
 }
 #endif

@@ -107,6 +107,23 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Attributes.cs" />
+    <Compile Include="src\Behaviour.cs" />
+    <Compile Include="src\Components\Component.cs" />
+    <Compile Include="src\Components\SpriteRenderer.cs" />
+    <Compile Include="src\Components\Transform.cs" />
+    <Compile Include="src\ExampleScript.cs" />
+    <Compile Include="src\GameObject.cs" />
+    <Compile Include="src\InternalCalls.cs" />
+    <Compile Include="src\Math\Color.cs" />
+    <Compile Include="src\Math\Color32.cs" />
+    <Compile Include="src\Math\Mathf.cs" />
+    <Compile Include="src\Math\Quaternion.cs" />
+    <Compile Include="src\Math\Vector2.cs" />
+    <Compile Include="src\Math\Vector3.cs" />
+    <Compile Include="src\Math\Vector4.cs" />
+    <Compile Include="src\MonoBehaviour.cs" />
+    <Compile Include="src\Object.cs" />
     <Compile Include="src\RoslynCompiler.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -95,8 +95,7 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmodL.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Deb\MonoPosixHelper.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -124,8 +123,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\MonoPosixHelper.dll" "$(TargetDir)"</Co
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -153,8 +151,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -186,6 +183,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     </ProjectReference>
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BorealisScriptCore\BorealisScriptCore.csproj">
+      <Project>{F4D9AE64-E0BD-6FBA-491E-6A0D35215A3C}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
