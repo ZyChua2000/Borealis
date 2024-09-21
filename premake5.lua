@@ -259,10 +259,10 @@ workspace "Borealis"
 
 				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlicommon.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlidec.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2d.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16d.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetyped.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlibd1.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetype.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlib1.dll\" \"$(TargetDir)\""
 			 }
 			 links
 			{
@@ -283,10 +283,10 @@ workspace "Borealis"
 
 				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlicommon.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlidec.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2d.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16d.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetyped.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlibd1.dll\" \"$(TargetDir)\""
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetype.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlib1.dll\" \"$(TargetDir)\""
 			 }
 			 links
 			{

@@ -130,10 +130,10 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\zlibd1.dll" "$(TargetDir)
 copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
 copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlicommon.dll" "$(TargetDir)"
 copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlidec.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetyped.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlibd1.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetype.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -163,10 +163,10 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlibd1.dll" "$(TargetDi
 copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
 copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlicommon.dll" "$(TargetDir)"
 copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlidec.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetyped.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlibd1.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetype.dll" "$(TargetDir)"
+copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
