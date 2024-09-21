@@ -26,6 +26,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Project/Project.hpp>
 
 
+#include <Graphics/Font.hpp>
+#include <Assets/FontImporter.hpp>
+
 namespace Borealis {
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
@@ -53,6 +56,14 @@ namespace Borealis {
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		ScriptingSystem::InitCoreAssembly();
+		
+		//TEMP
+		{
+			//Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
+			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
+
+			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+		}
 	}
 
 	void EditorLayer::Free()

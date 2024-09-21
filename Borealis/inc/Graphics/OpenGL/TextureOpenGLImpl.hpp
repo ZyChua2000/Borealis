@@ -35,12 +35,10 @@ namespace Borealis
 		/*!***********************************************************************
 			\brief
 				Constructor for OpenGL Texture2D
-			\param[in] width
-				Width of the texture
-			\param[in] height
-				Height of the texture
+			\param[in] textureInfo
+				Infomation of the texture
 		*************************************************************************/
-		OpenGLTexture2D(const uint32_t& width, const uint32_t& height);
+		OpenGLTexture2D(const TextureInfo& textureInfo);
 
 		/*!***********************************************************************
 			\brief

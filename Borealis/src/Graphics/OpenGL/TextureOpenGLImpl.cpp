@@ -67,12 +67,36 @@ namespace Borealis
 		stbi_image_free(data);
 	}
 
-	OpenGLTexture2D::OpenGLTexture2D(const uint32_t& width, const uint32_t& height) : mWidth(width), mHeight(height)
+	static GLenum ImageFormatToGLDataFormat(ImageFormat format)
+	{
+		switch (format)
+		{
+		case ImageFormat::RGB8:  return GL_RGB;
+		case ImageFormat::RGBA8: return GL_RGBA;
+		}
+
+		BOREALIS_CORE_ASSERT(false);
+		return 0;
+	}
+
+	static GLenum ImageFormatToGLInternalFormat(ImageFormat format)
+	{
+		switch (format)
+		{
+		case ImageFormat::RGB8:  return GL_RGB8;
+		case ImageFormat::RGBA8: return GL_RGBA8;
+		}
+
+		BOREALIS_CORE_ASSERT(false);
+		return 0;
+	}
+
+	OpenGLTexture2D::OpenGLTexture2D(const TextureInfo& textureInfo) : mWidth(textureInfo.width), mHeight(textureInfo.height)
 	{
 		PROFILE_FUNCTION();
 
-		mInternalFormat = GL_RGBA8;
-		mDataFormat = GL_RGBA;
+		mInternalFormat = ImageFormatToGLInternalFormat(textureInfo.imageFormat);
+		mDataFormat = ImageFormatToGLDataFormat(textureInfo.imageFormat);
 
 		glGenTextures(1, &mRendererID);
 		glBindTexture(GL_TEXTURE_2D, mRendererID);

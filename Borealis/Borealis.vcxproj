@@ -163,10 +163,12 @@
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
+    <ClInclude Include="inc\Graphics\Font.hpp" />
     <ClInclude Include="inc\Graphics\Framebuffer.hpp" />
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp" />
     <ClInclude Include="inc\Graphics\Material.hpp" />
     <ClInclude Include="inc\Graphics\Mesh.hpp" />
+    <ClInclude Include="inc\Graphics\Model.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\BufferOpenGLImpl.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\FramebufferOpenGLImpl.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\GraphicsContextOpenGLImpl.hpp" />
@@ -178,6 +180,7 @@
     <ClInclude Include="inc\Graphics\RenderCommand.hpp" />
     <ClInclude Include="inc\Graphics\Renderer.hpp" />
     <ClInclude Include="inc\Graphics\Renderer2D.hpp" />
+    <ClInclude Include="inc\Graphics\Renderer3D.hpp" />
     <ClInclude Include="inc\Graphics\RendererAPI.hpp" />
     <ClInclude Include="inc\Graphics\Shader.hpp" />
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp" />
@@ -684,8 +687,10 @@
     <ClCompile Include="src\Events\EventWindow.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
+    <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\FramebufferOpenGLImpl.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\GraphicsContextOpenGLImpl.cpp" />
@@ -697,6 +702,7 @@
     <ClCompile Include="src\Graphics\RenderCommand.cpp" />
     <ClCompile Include="src\Graphics\Renderer.cpp" />
     <ClCompile Include="src\Graphics\Renderer2D.cpp" />
+    <ClCompile Include="src\Graphics\Renderer3D.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\SubTexture2D.cpp" />
