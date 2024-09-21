@@ -82,25 +82,18 @@
       <AdditionalIncludeDirectories>..\Borealis;..\Borealis\inc;..\Borealis\lib\spdlog\include;..\Borealis\lib\yaml-cpp\include;..\Borealis\lib\glm;..\Borealis\lib\imgui;inc;..\Borealis\lib\ENTT\include;..\Borealis\lib\ImGuizmo;lib\imgui-node-editor;lib\assimp\include;lib\MSDF\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>lib\MSDF\Build\Debug\msdf-atlas-gen.lib;lib\MSDF\Build\Debug\msdfgen-core.lib;lib\MSDF\Build\Debug\msdfgen-ext.lib;lib\MSDF\Build\Debug\freetyped.lib;lib\MSDF\Build\Debug\libpng16d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>lib\MSDF\Build\Debug\msdf-atlas-gen.lib;lib\MSDF\Build\Debug\msdfgen-core.lib;lib\MSDF\Build\Debug\msdfgen-ext.lib;lib\MSDF\Build\Debug\freetyped.lib;lib\MSDF\Build\Debug\libpng16d.lib;lib\MSDF\Build\Debug\bz2d.lib;lib\MSDF\Build\Debug\brotlidec.lib;lib\MSDF\Build\Debug\brotlicommon.lib;lib\Assimp\Build\Deb\Assimp.lib;..\Borealis\lib\yaml-cpp\Build\Deb\yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmodL.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\brotlicommon.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\brotlidec.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\bz2d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\libpng16d.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\freetyped.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\zlibd1.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -114,7 +107,7 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\zlibd1.dll" "$(TargetDir)
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -122,18 +115,11 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Debug\dll\zlibd1.dll" "$(TargetDir)
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lib\MSDF\Build\Release\msdf-atlas-gen.lib;lib\MSDF\Build\Release\msdfgen-core.lib;lib\MSDF\Build\Release\msdfgen-ext.lib;lib\MSDF\Build\Release\freetype.lib;lib\MSDF\Build\Release\libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>lib\MSDF\Build\Release\msdf-atlas-gen.lib;lib\MSDF\Build\Release\msdfgen-core.lib;lib\MSDF\Build\Release\msdfgen-ext.lib;lib\MSDF\Build\Release\freetype.lib;lib\MSDF\Build\Release\libpng16.lib;lib\MSDF\Build\Release\bz2.lib;lib\MSDF\Build\Release\brotlidec.lib;lib\MSDF\Build\Release\brotlicommon.lib;lib\Assimp\Build\Rel\Assimp.lib;..\Borealis\lib\yaml-cpp\Build\Rel\yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlicommon.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlidec.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetype.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -147,7 +133,7 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -155,18 +141,11 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>lib\MSDF\Build\Release\msdf-atlas-gen.lib;lib\MSDF\Build\Release\msdfgen-core.lib;lib\MSDF\Build\Release\msdfgen-ext.lib;lib\MSDF\Build\Release\freetype.lib;lib\MSDF\Build\Release\libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>lib\MSDF\Build\Release\msdf-atlas-gen.lib;lib\MSDF\Build\Release\msdfgen-core.lib;lib\MSDF\Build\Release\msdfgen-ext.lib;lib\MSDF\Build\Release\freetype.lib;lib\MSDF\Build\Release\libpng16.lib;lib\MSDF\Build\Release\bz2.lib;lib\MSDF\Build\Release\brotlidec.lib;lib\MSDF\Build\Release\brotlicommon.lib;lib\Assimp\Build\Rel\Assimp.lib;..\Borealis\lib\yaml-cpp\Build\Rel\yaml-cpp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlicommon.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\brotlidec.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\bz2.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\libpng16.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\freetype.dll" "$(TargetDir)"
-copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -189,12 +168,6 @@ copy /B /Y "..\BorealisEditor\lib\MSDF\Build\Release\dll\zlib1.dll" "$(TargetDir
   <ItemGroup>
     <ProjectReference Include="..\Borealis\Borealis.vcxproj">
       <Project>{765073D6-621D-CEE1-8B36-BC8977620370}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\assimp\Assimp.vcxproj">
-      <Project>{5234E0A7-3ED6-0A7E-2791-1ED213D291CE}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Borealis\lib\yaml-cpp\yaml-cpp.vcxproj">
-      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>
