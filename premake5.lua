@@ -44,12 +44,18 @@ workspace "Borealis"
 	Library["FMOD_Release"] = "%{LibraryDir.FMOD}/fmod_vc.lib"
 	Library["Mono_Debug"] = "%{LibraryDir.Mono_Debug}/mono-2.0-sgen.lib"
 	Library["Mono_Release"] = "%{LibraryDir.Mono_Release}/mono-2.0-sgen.lib"
+
 	Library["MSDF_Debug_atlas"] = "%{LibraryDir.MSDF_Debug}/msdf-atlas-gen.lib"
 	Library["MSDF_Debug_core"] = "%{LibraryDir.MSDF_Debug}/msdfgen-core.lib"
 	Library["MSDF_Debug_ext"] = "%{LibraryDir.MSDF_Debug}/msdfgen-ext.lib"
+	Library["MSDF_Debug_FreeType"] = "%{LibraryDir.MSDF_Debug}/freetyped.lib"
+	Library["MSDF_Debug_LibPNG"] = "%{LibraryDir.MSDF_Debug}/libpng16d.lib"
+
 	Library["MSDF_Release_atlas"] = "%{LibraryDir.MSDF_Release}/msdf-atlas-gen.lib"
 	Library["MSDF_Release_core"] = "%{LibraryDir.MSDF_Release}/msdfgen-core.lib"
 	Library["MSDF_Release_ext"] = "%{LibraryDir.MSDF_Release}/msdfgen-ext.lib"
+	Library["MSDF_Release_FreeType"] = "%{LibraryDir.MSDF_Release}/freetype.lib"
+	Library["MSDF_Release_LibPNG"] = "%{LibraryDir.MSDF_Release}/libpng16.lib"
 
 	group "Dependencies"
 		include "Borealis/lib/GLFW"
@@ -226,12 +232,21 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/brotlicommon.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/brotlidec.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/bz2d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/libpng16d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/freetyped.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Debug/dll/zlibd1.dll\" \"$(TargetDir)\""
 			 }
 			links
 			{
 				"%{Library.MSDF_Debug_atlas}",
 				"%{Library.MSDF_Debug_core}",
-				"%{Library.MSDF_Debug_ext}"
+				"%{Library.MSDF_Debug_ext}",
+				"%{Library.MSDF_Debug_FreeType}",
+				"%{Library.MSDF_Debug_LibPNG}"
 			}
 
 		filter "configurations:Release"
@@ -241,12 +256,21 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlicommon.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlidec.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetyped.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlibd1.dll\" \"$(TargetDir)\""
 			 }
 			 links
 			{
 				"%{Library.MSDF_Release_atlas}",
 				"%{Library.MSDF_Release_core}",
-				"%{Library.MSDF_Release_ext}"
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}"
 			}
 
 		filter "configurations:Distribution"
@@ -256,12 +280,21 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlicommon.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/brotlidec.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/bz2d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/libpng16d.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/freetyped.dll\" \"$(TargetDir)\"",
+				"{COPYFILE} \"../BorealisEditor/lib/MSDF/Build/Release/dll/zlibd1.dll\" \"$(TargetDir)\""
 			 }
 			 links
 			{
 				"%{Library.MSDF_Release_atlas}",
 				"%{Library.MSDF_Release_core}",
-				"%{Library.MSDF_Release_ext}"
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}"
 			}
 
 			project "Sandbox"
