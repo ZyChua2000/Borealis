@@ -209,34 +209,14 @@ namespace Borealis {
 				{
 
 					if (ImGui::MenuItem("New","Ctrl+N")) {
-						NewScene();
-					}
-
-					if (ImGui::MenuItem("Open...","Ctrl+O")) {
-						OpenScene();
-					}
-
-					if (ImGui::MenuItem("Save As...","Ctrl+Shift+S")) {
-
-						SaveSceneAs();
-					}
-
-					if (ImGui::MenuItem("Save","Ctrl+S")) {
-						SaveScene();
-					}
-
-					if (ImGui::MenuItem("New Project"))
-					{
 						NewProject();
 					}
 
-					if (ImGui::MenuItem("Open Project"))
-					{
+					if (ImGui::MenuItem("Open...","Ctrl+O")) {
 						LoadProject();
 					}
 
-					if (ImGui::MenuItem("Save Project"))
-					{
+					if (ImGui::MenuItem("Save","Ctrl+S")) {
 						SaveProject();
 					}
 
@@ -537,7 +517,7 @@ namespace Borealis {
 		{
 			if (control)
 			{
-				NewScene();
+				NewProject();
 			}
 			break;
 		}
@@ -545,20 +525,15 @@ namespace Borealis {
 		{
 			if (control)
 			{
-				OpenScene();
+				LoadProject();
 			}
 			break;
 		}
 		case Key::S:
 		{
-			// Save
-			if (control && shift)
+			if (control)
 			{
-				SaveSceneAs();
-			}
-			else if (control)
-			{
-				SaveScene();
+				SaveProject();
 			}
 			break;
 		}
@@ -660,7 +635,6 @@ namespace Borealis {
 		mEditorScene = MakeRef<Scene>();
 		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		SCPanel.SetContext(mEditorScene);
-		mLatestFilePath.clear();
 	}
 
 	void EditorLayer::OpenScene()
@@ -680,7 +654,6 @@ namespace Borealis {
 
 			Serialiser serialiser(mEditorScene);
 			serialiser.DeserialiseScene(filepath);
-			mLatestFilePath = filepath;
 
 			SceneManager::GetActiveScene() = mEditorScene;
 			if (hasRuntimeCamera)
@@ -706,31 +679,7 @@ namespace Borealis {
 
 	void EditorLayer::SaveScene()
 	{
-		if (!mLatestFilePath.empty())
-		{
-			Serialiser serialiser(mEditorScene);
-			serialiser.SerialiseScene(mLatestFilePath);
-		}
-		else
-		{
-			SaveSceneAs();
-		}
-	}
 
-	void EditorLayer::SaveSceneAs()
-	{
-		std::string filepath = FileDialogs::SaveFile("Scene File (*.sc)\0*.sc\0");
-		if (!filepath.empty())
-		{
-			Serialiser serialiser(mEditorScene);
-			// Ensure extension is added if there's no extension explicitly written
-			if (filepath.substr(filepath.size() - 3) != ".sc")
-			{
-				filepath += ".sc";
-			}
-			serialiser.SerialiseScene(filepath);
-			mLatestFilePath = filepath;
-		}
 	}
 
 	void EditorLayer::BuildProject()
@@ -831,7 +780,6 @@ namespace Borealis {
 		mEditorScene = SceneManager::GetActiveScene();
 		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		SCPanel.SetContext(mEditorScene);
-		mLatestFilePath = SceneManager::GetSceneLibrary()[mEditorScene->GetName()];
 	}
 
 	void EditorLayer::LoadProject()
@@ -843,9 +791,7 @@ namespace Borealis {
 			Project::SetProjectPath(filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
-
 			DeserialiseEditorScene();
-
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
@@ -864,9 +810,15 @@ namespace Borealis {
 			// exclude project name from file path
 			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
-
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+
+			// Create default empty scene
+			SceneManager::ClearSceneLibrary();
+			SceneManager::CreateScene("untitled", assetsPath);
+			SceneManager::SetActiveScene("untitled");
+
 			CBPanel.SetCurrDir(assetsPath);
+			EditorLayer::DeserialiseEditorScene();
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
@@ -877,6 +829,7 @@ namespace Borealis {
 	void EditorLayer::SaveProject()
 	{
 		Project::SaveProject();
+		SceneManager::SaveActiveScene();
 	}
 
 	void EditorLayer::UIToolbar()

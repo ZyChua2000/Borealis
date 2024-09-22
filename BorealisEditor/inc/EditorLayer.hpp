@@ -40,7 +40,6 @@ namespace Borealis {
 		void OpenScene();
 		void OpenScene(const char * filename);
 		void SaveScene();
-		void SaveSceneAs();
 		void ScenePlay();
 		void SceneStop();
 		void ScenePause();
@@ -84,7 +83,6 @@ namespace Borealis {
 		EditorCamera mEditorCamera;
 		SceneHierarchyPanel SCPanel;
 		ContentBrowserPanel CBPanel;
-		std::string mLatestFilePath;
 		bool mLightMode = true;
 
 		enum class SceneState

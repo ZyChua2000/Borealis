@@ -8,6 +8,19 @@ namespace Borealis
 {
     Ref<Scene> SceneManager::mActiveScene;
     std::unordered_map<std::string, std::string> SceneManager::mSceneLibrary;
+
+    void SceneManager::CreateScene(std::string sceneName, std::string scenePath)
+    {
+
+        std::transform(sceneName.begin(), sceneName.end(), sceneName.begin(), ::tolower);
+
+        scenePath += "/" + sceneName + ".sc";
+        Ref<Scene> newScene = MakeRef<Scene>(sceneName, scenePath);
+        Serialiser serialiser(newScene);
+        serialiser.SerialiseScene(scenePath);
+        mSceneLibrary[sceneName] = scenePath;
+    }
+
     void SceneManager::AddScene(std::string sceneName, std::string scenePath)
     {
         std::transform(sceneName.begin(), sceneName.end(), sceneName.begin(), ::tolower);
@@ -50,5 +63,15 @@ namespace Borealis
 		for (auto& scene : mSceneLibrary)
 			sceneNames.insert(scene.first);
 		return sceneNames;
+    }
+    void SceneManager::SaveActiveScene()
+    {
+        if (mActiveScene)
+        {
+			Serialiser serialiser(mActiveScene);
+			serialiser.SerialiseScene(mSceneLibrary[mActiveScene->GetScenePath()]);
+		}
+		else
+			BOREALIS_CORE_ERROR("No active scene to save");
     }
 }

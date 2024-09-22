@@ -23,6 +23,7 @@ namespace Borealis
 	class SceneManager
 	{
 	public:
+		static void CreateScene(std::string sceneName, std::string scenePath);
 		static void AddScene(std::string sceneName, std::string scenePath);
 		static void RemoveScene(std::string sceneName);
 		static void SetActiveScene(std::string sceneName);
@@ -31,6 +32,7 @@ namespace Borealis
 		static std::unordered_set<std::string> GetSceneNames();
 		static std::unordered_map<std::string, std::string>& GetSceneLibrary() { return mSceneLibrary; }
 		static void ClearSceneLibrary() { mSceneLibrary.clear(); }
+		static void SaveActiveScene();
 	private:
 		static Ref<Scene> mActiveScene;
 		static std::unordered_map<std::string, std::string> mSceneLibrary; // Key: Scene Name, Value: Scene Path

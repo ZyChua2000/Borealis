@@ -38,11 +38,6 @@ namespace Borealis
 		std::string filepath = projectFilePath;
 		filepath += "/Assets";
 		std::filesystem::create_directories(filepath);
-
-		filepath = projectFilePath;
-		filepath += "/Scenes";
-		std::filesystem::create_directories(filepath);
-
 		
 		YAML::Emitter out;
 		out << YAML::BeginMap;
