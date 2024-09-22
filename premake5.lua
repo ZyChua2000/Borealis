@@ -86,7 +86,7 @@ workspace "Borealis"
 
 	group "Dependencies"
 		include "Borealis/lib/Tracy"
-		include "Borealis/lib/Assimp"
+		include "BorealisEditor/lib/Assimp"
 		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
