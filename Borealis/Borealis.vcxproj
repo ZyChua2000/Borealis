@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -104,7 +104,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -129,7 +129,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -164,10 +164,12 @@
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
+    <ClInclude Include="inc\Graphics\Font.hpp" />
     <ClInclude Include="inc\Graphics\Framebuffer.hpp" />
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp" />
     <ClInclude Include="inc\Graphics\Material.hpp" />
     <ClInclude Include="inc\Graphics\Mesh.hpp" />
+    <ClInclude Include="inc\Graphics\Model.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\BufferOpenGLImpl.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\FramebufferOpenGLImpl.hpp" />
     <ClInclude Include="inc\Graphics\OpenGL\GraphicsContextOpenGLImpl.hpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="inc\Graphics\RenderCommand.hpp" />
     <ClInclude Include="inc\Graphics\Renderer.hpp" />
     <ClInclude Include="inc\Graphics\Renderer2D.hpp" />
+    <ClInclude Include="inc\Graphics\Renderer3D.hpp" />
     <ClInclude Include="inc\Graphics\RendererAPI.hpp" />
     <ClInclude Include="inc\Graphics\Shader.hpp" />
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp" />
@@ -686,8 +689,10 @@
     <ClCompile Include="src\Events\EventWindow.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
+    <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
+    <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\FramebufferOpenGLImpl.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\GraphicsContextOpenGLImpl.cpp" />
@@ -699,6 +704,7 @@
     <ClCompile Include="src\Graphics\RenderCommand.cpp" />
     <ClCompile Include="src\Graphics\Renderer.cpp" />
     <ClCompile Include="src\Graphics\Renderer2D.cpp" />
+    <ClCompile Include="src\Graphics\Renderer3D.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
     <ClCompile Include="src\Graphics\SubTexture2D.cpp" />
@@ -721,23 +727,8 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="lib\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\GLAD\GLAD.vcxproj">
-      <Project>{5D4A857C-4981-860D-F26D-6C10DE83020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\ImGui\ImGui.vcxproj">
-      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\yaml-cpp\yaml-cpp.vcxproj">
-      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
-    </ProjectReference>
     <ProjectReference Include="lib\Tracy\Tracy.vcxproj">
       <Project>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\JoltPhysics\JoltPhysics.vcxproj">
-      <Project>{812AB974-EDDF-316A-76D4-2B41E288286E}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

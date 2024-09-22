@@ -19,6 +19,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
+#include <Assets/MeshImporter.hpp>
+#include <Assets/FontImporter.hpp>
+
 
 namespace Borealis
 {
@@ -539,6 +542,7 @@ namespace Borealis
 			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
+			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
 
 			ImGui::EndPopup();
 			
@@ -645,13 +649,23 @@ namespace Borealis
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Mesh");
+				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
 						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
+						std::string meshName = "assets/";
+						meshName += data;
+						// Should reference off asset manager's mesh
+						// imageName += ".meta";
+						// Read UUID from .meta
+						// Example Interface: component.mesh = AssetManager::GetMesh(UUID);
+						//component.mesh->Load(filename);
+						//Model model;
+						//LoadModel(meshName, model);
+						//component.Model = MakeRef<Model>(model); 
+						component.Model = MeshImporter::LoadFBXModel(meshName);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -830,6 +844,23 @@ namespace Borealis
 				}
 			});
 
+		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)
+			{
+				if (!component.font)
+				{
+					component.font = Font::GetDefaultFont();
+				}
 
+				char inputText[256] = "";
+				strncpy_s(inputText, sizeof(inputText), component.text.c_str(), _TRUNCATE);
+				int textSize = component.fontSize;
+
+				ImGui::InputText("Text Input", inputText, IM_ARRAYSIZE(inputText));
+
+				ImGui::InputInt("Text Size", &textSize);
+
+				component.text = inputText;
+				component.fontSize = textSize;
+			});
 	}
 }

@@ -418,7 +418,7 @@ namespace Borealis
 				if (meshFilterComponent)
 				{
 					auto& mfc = loadedEntity.AddComponent<MeshFilterComponent>();
-					mfc.Mesh = nullptr; // TODO: Load Mesh via UUID
+					mfc.Model = nullptr; // TODO: Load Mesh via UUID
 				}
 
 				auto meshRendererComponent = entity["MeshRendererComponent"];
