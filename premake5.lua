@@ -48,8 +48,6 @@ workspace "Borealis"
 	LibraryDir["YAML_Release"] = "lib/yaml-cpp/lib/Rel"
 	LibraryDir["IMGUI_Debug"] = "lib/IMGUI/lib/Deb"
 	LibraryDir["IMGUI_Release"] = "lib/IMGUI/lib/Rel"
-	LibraryDir["Assimp_Debug"] = "lib/Assimp/lib/Deb"
-	LibraryDir["Assimp_Release"] = "lib/Assimp/lib/Rel"
 
 	Library = {}
 	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
@@ -85,11 +83,10 @@ workspace "Borealis"
 	Library["YAML_Release"] = "%{LibraryDir.YAML_Release}/yaml-cpp.lib"
 	Library["IMGUI_Debug"] = "%{LibraryDir.IMGUI_Debug}/IMGUI.lib"
 	Library["IMGUI_Release"] = "%{LibraryDir.IMGUI_Release}/IMGUI.lib"
-	Library["Assimp_Debug"] = "%{LibraryDir.Assimp_Debug}/Assimp.lib"
-	Library["Assimp_Release"] = "%{LibraryDir.Assimp_Release}/Assimp.lib"
 
 	group "Dependencies"
 		include "Borealis/lib/Tracy"
+		include "Borealis/lib/Assimp"
 		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
@@ -250,7 +247,8 @@ workspace "Borealis"
 		{
 			"Borealis",
 			"ImGuiNodeEditor",
-			"BorealisScriptCore"
+			"BorealisScriptCore",
+			"Assimp"
 		}
 
 		filter "configurations:Debug"
@@ -271,7 +269,6 @@ workspace "Borealis"
 				"%{Library.MSDF_Debug_LibBZ2}",
 				"%{Library.MSDF_Debug_LibBrotli}",
 				"%{Library.MSDF_Debug_LibBrotliCommon}",
-				"%{Library.Assimp_Debug}",
 				"Borealis/%{Library.YAML_Debug}"
 			}
 
@@ -293,7 +290,6 @@ workspace "Borealis"
 				"%{Library.MSDF_Release_LibBZ2}",
 				"%{Library.MSDF_Release_LibBrotli}",
 				"%{Library.MSDF_Release_LibBrotliCommon}",
-				"%{Library.Assimp_Release}",
 				"Borealis/%{Library.YAML_Release}"
 			}
 
@@ -315,7 +311,6 @@ workspace "Borealis"
 				"%{Library.MSDF_Release_LibBZ2}",
 				"%{Library.MSDF_Release_LibBrotli}",
 				"%{Library.MSDF_Release_LibBrotliCommon}",
-				"%{Library.Assimp_Release}",
 				"Borealis/%{Library.YAML_Release}"
 			}
 
