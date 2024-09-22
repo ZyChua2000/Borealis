@@ -69,7 +69,7 @@ namespace Borealis
         if (mActiveScene)
         {
 			Serialiser serialiser(mActiveScene);
-			serialiser.SerialiseScene(mSceneLibrary[mActiveScene->GetScenePath()]);
+			serialiser.SerialiseScene(mSceneLibrary[mActiveScene->GetName()]);
 		}
 		else
 			BOREALIS_CORE_ERROR("No active scene to save");
