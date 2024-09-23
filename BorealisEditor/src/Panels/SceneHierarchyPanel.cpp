@@ -13,10 +13,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <Panels/SceneHierarchyPanel.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
+#include <Scene/SceneManager.hpp>
 #include <Scripting/ScriptInstance.hpp>
+#include <Panels/SceneHierarchyPanel.hpp>
 
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
@@ -166,12 +167,51 @@ namespace Borealis
 	{
 
 		ImGui::Begin("Scene Hierarchy");
-
-		for (auto& item : mContext->mRegistry.view<entt::entity>())
+		ImGuiIO& io = ImGui::GetIO();
+		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
+		ImGui::PushFont(bold);
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+		for (auto& [name, path] : SceneManager::GetSceneLibrary())
 		{
-			Entity entity { item, mContext.get() };
-			DrawEntityNode(entity);
+			
+			if (SceneManager::GetActiveScene()->GetName() == name)
+			{
+				ImGui::PopStyleColor();
+				ImGui::MenuItem(name.c_str());
+				ImGui::PopFont();
+				for (auto& item : mContext->mRegistry.view<entt::entity>())
+				{
+					
+					Entity entity{ item, mContext.get() };
+					DrawEntityNode(entity);
+				}
+				ImGui::PushFont(bold);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+			}
+			else
+			{
+				ImGui::MenuItem(name.c_str());
+				ImGui::PopStyleColor();
+				ImGui::PopFont();
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Load Scene"))
+					{
+						SceneManager::SetActiveScene(name);
+						mContext = SceneManager::GetActiveScene();
+						mSelectedEntity = {};
+					}
+					ImGui::EndPopup();
+				}
+				ImGui::PushFont(bold);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+			}
 		}
+
+		ImGui::PopFont();
+		ImGui::PopStyleColor();
+
+		
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) // Deselect
 		{

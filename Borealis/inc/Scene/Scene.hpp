@@ -29,7 +29,7 @@ namespace Borealis
 		friend class SceneHierarchyPanel;
 		friend class Serialiser;
 
-		Scene();
+		Scene(std::string name = "newScene", std::string scenepath = "");
 		virtual ~Scene();
 		static Ref<Scene> Copy(const Ref<Scene>& other);
 
@@ -45,7 +45,8 @@ namespace Borealis
 		void ResizeViewport(const uint32_t& width, const uint32_t& height);
 
 		entt::registry& GetRegistry() { return mRegistry; }
-
+		const std::string& GetName() const { return mName; }
+		const std::string& GetScenePath() const { return mScenePath; }
 		
 
 		void RuntimeStart();
@@ -58,6 +59,8 @@ namespace Borealis
 
 		entt::registry mRegistry;
 		uint32_t mViewportWidth = 0, mViewportHeight = 0;
+		std::string mName;
+		std::string mScenePath;
 		std::unordered_map<UUID, entt::entity> mEntityMap;
 
 		bool hasRuntimeStarted = false;

@@ -148,6 +148,9 @@
     <ClInclude Include="inc\Core\LoggerSystem.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Core\Project.hpp">
+      <Filter>inc\Core</Filter>
+    </ClInclude>
     <ClInclude Include="inc\Core\UUID.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
@@ -1720,6 +1723,9 @@
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\LoggerSystem.cpp">
+      <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Core\Project.cpp">
       <Filter>src\Core</Filter>
     </ClCompile>
     <ClCompile Include="src\Core\UUID.cpp">

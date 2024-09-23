@@ -40,14 +40,20 @@ namespace Borealis {
 		void OpenScene();
 		void OpenScene(const char * filename);
 		void SaveScene();
-		void SaveSceneAs();
 		void ScenePlay();
 		void SceneStop();
 		void ScenePause();
 		void SceneResume();
 
+		void AddScene(std::string scenename, std::string scenepath);
+		void RemoveScene(std::string sceneName);
+		void DeserialiseEditorScene();
+
 		void LoadProject();
 		void NewProject();
+		void SaveProject();
+
+		void BuildProject();
 
 		void UIToolbar();
 
@@ -77,7 +83,6 @@ namespace Borealis {
 		EditorCamera mEditorCamera;
 		SceneHierarchyPanel SCPanel;
 		ContentBrowserPanel CBPanel;
-		std::string mLatestFilePath;
 		bool mLightMode = true;
 
 		enum class SceneState
