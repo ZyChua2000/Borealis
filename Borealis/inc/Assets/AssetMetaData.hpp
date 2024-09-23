@@ -15,21 +15,26 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef AssetMetaData_HPP
 #define AssetMetaData_HPP
 
+#include <chrono>
+#include <ctime>
+#include <filesystem>
+
 #include <Assets/Asset.hpp>
 
 namespace Borealis
 {
 	struct AssetMetaData
 	{
-		AssetHandle assetHandle;
+		std::string name;
 
-		//Asset Type
+		AssetHandle Handle;
+		AssetType Type;
 
-		//Asset File Path
+		std::filesystem::path CachePath;
+		std::filesystem::path SourcePath;
 
-		//Asset Source File Path
-
-		//Asset Import Date
+		std::time_t importDate;
+		std::time_t cacheCreationDate;
 	};
 }
 

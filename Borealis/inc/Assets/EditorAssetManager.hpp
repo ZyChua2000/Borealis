@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define EditorAssetManager_HPP
 
 #include <unordered_map>
+#include <filesystem>
 
 #include <Assets/AssetManager.hpp>
 #include <Assets/AssetMetaData.hpp>
@@ -28,12 +29,15 @@ namespace Borealis
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;
 
 		//Load all available assets into Registry
-		void LoadRegistry();
+		void LoadRegistry(std::filesystem::path assetPath, std::filesystem::path assetRegistryPath);
 
 		//clear Registry and loaded assets
 		void Clear();
-
 	private:
+		//void RegisterAsset(std::filesystem::path path);
+
+		//void RegisterAllAssets(std::filesystem::path path);
+
 
 	private:
 		std::unordered_map<AssetHandle, AssetMetaData> mAssetRegistry;

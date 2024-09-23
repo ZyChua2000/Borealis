@@ -17,16 +17,21 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Core/UUID.hpp>
 
+#include <filesystem>
+
 namespace Borealis
 {
 	using AssetHandle = UUID;
 
 	enum class AssetType
 	{
+		None,
 		Audio,
 		Mesh,
 		Shader,
-		Texture,
+		Texture2D,
+		Folder,
+		Scene,
 	};
 
 	class Asset
@@ -34,6 +39,9 @@ namespace Borealis
 	public:
 		AssetHandle mAssetHandle;
 		AssetType mAssetType;
+
+		static AssetType GetAssetTypeFromExtention(std::filesystem::path path);
+		static std::string AssetTypeToString(AssetType type);
 	};
 }
 

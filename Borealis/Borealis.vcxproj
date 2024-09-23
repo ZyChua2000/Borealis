@@ -144,19 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
-    <ClInclude Include="inc\Assets\Asset.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\AssetManager.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+    <ClInclude Include="inc\Assets\Asset.hpp" />
+    <ClInclude Include="inc\Assets\AssetManager.hpp" />
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp" />
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp" />
+    <ClInclude Include="inc\Assets\MetaSerializer.hpp">
       <SubType>
       </SubType>
     </ClInclude>
@@ -689,6 +681,15 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\Assets\Asset.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="src\Assets\EditorAssetManager.cpp" />
+    <ClCompile Include="src\Assets\MetaSerializer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

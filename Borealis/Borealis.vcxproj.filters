@@ -4,6 +4,9 @@
     <Filter Include="inc">
       <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Assets">
+      <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -88,6 +91,9 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Assets">
+      <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -109,15 +115,21 @@
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Assets">
-      <UniqueIdentifier>{2a4b0282-971b-46c2-90d8-506266db6c65}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="inc\Assets">
-      <UniqueIdentifier>{5fb4f270-09e1-441e-ba84-37bc5613f0be}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\Assets\Asset.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -1687,16 +1699,7 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
-      <Filter>inc\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\Asset.hpp">
-      <Filter>inc\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\AssetManager.hpp">
-      <Filter>inc\Assets</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+    <ClInclude Include="inc\Assets\MetaSerializer.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1706,6 +1709,9 @@
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp">
       <Filter>lib\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\EditorAssetManager.cpp">
+      <Filter>src\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>
@@ -1856,6 +1862,12 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\MetaSerializer.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\Asset.cpp">
+      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

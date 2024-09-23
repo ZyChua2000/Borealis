@@ -111,7 +111,12 @@ namespace Borealis
 			}
 			else
 			{
-				if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
+				if (extension == ".meta")
+				{
+					ImGui::PopID();
+					continue;
+				}
+				else if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
 				{
 
 				}

@@ -21,8 +21,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
-	std::string Project::mProjectPath = "";
-	std::string Project::mProjectName = "";
+	ProjectInfo Project::mProjectInfo;
+
+	std::shared_ptr<AssetManager> Project::mAssetManager = nullptr;
+
 	void Project::CreateProject(std::string name, std::string path)
 	{
 		// Create Project file
@@ -36,12 +38,15 @@ namespace Borealis
 		std::filesystem::create_directories(fileSystemPaths);
 
 		std::string filepath = projectFilePath;
-		filepath += "/Assets";
+		filepath += mProjectInfo.AssetsDirectoryName;
 		std::filesystem::create_directories(filepath);
 		
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "ProjectName" << YAML::Value << name;
+
+		mProjectInfo.ProjectPath = projectFilePath;
+		mProjectInfo.AssetsPath = projectFilePath;
 
 		projectFilePath += "/Project.brproj";
 
@@ -49,8 +54,7 @@ namespace Borealis
 		outStream << out.c_str();
 		outStream.close();
 
-		mProjectPath = path + "\\" + name;
-		mProjectName = name;
+		mProjectInfo.ProjectName = name;
 	}
 	void Project::SetProjectPath(std::string path)
 	{
@@ -61,7 +65,11 @@ namespace Borealis
 		{
 			if (std::filesystem::exists(projectFile))
 			{
-				mProjectPath = projectFilePath;
+				mProjectInfo.ProjectPath = projectFilePath;
+				mProjectInfo.AssetsPath = projectFilePath + mProjectInfo.AssetsDirectoryName;
+				mProjectInfo.AssetsRegistryPath = projectFilePath + mProjectInfo.AssetsRegistryName;
+
+				GetEditorAssetsManager()->LoadRegistry(mProjectInfo.AssetsPath, mProjectInfo.AssetsRegistryPath);
 
 				std::ifstream inStream(projectFile);
 				std::stringstream ss;
@@ -69,7 +77,7 @@ namespace Borealis
 				inStream.close();
 
 				YAML::Node data = YAML::Load(ss.str());
-				mProjectName = data["ProjectName"].as<std::string>();
+				mProjectInfo.ProjectName = data["ProjectName"].as<std::string>();
 
 				// Load Scenes
 				if (data["Scenes"])
@@ -96,18 +104,23 @@ namespace Borealis
 	}
 	std::string Project::GetProjectPath()
 	{
-		return mProjectPath;
+		return mProjectInfo.ProjectPath.string();
 	}
 	std::string Project::GetProjectName()
 	{
-		return mProjectName;
+		return mProjectInfo.ProjectName;
+	}
+
+	std::string Project::GetAssetsPath()
+	{
+		return std::string();
 	}
 
 	void Project::SaveProject()
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap;
-		out << YAML::Key << "ProjectName" << YAML::Value << mProjectName;
+		out << YAML::Key << "ProjectName" << YAML::Value << mProjectInfo.ProjectName;
 		out << YAML::Key << "Scenes" << YAML::Value << YAML::BeginSeq;
 		for (auto& [sceneName,scenePath] : SceneManager::GetSceneLibrary())
 		{
@@ -121,7 +134,7 @@ namespace Borealis
 
 		
 
-		std::string projectFilePath = mProjectPath;
+		std::string projectFilePath = mProjectInfo.ProjectPath.string();
 		projectFilePath += "/Project.brproj";
 
 		std::ofstream outStream(projectFilePath);
@@ -187,6 +200,14 @@ namespace Borealis
 	void Project::CopyIndividualFile(const std::filesystem::path& source, const std::filesystem::path& destination)
 	{
 		std::filesystem::copy(source, destination, std::filesystem::copy_options::overwrite_existing);
+	}
+
+	std::shared_ptr<EditorAssetManager> Project::GetEditorAssetsManager()
+	{
+		if (!mAssetManager)
+			mAssetManager = std::make_shared<EditorAssetManager>();
+
+		return std::static_pointer_cast<EditorAssetManager>(mAssetManager);
 	}
 }
 
