@@ -144,6 +144,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\Assets\Asset.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />

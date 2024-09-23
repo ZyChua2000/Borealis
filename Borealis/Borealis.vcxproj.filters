@@ -109,6 +109,12 @@
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Assets">
+      <UniqueIdentifier>{2a4b0282-971b-46c2-90d8-506266db6c65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Assets">
+      <UniqueIdentifier>{5fb4f270-09e1-441e-ba84-37bc5613f0be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
@@ -1677,6 +1683,18 @@
     </ClInclude>
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\Asset.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+      <Filter>inc\Assets</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

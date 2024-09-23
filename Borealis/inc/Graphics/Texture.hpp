@@ -15,6 +15,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 #include <Core/Core.hpp>
+#include <Assets/Asset.hpp>
+
 namespace Borealis
 {
 	enum class ImageFormat
@@ -34,7 +36,7 @@ namespace Borealis
 	};
 
 	// Base Class for Textures, Completely Virtual
-	class Texture 
+	class Texture : public Asset
 	{
 	public:
 		/*!***********************************************************************
