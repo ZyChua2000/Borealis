@@ -248,6 +248,7 @@ workspace "Borealis"
 			"Borealis",
 			"ImGuiNodeEditor",
 			"BorealisScriptCore",
+			"BorealisRuntime",
 			"Assimp"
 		}
 
@@ -388,11 +389,11 @@ workspace "Borealis"
 			"packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
 			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
 			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
-			"System.Buffers",
-			"System.Collections.Immutable",
-			"System.Memory",
-			"System.Reflection.Metadata",
-			"System.Runtime.CompilerServices.Unsafe"
+			"packages/System.Buffers.4.5.1/lib/netstandard2.0/Systems.Buffer",
+			"packages/System.Collections.Immutable.8.0.0/lib/netstandard2.0/System.Collections.Immutable",
+			"packages/System.Memory.4.5.5/lib/netstandard2.0/System.Memory",
+			"packages/System.Reflection.Metadata.8.0.0/lib/netstandard2.0/System.Reflection.Metadata",
+			"packages/System.Runtime.CompilerServices.Unsafe.6.0.0/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe"
 		}
 
 		filter "configurations:Debug"
@@ -406,3 +407,56 @@ workspace "Borealis"
 		filter "configurations:Distribution"
 			optimize "Full"
 			symbols "Off"
+
+	project "BorealisRuntime"
+		location "BorealisRuntime"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++20"
+		staticruntime "on"
+		systemversion "latest"
+
+		targetdir("BorealisEditor")
+		objdir ("BorealisEditor/Resources/Scripts/Core/Intermediate")
+
+		files
+		{
+			"%{prj.name}/inc/**.hpp",
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"Borealis",
+			"Borealis/inc",
+			"Borealis/lib/spdlog/include",
+			"%{IncludeDir.GLM}",
+			"%{IncludeDir.ImGui}",
+			"%{prj.name}/inc",
+			"%{IncludeDir.ENTT}"
+		}
+
+		defines
+		{
+			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		}
+
+		links
+		{
+			"Borealis"
+		}
+
+		filter "configurations:Debug"
+			defines "_DEB"
+			symbols "On"
+			runtime "Debug"
+
+		filter "configurations:Release"
+			defines "_REL"
+			optimize "On"
+			runtime "Release"
+
+		filter "configurations:Distribution"
+			defines "_DIST"
+			optimize "On"
+			runtime "Release"

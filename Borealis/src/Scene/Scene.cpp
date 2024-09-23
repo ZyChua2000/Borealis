@@ -24,7 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
-	Scene::Scene()
+	Scene::Scene(std::string name, std::string path) : mName(name), mScenePath(path)
 	{
 
 	}
@@ -76,6 +76,7 @@ namespace Borealis
 			//------------------------
 			// Physics Simulation here
 			//------------------------
+
 
 			for (auto entity : view)
 			{

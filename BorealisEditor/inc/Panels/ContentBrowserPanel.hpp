@@ -30,6 +30,8 @@ namespace Borealis
 		void SetCurrDir(std::string path);
 
 	private:
+		 bool isCreatingScene = false;
+		 char textBuffer[128] = { 0 };
 		 std::filesystem::path mCurrDir;
 		 std::string mAssetsDir;
 		 int mThumbnailSize = 256;
