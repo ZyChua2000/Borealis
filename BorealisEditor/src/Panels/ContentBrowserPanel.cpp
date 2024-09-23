@@ -14,9 +14,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <imgui.h>
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Scene/SceneManager.hpp>
 
 namespace Borealis
 {
+	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
 		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
@@ -41,6 +43,44 @@ namespace Borealis
 				mCurrDir = mCurrDir.parent_path();
 			}
 		}
+
+		// Right click
+		{
+			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems;
+			if (ImGui::BeginPopupContextWindow(0, popupFlagsItem))
+			{
+				if (ImGui::MenuItem("Create Folder"))
+				{
+					// Create a folder
+				}
+				if (ImGui::MenuItem("Create Scene"))
+				{
+					// Create a Scene
+					isCreatingScene = true;
+					latestMousePos = ImGui::GetMousePos();
+				}
+				ImGui::EndPopup();
+			}
+		}
+
+		if (isCreatingScene)
+		{
+			ImGui::SetNextWindowPos(latestMousePos);
+			ImGui::Begin("Create File", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::InputText("##Filename", textBuffer, sizeof(textBuffer));
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+				isCreatingScene = false; // Exit rename mode
+				// Create a Scene
+				SceneManager::CreateScene(textBuffer, mCurrDir.string());
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
+				isCreatingScene = false; // Cancel rename
+			}
+			ImGui::End();
+		}
+
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
 		int cellSize = mThumbnailSize + mPadding;
@@ -111,6 +151,17 @@ namespace Borealis
 			else
 			{
 				ImGui::ImageButton((ImTextureID)screenID, {printedThumbnailSize, printedThumbnailSize}, {0,1}, {1,0}, -1 , {0,0,0,0}, {1,1,1,1});
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Delete"))
+					{
+					}
+
+					if (ImGui::MenuItem("Rename"))
+					{
+					}
+					ImGui::EndPopup();
+				}
 			}
 			if (ImGui::BeginDragDropSource())
 			{
@@ -125,6 +176,8 @@ namespace Borealis
 				}
 				else
 				{
+					// convert extension to all lower case
+					std::transform(extension.begin(), extension.end(), extension.begin(), [](unsigned char c) { return std::tolower(c); });
 					if (extension == ".png" || extension == ".jpg" || extension == ".jpeg")
 					{
 						payloadName = "DragDropImageItem";
@@ -132,6 +185,10 @@ namespace Borealis
 					else if (extension == ".sc")
 					{
 						payloadName = "DragDropSceneItem";
+					}
+					else if (extension == ".fbx" || extension == ".obj")
+					{
+						payloadName = "DragDropMeshItem";
 					}
 				}
 

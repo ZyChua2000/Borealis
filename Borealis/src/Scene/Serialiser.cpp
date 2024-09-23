@@ -401,6 +401,7 @@ namespace Borealis
 				if (cameraComponent)
 				{
 					auto& cc = loadedEntity.AddComponent<CameraComponent>();
+					cc.Camera.SetViewportSize(1920, 1080);
 					cc.Camera.SetCameraType((SceneCamera::CameraType)cameraComponent["Camera"]["CameraType"].as<int>());
 					cc.Camera.SetOrthoSize(cameraComponent["Camera"]["OrthoSize"].as<float>());
 					cc.Camera.SetOrthoNear(cameraComponent["Camera"]["OrthoNear"].as<float>());
@@ -417,7 +418,7 @@ namespace Borealis
 				if (meshFilterComponent)
 				{
 					auto& mfc = loadedEntity.AddComponent<MeshFilterComponent>();
-					mfc.Mesh = nullptr; // TODO: Load Mesh via UUID
+					mfc.Model = nullptr; // TODO: Load Mesh via UUID
 				}
 
 				auto meshRendererComponent = entity["MeshRendererComponent"];

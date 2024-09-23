@@ -18,13 +18,16 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGui/ImGuiLayer.hpp>
+#include <Core/Project.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Scene/Serialiser.hpp>	
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
-#include <Project/Project.hpp>
 
+
+#include <Graphics/Font.hpp>
+#include <Assets/FontImporter.hpp>
 
 namespace Borealis {
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
@@ -33,6 +36,12 @@ namespace Borealis {
 
 	void EditorLayer::Init()
 	{
+
+		if (Serialiser::DeserialiseEditorStyle())
+		{
+			ImGuiLayer::SetLightThemeColours();
+		}
+
 		PROFILE_FUNCTION();
 		mTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
 		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
@@ -43,16 +52,25 @@ namespace Borealis {
 		
 		FrameBufferProperties propsRuntime{ 1280, 720, false };
 		propsRuntime.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
-		mRuntimeFrameBuffer = FrameBuffer::Create(props);
+		mRuntimeFrameBuffer = FrameBuffer::Create(propsRuntime);
 
 		mEditorScene = MakeRef<Scene>();
-		SceneManager::SetActiveScene(mEditorScene);
+		SceneManager::AddScene(mEditorScene->GetName(), mEditorScene->GetScenePath());
+		SceneManager::SetActiveScene(mEditorScene->GetName());
 
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		ScriptingSystem::InitCoreAssembly();
+		
+		//TEMP
+		{
+			//Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
+			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
+
+			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+		}
 	}
 
 	void EditorLayer::Free()
@@ -202,30 +220,20 @@ namespace Borealis {
 				{
 
 					if (ImGui::MenuItem("New","Ctrl+N")) {
-						NewScene();
-					}
-
-					if (ImGui::MenuItem("Open...","Ctrl+O")) {
-						OpenScene();
-					}
-
-					if (ImGui::MenuItem("Save As...","Ctrl+Shift+S")) {
-
-						SaveSceneAs();
-					}
-
-					if (ImGui::MenuItem("Save","Ctrl+S")) {
-						SaveScene();
-					}
-
-					if (ImGui::MenuItem("New Project"))
-					{
 						NewProject();
 					}
 
-					if (ImGui::MenuItem("Open Project"))
-					{
+					if (ImGui::MenuItem("Open...","Ctrl+O")) {
 						LoadProject();
+					}
+
+					if (ImGui::MenuItem("Save","Ctrl+S")) {
+						SaveProject();
+					}
+
+					if (ImGui::MenuItem("Build Project"))
+					{
+						BuildProject();
 					}
 					
 
@@ -388,9 +396,18 @@ namespace Borealis {
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropSceneItem"))
 					{
 						const char* data= (const char*)payload->Data;
-						std::string sceneName = "assets/";
-						sceneName += data;
-						OpenScene(sceneName.c_str());
+						if (Project::GetProjectPath() != "")
+						{
+							std::string sceneName = Project::GetProjectPath() + "/assets/";
+							sceneName += data;
+							OpenScene(sceneName.c_str());
+						}
+						else
+						{
+							std::string sceneName = "assets/";
+							sceneName += data;
+							OpenScene(sceneName.c_str());
+						}
 					}
 
 					ImGui::EndDragDropTarget();
@@ -511,7 +528,7 @@ namespace Borealis {
 		{
 			if (control)
 			{
-				NewScene();
+				NewProject();
 			}
 			break;
 		}
@@ -519,20 +536,15 @@ namespace Borealis {
 		{
 			if (control)
 			{
-				OpenScene();
+				LoadProject();
 			}
 			break;
 		}
 		case Key::S:
 		{
-			// Save
-			if (control && shift)
+			if (control)
 			{
-				SaveSceneAs();
-			}
-			else if (control)
-			{
-				SaveScene();
+				SaveProject();
 			}
 			break;
 		}
@@ -634,8 +646,6 @@ namespace Borealis {
 		mEditorScene = MakeRef<Scene>();
 		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
 		SCPanel.SetContext(mEditorScene);
-		mLatestFilePath.clear();
-		SceneManager::SetActiveScene(mEditorScene);
 	}
 
 	void EditorLayer::OpenScene()
@@ -655,7 +665,6 @@ namespace Borealis {
 
 			Serialiser serialiser(mEditorScene);
 			serialiser.DeserialiseScene(filepath);
-			mLatestFilePath = filepath;
 
 			SceneManager::GetActiveScene() = mEditorScene;
 			if (hasRuntimeCamera)
@@ -665,48 +674,51 @@ namespace Borealis {
 		}
 	}
 
-	void EditorLayer::OpenScene(const char* filename)
+	void EditorLayer::OpenScene(const char* Cfilepath)
 	{
-		std::string filepath = filename;
+		std::string filepath = Cfilepath;
 		if (!filepath.empty())
 		{
-			mEditorScene = MakeRef<Scene>();
-			mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
-			SCPanel.SetContext(mEditorScene);
+			std::string fileName = filepath.substr(filepath.find_last_of("/\\") + 1);
+			fileName = fileName.substr(0, fileName.find_last_of("."));
+			AddScene(fileName, filepath);
+			SceneManager::SetActiveScene(fileName);
 
-			Serialiser serialiser(mEditorScene);
-			serialiser.DeserialiseScene(filepath);
-			mLatestFilePath = filepath;
-			SceneManager::SetActiveScene(mEditorScene);
+			DeserialiseEditorScene();
 		}
 	}
 
 	void EditorLayer::SaveScene()
 	{
-		if (!mLatestFilePath.empty())
-		{
-			Serialiser serialiser(mEditorScene);
-			serialiser.SerialiseScene(mLatestFilePath);
-		}
-		else
-		{
-			SaveSceneAs();
-		}
+
 	}
 
-	void EditorLayer::SaveSceneAs()
+	void EditorLayer::BuildProject()
 	{
-		std::string filepath = FileDialogs::SaveFile("Scene File (*.sc)\0*.sc\0");
+		std::string filepath = FileDialogs::SaveFile("Folder Name");
 		if (!filepath.empty())
 		{
-			Serialiser serialiser(mEditorScene);
-			// Ensure extension is added if there's no extension explicitly written
-			if (filepath.substr(filepath.size() - 3) != ".sc")
-			{
-				filepath += ".sc";
-			}
-			serialiser.SerialiseScene(filepath);
-			mLatestFilePath = filepath;
+			std::string projectName = filepath.substr(filepath.find_last_of("/\\") + 1);
+			std::filesystem::create_directory(filepath);
+			// make a new folder
+			Project::BuildExportSettings(filepath, projectName);
+			// Copy and paste assets
+			std::filesystem::create_directory(filepath + "\\Assets");
+			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+
+			// copy fmod dll and mono dll from editor
+			// Editor directory
+			std::string editorPath = std::filesystem::current_path().string();
+#ifndef _DEB
+			Project::CopyIndividualFile(editorPath + "\\fmod.dll", filepath + "\\fmod.dll");
+#else
+			Project::CopyIndividualFile(editorPath + "\\fmodL.dll", filepath + "\\fmodL.dll");
+#endif
+			Project::CopyIndividualFile(editorPath + "\\mono-2.0-sgen.dll", filepath + "\\mono-2.0-sgen.dll");
+			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
+			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
+			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
+			// Copy and paste .exe file
 		}
 	}
 
@@ -764,14 +776,33 @@ namespace Borealis {
 		mSceneState = SceneState::Play;
 	}
 
+	void EditorLayer::AddScene(std::string scenename, std::string scenepath)
+	{
+		SceneManager::AddScene(scenename, scenepath);
+	}
+
+	void EditorLayer::RemoveScene(std::string sceneName)
+	{
+		SceneManager::RemoveScene(sceneName);
+	}
+
+	void EditorLayer::DeserialiseEditorScene()
+	{
+		mEditorScene = SceneManager::GetActiveScene();
+		mEditorScene->ResizeViewport((uint32_t)mViewportSize.x, (uint32_t)mViewportSize.y);
+		SCPanel.SetContext(mEditorScene);
+	}
+
 	void EditorLayer::LoadProject()
 	{
 		std::string filepath = FileDialogs::OpenFile("Borealis Project File (*.brproj)\0*.brproj\0");
 		if (!filepath.empty())
 		{
+			SceneManager::ClearSceneLibrary();
 			Project::SetProjectPath(filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
+			DeserialiseEditorScene();
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
@@ -790,14 +821,26 @@ namespace Borealis {
 			// exclude project name from file path
 			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
-
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+
+			// Create default empty scene
+			SceneManager::ClearSceneLibrary();
+			SceneManager::CreateScene("untitled", assetsPath);
+			SceneManager::SetActiveScene("untitled");
+
 			CBPanel.SetCurrDir(assetsPath);
+			EditorLayer::DeserialiseEditorScene();
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
 		}
 	
+	}
+
+	void EditorLayer::SaveProject()
+	{
+		Project::SaveProject();
+		SceneManager::SaveActiveScene();
 	}
 
 	void EditorLayer::UIToolbar()

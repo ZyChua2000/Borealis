@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/OrthographicCamera.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/SubTexture2D.hpp>
+#include <Graphics/Font.hpp>
 #include <Graphics/Camera.hpp>
 #include <Graphics/EditorCamera.hpp>
 #include <Scene/Components.hpp>
@@ -55,6 +56,8 @@ namespace Borealis
 		static void DrawRotatedQuad(const glm::vec3& position, const float& rotation, const glm::vec2& size, const Ref<Texture2D>& texture, const float& tilingFactor = 1.f, const glm::vec4& = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec2& position, const float& rotation, const glm::vec2& size, const Ref<SubTexture2D>& texture, const float& tilingFactor = 1.f, const glm::vec4 & = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const float& rotation, const glm::vec2& size, const Ref<SubTexture2D>& texture, const float& tilingFactor = 1.f, const glm::vec4 & = glm::vec4(1.0f));
+
+		static void DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, int entityID);
 
 		struct Statistics
 		{

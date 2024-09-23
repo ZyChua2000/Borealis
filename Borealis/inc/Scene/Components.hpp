@@ -20,7 +20,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneCamera.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/Mesh.hpp>
+#include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
+#include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
 namespace Borealis
 {
@@ -117,11 +119,13 @@ namespace Borealis
 	// To be done:
 	struct MeshFilterComponent
 	{
-		Ref<Mesh> Mesh;
+		Ref<Model> Model;
 
 		MeshFilterComponent() = default;
 		MeshFilterComponent(const MeshFilterComponent&) = default;
+		MeshFilterComponent(Borealis::Model model) { Model = MakeRef<Borealis::Model>(model); }
 	};
+
 	struct MeshRendererComponent
 	{
 		Ref<Material> Material;
@@ -243,6 +247,16 @@ namespace Borealis
 		Type type = Type::Point;
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
+	};
+
+	struct TextComponent
+	{
+		std::string text{};
+		uint32_t fontSize = 16;
+		Ref<Font> font;
+
+		TextComponent() = default;
+		TextComponent(const TextComponent&) = default;
 	};
 
 	class ScriptInstance;

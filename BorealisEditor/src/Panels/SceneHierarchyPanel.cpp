@@ -13,10 +13,14 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 #include <imgui.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <Panels/SceneHierarchyPanel.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
+#include <Scene/SceneManager.hpp>
 #include <Scripting/ScriptInstance.hpp>
+#include <Panels/SceneHierarchyPanel.hpp>
+
+#include <Assets/MeshImporter.hpp>
+#include <Assets/FontImporter.hpp>
 
 
 namespace Borealis
@@ -163,12 +167,51 @@ namespace Borealis
 	{
 
 		ImGui::Begin("Scene Hierarchy");
-
-		for (auto& item : mContext->mRegistry.view<entt::entity>())
+		ImGuiIO& io = ImGui::GetIO();
+		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
+		ImGui::PushFont(bold);
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+		for (auto& [name, path] : SceneManager::GetSceneLibrary())
 		{
-			Entity entity { item, mContext.get() };
-			DrawEntityNode(entity);
+			
+			if (SceneManager::GetActiveScene()->GetName() == name)
+			{
+				ImGui::PopStyleColor();
+				ImGui::MenuItem(name.c_str());
+				ImGui::PopFont();
+				for (auto& item : mContext->mRegistry.view<entt::entity>())
+				{
+					
+					Entity entity{ item, mContext.get() };
+					DrawEntityNode(entity);
+				}
+				ImGui::PushFont(bold);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+			}
+			else
+			{
+				ImGui::MenuItem(name.c_str());
+				ImGui::PopStyleColor();
+				ImGui::PopFont();
+				if (ImGui::BeginPopupContextItem())
+				{
+					if (ImGui::MenuItem("Load Scene"))
+					{
+						SceneManager::SetActiveScene(name);
+						mContext = SceneManager::GetActiveScene();
+						mSelectedEntity = {};
+					}
+					ImGui::EndPopup();
+				}
+				ImGui::PushFont(bold);
+				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+			}
 		}
+
+		ImGui::PopFont();
+		ImGui::PopStyleColor();
+
+		
 
 		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered()) // Deselect
 		{
@@ -499,6 +542,7 @@ namespace Borealis
 			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
+			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
 
 			ImGui::EndPopup();
 			
@@ -605,13 +649,23 @@ namespace Borealis
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Mesh");
+				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
 						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
+						std::string meshName = "assets/";
+						meshName += data;
+						// Should reference off asset manager's mesh
+						// imageName += ".meta";
+						// Read UUID from .meta
+						// Example Interface: component.mesh = AssetManager::GetMesh(UUID);
+						//component.mesh->Load(filename);
+						//Model model;
+						//LoadModel(meshName, model);
+						//component.Model = MakeRef<Model>(model); 
+						component.Model = MeshImporter::LoadFBXModel(meshName);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -790,6 +844,23 @@ namespace Borealis
 				}
 			});
 
+		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)
+			{
+				if (!component.font)
+				{
+					component.font = Font::GetDefaultFont();
+				}
 
+				char inputText[256] = "";
+				strncpy_s(inputText, sizeof(inputText), component.text.c_str(), _TRUNCATE);
+				int textSize = component.fontSize;
+
+				ImGui::InputText("Text Input", inputText, IM_ARRAYSIZE(inputText));
+
+				ImGui::InputInt("Text Size", &textSize);
+
+				component.text = inputText;
+				component.fontSize = textSize;
+			});
 	}
 }

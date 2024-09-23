@@ -14,9 +14,26 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
+#include <string>
 #include <Core/Core.hpp>
 namespace Borealis
 {
+	enum class ImageFormat
+	{
+		None = 0,
+		RGB8,
+		RGBA8
+	};
+
+	struct TextureInfo
+	{
+		uint32_t width = 1;
+		uint32_t height = 1;
+
+		ImageFormat imageFormat = ImageFormat::RGBA8;
+		bool generateMips = true;
+	};
+
 	// Base Class for Textures, Completely Virtual
 	class Texture 
 	{
@@ -87,12 +104,10 @@ namespace Borealis
 		/*!***********************************************************************
 			\brief
 				Create a texture2D based on the Graphics API
-			\param[in] width
-				const uint32_t& - Width of the Texture
-			\param[in] height
-				const uint32_t& - Height of the Texture
+			\param[in] textureInfo
+				const textureInfo& - Infomation of the Texture
 		*************************************************************************/
-		static Ref<Texture2D> Create(const uint32_t& width, const uint32_t& height);
+		static Ref<Texture2D> Create(const TextureInfo& textureInfo);
 
 		/*!***********************************************************************
 			\brief

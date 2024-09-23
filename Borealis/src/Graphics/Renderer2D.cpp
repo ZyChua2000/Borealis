@@ -51,13 +51,25 @@ namespace Borealis
 		glm::vec4 Colour;
 	};
 
+	struct FontData
+	{
+		glm::vec3 Position;
+		glm::vec4 Colour;
+		glm::vec2 TexCoord;
+
+		//Editor only
+		int EntityID;
+	};
+
 	struct Renderer2DData
 	{
 		static const uint32_t MaxQuads = 10000;
 		static const uint32_t MaxCircles = 1000;
 		static const uint32_t MaxLines = 100;
+		static const uint32_t MaxFont = 10000;
 		static const uint32_t MaxCircleVertices = MaxCircles * 4;
 		static const uint32_t MaxLineVertices = MaxLines * 2;
+		static const uint32_t MaxFontVertices = MaxLines * 4;
 		static const uint32_t MaxVertices = MaxQuads * 4;
 		static const uint32_t MaxIndices = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 16;
@@ -72,6 +84,10 @@ namespace Borealis
 
 		LineData* LineBufferBase = nullptr;
 		LineData* LineBufferPtr = nullptr;
+
+		Ref<Texture2D> FontTexture;
+		FontData* FontBufferBase = nullptr;
+		FontData* FontBufferPtr = nullptr;
 		
 		glm::vec4 VertexPos[4];
 
@@ -88,11 +104,15 @@ namespace Borealis
 		Ref<VertexBuffer> mLineVBO;
 		Ref<Shader> mLineShader;
 		
+		Ref<VertexArray> mFontVAO;
+		Ref<VertexBuffer> mFontVBO;
+		Ref<Shader> mFontShader;
 		
 		Renderer2D::Statistics mStats;
 		uint32_t QuadIndexCount = 0;
 		uint32_t CircleIndexCount = 0;
 		uint32_t LineVertexCount = 0;
+		uint32_t FontIndexCount = 0;
 		uint32_t TextureSlotIndex = 1; // 0: White texture
 	};
 	
@@ -136,7 +156,7 @@ namespace Borealis
 		sData->mQuadVAO->SetElementBuffer(EBO);
 		delete[] indices;
 
-
+		//circle
 		sData->mCircleVAO = VertexArray::Create();
 
 		sData->mCircleVBO = VertexBuffer::Create(sData->MaxCircleVertices * sizeof(CircleData));
@@ -153,6 +173,7 @@ namespace Borealis
 		sData->CircleBufferBase = new CircleData[sData->MaxCircleVertices];
 		sData->CircleBufferPtr = sData->CircleBufferBase;
 
+		//line
 		sData->mLineVAO = VertexArray::Create();
 
 		sData->mLineVBO = VertexBuffer::Create(sData->MaxLines * sizeof(LineData));
@@ -164,9 +185,25 @@ namespace Borealis
 		sData->LineBufferBase = new LineData[sData->MaxLines];
 		sData->LineBufferPtr = sData->LineBufferBase;
 
+		//Font
+		sData->mFontVAO = VertexArray::Create();
+
+		sData->mFontVBO = VertexBuffer::Create(sData->MaxFont * sizeof(FontData));
+		sData->mFontVBO->SetLayout({
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Colour" },
+			{ ShaderDataType::Float2, "a_TexCoord"},
+			{ ShaderDataType::Int, "a_EntityID"}
+			});
+		sData->mFontVAO->AddVertexBuffer(sData->mFontVBO);
+
+		sData->mFontVAO->SetElementBuffer(EBO);
+		sData->FontBufferBase = new FontData[sData->MaxFont];
+		sData->FontBufferPtr = sData->FontBufferBase;
 
 
-		sData->mWhiteTexture = Texture2D::Create(1, 1);
+
+		sData->mWhiteTexture = Texture2D::Create(TextureInfo{});
 		uint32_t whiteTexData = 0xFFFFFFFF;
 		sData->mWhiteTexture->SetData(&whiteTexData, sizeof(uint32_t));
 
@@ -182,6 +219,7 @@ namespace Borealis
 
 		sData->mCircleShader = Shader::Create("assets/shaders/Renderer2D_Circle.glsl");
 		sData->mLineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
+		sData->mFontShader = Shader::Create("assets/shaders/Renderer2D_Font.glsl");
 
 		sData->TextureSlots[0] = sData->mWhiteTexture;
 
@@ -196,6 +234,7 @@ namespace Borealis
 		delete[] sData->QuadBufferBase;	
 		delete[] sData->CircleBufferBase;
 		delete[] sData->LineBufferBase;
+		delete[] sData->FontBufferBase;
 		delete sData;	
 	}
 	void Renderer2D::Begin(const OrthographicCamera& camera)
@@ -219,6 +258,12 @@ namespace Borealis
 
 		sData->LineVertexCount = 0;
 		sData->LineBufferPtr = sData->LineBufferBase;
+
+		sData->mFontShader->Bind();
+		sData->mFontShader->Set("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		sData->FontIndexCount = 0;
+		sData->FontBufferPtr = sData->FontBufferBase;
 
 		sData->TextureSlotIndex = 1;
 	}
@@ -244,6 +289,12 @@ namespace Borealis
 
 		sData->LineVertexCount = 0;
 		sData->LineBufferPtr = sData->LineBufferBase;
+
+		sData->mFontShader->Bind();
+		sData->mFontShader->Set("u_ViewProjection", camera.GetViewProjectionMatrix());
+
+		sData->FontIndexCount = 0;
+		sData->FontBufferPtr = sData->FontBufferBase;
 		 
 		sData->TextureSlotIndex = 1;
 	}
@@ -272,6 +323,12 @@ namespace Borealis
 
 		sData->LineVertexCount = 0;
 		sData->LineBufferPtr = sData->LineBufferBase;
+
+		sData->mFontShader->Bind();
+		sData->mFontShader->Set("u_ViewProjection", viewProj);
+
+		sData->FontIndexCount = 0;
+		sData->FontBufferPtr = sData->FontBufferBase;
 
 		sData->TextureSlotIndex = 1;
 	}
@@ -316,6 +373,15 @@ namespace Borealis
 			sData->mStats.DrawCalls++;
 		}
 
+		if (sData->FontIndexCount)
+		{
+			uint32_t size = (uint32_t)((uint8_t*)sData->FontBufferPtr - (uint8_t*)sData->FontBufferBase);
+			sData->mFontVBO->SetData(sData->FontBufferBase, size);
+			sData->FontTexture->Bind(0);
+			sData->mFontShader->Bind();
+			RenderCommand::DrawElements(sData->mFontVAO, sData->FontIndexCount);
+			sData->mStats.DrawCalls++;
+		}
 	}
 
 	static void FlushReset()
@@ -549,6 +615,80 @@ namespace Borealis
 		sData->QuadIndexCount += 6;
 
 		sData->mStats.QuadCount++;
+	}
+
+	void Renderer2D::DrawString(const std::string& string, Ref<Font> font, const glm::mat4& transform, int entityID)
+	{
+		Ref<Texture2D> fontAtlas = font->GetAtlasTexture();
+
+		sData->FontTexture = fontAtlas;
+
+		Ref<FontInfo> fontInfo = font->GetFontInfo();
+
+		double x = 0.0;
+		double fsScale = 1.0 / (fontInfo->ascenderY - fontInfo->descenderY);
+		double y = 0.0;
+
+		for (int i{}; i < string.size(); i++)
+		{
+			char character = string[i];
+
+			FontGlyph glyph = fontInfo->glyphs[character];
+
+			glm::vec2 texCoordMin((float)glyph.altasBound.left, (float)glyph.altasBound.bottom);
+			glm::vec2 texCoordMax((float)glyph.altasBound.right, (float)glyph.altasBound.top);
+
+			glm::vec2 quadMin((float)glyph.planeBound.left, (float)glyph.planeBound.bottom);
+			glm::vec2 quadMax((float)glyph.planeBound.right, (float)glyph.planeBound.top);
+
+			quadMin *= fsScale, quadMax *= fsScale;
+			quadMin += glm::vec2(x, y);
+			quadMax += glm::vec2(x, y);
+
+			float texelWidth = 1.0f / fontAtlas->GetWidth();
+			float texelHeight = 1.0f / fontAtlas->GetHeight();
+			texCoordMin *= glm::vec2(texelWidth, texelHeight);
+			texCoordMax *= glm::vec2(texelWidth, texelHeight);
+
+			glm::vec4 colour = { 1.f,1.f,0.f,1.f };
+
+			sData->FontBufferPtr->Position = transform * glm::vec4(quadMin, 0.0f, 1.0f);
+			sData->FontBufferPtr->Colour = colour;
+			sData->FontBufferPtr->TexCoord = texCoordMin;
+			sData->FontBufferPtr->EntityID = entityID;
+			sData->FontBufferPtr++;
+
+			sData->FontBufferPtr->Position = transform * glm::vec4(quadMin.x, quadMax.y, 0.0f, 1.0f);
+			sData->FontBufferPtr->Colour = colour;
+			sData->FontBufferPtr->TexCoord = { texCoordMin.x, texCoordMax.y };
+			sData->FontBufferPtr->EntityID = entityID;
+			sData->FontBufferPtr++;
+
+			sData->FontBufferPtr->Position = transform * glm::vec4(quadMax, 0.0f, 1.0f);
+			sData->FontBufferPtr->Colour = colour;
+			sData->FontBufferPtr->TexCoord = texCoordMax;
+			sData->FontBufferPtr->EntityID = entityID;
+			sData->FontBufferPtr++;
+
+			sData->FontBufferPtr->Position = transform * glm::vec4(quadMax.x, quadMin.y, 0.0f, 1.0f);
+			sData->FontBufferPtr->Colour = colour;
+			sData->FontBufferPtr->TexCoord = { texCoordMax.x, texCoordMin.y };
+			sData->FontBufferPtr->EntityID = entityID;
+			sData->FontBufferPtr++;
+
+			sData->FontIndexCount += 6;
+			sData->mStats.QuadCount++;
+
+			if (i < string.size() - 1)
+			{
+				double advance = glyph.advance;
+				char nextCharacter = string[i + 1];
+				//fontGeometry.getAdvance(advance, character, nextCharacter);
+				advance = fontInfo->kernings[{character, nextCharacter}];
+
+				x += fsScale * advance;// +textParams.Kerning;
+			}
+		}
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& colour)

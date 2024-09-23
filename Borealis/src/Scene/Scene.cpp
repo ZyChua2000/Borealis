@@ -20,10 +20,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Components.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Graphics/Renderer2D.hpp>
+#include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
-	Scene::Scene()
+	Scene::Scene(std::string name, std::string path) : mName(name), mScenePath(path)
 	{
 
 	}
@@ -75,6 +76,7 @@ namespace Borealis
 			//------------------------
 			// Physics Simulation here
 			//------------------------
+
 
 			for (auto entity : view)
 			{
@@ -135,6 +137,16 @@ namespace Borealis
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
+		Renderer3D::Begin(camera);
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
+				MeshRendererComponent meshRenderer;
+				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
+			}
+		}
 
 		Renderer2D::Begin(camera);
 		{
@@ -151,6 +163,14 @@ namespace Borealis
 			{
 				auto [transform, circle] = group.get<TransformComponent, CircleRendererComponent>(entity);
 				Renderer2D::DrawCircle(transform, circle.Colour, circle.thickness, circle.fade, (int)entity);
+			}
+		}
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
+				Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
 			}
 		}
 
@@ -213,6 +233,7 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newEntity, entity);
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
+		CopyComponent<TextComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -274,6 +295,7 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
@@ -372,6 +394,12 @@ namespace Borealis
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
 	{
 
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component)
+	{
+		
 	}
 
 	template<>

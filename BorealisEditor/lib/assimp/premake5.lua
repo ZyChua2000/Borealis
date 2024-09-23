@@ -1,7 +1,7 @@
 project "Assimp"
 	kind "StaticLib"
 	language "C"
-	staticruntime "off"
+	staticruntime "on"
 	cppdialect "C++20"
 
 	targetdir ("build/" .. outputdir .. "/%{prj.name}")
