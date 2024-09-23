@@ -134,11 +134,6 @@ namespace Borealis
         }
     }
 
-
-    std::string BehaviourNode::get_name() const
-    {
-        return name;
-    }
     void BehaviourNode::on_enter()
     {
         // base logic is to mark as running

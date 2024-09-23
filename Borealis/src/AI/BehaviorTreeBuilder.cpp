@@ -98,27 +98,27 @@ namespace Borealis
     //    return NodeType::UNKNOWN;  // Return UNKNOWN if no prefix matches
     //}
     // Function to read node names from a file and determine their types based on prefix
-    void load_node_types_from_file(const std::string& filename)
-    {
-        std::ifstream file(filename);
-        std::string nodeName;
+    //void load_node_types_from_file(const std::string& filename)
+    //{
+    //    std::ifstream file(filename);
+    //    std::string nodeName;
 
-        if (!file.is_open())
-        {
-            throw std::runtime_error("Failed to open file: " + filename);
-        }
+    //    if (!file.is_open())
+    //    {
+    //        throw std::runtime_error("Failed to open file: " + filename);
+    //    }
 
-        // Read each line, which is a node name
-        while (std::getline(file, nodeName))
-        {
-            const std::string& container = nodeName;
-            // Determine the NodeType based on the prefix
-            NodeType type = BTBuilderHelper::get_node_type_from_prefix(container);
+    //    // Read each line, which is a node name
+    //    while (std::getline(file, nodeName))
+    //    {
+    //        const std::string& container = nodeName;
+    //        // Determine the NodeType based on the prefix
+    //        NodeType type = get_node_type_from_prefix(container);
 
-            // Add the node and its type to the map
-            nodeTypeMap[nodeName] = type;
-        }
-    }
+    //        // Add the node and its type to the map
+    //        nodeTypeMap[nodeName] = type;
+    //    }
+    //}
     //void BehaviorTreeBuilder::shutdown()
     //{
     //    std::cout << "    Shutting Down Behavior Tree Builder..." << std::endl;

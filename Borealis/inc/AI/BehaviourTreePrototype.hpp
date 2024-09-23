@@ -19,7 +19,6 @@ namespace Borealis
     // forward declaration
     class BehaviourNode;
     //class BehaviorTreePrototype;
-    class TreeBuilder;
 
     class BehaviorTreePrototype
     {
@@ -31,14 +30,10 @@ namespace Borealis
         void build_tree(Entity ent); //for now build trees without agent 
 
         // Add a node to the tree prototype with a given type and depth
-        void add_node(NodeType type, int depth);
+        //void add_node(NodeType type, int depth);
 
         // Set the name of the tree
         void set_tree_name(const char* name);
-
-        BehaviourNode* create_node_of_type(NodeType type);
-
-        NodeType string_to_node_type(const std::string& typeStr);
 
 
     private:
@@ -57,6 +52,5 @@ namespace Borealis
         // Function to find the correct parent node based on depth
         BehaviourNode* find_parent_node(int depth);
 
-        TreeBuilder* nodePrototypePtr;
     };
 }
