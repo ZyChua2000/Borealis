@@ -148,6 +148,11 @@
     <ClInclude Include="inc\AI\BehaviourNode.hpp" />
     <ClInclude Include="inc\AI\BehaviourTree.hpp" />
     <ClInclude Include="inc\AI\BehaviourTreePrototype.hpp" />
+    <ClInclude Include="inc\AI\Blackboard.hpp" />
+    <ClInclude Include="inc\AI\MacrosToRegisterNodes.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />

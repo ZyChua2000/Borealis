@@ -1,18 +1,21 @@
 #pragma once
-// forward declaration
-class BehaviourNode;
-//class BehaviorTreePrototype;
-
-class BehaviourTree
+namespace Borealis
 {
-    friend class BehaviorTreePrototype;
-public:
-    BehaviourTree();
-    ~BehaviourTree();
+    // forward declaration
+    class BehaviourNode;
+    //class BehaviorTreePrototype;
 
-    void update(float dt);
+    class BehaviourTree
+    {
+        //friend class BehaviorTreePrototype;
+    public:
+        BehaviourTree();
+        ~BehaviourTree();
 
-private:
-    BehaviourNode* rootNode;
-    const char* treeName;
-};
+        void update(float dt);
+
+    private:
+        BehaviourNode* rootNode;
+        const char* treeName;
+    };
+}

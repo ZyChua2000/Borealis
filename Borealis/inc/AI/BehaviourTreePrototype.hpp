@@ -13,38 +13,50 @@ written consent of DigiPen Institute of Technology is prohibited.
 #pragma once
 //#include "../inc/AI/BehaviourNode.hpp"
 #include <memory>
-// forward declaration
-class BehaviourNode;
-//class BehaviorTreePrototype;
-
-class BehaviorTreePrototype
+#include "Scene/Entity.hpp"
+namespace Borealis
 {
-public:
-    BehaviorTreePrototype();
+    // forward declaration
+    class BehaviourNode;
+    //class BehaviorTreePrototype;
+    class TreeBuilder;
+
+    class BehaviorTreePrototype
+    {
+    public:
+        BehaviorTreePrototype();
         
-    // Build the behavior tree and attach it to the agent
-    //void build_tree(BehaviorAgent* agent);
-    void build_tree(); //for now build trees without agent 
+        // Build the behavior tree and attach it to the agent
+        //void build_tree(BehaviorAgent* agent);
+        void build_tree(Entity ent); //for now build trees without agent 
 
-    // Add a node to the tree prototype with a given type and depth
-    void add_node(NodeType type, int depth);
+        // Add a node to the tree prototype with a given type and depth
+        void add_node(NodeType type, int depth);
 
-    // Set the name of the tree
-    void set_tree_name(const char* name);
+        // Set the name of the tree
+        void set_tree_name(const char* name);
 
-private:
-    // Recursive function to build the tree from the added nodes
-    void recursive_add(BehaviourNode* parent, BehaviourNode* child);
+        BehaviourNode* create_node_of_type(NodeType type);
 
-    // Tree root node
-    BehaviourNode* rootNode;
+        NodeType string_to_node_type(const std::string& typeStr);
 
-    // Tracks the most recently added node for managing hierarchy
-    BehaviourNode* previousNode;
 
-    // Name of the behavior tree
-    const char* treeName;
+    private:
+        // Recursive function to build the tree from the added nodes
+        void recursive_add(BehaviourNode* parent, BehaviourNode* child);
 
-    // Function to find the correct parent node based on depth
-    BehaviourNode* find_parent_node(int depth);
-};
+        // Tree root node
+        BehaviourNode* rootNode;
+
+        // Tracks the most recently added node for managing hierarchy
+        BehaviourNode* previousNode;
+
+        // Name of the behavior tree
+        const char* treeName;
+
+        // Function to find the correct parent node based on depth
+        BehaviourNode* find_parent_node(int depth);
+
+        TreeBuilder* nodePrototypePtr;
+    };
+}

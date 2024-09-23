@@ -265,7 +265,19 @@ namespace Borealis
 			return mScripts.find(name) != mScripts.end();
 		}
 	};
-
+	struct BehaviourTreeComponent
+	{
+		BehaviourTree& get_behavior_tree()
+		{
+			return tree;
+		}
+		void update(float dt)
+		{
+			tree.update(dt);
+		}
+		//variables below
+		BehaviourTree tree;
+	};
 
 }
 
