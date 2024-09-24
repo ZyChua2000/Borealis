@@ -111,7 +111,8 @@ namespace Borealis
         {
             FMOD_MODE currMode;
             tFoundIt->second->getMode(&currMode);
-            if (currMode & FMOD_3D) {
+            if (currMode & FMOD_3D)
+            {
                 FMOD_VECTOR position = VectorToFmod(vPosition);
                 AudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
             }
@@ -122,7 +123,7 @@ namespace Borealis
         return nChannelId;
     }
 
-    void AudioEngine::SetChannel3dPosition(int nChannelId, const Vector3& vPosition)
+    void AudioEngine::SetChannel3DPosition(int nChannelId, const Vector3& vPosition)
     {
         auto tFoundIt = sgpImplementation->mChannels.find(nChannelId);
         if (tFoundIt == sgpImplementation->mChannels.end())
