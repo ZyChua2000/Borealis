@@ -152,6 +152,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Assets\MaterialEditor.hpp" />
     <ClInclude Include="inc\Assets\MeshImporter.hpp" />
     <ClInclude Include="inc\Assets\SkinnedMeshImporter.hpp" />
     <ClInclude Include="inc\EditorLayer.hpp" />
@@ -160,6 +161,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClInclude Include="inc\Project\Project.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\MaterialEditor.cpp" />
     <ClCompile Include="src\Assets\MeshImporter.cpp" />
     <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />

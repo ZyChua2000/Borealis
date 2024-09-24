@@ -47,8 +47,10 @@ namespace Borealis
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID)
 	{
-		if(meshFilter.Model)
+		if (meshFilter.Model) {
+			meshRenderer.Material->SetUniforms(sData->mModelShader);
 			meshFilter.Model->Draw(transform, sData->mModelShader);
+		}
 	}
 
 }

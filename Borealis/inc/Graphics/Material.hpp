@@ -41,20 +41,21 @@ namespace Borealis
 			Tiling,
 			Offset,
 			Smoothness,
+			Shininess,
 			HasEmission,
 			HasHeightMap,
 			HasNormalMap,
 			HasOcclusion,
 			HasDetailMask,
 		};
-	
+
 		/*!***********************************************************************
 			\brief
 				Constructor for a Material with a shader
 			\param[in] shader
 				Shader to be used for rendering
 		*************************************************************************/
-		Material(Ref<Shader> shader) : mShader(shader) {};
+		Material(Ref<Shader> shader) : mShader(shader) {}
 
 		/*!***********************************************************************
 			\brief
@@ -62,7 +63,13 @@ namespace Borealis
 		*************************************************************************/
 		~Material() {};
 
-		void SetUniforms();
+		// Setter for texture maps
+		void SetTextureMap(TextureMaps map, Ref<Texture2D> texture) { mTextureMaps[map] = texture; }
+		void SetTextureMapColor(TextureMaps map, const glm::vec4& color) { mTextureMapColor[map] = color; }
+		void SetTextureMapFloat(TextureMaps map, float value) { mTextureMapFloat[map] = value; }
+		void SetProperty(Props prop, float value) { mProperties[prop] = value; }
+
+		void SetUniforms(Ref<Shader> shader);
 
 	private:
 		std::unordered_map<TextureMaps, Ref<Texture2D>> mTextureMaps; //Texture maps
@@ -70,6 +77,7 @@ namespace Borealis
 		std::unordered_map<TextureMaps, float> mTextureMapFloat; //Texture map floats
 		std::unordered_map<Props, float> mProperties; //Properties
 		Ref<Shader> mShader; //Shader
+		std::string name;
 	}; //class Material
 } //namespace Borealis
 #endif

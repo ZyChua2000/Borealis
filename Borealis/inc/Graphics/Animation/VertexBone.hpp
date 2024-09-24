@@ -35,7 +35,7 @@ namespace Borealis
 				{
 					mBoneIds[i] = boneid;
 					mWeights[i] = weight;
-					printf("bone %d weight %f index %i\n", boneid, weight, i);
+					//printf("bone %d weight %f index %i\n", boneid, weight, i);
 					return;
 				}
 			}

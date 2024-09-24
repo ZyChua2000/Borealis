@@ -24,6 +24,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 
 namespace Borealis {
+
+	Entity testEntity;
+
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
@@ -48,6 +51,17 @@ namespace Borealis {
 		SCPanel.SetContext(mActiveScene);
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		Ref<Material> material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
+		testEntity = mActiveScene->CreateEntity("testObject");
+		testEntity.AddComponent<MeshFilterComponent>();
+		auto& meshRenderer = testEntity.AddComponent<MeshRendererComponent>();
+		material->SetTextureMap(Material::Albedo, Texture2D::Create("assets/textures/Dragon_Bump.png"));
+		material->SetTextureMapColor(Material::Metallic, { 0.f, 0.f, 0.f, 1.f });
+		material->SetTextureMap(Material::NormalMap, Texture2D::Create("assets/textures/Dragon_Nor.png"));
+		material->SetTextureMapColor(Material::Specular, { 1.0f, 1.0f, 1.0f, 1.0f });
+		material->SetTextureMapColor(Material::Emission, { 1.0f, 1.0f, 0.0f, 1.0f });
+		meshRenderer.Material = material;
 	}
 
 	void EditorLayer::Free()
@@ -101,6 +115,7 @@ namespace Borealis {
 		}
 		mViewportFrameBuffer->ClearAttachment(1, -1);
 		{
+			auto meshRen = testEntity.GetComponent<MeshRendererComponent>();
 			PROFILE_SCOPE("Renderer::Draw");
 			mViewportFrameBuffer->Bind();
 			mActiveScene->UpdateEditor(dt,mEditorCamera);

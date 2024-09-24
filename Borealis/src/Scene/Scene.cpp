@@ -96,11 +96,11 @@ namespace Borealis
 	{
 		Renderer3D::Begin(camera);
 		{
-			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
 			for (auto& entity : group)
 			{
-				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
-				MeshRendererComponent meshRenderer;
+				auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
+				
 				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 			}
 		}

@@ -15,6 +15,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 
+#include "Assets/MaterialEditor.hpp"
+
 namespace Borealis
 {
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
@@ -57,12 +59,10 @@ namespace Borealis
 
 		for (auto& entry : std::filesystem::directory_iterator(mCurrDir))
 		{
-		;
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
 			ImGui::PushID(filenameStr.c_str());
-			
 
 			uint64_t screenID = 0;
 			if (entry.is_directory())
@@ -158,7 +158,6 @@ namespace Borealis
 				}
 			}
 
-
 			if (mThumbnailSize != mMinThumbnailSize)
 			{
 				ImGui::TextWrapped(filenameStr.c_str());
@@ -171,6 +170,21 @@ namespace Borealis
 			ImGui::PopStyleColor();
 			ImGui::Columns(1);
 		}
+
+		// Material Creation
+		if (mCurrDir.filename() == "materials")
+		{
+			// Right-click popup for the Materials folder
+			if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
+			{
+				if (ImGui::MenuItem("Create New Material"))
+				{
+					MaterialEditor::SetRender(true);
+				}
+				ImGui::EndPopup();
+			}
+		}
+
 		// End the upper scrollable section
 		ImGui::EndChild();
 		if (ImGui::SliderInt("##Thumbnail Size", &mThumbnailSize, mMinThumbnailSize, 512, "", ImGuiSliderFlags_NoInput))

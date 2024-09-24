@@ -45,6 +45,9 @@
     <ClInclude Include="inc\EditorLayer.hpp">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\MaterialEditor.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp">
@@ -66,6 +69,9 @@
       <Filter>src\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\MaterialEditor.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
