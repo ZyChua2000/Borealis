@@ -39,9 +39,9 @@ struct Material {
 	vec4 specularColor;   
 	vec4 emissionColor;     
 
-	float tiling;
-	float offset;
-	float smoothness;
+	// float tiling;
+	// float offset;
+	// float smoothness;
 	float shininess;
 	float metallic;
 

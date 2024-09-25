@@ -59,8 +59,8 @@ namespace Borealis {
 		material->SetTextureMap(Material::Albedo, Texture2D::Create("assets/textures/Dragon_Bump.png"));
 		material->SetTextureMapFloat(Material::Metallic, { 0.5f });
 		material->SetTextureMap(Material::NormalMap, Texture2D::Create("assets/textures/Dragon_Nor.png"));
-		material->SetTextureMapColor(Material::Specular, { 1.0f, 1.0f, 1.0f, 1.0f });
-		//material->SetTextureMapColor(Material::Emission, { 1.0f, 1.0f, 0.0f, 1.0f });
+		material->SetTextureMapColor(Material::Specular, { 0.5f, 0.5f, 0.5f, 1.0f });
+		//material->SetTextureMapColor(Material::Emission, { 0.1f, 0.1f, 0.0f, 1.0f });
 		material->SetProperty(Material::Shininess, 25.f);
 		meshRenderer.Material = material;
 	}

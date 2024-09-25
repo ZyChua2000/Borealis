@@ -111,10 +111,10 @@ namespace Borealis
             textureUnit++;
         }
 
-        //// Set other properties
-        shader->Set("u_Material.tiling", mProperties[Tiling]);
+        // Set other properties
+        /*shader->Set("u_Material.tiling", mProperties[Tiling]);
         shader->Set("u_Material.offset", mProperties[Offset]);
-        shader->Set("u_Material.smoothness", mProperties[Smoothness]);
+        shader->Set("u_Material.smoothness", mProperties[Smoothness]);*/
         shader->Set("u_Material.shininess", mProperties[Shininess]);
 
         //mShader->Bind();
