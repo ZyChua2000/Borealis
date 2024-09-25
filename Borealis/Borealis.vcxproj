@@ -667,12 +667,14 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xobserved.hpp" />
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty.hpp" />
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp" />
+    <ClInclude Include="PhysicsSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
