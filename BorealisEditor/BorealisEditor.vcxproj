@@ -155,6 +155,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
+    <ClInclude Include="inc\Prefab.hpp" />
+    <ClInclude Include="inc\PrefabComponent.hpp" />
+    <ClInclude Include="inc\PrefabManager.hpp" />
     <ClInclude Include="inc\Project\Project.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +165,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\MonoPosixHelper.dll" "$(TargetDir)"</Co
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
+    <ClCompile Include="src\Prefab.cpp" />
+    <ClCompile Include="src\PrefabComponent.cpp" />
+    <ClCompile Include="src\PrefabManager.cpp" />
     <ClCompile Include="src\Project\Project.cpp" />
   </ItemGroup>
   <ItemGroup>

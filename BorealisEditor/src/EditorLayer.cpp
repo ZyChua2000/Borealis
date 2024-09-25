@@ -48,6 +48,15 @@ namespace Borealis {
 		SCPanel.SetContext(mActiveScene);
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+
+		auto entity = mEditorScene->CreateEntity("testEntity");
+		auto& src = entity.AddComponent<SpriteRendererComponent>();
+		src.Colour.r = 0.5f;
+
+		// Prefab prefab(entity)
+		// prefab.getComponent<SpriteRendererComponent>().Colour.g = 0.5f;
+		// prefab.UpdateAllInstance();
+		
 	}
 
 	void EditorLayer::Free()

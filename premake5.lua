@@ -315,14 +315,15 @@ workspace "Borealis"
 		links
 		{
 			"packages/Microsoft.CodeAnalysis.Common.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis",
-			"packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
-			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
-			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
-			"System.Buffers",
-			"System.Collections.Immutable",
-			"System.Memory",
-			"System.Reflection.Metadata",
-			"System.Runtime.CompilerServices.Unsafe"
+            "packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
+            "packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
+            "packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
+            "packages/System.Buffers.4.5.1/lib/netstandard2.0/Systems.Buffer",
+            "packages/System.Collections.Immutable.8.0.0/lib/netstandard2.0/System.Collections.Immutable",
+            "packages/System.Memory.4.5.5/lib/netstandard2.0/System.Memory",
+            "packages/System.Reflection.Metadata.8.0.0/lib/netstandard2.0/System.Reflection.Metadata",
+            "packages/System.Runtime.CompilerServices.Unsafe.6.0.0/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe"
+ 
 		}
 
 		filter "configurations:Debug"
