@@ -33,7 +33,7 @@ namespace Borealis
         else
 		{
             shader->Set("u_Material.hasAlbedoMap", false);
-            shader->Set("u_Material.albedoColor", {1.f, 0.f, 0.f, 1.f});
+            shader->Set("u_Material.albedoColor", mTextureMapColor[Albedo]);
         }
 
         // Specular Map
@@ -47,7 +47,7 @@ namespace Borealis
         else
         {
             shader->Set("u_Material.hasSpecularMap", false);
-			shader->Set("u_Material.specularColor", {1.0, 1.0, 1.0});
+			shader->Set("u_Material.specularColor", mTextureMapColor[Specular]);
         }
 
         // Metallic
@@ -60,7 +60,7 @@ namespace Borealis
         }
         else
         {
-            shader->Set("u_Material.metallic", 0.5f);
+            shader->Set("u_Material.metallic", mTextureMapFloat[Metallic]);
             shader->Set("u_Material.hasMetallicMap", false);
         }
 
@@ -69,12 +69,12 @@ namespace Borealis
         {
             shader->Set("u_Material.emissionMap", textureUnit);
             mTextureMaps[Emission]->Bind(textureUnit);
-            shader->Set("u_Material.hasEmission", true);
+            shader->Set("u_Material.hasEmissionMap", true);
             textureUnit++;
         }
         else
         {
-            shader->Set("u_Material.hasEmission", false);
+            shader->Set("u_Material.hasEmissionMap", false);
             shader->Set("u_Material.emissionColor", mTextureMapColor[Emission]);
         }
 
@@ -115,6 +115,104 @@ namespace Borealis
         shader->Set("u_Material.tiling", mProperties[Tiling]);
         shader->Set("u_Material.offset", mProperties[Offset]);
         shader->Set("u_Material.smoothness", mProperties[Smoothness]);
-        shader->Set("u_Material.shininess", 100.f);
+        shader->Set("u_Material.shininess", mProperties[Shininess]);
+
+        //mShader->Bind();
+        //int textureUnit = 0;
+
+        //// Albedo Map
+        //if (mTextureMaps[Albedo])
+        //{
+        //    mShader->Set("u_Material.hasAlbedoMap", true);
+        //    mShader->Set("u_Material.albedoMap", textureUnit);
+        //    mTextureMaps[Albedo]->Bind(textureUnit);
+        //    textureUnit++;
+        //}
+        //else
+        //{
+        //    mShader->Set("u_Material.hasAlbedoMap", false);
+        //    mShader->Set("u_Material.albedoColor", { 1.f, 0.f, 0.f, 1.f });
+        //}
+
+        //// Specular Map
+        //if (mTextureMaps[Specular])
+        //{
+        //    mShader->Set("u_Material.specularMap", textureUnit);
+        //    mTextureMaps[Specular]->Bind(textureUnit);
+        //    mShader->Set("u_Material.hasSpecularMap", true);
+        //    textureUnit++;
+        //}
+        //else
+        //{
+        //    mShader->Set("u_Material.hasSpecularMap", false);
+        //    mShader->Set("u_Material.specularColor", { 1.0, 1.0, 1.0 });
+        //}
+
+        //// Metallic
+        //if (mTextureMaps[Metallic])
+        //{
+        //    mShader->Set("u_Material.metallic", textureUnit);
+        //    mTextureMaps[DetailMask]->Bind(textureUnit);
+        //    mShader->Set("u_Material.hasMetallicMap", true);
+        //    textureUnit++;
+        //}
+        //else
+        //{
+        //    mShader->Set("u_Material.metallic", 0.5f);
+        //    mShader->Set("u_Material.hasMetallicMap", false);
+        //}
+
+        //// Emission Map
+        //if (mTextureMaps[Emission])
+        //{
+        //    mShader->Set("u_Material.emissionMap", textureUnit);
+        //    mTextureMaps[Emission]->Bind(textureUnit);
+        //    mShader->Set("u_Material.hasEmission", true);
+        //    textureUnit++;
+        //}
+        //else
+        //{
+        //    mShader->Set("u_Material.hasEmission", false);
+        //    mShader->Set("u_Material.emissionColor", mTextureMapColor[Emission]);
+        //}
+
+        //// Normal Map
+        //if (mTextureMaps[NormalMap])
+        //{
+        //    mShader->Set("u_Material.normalMap", textureUnit);
+        //    mTextureMaps[NormalMap]->Bind(textureUnit);
+        //    mShader->Set("u_Material.hasNormalMap", true);
+        //    textureUnit++;
+        //}
+
+        //// Height Map
+        //if (mTextureMaps[HeightMap])
+        //{
+        //    mShader->Set("u_Material.heightMap", textureUnit);
+        //    mTextureMaps[HeightMap]->Bind(textureUnit);
+        //    textureUnit++;
+        //}
+
+        //// Occlusion
+        //if (mTextureMaps[Occlusion])
+        //{
+        //    mShader->Set("u_Material.occlusionMap", textureUnit);
+        //    mTextureMaps[Occlusion]->Bind(textureUnit);
+        //    textureUnit++;
+        //}
+
+        //// Detail Mask
+        //if (mTextureMaps[DetailMask])
+        //{
+        //    mShader->Set("u_Material.detailMaskMap", textureUnit);
+        //    mTextureMaps[DetailMask]->Bind(textureUnit);
+        //    textureUnit++;
+        //}
+
+        ////// Set other properties
+        //mShader->Set("u_Material.tiling", mProperties[Tiling]);
+        //mShader->Set("u_Material.offset", mProperties[Offset]);
+        //mShader->Set("u_Material.smoothness", mProperties[Smoothness]);
+        //mShader->Set("u_Material.shininess", 100.f);
 	}
 }

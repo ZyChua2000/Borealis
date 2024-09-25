@@ -36,8 +36,8 @@ struct Material {
 	sampler2D emissionMap;
 
 	vec4 albedoColor;    
-	vec3 specularColor;   
-	vec3 emissionColor;     
+	vec4 specularColor;   
+	vec4 emissionColor;     
 
 	float tiling;
 	float offset;
@@ -49,7 +49,7 @@ struct Material {
     bool hasSpecularMap;
     bool hasNormalMap;
 	bool hasMetallicMap;
-    // bool hasEmission;
+    bool hasEmissionMap;
 };
 
 struct Light {
@@ -78,7 +78,7 @@ void main()
 	vec3 u_Light_specular = vec3(1.0f, 1.0f, 1.0f);
 
 	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, v_TexCoord) : u_Material.albedoColor;
-	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, v_TexCoord).rgb : u_Material.specularColor;
+	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, v_TexCoord).rgb : u_Material.specularColor.rgb;
 	float metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, v_TexCoord).r : u_Material.metallic;
 
 	// ambient 
@@ -103,7 +103,10 @@ void main()
 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
 	vec3 specular = u_Light_specular * (spec * specularColor);
 
+	// emission
+	vec3 emission = u_Material.hasEmissionMap ? texture(u_Material.emissionMap, v_TexCoord).rgb : u_Material.emissionColor.rgb;
+
 	// final color
-	vec3 final = ambient + (1.0 - metallic) * diffuse + (metallic * specular);
+	vec3 final = ambient + (1.0 - metallic) * diffuse + (metallic * specular) + emission;
 	color = vec4(final, albedoColor.a);
 }

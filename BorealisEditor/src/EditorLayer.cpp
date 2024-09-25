@@ -57,10 +57,11 @@ namespace Borealis {
 		testEntity.AddComponent<MeshFilterComponent>();
 		auto& meshRenderer = testEntity.AddComponent<MeshRendererComponent>();
 		material->SetTextureMap(Material::Albedo, Texture2D::Create("assets/textures/Dragon_Bump.png"));
-		material->SetTextureMapColor(Material::Metallic, { 0.f, 0.f, 0.f, 1.f });
+		material->SetTextureMapFloat(Material::Metallic, { 0.5f });
 		material->SetTextureMap(Material::NormalMap, Texture2D::Create("assets/textures/Dragon_Nor.png"));
 		material->SetTextureMapColor(Material::Specular, { 1.0f, 1.0f, 1.0f, 1.0f });
-		material->SetTextureMapColor(Material::Emission, { 1.0f, 1.0f, 0.0f, 1.0f });
+		//material->SetTextureMapColor(Material::Emission, { 1.0f, 1.0f, 0.0f, 1.0f });
+		material->SetProperty(Material::Shininess, 25.f);
 		meshRenderer.Material = material;
 	}
 

@@ -64,11 +64,52 @@ namespace Borealis
 		~Material() {};
 
 		// Setter for texture maps
+		/*!***********************************************************************
+			\brief
+				Setter for texture maps
+			\param[in] map
+				Type of map
+			\texture[in] texture
+				The texture map
+		*************************************************************************/
 		void SetTextureMap(TextureMaps map, Ref<Texture2D> texture) { mTextureMaps[map] = texture; }
+
+		/*!***********************************************************************
+			\brief
+				Setter for texture map color
+			\param[in] map
+				Type of map
+			\texture[in] color
+				The color
+		*************************************************************************/
 		void SetTextureMapColor(TextureMaps map, const glm::vec4& color) { mTextureMapColor[map] = color; }
+
+		/*!***********************************************************************
+			\brief
+				Setter for texture map floats 
+			\param[in] map
+				Type of map
+			\texture[in] value
+				float to set
+		*************************************************************************/
 		void SetTextureMapFloat(TextureMaps map, float value) { mTextureMapFloat[map] = value; }
+
+		/*!***********************************************************************
+			\brief
+				Setter for properties
+			\param[in] prop
+				Type of property
+			\texture[in] value
+				The value to set
+		*************************************************************************/
 		void SetProperty(Props prop, float value) { mProperties[prop] = value; }
 
+		/*!***********************************************************************
+			\brief
+				This function sets the uniforms in the material's shader
+			\param[in] shader
+				Temp variable to take in same shader as renderer
+		*************************************************************************/
 		void SetUniforms(Ref<Shader> shader);
 
 	private:
