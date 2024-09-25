@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <unordered_map>
 #include <filesystem>
 
+#include <Core/ProjectInfo.hpp>
 #include <Assets/AssetManager.hpp>
 #include <Assets/AssetMetaData.hpp>
 
@@ -29,17 +30,21 @@ namespace Borealis
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;
 
 		//Load all available assets into Registry
-		void LoadRegistry(std::filesystem::path assetPath, std::filesystem::path assetRegistryPath);
+		void LoadRegistry(ProjectInfo projectInfo);
 
 		//clear Registry and loaded assets
 		void Clear();
-	private:
-		//void RegisterAsset(std::filesystem::path path);
-
-		//void RegisterAllAssets(std::filesystem::path path);
-
 
 	private:
+		void SerializeRegistry();
+		void DeserializeRegistry(std::string const& registryFileString);
+
+		void RegisterAsset(std::filesystem::path path);
+		void RegisterAllAssets(std::filesystem::path path);
+
+
+	private:
+		std::filesystem::path mAssetRegistryPath;
 		std::unordered_map<AssetHandle, AssetMetaData> mAssetRegistry;
 		std::unordered_map<AssetHandle, Ref<Asset>> mLoadedAssets;
 	};

@@ -69,7 +69,8 @@ namespace Borealis
 				mProjectInfo.AssetsPath = projectFilePath + mProjectInfo.AssetsDirectoryName;
 				mProjectInfo.AssetsRegistryPath = projectFilePath + mProjectInfo.AssetsRegistryName;
 
-				GetEditorAssetsManager()->LoadRegistry(mProjectInfo.AssetsPath, mProjectInfo.AssetsRegistryPath);
+				//pass in project info
+				GetEditorAssetsManager()->LoadRegistry(mProjectInfo);
 
 				std::ifstream inStream(projectFile);
 				std::stringstream ss;

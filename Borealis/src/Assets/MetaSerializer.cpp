@@ -16,8 +16,27 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <Assets/MetaSerializer.hpp>
 
+#include <yaml-cpp/yaml.h>
+
+
 namespace Borealis
 {
+	void MetaFileSerializer::SetAssetFolderPath(std::filesystem::path path)
+	{
+		PathToAssetFolder = path;
+	}
+
+	void SerializeMetaFile(YAML::Emitter& out, AssetMetaData const& assetMetaData)
+	{
+		out << YAML::BeginMap;
+		out << YAML::Key << "Name" << YAML::Value << assetMetaData.name;
+		out << YAML::Key << "EntityID" << YAML::Value << assetMetaData.Handle;
+		out << YAML::Key << "AssetType" << YAML::Value << Asset::AssetTypeToString(assetMetaData.Type);
+		out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.string();
+		out << YAML::Key << "LastModifiedDate" << YAML::Value << assetMetaData.importDate;
+		out << YAML::EndMap;
+	}
+
 	AssetMetaData MetaFileSerializer::CreateAssetMetaFile(std::filesystem::path path)
 	{
 		AssetMetaData metaData = GetAssetMetaData(path);
@@ -34,24 +53,53 @@ namespace Borealis
 			metaFilePath.replace_extension(".meta");
 		}
 
-		std::ofstream meta(metaFilePath);
-		if (meta)
-		{
-			meta << "Name: " << metaData.name << "\n";
-			meta << "UUID: " << metaData.Handle << "\n";
-			meta << Asset::AssetTypeToString(metaData.Type) << "\n";
-			meta << metaData.SourcePath.string() << "\n";
-			meta << metaData.importDate << "\n";
-		}
-		else
-		{
-			BOREALIS_CORE_ASSERT("Failed to create meta file for: {}", path.string());
-			return AssetMetaData();
-		}
+		//std::ofstream meta(metaFilePath);
+		//if (meta)
+		//{
+		//	meta << "Name: " << metaData.name << "\n";
+		//	meta << "UUID: " << metaData.Handle << "\n";
+		//	meta << Asset::AssetTypeToString(metaData.Type) << "\n";
+		//	meta << metaData.SourcePath.string() << "\n";
+		//	meta << metaData.importDate << "\n";
+		//}
+		//else
+		//{
+		//	BOREALIS_CORE_ASSERT("Failed to create meta file for: {}", path.string());
+		//	return AssetMetaData();
+		//}
 
-		meta.close();
+		//meta.close();
+
+		YAML::Emitter out;
+		SerializeMetaFile(out, metaData);
+
+		SaveAsFile(metaFilePath, out.c_str());
 
 		return metaData;
+	}
+
+	void MetaFileSerializer::SerialzeRegistry(std::filesystem::path assetRegistryPath, std::unordered_map<AssetHandle, AssetMetaData> const& assetRegistry)
+	{
+		YAML::Emitter out;
+		out << YAML::BeginMap
+			<< YAML::Key << "Assets" << YAML::Value << YAML::BeginSeq;
+
+		for (auto metaData : assetRegistry)
+		{
+			SerializeMetaFile(out, metaData.second);
+		}
+
+		out << YAML::EndSeq
+			<< YAML::EndMap;
+
+		SaveAsFile(assetRegistryPath, out.c_str());
+	}
+
+	void MetaFileSerializer::SaveAsFile(const std::filesystem::path& path, const char* outputFile)
+	{
+		std::ofstream outStream(path);
+		outStream << outputFile;
+		outStream.close();
 	}
 
 	std::time_t MetaFileSerializer::GetLastWriteTime(const std::filesystem::path& path)
@@ -74,7 +122,7 @@ namespace Borealis
 
 		metaData.Type = Asset::GetAssetTypeFromExtention(path);
 
-		metaData.SourcePath = path;
+		metaData.SourcePath = path.lexically_relative(PathToAssetFolder);
 
 		metaData.importDate = GetLastWriteTime(path);
 

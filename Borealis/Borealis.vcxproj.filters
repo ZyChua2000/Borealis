@@ -130,6 +130,9 @@
     <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\MetaSerializer.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -1699,8 +1702,8 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\MetaSerializer.hpp">
-      <Filter>inc\Assets</Filter>
+    <ClInclude Include="inc\Core\ProjectInfo.hpp">
+      <Filter>inc\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1710,7 +1713,13 @@
     <ClCompile Include="lib\stb_image\stb_image.cpp">
       <Filter>lib\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Assets\Asset.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
     <ClCompile Include="src\Assets\EditorAssetManager.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\MetaSerializer.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
@@ -1862,12 +1871,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Assets\MetaSerializer.cpp">
-      <Filter>src\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Assets\Asset.cpp">
-      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
