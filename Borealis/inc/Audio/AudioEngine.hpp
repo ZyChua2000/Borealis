@@ -16,7 +16,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define _AUDIO_ENGINE_H_
 
 #include <BorealisPCH.hpp>
-#include <FMOD/fmod.hpp>
 #include <string>
 #include <map>
 #include <vector>
@@ -32,42 +31,40 @@ namespace Borealis
         float z;
     };
 
-    struct Implementation {
-        Implementation();
-        ~Implementation();
+    //struct Implementation {
+    //    Implementation();
+    //    ~Implementation();
 
-        void Update();
+    //    void Update();
 
-        FMOD::System* mpSystem;
+    //    FMOD::System* mpSystem;
 
-        int mnNextChannelId;
+    //    int mnNextChannelId;
 
-        typedef std::map<std::string, FMOD::Sound*> SoundMap;
-        typedef std::map<int, FMOD::Channel*> ChannelMap;
+    //    typedef std::map<std::string, FMOD::Sound*> SoundMap;
+    //    typedef std::map<int, FMOD::Channel*> ChannelMap;
 
-        SoundMap mSounds;
-        ChannelMap mChannels;
-    };
+    //    SoundMap mSounds;
+    //    ChannelMap mChannels;
+    //};
 
     class AudioEngine {
     public:
         static void Init();
         static void Update();
         static void Shutdown();
-        static int ErrorCheck(FMOD_RESULT result);
 
-        void LoadAudio(const std::string& strAudioName, bool b3d = true, bool bLooping = false, bool bStream = false);
-        void UnLoadAudio(const std::string& strAudioName);
-        void Set3dListenerAndOrientation(const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
-        int PlayAudio(const std::string& strAudioName, const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
-        void StopChannel(int nChannelId);
-        void StopAllChannels();
-        void SetChannel3dPosition(int nChannelId, const Vector3& vPosition);
-        void SetChannelVolume(int nChannelId, float fVolumedB);
+        static void LoadAudio(const std::string& strAudioName, bool b3d = true, bool bLooping = false, bool bStream = false);
+        static void UnLoadAudio(const std::string& strAudioName);
+        static void Set3DListenerAndOrientation(const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
+        static int PlayAudio(const std::string& strAudioName, const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 5.0f);
+        static void StopChannel(int nChannelId);
+        static void StopAllChannels();
+        static void SetChannel3DPosition(int nChannelId, const Vector3& vPosition);
+        static void SetChannelVolume(int nChannelId, float fVolumedB);
         bool IsPlaying(int nChannelId) const;
-        float dbToVolume(float db);
-        float VolumeTodb(float volume);
-        FMOD_VECTOR VectorToFmod(const Vector3& vPosition);
+        static float dbToVolume(float db);
+        static float VolumeTodb(float volume);
     };
 } // End of namespace Borealis
 #endif

@@ -14,27 +14,68 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <BorealisPCH.hpp>
 #include "Audio/AudioEngine.hpp"
+#include <FMOD/fmod.hpp>
 
 namespace Borealis
 {
+
+    struct Implementation {
+        Implementation();
+        ~Implementation();
+
+        void Update();
+
+        FMOD::System* mpSystem;
+
+        int mnNextChannelId;
+
+        typedef std::map<std::string, FMOD::Sound*> SoundMap;
+        typedef std::map<int, FMOD::Channel*> ChannelMap;
+
+        SoundMap mSounds;
+        ChannelMap mChannels;
+    };
+
+    static FMOD_VECTOR VectorToFmod(const Vector3& vPosition)
+    {
+        FMOD_VECTOR fVec;
+        fVec.x = vPosition.x;
+        fVec.y = vPosition.y;
+        fVec.z = vPosition.z;
+        return fVec;
+    }
+
+
+    static int ErrorCheck(FMOD_RESULT result)
+    {
+        if (result != FMOD_OK)
+        {
+            std::cout << "FMOD ERROR " << result << std::endl;
+            return 1;
+        }
+        // cout << "FMOD all good" << endl;
+        return 0;
+    }
+
     Implementation::Implementation()
     {
         mpSystem = NULL;
         mnNextChannelId = 1;
         // Create FMOD Core system
-        AudioEngine::ErrorCheck(FMOD::System_Create(&mpSystem));
+        ErrorCheck(FMOD::System_Create(&mpSystem));
         // Initialize FMOD Core system
-        AudioEngine::ErrorCheck(mpSystem->init(32, FMOD_INIT_PROFILE_ENABLE, NULL));
+        ErrorCheck(mpSystem->init(32, FMOD_INIT_PROFILE_ENABLE, NULL));
     }
 
     Implementation::~Implementation()
     {
         // Release FMOD Core system
-        AudioEngine::ErrorCheck(mpSystem->release());
+        ErrorCheck(mpSystem->release());
     }
 
     void Implementation::Update()
     {
+        /*AudioEngine::PlayAudio(".\assets\audio\meow.mp3");*/
         std::vector<ChannelMap::iterator> pStoppedChannels;
         for (auto it = mChannels.begin(), itEnd = mChannels.end(); it != itEnd; ++it)
         {
@@ -45,11 +86,12 @@ namespace Borealis
                 pStoppedChannels.push_back(it);
             }
         }
+
         for (auto& it : pStoppedChannels)
         {
             mChannels.erase(it);
         }
-        AudioEngine::ErrorCheck(mpSystem->update());
+        ErrorCheck(mpSystem->update());
     }
 
     Implementation* sgpImplementation = nullptr;
@@ -76,8 +118,9 @@ namespace Borealis
         eMode |= bStream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE;
 
         FMOD::Sound* pSound = nullptr;
-        AudioEngine::ErrorCheck(sgpImplementation->mpSystem->createSound(strSoundName.c_str(), eMode, nullptr, &pSound));
-        if (pSound) {
+        ErrorCheck(sgpImplementation->mpSystem->createSound(strSoundName.c_str(), eMode, nullptr, &pSound));
+        if (pSound)
+        {
             sgpImplementation->mSounds[strSoundName] = pSound;
         }
     }
@@ -88,7 +131,7 @@ namespace Borealis
         if (tFoundIt == sgpImplementation->mSounds.end())
             return;
 
-        AudioEngine::ErrorCheck(tFoundIt->second->release());
+        ErrorCheck(tFoundIt->second->release());
         sgpImplementation->mSounds.erase(tFoundIt);
     }
 
@@ -98,15 +141,16 @@ namespace Borealis
         auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
         if (tFoundIt == sgpImplementation->mSounds.end())
         {
-            LoadAudio(strSoundName);
+            AudioEngine::LoadAudio(strSoundName);
             tFoundIt = sgpImplementation->mSounds.find(strSoundName);
             if (tFoundIt == sgpImplementation->mSounds.end())
             {
                 return nChannelId;
             }
         }
+
         FMOD::Channel* pChannel = nullptr;
-        AudioEngine::ErrorCheck(sgpImplementation->mpSystem->playSound(tFoundIt->second, nullptr, true, &pChannel));
+        ErrorCheck(sgpImplementation->mpSystem->playSound(tFoundIt->second, nullptr, true, &pChannel));
         if (pChannel)
         {
             FMOD_MODE currMode;
@@ -114,10 +158,11 @@ namespace Borealis
             if (currMode & FMOD_3D)
             {
                 FMOD_VECTOR position = VectorToFmod(vPosition);
-                AudioEngine::ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
+                ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
             }
-            AudioEngine::ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
-            AudioEngine::ErrorCheck(pChannel->setPaused(false));
+
+            ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
+            ErrorCheck(pChannel->setPaused(false));
             sgpImplementation->mChannels[nChannelId] = pChannel;
         }
         return nChannelId;
@@ -130,7 +175,7 @@ namespace Borealis
             return;
 
         FMOD_VECTOR position = VectorToFmod(vPosition);
-        AudioEngine::ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
+        ErrorCheck(tFoundIt->second->set3DAttributes(&position, NULL));
     }
 
     void AudioEngine::SetChannelVolume(int nChannelId, float fVolumedB)
@@ -139,17 +184,10 @@ namespace Borealis
         if (tFoundIt == sgpImplementation->mChannels.end())
             return;
 
-        AudioEngine::ErrorCheck(tFoundIt->second->setVolume(dbToVolume(fVolumedB)));
+        ErrorCheck(tFoundIt->second->setVolume(dbToVolume(fVolumedB)));
     }
 
-    FMOD_VECTOR AudioEngine::VectorToFmod(const Vector3& vPosition) {
-        FMOD_VECTOR fVec;
-        fVec.x = vPosition.x;
-        fVec.y = vPosition.y;
-        fVec.z = vPosition.z;
-        return fVec;
-    }
-
+  
     float AudioEngine::dbToVolume(float dB)
     {
         return powf(10.0f, 0.05f * dB);
@@ -160,16 +198,8 @@ namespace Borealis
         return 20.0f * log10f(volume);
     }
 
-    int AudioEngine::ErrorCheck(FMOD_RESULT result) {
-        if (result != FMOD_OK) {
-            std::cout << "FMOD ERROR " << result << std::endl;
-            return 1;
-        }
-        // cout << "FMOD all good" << endl;
-        return 0;
-    }
-
-    void AudioEngine::Shutdown() {
+    void AudioEngine::Shutdown()
+    {
         delete sgpImplementation;
     }
 } // End of namespace Borealis

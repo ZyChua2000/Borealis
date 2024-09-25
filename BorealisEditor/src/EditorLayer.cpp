@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>	
 #include <EditorLayer.hpp>
 #include <Project/Project.hpp>
+#include "Audio/AudioEngine.hpp"
 
 
 namespace Borealis {
@@ -48,10 +49,13 @@ namespace Borealis {
 		SCPanel.SetContext(mActiveScene);
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
+		Borealis::AudioEngine::Init();
+		Borealis::AudioEngine::PlayAudio("assets/Audio/meow.mp3");
 	}
 
 	void EditorLayer::Free()
 	{
+		Borealis::AudioEngine::Shutdown();
 		PROFILE_FUNCTION();
 	}
 
