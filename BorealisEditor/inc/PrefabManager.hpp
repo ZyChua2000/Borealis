@@ -4,6 +4,7 @@
 #include <Scene/Entity.hpp>
 #include <Core/Core.hpp>
 #include <entt.hpp>
+#include <PrefabManager.hpp>
 
 //PrefabManager creates the ECS to store all prefabs as ECS objects
 namespace Borealis

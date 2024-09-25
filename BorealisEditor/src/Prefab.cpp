@@ -29,6 +29,11 @@ namespace Borealis {
 		PrefabManager::AddOrReplaceComponent<ComponentName>(mPrefabID, entity.GetComponent<ComponentName>()); \
 	} \
 
+	template<>
+	void Scene::OnComponentAdded<PrefabComponent>(Entity entity, PrefabComponent& component)
+	{
+
+	}
 	//Creates Prefab base on exisiting entity
 	Prefab::Prefab(Entity entity)
 	{
@@ -36,7 +41,13 @@ namespace Borealis {
 		AddPrefabComponent(TransformComponent);
 		AddPrefabComponent(TagComponent);
 		AddPrefabComponent(IDComponent);
+		AddPrefabComponent(SpriteRendererComponent);
 		// Add all components to prefab manager ECS
+
+		auto& prefabComponent = entity.AddComponent<PrefabComponent>();
+		prefabComponent.mPrefabID = mPrefabID;
+		prefabComponent.mComponentList.insert(typeid(SpriteRendererComponent));
+		
 	}
 
 	void Prefab::AddChild(Ref<Entity> entity)
@@ -56,10 +67,18 @@ namespace Borealis {
 		}
 	}
 
-	void Prefab::UpdateAllInstances()
-	{
-
-	}
+void Prefab::UpdateAllInstances()
+{
+    for (auto& child : mChildren)
+    {
+        // Dereference the smart pointer to access the child entity
+        if (child->HasComponent<SpriteRendererComponent>() && !child->GetComponent<PrefabComponent>().mComponentList.contains(typeid(SpriteRendererComponent)))
+        {
+            // Add or replace the SpriteRendererComponent in the child entity
+            child->AddOrReplaceComponent<SpriteRendererComponent>(PrefabManager::GetComponent<SpriteRendererComponent>(mPrefabID));
+        }
+    }
+}
 	
 	struct PrefabInstanceComponent
 	{

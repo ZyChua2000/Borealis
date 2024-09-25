@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>	
 #include <EditorLayer.hpp>
 #include <Project/Project.hpp>
+#include <Prefab.hpp>
 
 
 namespace Borealis {
@@ -53,9 +54,10 @@ namespace Borealis {
 		auto& src = entity.AddComponent<SpriteRendererComponent>();
 		src.Colour.r = 0.5f;
 
-		// Prefab prefab(entity)
-		// prefab.getComponent<SpriteRendererComponent>().Colour.g = 0.5f;
-		// prefab.UpdateAllInstance();
+		Prefab prefab(entity);
+		prefab.AddChild(MakeRef<Entity>(entity));
+		prefab.GetComponent<SpriteRendererComponent>().Colour.g = 0.5f;
+		prefab.UpdateAllInstances();
 		
 	}
 
