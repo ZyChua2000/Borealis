@@ -20,10 +20,19 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneCamera.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/Mesh.hpp>
+#include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
+#include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
 namespace Borealis
 {
+	class ComponentRegistry
+	{
+	public:
+		static std::vector<std::string> getPropertyNames(std::string componentName);
+		static std::vector<std::string> getComponentNames();
+	};
+
 	struct IDComponent
 	{
 		UUID ID;
@@ -40,6 +49,7 @@ namespace Borealis
 		TagComponent(const std::string& tag)
 			: Tag(tag) {}
 	};
+
 	struct TransformComponent
 	{
 		glm::vec3 Translate { 0.0f, 0.0f ,0.0f };
@@ -74,7 +84,7 @@ namespace Borealis
 			: Colour(colour) {}
 	};
 
-	struct CircleRendererComponent
+	struct CircleRendererComponent 
 	{
 		glm::vec4 Colour{ 1.0f,1.0f,1.0f,1.0f };
 		float thickness = 1.0;
@@ -86,7 +96,7 @@ namespace Borealis
 			: Colour(colour), thickness(thickness), fade(fade) {}
 	};
 
-	struct CameraComponent
+	struct CameraComponent 
 	{
 		SceneCamera Camera;
 		bool Primary = false;
@@ -116,11 +126,13 @@ namespace Borealis
 	// To be done:
 	struct MeshFilterComponent
 	{
-		Ref<Mesh> Mesh;
+		Ref<Model> Model;
 
 		MeshFilterComponent() = default;
 		MeshFilterComponent(const MeshFilterComponent&) = default;
+		MeshFilterComponent(Borealis::Model model) { Model = MakeRef<Borealis::Model>(model); }
 	};
+
 	struct MeshRendererComponent
 	{
 		Ref<Material> Material;
@@ -243,6 +255,38 @@ namespace Borealis
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
 	};
+
+	struct TextComponent
+	{
+		std::string text{};
+		uint32_t fontSize = 16;
+		Ref<Font> font;
+
+		TextComponent() = default;
+		TextComponent(const TextComponent&) = default;
+	};
+
+	class ScriptInstance;
+	struct ScriptComponent
+	{
+		std::unordered_map <std::string, Ref<ScriptInstance>> mScripts;
+
+		void AddScript(const std::string& name, const Ref<ScriptInstance>& script)
+		{
+			mScripts[name] = script;
+		}
+
+		void RemoveScript(const std::string& name)
+		{
+			mScripts.erase(name);
+		}
+
+		bool HasScript(const std::string& name)
+		{
+			return mScripts.find(name) != mScripts.end();
+		}
+	};
+
 
 }
 

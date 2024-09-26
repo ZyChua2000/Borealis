@@ -14,14 +14,25 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 
 #include <BorealisPCH.hpp>
+#include <typeinfo>
 #include <mono/jit/jit.h>
 #include <mono/metadata/assembly.h>
+#include <mono/metadata/metadata.h>
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptingUtils.hpp>
+#include <Scripting/ScriptingExposedInternal.hpp>
+#include <Scripting/ScriptInstance.hpp>
+#include <Core/Core.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Scene/SceneManager.hpp>
+#include <Scene/Components.hpp>
+#include <Scene/Entity.hpp>
 
 namespace Borealis
 {
+
+	 std::unordered_map<std::string, Ref<ScriptClass>> ScriptingSystem::mScriptClasses;
+
 
 	struct ScriptingSystemData
 	{
@@ -31,9 +42,110 @@ namespace Borealis
 		std::vector<MonoAssembly*> mAssemblies;
 	};
 
+
 	static ScriptingSystemData* sData;
 
+	void ScriptingSystem::RegisterCSharpClass(ScriptClass klass)
+	{
+		auto scriptClass = MakeRef<ScriptClass>(klass);
+		mScriptClasses[klass.GetKlassName()] = scriptClass;
+		void* iterator = nullptr;
+		while (MonoClassField* field = mono_class_get_fields(scriptClass->GetMonoClass(), &iterator))
+		{
+			auto fieldName = mono_field_get_name(field);
+			auto fieldType = mono_field_get_type(field);
+
+			ScriptFieldType SFType = MonoType2ScriptFieldType(fieldType);
+			scriptClass->mFields[fieldName] = ScriptField{ SFType, fieldName, field };
+		}
+	}
+
+	void ScriptingSystem::InitCoreAssembly()
+	{
+		
+		InstantiateClass(sData->mRoslynAssembly, sData->mAppDomain, "Borealis", "RoslynCompiler");
+		
+	}
+
+	static void RegisterCSharpScriptsFromAssembly(MonoAssembly* assembly)
+	{
+		MonoImage* image = mono_assembly_get_image(assembly);
+		void* iterator = nullptr;
+		auto assemblyImage = mono_assembly_get_image(sData->mRoslynAssembly);
+
+		const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(assemblyImage, MONO_TABLE_TYPEDEF);
+		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
+		MonoClass* behaviourClass = mono_class_from_name(assemblyImage, "Borealis", "MonoBehaviour");
+
+		for (int32_t i = 0; i < numTypes; i++)
+		{
+			uint32_t cols[MONO_TYPEDEF_SIZE];
+			mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
+
+			const char* nameSpace = mono_metadata_string_heap(assemblyImage, cols[MONO_TYPEDEF_NAMESPACE]);
+			const char* className = mono_metadata_string_heap(assemblyImage, cols[MONO_TYPEDEF_NAME]);
+
+			MonoClass* currClass = mono_class_from_name(assemblyImage, nameSpace, className);
+			if (currClass == behaviourClass)
+			{
+				continue;
+			}
+			if (mono_class_is_subclass_of(currClass, behaviourClass, false))
+			{
+				ScriptingSystem::RegisterCSharpClass(ScriptClass(nameSpace, className, assembly));
+			}
+			else
+			{
+				continue;
+			}
+		}
+	}
 	
+
+	template <typename T>
+	static void RegisterComponent()
+	{
+		std::string typeName = typeid(T).name();
+		
+
+		if (typeName.find("::") != std::string::npos)
+		{
+			typeName = "Borealis." + typeName.substr(typeName.find("::") + 2);
+		}
+		if (typeName.find("Component") != std::string::npos)
+		{
+			typeName = typeName.substr(0, typeName.find("Component"));
+		}
+		MonoType* managedType = mono_reflection_type_from_name(typeName.data(), mono_assembly_get_image(sData->mRoslynAssembly));
+
+		if (managedType)
+		{
+			GCFM::mHasComponentFunctions[managedType] = [](Entity& entity) { return entity.HasComponent<T>(); };
+			GCFM::mAddComponentFunctions[managedType] = [](Entity& entity) { entity.AddComponent<T>(); };
+			GCFM::mRemoveComponentFunctions[managedType] = [](Entity& entity) { entity.GetComponent<T>(); };
+		}
+		else
+		{
+			BOREALIS_CORE_WARN("Failed to register component {0}", typeName);
+		}
+	}
+
+	static void RegisterComponents()
+	{
+		RegisterComponent<TransformComponent>();
+		//RegisterComponent<CameraComponent>();
+		RegisterComponent<SpriteRendererComponent>();
+		//RegisterComponent<IDComponent>();
+		//RegisterComponent<TagComponent>();
+		//RegisterComponent<CircleRendererComponent>();
+		//RegisterComponent<MeshFilterComponent>();
+		//RegisterComponent<MeshRendererComponent>();
+		//RegisterComponent<BoxColliderComponent>();
+		//RegisterComponent<CapsuleColliderComponent>();
+		//RegisterComponent<RigidBodyComponent>();
+		//RegisterComponent<LightComponent>();
+
+	}
 
 	void ScriptingSystem::Init()
 	{
@@ -46,6 +158,19 @@ namespace Borealis
 		delete sData;
 	}
 
+	void ScriptingSystem::Update(float deltaTime)
+	{
+	}
+
+	template <typename T>
+	static void GetComponent(UUID id, T* component)
+	{
+		Scene* scene = SceneManager::GetActiveScene().get();
+		Entity entity = scene->GetEntityByUUID(id);
+		*component = entity.GetComponent<T>();
+	}
+
+
 	void ScriptingSystem::InitMono()
 	{
 		mono_set_assemblies_path("mono/lib/4.5");
@@ -56,6 +181,16 @@ namespace Borealis
 		char friendlyName[] = "BorealisAppDomain";
 		sData->mAppDomain = mono_domain_create_appdomain(friendlyName, nullptr);
 		mono_domain_set(sData->mAppDomain, true);
+
+		RegisterInternals();
+
+		sData->mRoslynAssembly = LoadCSharpAssembly("resources/scripts/core/BorealisScriptCore.dll");
+		
+		// Add all internal functions here
+		RegisterComponents();
+
+		// From Runtime assemblies as well
+		RegisterCSharpScriptsFromAssembly(sData->mRoslynAssembly);
 	}
 	void ScriptingSystem::FreeMono()
 	{

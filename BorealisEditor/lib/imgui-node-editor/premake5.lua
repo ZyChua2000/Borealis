@@ -1,7 +1,7 @@
 project "ImGuiNodeEditor"
 	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	staticruntime "on"
 
 	targetdir ("build/" .. outputdir .. "/%{prj.name}")
 	objdir ("build-int/" .. outputdir .. "/%{prj.name}")
