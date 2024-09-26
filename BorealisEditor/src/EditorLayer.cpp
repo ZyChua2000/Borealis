@@ -71,6 +71,7 @@ namespace Borealis {
 
 			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
 		}
+
 	}
 
 	void EditorLayer::Free()
@@ -607,7 +608,7 @@ namespace Borealis {
 			{
 				if (shift) // minus key
 				{
-					imGuizmoClipSpace = max(0.1f, imGuizmoClipSpace - 0.1f);
+					imGuizmoClipSpace = std::max(0.1f, imGuizmoClipSpace - 0.1f);
 					ImGuizmo::SetGizmoSizeClipSpace(imGuizmoClipSpace);
 				}
 			}

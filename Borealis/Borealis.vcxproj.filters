@@ -1803,6 +1803,9 @@
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
       <Filter>src\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Scene\Components.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scene\Entity.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
