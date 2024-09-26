@@ -24,7 +24,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
-#include <Project/Project.hpp>
 #include <Prefab.hpp>
 
 
@@ -81,6 +80,14 @@ namespace Borealis {
 			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
 
 			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+		}
+
+		for (auto name : ComponentRegistry::GetComponentNames())
+		{
+			for (auto variable : ComponentRegistry::GetPropertyNames(name))
+			{
+				BOREALIS_CORE_TRACE(name + "::" + variable);
+			}
 		}
 
 	}

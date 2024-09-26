@@ -37,7 +37,7 @@ namespace Borealis
             .property("TilingFactor", &SpriteRendererComponent::TilingFactor);
     }
 
-    std::vector<std::string> ComponentRegistry::getComponentNames()
+    std::vector<std::string> ComponentRegistry::GetComponentNames()
     {
         std::vector<std::string> componentNames;
         for (auto& t : type::get_types())
@@ -50,7 +50,7 @@ namespace Borealis
 		return componentNames;
     }
 
-    std::vector<std::string> ComponentRegistry::getPropertyNames(std::string componentName)
+    std::vector<std::string> ComponentRegistry::GetPropertyNames(std::string componentName)
     {
         type t = type::get_by_name(componentName);
         std::vector<std::string> properties;

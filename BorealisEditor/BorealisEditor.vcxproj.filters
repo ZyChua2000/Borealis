@@ -4,23 +4,29 @@
     <Filter Include="inc">
       <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Assets">
+      <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Panels">
       <UniqueIdentifier>{9177982C-7D2F-DA79-E636-B3D5D20D756A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="inc\Project">
-      <UniqueIdentifier>{65D363E7-D188-DCDC-5A7D-D6B3C631D3E0}</UniqueIdentifier>
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Assets">
+      <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Panels">
       <UniqueIdentifier>{DFE6F326-CB9E-3574-34A6-0ED0207DD064}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Project">
-      <UniqueIdentifier>{732C2D2D-DFE1-A522-68D6-9FF9D48A9C26}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Assets\FontImporter.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\MeshImporter.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
     <ClInclude Include="inc\EditorLayer.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -39,11 +45,14 @@
     <ClInclude Include="inc\PrefabManager.hpp">
       <Filter>inc</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Project\Project.hpp">
-      <Filter>inc\Project</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\FontImporter.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\MeshImporter.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
     <ClCompile Include="src\EditorApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -59,14 +68,8 @@
     <ClCompile Include="src\Prefab.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\PrefabComponent.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\PrefabManager.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Project\Project.cpp">
-      <Filter>src\Project</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

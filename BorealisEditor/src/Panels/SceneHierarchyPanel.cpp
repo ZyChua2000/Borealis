@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
+#include <PrefabComponent.hpp>
 
 
 namespace Borealis
@@ -621,9 +622,16 @@ namespace Borealis
 				}
 			});
 
-		DrawComponent<SpriteRendererComponent>("Sprite Renderer", mSelectedEntity, [](auto& component)
+		DrawComponent<SpriteRendererComponent>("Sprite Renderer", mSelectedEntity, [&](auto& component)
 			{
-				ImGui::ColorEdit4("Color", glm::value_ptr(component.Colour));
+				if (ImGui::ColorEdit4("Color", glm::value_ptr(component.Colour)))
+				{
+					if (mSelectedEntity.HasComponent<PrefabComponent>()) // it's a prefab instance
+					{
+						auto& pComp = mSelectedEntity.GetComponent<PrefabComponent>();
+						pComp.mEditedComponentList.insert("SpriteRendererComponent::Color");
+					}
+				}
 				ImGui::Button("Texture");
 				if(ImGui::BeginDragDropTarget())
 				{

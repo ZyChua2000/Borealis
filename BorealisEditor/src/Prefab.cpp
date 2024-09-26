@@ -46,7 +46,6 @@ namespace Borealis {
 
 		auto& prefabComponent = entity.AddComponent<PrefabComponent>();
 		prefabComponent.mPrefabID = mPrefabID;
-		prefabComponent.mComponentList.insert(typeid(SpriteRendererComponent));
 		
 	}
 
@@ -72,10 +71,18 @@ void Prefab::UpdateAllInstances()
     for (auto& child : mChildren)
     {
         // Dereference the smart pointer to access the child entity
-        if (child->HasComponent<SpriteRendererComponent>() && !child->GetComponent<PrefabComponent>().mComponentList.contains(typeid(SpriteRendererComponent)))
+        if (child->HasComponent<SpriteRendererComponent>())
         {
+			auto prefabComp = child->GetComponent<PrefabComponent>(); //All child must have this component
             // Add or replace the SpriteRendererComponent in the child entity
-            child->AddOrReplaceComponent<SpriteRendererComponent>(PrefabManager::GetComponent<SpriteRendererComponent>(mPrefabID));
+			for (auto variableName : ComponentRegistry::GetPropertyNames("SpriteRendererComponent"))
+			{
+				if (prefabComp.mEditedComponentList.contains(std::string("SpriteRendererComponent") + "::" + variableName))
+				{
+					// Cout	
+					//child->thisvariablename = parent's->thisvariablename
+				}
+			}
         }
     }
 }
