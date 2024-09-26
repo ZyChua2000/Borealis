@@ -1663,6 +1663,9 @@
     <ClInclude Include="inc\Audio\AudioEngine.hpp">
       <Filter>inc\Audio</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Audio\Audio.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">

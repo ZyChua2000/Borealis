@@ -141,7 +141,7 @@ namespace Borealis
         auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
         if (tFoundIt == sgpImplementation->mSounds.end())
         {
-            AudioEngine::LoadAudio(strSoundName);
+            AudioEngine::LoadAudio(strSoundName, true, true);
             tFoundIt = sgpImplementation->mSounds.find(strSoundName);
             if (tFoundIt == sgpImplementation->mSounds.end())
             {

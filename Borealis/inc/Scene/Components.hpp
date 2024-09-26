@@ -22,6 +22,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Mesh.hpp>
 #include <Graphics/Material.hpp>
 #include <Core/UUID.hpp>
+#include "Audio/Audio.hpp"
+
 namespace Borealis
 {
 	struct IDComponent
@@ -243,6 +245,24 @@ namespace Borealis
 		ShadowType shadowType = ShadowType::None;
 		LightAppearance lightAppearance = LightAppearance::Colour;
 	};
+
+	struct AudioComponent
+	{
+		bool isLoop = false;
+		bool isMute = false;
+		float Volume = 1.0f;
+
+		Ref<Audio> audio;
+
+		AudioComponent() = default;
+		AudioComponent(const AudioComponent&) = default;
+	};
+
+	struct AudioListener
+	{
+		bool isAudioListener = true;
+	};
+
 
 }
 

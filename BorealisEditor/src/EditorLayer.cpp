@@ -50,7 +50,7 @@ namespace Borealis {
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 		Borealis::AudioEngine::Init();
-		Borealis::AudioEngine::PlayAudio("assets/Audio/meow.mp3");
+		//Borealis::AudioEngine::PlayAudio("assets/Audio/meow.mp3");
 	}
 
 	void EditorLayer::Free()
