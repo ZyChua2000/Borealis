@@ -47,5 +47,16 @@ namespace Borealis
 
 		return "AssetType::<Invalid>";
 	}
+
+	AssetType Asset::StringToAssetType(std::string const& type)
+	{
+		if (type == "AssetType::None")			return AssetType::None;
+		if (type == "AssetType::Audio")			return AssetType::Audio;
+		if (type == "AssetType::Mesh")			return AssetType::Mesh;
+		if (type == "AssetType::Shader")		return AssetType::Shader;
+		if (type == "AssetType::Texture2D")		return AssetType::Texture2D;
+		if (type == "AssetType::Folder")		return AssetType::Folder;
+		if (type == "AssetType::Scene")			return AssetType::Scene;
+	}
 }
 

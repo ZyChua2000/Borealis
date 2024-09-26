@@ -36,12 +36,14 @@ namespace Borealis
 		void Clear();
 
 	private:
+		Ref<Asset> LoadAsset(AssetHandle assetHandle);
 		void SerializeRegistry();
 		void DeserializeRegistry(std::string const& registryFileString);
 
 		void RegisterAsset(std::filesystem::path path);
 		void RegisterAllAssets(std::filesystem::path path);
 
+		bool VerifyMetaFile(std::filesystem::path path);
 
 	private:
 		std::filesystem::path mAssetRegistryPath;

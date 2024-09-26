@@ -42,6 +42,7 @@ namespace Borealis
 
 		static AssetType GetAssetTypeFromExtention(std::filesystem::path path);
 		static std::string AssetTypeToString(AssetType type);
+		static AssetType StringToAssetType(std::string const& type);
 	};
 }
 

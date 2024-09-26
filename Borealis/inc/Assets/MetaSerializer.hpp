@@ -23,9 +23,14 @@ namespace Borealis
 	{
 	public:
 		static void SetAssetFolderPath(std::filesystem::path path);
+
+		static AssetMetaData GetAssetMetaDataFile(std::filesystem::path path);
+
 		static AssetMetaData CreateAssetMetaFile(std::filesystem::path path);
 
 		static void SerialzeRegistry(std::filesystem::path assetRegistryPath, std::unordered_map<AssetHandle, AssetMetaData> const& assetRegistry);
+
+		static void DeserializeRegistry(std::string const& registryFileString, std::unordered_map<AssetHandle, AssetMetaData>& AssetRegistry);
 
 	private:
 		static void SaveAsFile(const std::filesystem::path& path, const char* outputFile);

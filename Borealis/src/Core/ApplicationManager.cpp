@@ -44,6 +44,8 @@ namespace Borealis
 		Renderer::Init();
 
 		ScriptingSystem::Init();
+
+
 	}
 
 	/*!***********************************************************************
@@ -57,6 +59,7 @@ namespace Borealis
 		Renderer::Free();
 		mLayerSystem.Clear();
 		ScriptingSystem::Free();
+
 		delete mWindowManager;
 		glfwTerminate(); // Terminate after system shuts down
 

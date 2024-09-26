@@ -26,15 +26,41 @@ namespace Borealis
 		PathToAssetFolder = path;
 	}
 
-	void SerializeMetaFile(YAML::Emitter& out, AssetMetaData const& assetMetaData)
+	void SerializeMetaFile(YAML::Emitter& out, AssetMetaData const& assetMetaData, std::filesystem::path PathToAssetFolder)
 	{
 		out << YAML::BeginMap;
 		out << YAML::Key << "Name" << YAML::Value << assetMetaData.name;
-		out << YAML::Key << "EntityID" << YAML::Value << assetMetaData.Handle;
+		out << YAML::Key << "AssetHandle" << YAML::Value << assetMetaData.Handle;
 		out << YAML::Key << "AssetType" << YAML::Value << Asset::AssetTypeToString(assetMetaData.Type);
-		out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.string();
+		out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.lexically_relative(PathToAssetFolder).string();
 		out << YAML::Key << "LastModifiedDate" << YAML::Value << assetMetaData.importDate;
 		out << YAML::EndMap;
+	}
+
+	AssetMetaData DeserializeMetaFile(YAML::Node& node, std::filesystem::path PathToAssetFolder)
+	{
+		AssetMetaData metaData;
+
+		metaData.name = node["Name"].as<std::string>();
+		metaData.Handle = node["AssetHandle"].as<uint64_t>();
+		metaData.Type = Asset::StringToAssetType(node["AssetType"].as<std::string>());
+		std::string str = node["SourcePath"].as<std::string>();
+		metaData.SourcePath = std::filesystem::absolute(PathToAssetFolder / str);
+		metaData.importDate = node["LastModifiedDate"].as<uint64_t>();
+		
+		return metaData;
+	}
+
+	AssetMetaData MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path path)
+	{
+		std::ifstream metaFile(path);
+		std::stringstream metaStream;
+		metaStream << metaFile.rdbuf();
+		metaFile.close();
+
+		YAML::Node metaRoot = YAML::Load(metaStream.str());
+
+		return DeserializeMetaFile(metaRoot, PathToAssetFolder);
 	}
 
 	AssetMetaData MetaFileSerializer::CreateAssetMetaFile(std::filesystem::path path)
@@ -52,26 +78,9 @@ namespace Borealis
 			metaFilePath = path;
 			metaFilePath.replace_extension(".meta");
 		}
-
-		//std::ofstream meta(metaFilePath);
-		//if (meta)
-		//{
-		//	meta << "Name: " << metaData.name << "\n";
-		//	meta << "UUID: " << metaData.Handle << "\n";
-		//	meta << Asset::AssetTypeToString(metaData.Type) << "\n";
-		//	meta << metaData.SourcePath.string() << "\n";
-		//	meta << metaData.importDate << "\n";
-		//}
-		//else
-		//{
-		//	BOREALIS_CORE_ASSERT("Failed to create meta file for: {}", path.string());
-		//	return AssetMetaData();
-		//}
-
-		//meta.close();
-
+		
 		YAML::Emitter out;
-		SerializeMetaFile(out, metaData);
+		SerializeMetaFile(out, metaData, PathToAssetFolder);
 
 		SaveAsFile(metaFilePath, out.c_str());
 
@@ -86,13 +95,31 @@ namespace Borealis
 
 		for (auto metaData : assetRegistry)
 		{
-			SerializeMetaFile(out, metaData.second);
+			SerializeMetaFile(out, metaData.second, PathToAssetFolder);
 		}
 
 		out << YAML::EndSeq
 			<< YAML::EndMap;
 
 		SaveAsFile(assetRegistryPath, out.c_str());
+	}
+
+	void MetaFileSerializer::DeserializeRegistry(std::string const& registryFileString, std::unordered_map<AssetHandle, AssetMetaData>& AssetRegistry)
+	{
+		YAML::Node registryRoot = YAML::Load(registryFileString);
+
+		YAML::Node assetMetaInfo = registryRoot["Assets"];
+
+		if (assetMetaInfo)
+		{
+			std::filesystem::path pathToAssetFolder = PathToAssetFolder.parent_path();
+			for (YAML::Node metaInfo : assetMetaInfo)
+			{
+				AssetMetaData metaData = DeserializeMetaFile(metaInfo, pathToAssetFolder);
+
+				AssetRegistry.insert({ metaData.Handle, metaData });
+			}
+		}
 	}
 
 	void MetaFileSerializer::SaveAsFile(const std::filesystem::path& path, const char* outputFile)
@@ -122,7 +149,7 @@ namespace Borealis
 
 		metaData.Type = Asset::GetAssetTypeFromExtention(path);
 
-		metaData.SourcePath = path.lexically_relative(PathToAssetFolder);
+		metaData.SourcePath = path;// .lexically_relative(PathToAssetFolder);
 
 		metaData.importDate = GetLastWriteTime(path);
 

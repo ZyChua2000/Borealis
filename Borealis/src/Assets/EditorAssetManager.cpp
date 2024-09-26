@@ -18,13 +18,29 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/EditorAssetManager.hpp>
 #include <Assets/MetaSerializer.hpp>
 
+#include <Graphics/Texture.hpp>
+
 #include <yaml-cpp/yaml.h>
 
 namespace Borealis
 {
 	Ref<Asset> EditorAssetManager::GetAsset(AssetHandle assetHandle)
 	{
-		return Ref<Asset>();
+		if (!mAssetRegistry.contains(assetHandle))
+		{
+			BOREALIS_CORE_ASSERT("NO Asset Handle : {}", assetHandle);
+		}
+
+		Ref<Asset> asset = nullptr;
+		if (mLoadedAssets.contains(assetHandle))
+		{
+			asset = mLoadedAssets.at(assetHandle);
+		}
+		else
+		{
+			asset = LoadAsset(assetHandle);
+		}
+		return asset;
 	}
 
 	void EditorAssetManager::LoadRegistry(ProjectInfo projectInfo)
@@ -52,9 +68,9 @@ namespace Borealis
 		registryStream << registryFile.rdbuf();
 		registryFile.close();
 
+		MetaFileSerializer::SetAssetFolderPath(projectInfo.AssetsRegistryPath);
 		DeserializeRegistry(registryStream.str());
 
-		MetaFileSerializer::SetAssetFolderPath(projectInfo.AssetsRegistryPath);
 
 		//read files in assets folder and compare it with file
 		// - check if the asset have a .meta file
@@ -70,6 +86,23 @@ namespace Borealis
 	{
 	}
 
+	Ref<Asset> EditorAssetManager::LoadAsset(AssetHandle assetHandle)
+	{
+		AssetMetaData metaData = mAssetRegistry.at(assetHandle);
+
+		Ref<Asset> asset = nullptr;
+		switch (metaData.Type)
+		{
+		case AssetType::Texture2D:
+			asset = Texture2D::Create(metaData.SourcePath.string());
+			break;
+		default:
+			break;
+		}
+
+		return asset;
+	}
+
 	void EditorAssetManager::SerializeRegistry()
 	{
 		MetaFileSerializer::SerialzeRegistry(mAssetRegistryPath, mAssetRegistry);
@@ -77,13 +110,16 @@ namespace Borealis
 
 	void EditorAssetManager::DeserializeRegistry(std::string const& registryFileString)
 	{
-		YAML::Node registryRoot = YAML::Load(registryFileString);
+		MetaFileSerializer::DeserializeRegistry(registryFileString, mAssetRegistry);
 	}
 
 	void EditorAssetManager::RegisterAsset(std::filesystem::path path)
 	{
-		AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
-		mAssetRegistry.insert({ meta.Handle, meta });
+		if (!VerifyMetaFile(path))
+		{
+			AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
+			mAssetRegistry.insert({ meta.Handle, meta });
+		}
 	}
 
 	void EditorAssetManager::RegisterAllAssets(std::filesystem::path path)
@@ -97,15 +133,63 @@ namespace Borealis
 		{
 			if (std::filesystem::is_directory(entry))
 			{
-				AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(entry);
-				mAssetRegistry.insert({ meta.Handle, meta });
+				//check for existing meta file
+				//if exist, check last modified date
+				//if anything is wrong, create meta file
+				if(!VerifyMetaFile(entry))
+				{
+					AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(entry);
+					mAssetRegistry.insert({ meta.Handle, meta });
+				}
+
 				RegisterAllAssets(entry.path());
 			}
 			else if (std::filesystem::is_regular_file(entry))
 			{
+				if (entry.path().extension().string() == ".meta")
+				{
+					continue;
+				}
+
 				RegisterAsset(entry.path());
 			}
 		}
+	}
+
+	bool EditorAssetManager::VerifyMetaFile(std::filesystem::path path)
+	{
+		std::filesystem::path metaFilePath;
+		if (std::filesystem::is_directory(path))
+		{
+			metaFilePath = path.string() + ".meta";
+		}
+		else
+		{
+			metaFilePath = path.replace_extension(".meta");
+		}
+
+		if (!std::filesystem::exists(metaFilePath))
+		{
+			return false;
+		}
+		else
+		{
+			AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(metaFilePath);
+
+			if (mAssetRegistry.contains(metaData.Handle))
+			{
+				if (mAssetRegistry.at(metaData.Handle).importDate == metaData.importDate)
+				{
+					return true;
+				}
+				else
+				{
+					BOREALIS_CORE_ASSERT("IMPORT DATE DIFF");
+				}
+			}
+		}
+
+		return false;
 	}
 }
 

@@ -22,6 +22,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
 
+#include <Core/Project.hpp>
+
 
 namespace Borealis
 {
@@ -522,6 +524,13 @@ namespace Borealis
 			ImGui::OpenPopup("AddComponentPopup");
 		}
 
+		if (ImGui::Button("Load Image"))
+		{
+			auto asset = Project::GetEditorAssetsManager()->GetAsset(10003230356368635959);
+			Ref<Texture2D> text = std::static_pointer_cast<Texture2D>(asset);
+			int x = 0;
+		}
+
 		ImGui::PopItemWidth();
 
 		static char search_buffer[128] = "";
@@ -545,7 +554,7 @@ namespace Borealis
 			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
 
 			ImGui::EndPopup();
-			
+					
 		}
 
 		DrawComponent<TransformComponent>("Transform", mSelectedEntity, [](auto& transformComponent)
@@ -862,5 +871,7 @@ namespace Borealis
 				component.text = inputText;
 				component.fontSize = textSize;
 			});
+
+		
 	}
 }

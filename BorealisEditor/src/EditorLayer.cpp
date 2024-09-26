@@ -71,6 +71,7 @@ namespace Borealis {
 
 			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
 		}
+
 	}
 
 	void EditorLayer::Free()
