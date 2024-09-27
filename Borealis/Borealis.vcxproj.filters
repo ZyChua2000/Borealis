@@ -1681,6 +1681,7 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Scene\ComponentRegistry.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1803,7 +1804,7 @@
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
       <Filter>src\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene\Components.cpp">
+    <ClCompile Include="src\Scene\ComponentRegistry.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Entity.cpp">

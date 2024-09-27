@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/Project.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Scene/Serialiser.hpp>	
+#include <Scene/ComponentRegistry.hpp>
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
@@ -58,6 +59,7 @@ namespace Borealis {
 		mEditorScene = MakeRef<Scene>();
 		SceneManager::AddScene(mEditorScene->GetName(), mEditorScene->GetScenePath());
 		SceneManager::SetActiveScene(mEditorScene->GetName());
+		mEditorScene = SceneManager::GetActiveScene();
 
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 

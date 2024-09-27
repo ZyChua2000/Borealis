@@ -189,6 +189,10 @@
     <ClInclude Include="inc\Graphics\VertexArray.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiFontLib.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp" />
+    <ClInclude Include="inc\Scene\ComponentRegistry.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="inc\Scene\Components.hpp" />
     <ClInclude Include="inc\Scene\Entity.hpp" />
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
@@ -713,7 +717,7 @@
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiFontLib.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Scene\Components.cpp" />
+    <ClCompile Include="src\Scene\ComponentRegistry.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
