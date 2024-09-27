@@ -21,8 +21,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
+#include <Assets/AssetManager.hpp>
 
 #include <Core/Project.hpp>
+
+
 
 
 namespace Borealis
@@ -638,10 +641,12 @@ namespace Borealis
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
-						component.Texture = Texture2D::Create(imageName);
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						//std::string imageName = "assets/";
+						//std::string imageName = data;
+						//imageName += data;
+						//component.Texture = Texture2D::Create(imageName);
+						component.Texture = AssetManager::GetAsset<Texture2D>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}

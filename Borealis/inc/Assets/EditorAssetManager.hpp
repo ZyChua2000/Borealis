@@ -19,12 +19,12 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <filesystem>
 
 #include <Core/ProjectInfo.hpp>
-#include <Assets/AssetManager.hpp>
+#include <Assets/IAssetManager.hpp>
 #include <Assets/AssetMetaData.hpp>
 
 namespace Borealis
 {
-	class EditorAssetManager : public AssetManager
+	class EditorAssetManager : public IAssetManager
 	{
 	public:
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;

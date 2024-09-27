@@ -15,6 +15,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Assets/AssetMetaData.hpp>
+#include <Assets/MetaSerializer.hpp>
 
 namespace Borealis
 {
@@ -170,8 +172,12 @@ namespace Borealis
 			}
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, mAssetsDir);
-				std::string itemPath = relativePath.string();
+				//auto relativePath = std::filesystem::relative(path, mAssetsDir);
+				//std::string itemPath = relativePath.string();
+				std::string itemPath = std::filesystem::path(path).string();
+
+				AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path(path).replace_extension(".meta"));
+				//get the meta file instead and pass the handle as the data?
 				const char* itemPathcStr = itemPath.c_str();
 
 				std::string payloadName;
@@ -197,7 +203,7 @@ namespace Borealis
 					}
 				}
 
-				ImGui::SetDragDropPayload(payloadName.c_str(), itemPathcStr, itemPath.length() + 1, ImGuiCond_Once);
+				ImGui::SetDragDropPayload(payloadName.c_str(), &metaData.Handle, sizeof(AssetHandle), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
 			

@@ -121,7 +121,7 @@
     <ClInclude Include="inc\Assets\Asset.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\AssetManager.hpp">
+    <ClInclude Include="inc\Assets\IAssetManager.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
     <ClInclude Include="inc\Assets\AssetMetaData.hpp">
@@ -1705,6 +1705,9 @@
     <ClInclude Include="inc\Core\ProjectInfo.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1871,6 +1874,9 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\AssetManager.cpp">
+      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

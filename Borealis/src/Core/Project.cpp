@@ -23,7 +23,7 @@ namespace Borealis
 {
 	ProjectInfo Project::mProjectInfo;
 
-	std::shared_ptr<AssetManager> Project::mAssetManager = nullptr;
+	std::shared_ptr<IAssetManager> Project::mAssetManager = nullptr;
 
 	void Project::CreateProject(std::string name, std::string path)
 	{

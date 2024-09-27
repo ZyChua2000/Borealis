@@ -32,7 +32,8 @@ namespace Borealis
 		out << YAML::Key << "Name" << YAML::Value << assetMetaData.name;
 		out << YAML::Key << "AssetHandle" << YAML::Value << assetMetaData.Handle;
 		out << YAML::Key << "AssetType" << YAML::Value << Asset::AssetTypeToString(assetMetaData.Type);
-		out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.lexically_relative(PathToAssetFolder).string();
+		//out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.lexically_relative(PathToAssetFolder).string();
+		out << YAML::Key << "SourcePath" << YAML::Value << std::filesystem::relative(assetMetaData.SourcePath, PathToAssetFolder).string();
 		out << YAML::Key << "LastModifiedDate" << YAML::Value << assetMetaData.importDate;
 		out << YAML::EndMap;
 	}
@@ -45,7 +46,16 @@ namespace Borealis
 		metaData.Handle = node["AssetHandle"].as<uint64_t>();
 		metaData.Type = Asset::StringToAssetType(node["AssetType"].as<std::string>());
 		std::string str = node["SourcePath"].as<std::string>();
-		metaData.SourcePath = std::filesystem::absolute(PathToAssetFolder / str);
+
+		const std::string pattern = "..\\";
+		size_t pos = str.find(pattern);
+
+		// If the pattern is found, erase it
+		if (pos != std::string::npos) {
+			str.erase(pos, pattern.length());
+		}
+
+		metaData.SourcePath = PathToAssetFolder / str;
 		metaData.importDate = node["LastModifiedDate"].as<uint64_t>();
 		
 		return metaData;

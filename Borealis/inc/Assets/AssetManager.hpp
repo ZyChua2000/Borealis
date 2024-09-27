@@ -3,7 +3,7 @@
 \file       AssetManager.hpp
 \author     Chan Guo Geng Gordon
 \par        email: g.chan/@digipen.edu
-\date       September 23, 2024
+\date       September 27, 2024
 \brief      Declares
 
 Copyright (C) 2024 DigiPen Institute of Technology.
@@ -16,14 +16,19 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define AssetManager_HPP
 
 #include <Core/Core.hpp>
-#include <Assets/Asset.hpp>
+#include <Core/Project.hpp>
 
 namespace Borealis
 {
 	class AssetManager
 	{
 	public:
-		virtual Ref<Asset> GetAsset(AssetHandle Handle) = 0;
+		template<typename T>
+		static Ref<T> GetAsset(AssetHandle handle)
+		{
+			Ref<Asset> asset = Project::GetEditorAssetsManager()->GetAsset(handle);
+			return std::static_pointer_cast<T>(asset);
+		}
 	};
 }
 

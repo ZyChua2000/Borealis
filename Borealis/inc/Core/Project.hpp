@@ -22,7 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Core/ProjectInfo.hpp>
 
-#include <Assets/AssetManager.hpp>
+#include <Assets/IAssetManager.hpp>
 #include <Assets/EditorAssetManager.hpp>
 
 namespace Borealis
@@ -46,7 +46,7 @@ namespace Borealis
 	private:
 		static ProjectInfo mProjectInfo;
 
-		static std::shared_ptr<AssetManager> mAssetManager;
+		static std::shared_ptr<IAssetManager> mAssetManager;
 	};
 
 }
