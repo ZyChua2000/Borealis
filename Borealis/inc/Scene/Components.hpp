@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
+#include <any>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -26,12 +27,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/UUID.hpp>
 namespace Borealis
 {
-	class ComponentRegistry
-	{
-	public:
-		static std::vector<std::string> getPropertyNames(std::string componentName);
-		static std::vector<std::string> getComponentNames();
-	};
+
 
 	struct IDComponent
 	{
@@ -287,7 +283,7 @@ namespace Borealis
 		}
 	};
 
-
+	
 }
 
 #endif
