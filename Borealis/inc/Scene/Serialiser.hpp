@@ -16,8 +16,14 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define SERIALISER_HPP
 #include <Core/Core.hpp>
 #include <Scene/Scene.hpp>
+
+namespace YAML
+{
+	class Emitter;
+}
 namespace Borealis
 {
+	class BehaviourNode;
 	class Serialiser
 	{
 	public:
@@ -28,6 +34,7 @@ namespace Borealis
 
 		static bool SerialiseEditorStyle();
 		static bool DeserialiseEditorStyle();
+		static bool SerializeBehaviourNode(YAML::Emitter& out, const BehaviourNode* node);
 	private:
 		Ref<Scene> mScene;
 

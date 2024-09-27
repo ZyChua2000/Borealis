@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>
 #include <Scene/Entity.hpp>
 #include <Scene/Components.hpp>
+#include <AI/BehaviourNode.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 
@@ -134,6 +135,22 @@ namespace Borealis
 
 
 	Serialiser::Serialiser(const Ref<Scene>& scene) : mScene(scene) {}
+
+
+	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const BehaviourNode* node) {
+		out << YAML::Key << "name" << YAML::Value << node->get_name();
+		if (!node->children.empty())
+		{
+			out << YAML::Key << "children" << YAML::Value << YAML::BeginSeq;
+			for (const auto& child : node->children) {
+				out << YAML::BeginMap;
+				SerializeBehaviourNode(out, child); // Recursively serialize the child node
+				out << YAML::EndMap;
+			}
+			out << YAML::EndSeq;
+		}
+		return true;
+	}
 
 	static void SerializeEntity(YAML::Emitter& out, Entity& entity)
 	{
@@ -305,6 +322,23 @@ namespace Borealis
 		}
 
 
+		if (entity.HasComponent<BehaviourTreeComponent>())
+		{
+			out << YAML::Key << "BehaviourTreeComponent";
+			out << YAML::BeginMap;
+
+			auto& behaviourTreeComponent = entity.GetComponent<BehaviourTreeComponent>();
+			
+			for (auto& tree : behaviourTreeComponent.mBehaviourTrees)
+			{
+				out << YAML::Key << "BehaviourTree";
+				out << YAML::BeginMap;
+				Serialiser::SerializeBehaviourNode(out, tree->GetRootNode());
+				out << YAML::EndMap;
+			}
+
+			out << YAML::EndMap;
+		}
 		out << YAML::EndMap;
 	}
 
@@ -633,6 +667,7 @@ namespace Borealis
 
 		return true;
 	}
+
 
 	bool Serialiser::SerialiseEditorStyle()
 	{

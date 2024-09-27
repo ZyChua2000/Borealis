@@ -4,8 +4,7 @@
 #include <vector>
 namespace Borealis
 {
-
-
+    class Serialiser;
     enum class NodeType
     {
         CONTROLFLOW,
@@ -33,6 +32,7 @@ namespace Borealis
     {
         friend class BehaviorTreePrototype;
         friend class NodeFactory;
+        friend class Serialiser;
     public:
         BehaviourNode() = default;
         BehaviourNode(NodeType type, int depth, const std::string& name);
