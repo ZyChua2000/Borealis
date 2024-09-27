@@ -686,6 +686,7 @@
     <ClCompile Include="src\AI\BehaviourNode.cpp" />
     <ClCompile Include="src\AI\BehaviourTree.cpp" />
     <ClCompile Include="src\AI\BehaviourTreePrototype.cpp" />
+    <ClCompile Include="src\AI\C_Sequencer.cpp" />
     <ClCompile Include="src\AI\L_CheckMouseClick.cpp" />
     <ClCompile Include="src\AI\L_Idle.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
