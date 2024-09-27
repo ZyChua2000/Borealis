@@ -15,6 +15,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <Scene/Components.hpp>
+#include <Scene/ComponentRegistry.hpp>
 #include "Prefab.hpp"
 #include <PrefabManager.hpp>
 #include <iostream>  // For testing/debugging purposes

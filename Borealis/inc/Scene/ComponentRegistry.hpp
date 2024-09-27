@@ -22,8 +22,8 @@ namespace Borealis
 	class ComponentRegistry
 	{
 	public:
-		static std::vector<std::string> getPropertyNames(std::string componentName);
-		static std::vector<std::string> getComponentNames();
+		static std::vector<std::string> GetPropertyNames(std::string componentName);
+		static std::vector<std::string> GetComponentNames();
 		template <typename Component>
 		static void SetPropertyValue(const std::string& propertyName, const void*& data, const Component& object)
 		{
