@@ -542,7 +542,8 @@ namespace Borealis
 			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
-			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
+			SearchBar<TextComponent				>(search_text, mSelectedEntity,"Text", search_buffer);
+			SearchBar<BehaviourTreeComponent	>(search_text, mSelectedEntity, "Behaviour Tree", search_buffer);
 
 			ImGui::EndPopup();
 			
@@ -861,6 +862,16 @@ namespace Borealis
 
 				component.text = inputText;
 				component.fontSize = textSize;
+			});
+
+		DrawComponent<BehaviourTreeComponent>("Behaviour Tree", mSelectedEntity, [](auto& component)
+			{
+				// Get the window size
+				ImVec2 windowSize = ImGui::GetWindowSize();		
+				if (ImGui::Button("Open Node Editor", ImVec2(500,0)))
+				{
+					// Open the node editor
+				}
 			});
 	}
 }
