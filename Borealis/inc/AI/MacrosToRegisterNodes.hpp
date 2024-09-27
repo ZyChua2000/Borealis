@@ -25,7 +25,58 @@ namespace Borealis
 {
     class NodeFactory
     {
+    private:
+        // Recursive function to build the tree from the added nodes
+        void recursive_add(BehaviourNode* parent, BehaviourNode* child)
+        {
+            // Add the child node to the parent node recursively, building the tree
+            if (parent)
+            {
+                parent->add_child(child);
 
+                // For each child in the current node, add them recursively
+                for (auto& childNode : child->children)
+                {
+                    recursive_add(child, childNode);
+                }
+            }
+        }
+
+        // Tree root node
+        BehaviourNode* rootNode;
+
+        // Tracks the most recently added node for managing hierarchy
+        BehaviourNode* previousNode;
+
+        // Name of the behavior tree
+        const char* treeName;
+
+        // Function to find the correct parent node based on depth
+        BehaviourNode* find_parent_node(int depth)
+        {
+            // Find the correct parent node based on the depth
+            // This could be a stack-based approach or simply walking the tree from the rootNode
+            BehaviourNode* currentNode = rootNode;
+
+            // Traverse the tree to find the node at the desired depth
+            while (currentNode && currentNode->get_depth() != depth - 1)
+            {
+                if (!currentNode->children.empty())
+                {
+                    currentNode = currentNode->children.back();  // Move down the tree
+                }
+                else
+                {
+                    return nullptr;  // No valid parent node found at the requested depth
+                }
+            }
+
+            return currentNode;
+        }
+    public:
+        NodeFactory() : rootNode(nullptr), previousNode(nullptr), treeName(nullptr)
+        {
+        }
         // Map to store prototypes
         std::unordered_map<std::string, BehaviourNode*> nodePrototypes;
 
@@ -59,12 +110,15 @@ namespace Borealis
         }
 
         // Function to create a node by name
-        BehaviourNode* createNodeByName(const std::string& nodeName) {
+        BehaviourNode* createNodeByName(const std::string& nodeName) 
+        {
             auto it = nodePrototypes.find(nodeName);
-            if (it != nodePrototypes.end()) {
+            if (it != nodePrototypes.end()) 
+            {
                 return it->second->clone();  // Clone the prototype to get a new instance
             }
-            else {
+            else 
+            {
                 std::cerr << "Error: Node type " << nodeName << " not found!" << std::endl;
                 return nullptr;
             }
@@ -130,6 +184,8 @@ namespace Borealis
                         nodeByDepth.resize(depth + 1, nullptr);  // Resize to fit the current depth
                     }
 
+                   
+
                     if (depth == 0) {
                         // The first node at depth 0 is the root node
                         root = newNode;
@@ -157,6 +213,15 @@ namespace Borealis
             }
             return root;
         }
+
+
+
+        void set_tree_name(const char* name)
+        {
+            treeName = name;
+        }
+
+
     };
 }
 

@@ -28,6 +28,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Graphics/Font.hpp>
 #include <Assets/FontImporter.hpp>
+#include <AI/MacrosToRegisterNodes.hpp>
+#include <AI/L_Idle.hpp>
+#include <AI/C_Sequencer.hpp>
+#include <AI/L_CheckMouseClick.hpp>
+#include <AI/BehaviourTree.hpp>
 
 namespace Borealis {
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
@@ -71,6 +76,27 @@ namespace Borealis {
 
 			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
 		}
+
+		auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
+		auto& btC = entity.AddComponent<BehaviourTreeComponent>();
+		L_Idle* idleNode = new L_Idle();
+		C_Sequencer* sequencerNode = new C_Sequencer();
+		L_CheckMouseClick* clickNode = new L_CheckMouseClick();
+		BehaviourNode* clonedIdleNode = idleNode->clone();
+		BehaviourNode* clonedSequenceNode = sequencerNode->clone();
+		BehaviourNode* clonedClickNode = clickNode->clone();
+		NodeFactory factory;
+		factory.registerNodePrototype("L_Idle", clonedIdleNode);
+		factory.createNodeByName("L_Idle");
+		Ref<BehaviourTree> betree = MakeRef<BehaviourTree>();
+		betree->SetRootNode(clonedSequenceNode);
+		betree->AddNode(betree->GetRootNode(),clonedIdleNode);
+		betree->AddNode(betree->GetRootNode(),clonedClickNode);
+		//selector->add child idle, mouseclick
+		//betree->add selector(root)
+
+
+		btC.AddTree(betree);
 	}
 
 	void EditorLayer::Free()

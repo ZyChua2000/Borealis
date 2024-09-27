@@ -11,7 +11,9 @@ namespace Borealis
     public:
         BehaviourTree();
         ~BehaviourTree();
-
+        void AddNode(BehaviourNode* parent, BehaviourNode* child);
+        void SetRootNode(BehaviourNode* root);
+        BehaviourNode* GetRootNode();
         void update(float dt);
 
     private:

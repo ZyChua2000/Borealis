@@ -15,12 +15,12 @@ namespace Borealis
         
         public override void Start()
         {
-            InternalCalls.Log("ExampleScriptStart");
+            //InternalCalls.Log("ExampleScriptStart");
         }
 
         public override void Update()
         {
-            InternalCalls.Log("ExampleScriptUpdate");
+            //InternalCalls.Log("ExampleScriptUpdate");
         }
        
     }

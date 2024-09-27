@@ -133,6 +133,15 @@
     <ClInclude Include="inc\AI\Blackboard.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AI\C_Sequencer.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\L_CheckMouseClick.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\L_Idle.hpp">
+      <Filter>inc\AI</Filter>
+    </ClInclude>
     <ClInclude Include="inc\AI\MacrosToRegisterNodes.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
@@ -1723,6 +1732,15 @@
       <Filter>src\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\AI\BehaviourTreePrototype.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\C_Sequencer.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\L_CheckMouseClick.cpp">
+      <Filter>src\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\L_Idle.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">

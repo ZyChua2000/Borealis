@@ -22,4 +22,27 @@ namespace Borealis
             rootNode->set_status(NodeStatus::READY);
         }
     }
+    void BehaviourTree::AddNode(BehaviourNode* parent, BehaviourNode* child)
+    {
+        if (!parent) {
+            if (!rootNode) {
+                rootNode = child;  // If no root node exists, make the child the root
+            }
+            else {
+                rootNode->add_child(child);  // Add to the root if no parent is specified
+            }
+        }
+        else {
+            parent->add_child(child);  // Add the child to the given parent
+        }
+    }
+    void BehaviourTree::SetRootNode(BehaviourNode* root) 
+    {
+        rootNode = root;
+    } 
+    BehaviourNode* BehaviourTree::GetRootNode() 
+    {
+        return rootNode;
+    }
+
 }

@@ -32,7 +32,9 @@ namespace Borealis
     class  BehaviourNode
     {
         friend class BehaviorTreePrototype;
+        friend class NodeFactory;
     public:
+        BehaviourNode() = default;
         BehaviourNode(NodeType type, int depth, const std::string& name);
         ~BehaviourNode();
 

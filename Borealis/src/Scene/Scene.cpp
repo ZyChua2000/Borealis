@@ -62,6 +62,14 @@ namespace Borealis
 				}
 			}
 
+			auto BTview = mRegistry.view<BehaviourTreeComponent>();
+			for (auto entity : BTview)
+			{
+				BTview.get<BehaviourTreeComponent>(entity).Update(dt);
+			}
+
+
+
 			int timeStep = dt / 1.66667f;
 			for (auto entity : view)
 			{
@@ -404,6 +412,12 @@ namespace Borealis
 
 	template<>
 	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BehaviourTreeComponent>(Entity entity, BehaviourTreeComponent& component)
 	{
 
 	}

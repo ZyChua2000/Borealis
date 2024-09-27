@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
+#include <unordered_set>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -23,6 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
+#include <AI/BehaviourTree.hpp>
 #include <Core/UUID.hpp>
 namespace Borealis
 {
@@ -279,19 +281,27 @@ namespace Borealis
 			return mScripts.find(name) != mScripts.end();
 		}
 	};
-	//struct BehaviourTreeComponent
-	//{
-	//	BehaviourTree& get_behavior_tree()
-	//	{
-	//		return tree;
-	//	}
-	//	void update(float dt)
-	//	{
-	//		tree.update(dt);
-	//	}
-	//	//variables below
-	//	BehaviourTree tree;
-	//};
+	struct BehaviourTreeComponent
+	{
+		std::unordered_set<Ref<BehaviourTree>> mBehaviourTrees;
+		void AddTree()
+		{
+			mBehaviourTrees.emplace(Ref<BehaviourTree>());
+		}
+		void AddTree(Ref<BehaviourTree> bt)
+		{
+			mBehaviourTrees.emplace(bt);
+		}
+
+		void Update(float dt)
+		{
+			for (auto& tree : mBehaviourTrees)
+			{
+				tree->update(dt);
+			}
+		}
+
+	};
 
 }
 
