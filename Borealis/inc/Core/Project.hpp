@@ -38,6 +38,8 @@ namespace Borealis
 		static std::string GetAssetsPath();
 		static void SaveProject();
 
+		static ProjectInfo GetProjectInfo();
+
 		static void BuildExportSettings(std::string buildPath, std::string buildName);
 		static void CopyFolder(const std::filesystem::path& source, const std::filesystem::path& destination);
 		static void CopyIndividualFile(const std::filesystem::path& source, const std::filesystem::path& destination);

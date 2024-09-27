@@ -25,9 +25,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
 
+#include <EditorAssets/AssetImporter.hpp>
 
 #include <Graphics/Font.hpp>
-#include <Assets/FontImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
 
 namespace Borealis {
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
@@ -804,6 +805,8 @@ namespace Borealis {
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
 			DeserialiseEditorScene();
+
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager

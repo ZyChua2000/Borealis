@@ -19,8 +19,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
-#include <Assets/MeshImporter.hpp>
-#include <Assets/FontImporter.hpp>
+#include <EditorAssets/MeshImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
 #include <Assets/AssetManager.hpp>
 
 #include <Core/Project.hpp>

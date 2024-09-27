@@ -16,7 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Assets/AssetMetaData.hpp>
-#include <Assets/MetaSerializer.hpp>
+#include <EditorAssets/MetaSerializer.hpp>
 
 namespace Borealis
 {

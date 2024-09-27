@@ -69,8 +69,8 @@ namespace Borealis
 				mProjectInfo.AssetsPath = projectFilePath + mProjectInfo.AssetsDirectoryName;
 				mProjectInfo.AssetsRegistryPath = projectFilePath + mProjectInfo.AssetsRegistryName;
 
-				//pass in project info
-				GetEditorAssetsManager()->LoadRegistry(mProjectInfo);
+				////pass in project info
+				//GetEditorAssetsManager()->LoadRegistry(mProjectInfo);
 
 				std::ifstream inStream(projectFile);
 				std::stringstream ss;
@@ -142,6 +142,12 @@ namespace Borealis
 		outStream << out.c_str();
 		outStream.close();
 	}
+
+	ProjectInfo Project::GetProjectInfo()
+	{
+		return mProjectInfo;
+	}
+
 	void Project::BuildExportSettings(std::string buildPath, std::string buildName)
 	{
 		buildPath += "/" + buildName + ".brls";

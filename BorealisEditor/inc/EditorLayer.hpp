@@ -20,6 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/SceneHierarchyPanel.hpp>
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Graphics/EditorCamera.hpp>
+#include <EditorAssets/AssetImporter.hpp>
 namespace Borealis {
 	class EditorLayer : public Layer
 	{
@@ -95,6 +96,8 @@ namespace Borealis {
 		SceneState mSceneState = SceneState::Edit;
 
 		float mLineThickness = 1.0f;
+
+		AssetImporter mAssetImporter;
 	};
 }
 

@@ -24,30 +24,33 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	using AssetRegistry = std::unordered_map<AssetHandle, AssetMetaData>;
 	class EditorAssetManager : public IAssetManager
 	{
 	public:
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;
 
+		AssetRegistry& GetAssetRegistry();
+
 		//Load all available assets into Registry
-		void LoadRegistry(ProjectInfo projectInfo);
+		//void LoadRegistry(ProjectInfo projectInfo);
 
 		//clear Registry and loaded assets
 		void Clear();
 
 	private:
 		Ref<Asset> LoadAsset(AssetHandle assetHandle);
-		void SerializeRegistry();
-		void DeserializeRegistry(std::string const& registryFileString);
+		//void SerializeRegistry();
+		//void DeserializeRegistry(std::string const& registryFileString);
 
-		void RegisterAsset(std::filesystem::path path);
-		void RegisterAllAssets(std::filesystem::path path);
+		//void RegisterAsset(std::filesystem::path path);
+		//void RegisterAllAssets(std::filesystem::path path);
 
-		bool VerifyMetaFile(std::filesystem::path path);
+		//bool VerifyMetaFile(std::filesystem::path path);
 
 	private:
 		std::filesystem::path mAssetRegistryPath;
-		std::unordered_map<AssetHandle, AssetMetaData> mAssetRegistry;
+		AssetRegistry mAssetRegistry;
 		std::unordered_map<AssetHandle, Ref<Asset>> mLoadedAssets;
 	};
 }

@@ -121,7 +121,7 @@
     <ClInclude Include="inc\Assets\Asset.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\IAssetManager.hpp">
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
     <ClInclude Include="inc\Assets\AssetMetaData.hpp">
@@ -130,7 +130,7 @@
     <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\MetaSerializer.hpp">
+    <ClInclude Include="inc\Assets\IAssetManager.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
@@ -164,6 +164,9 @@
       <Filter>inc\Core</Filter>
     </ClInclude>
     <ClInclude Include="inc\Core\Project.hpp">
+      <Filter>inc\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Core\ProjectInfo.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
     <ClInclude Include="inc\Core\UUID.hpp">
@@ -1702,12 +1705,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Core\ProjectInfo.hpp">
-      <Filter>inc\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Assets\AssetManager.hpp">
-      <Filter>inc\Assets</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1719,10 +1716,10 @@
     <ClCompile Include="src\Assets\Asset.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
-    <ClCompile Include="src\Assets\EditorAssetManager.cpp">
+    <ClCompile Include="src\Assets\AssetManager.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
-    <ClCompile Include="src\Assets\MetaSerializer.cpp">
+    <ClCompile Include="src\Assets\EditorAssetManager.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
@@ -1874,9 +1871,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Assets\AssetManager.cpp">
-      <Filter>src\Assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
