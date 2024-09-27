@@ -62,6 +62,13 @@ namespace Borealis
 		SerializeRegistry();
 	}
 
+	bool AssetImporter::ImportAsset(AssetMetaData metaData)
+	{
+		//check if assets needs to be imported
+
+		//if yes pass info to compiler
+	}
+
 	void AssetImporter::SerializeRegistry()
 	{
 		MetaFileSerializer::SerialzeRegistry(mAssetRegistryPath, Project::GetEditorAssetsManager()->GetAssetRegistry());
@@ -77,6 +84,7 @@ namespace Borealis
 		if (!VerifyMetaFile(path, assetRegistry))
 		{
 			AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
+			bool imported = ImportAsset(meta);
 			assetRegistry.insert({ meta.Handle, meta });
 		}
 	}
