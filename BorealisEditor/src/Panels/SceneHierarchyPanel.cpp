@@ -433,6 +433,11 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if (component.Material)
+				{
+					MaterialEditor::RenderProperties(component.Material);
+				}
+
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))

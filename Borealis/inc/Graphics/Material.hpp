@@ -102,7 +102,7 @@ namespace Borealis
 			\texture[in] value
 				The value to set
 		*************************************************************************/
-		void SetProperty(Props prop, float value) { mProperties[prop] = value; }
+		void SetProperty(Props prop, float value) { mPropertiesFloat[prop] = value; }
 
 		/*!***********************************************************************
 			\brief
@@ -112,13 +112,25 @@ namespace Borealis
 		*************************************************************************/
 		void SetUniforms(Ref<Shader> shader);
 
+		void SetName(std::string name) { mName = name; }
+		std::string GetName() const { return mName; }
+		std::unordered_map<TextureMaps, Ref<Texture2D>> GetTextureMaps() const { return mTextureMaps; }
+		std::unordered_map<TextureMaps, glm::vec4> GetTextureMapColor() const { return mTextureMapColor; }
+		std::unordered_map<TextureMaps, float> GetTextureMapFloats() const { return mTextureMapFloat; }
+		std::unordered_map<Props, float> GetPropertiesFloats() const { return mPropertiesFloat; }
+		std::unordered_map<Props, glm::vec2> GetPropertiesVec2() const { return mPropertiesVec2; }
+
+		static std::string TextureMapToString(TextureMaps map);
+		static std::string PropsToString(Props prop);
+
 	private:
 		std::unordered_map<TextureMaps, Ref<Texture2D>> mTextureMaps; //Texture maps
 		std::unordered_map<TextureMaps, glm::vec4> mTextureMapColor; //Texture map colors
 		std::unordered_map<TextureMaps, float> mTextureMapFloat; //Texture map floats
-		std::unordered_map<Props, float> mProperties; //Properties
+		std::unordered_map<Props, float> mPropertiesFloat; //Properties
+		std::unordered_map<Props, glm::vec2> mPropertiesVec2; //Properties
 		Ref<Shader> mShader; //Shader
-		std::string name;
+		std::string mName;
 	}; //class Material
 } //namespace Borealis
 #endif

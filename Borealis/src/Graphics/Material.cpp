@@ -115,7 +115,7 @@ namespace Borealis
         /*shader->Set("u_Material.tiling", mProperties[Tiling]);
         shader->Set("u_Material.offset", mProperties[Offset]);
         shader->Set("u_Material.smoothness", mProperties[Smoothness]);*/
-        shader->Set("u_Material.shininess", mProperties[Shininess]);
+        shader->Set("u_Material.shininess", mPropertiesFloat[Shininess]);
 
         //mShader->Bind();
         //int textureUnit = 0;
@@ -215,4 +215,37 @@ namespace Borealis
         //mShader->Set("u_Material.smoothness", mProperties[Smoothness]);
         //mShader->Set("u_Material.shininess", 100.f);
 	}
+
+    std::string Material::TextureMapToString(TextureMaps map)
+    {
+        switch (map)
+        {
+        case Albedo:      return "Albedo";
+        case Specular:    return "Specular";
+        case Metallic:    return "Metallic";
+        case NormalMap:   return "Normal Map";
+        case HeightMap:   return "Height Map";
+        case Occlusion:   return "Occlusion";
+        case DetailMask:  return "Detail Mask";
+        case Emission:    return "Emission";
+        default:          return "Unknown";
+        }
+    }
+
+    std::string Material::PropsToString(Props prop)
+    {
+        switch (prop)
+        {
+        case Tiling:          return "Tiling";
+        case Offset:          return "Offset";
+        case Smoothness:      return "Smoothness";
+        case Shininess:       return "Shininess";
+        case HasEmission:     return "Has Emission";
+        case HasHeightMap:    return "Has Height Map";
+        case HasNormalMap:    return "Has Normal Map";
+        case HasOcclusion:    return "Has Occlusion";
+        case HasDetailMask:   return "Has Detail Mask";
+        default:              return "Unknown";
+        }
+    }
 }
