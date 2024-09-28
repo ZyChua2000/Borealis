@@ -39,9 +39,9 @@ struct Material {
 	vec4 specularColor;   
 	vec4 emissionColor;     
 
-	// float tiling;
-	// float offset;
-	// float smoothness;
+	vec2 tiling;
+	vec2 offset;
+	float smoothness;
 	float shininess;
 	float metallic;
 
@@ -50,6 +50,7 @@ struct Material {
     bool hasNormalMap;
 	bool hasMetallicMap;
     bool hasEmissionMap;
+	bool hasHeightMap;
 };
 
 struct Light {
@@ -77,9 +78,11 @@ void main()
 	vec3 u_Light_diffuse = vec3(1.0f, 1.0f, 1.0f);
 	vec3 u_Light_specular = vec3(1.0f, 1.0f, 1.0f);
 
-	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, v_TexCoord) : u_Material.albedoColor;
-	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, v_TexCoord).rgb : u_Material.specularColor.rgb;
-	float metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, v_TexCoord).r : u_Material.metallic;
+	vec2 texCoord = v_TexCoord * u_Material.tiling + u_Material.offset;
+
+	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, texCoord) : u_Material.albedoColor;
+	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, texCoord).rgb : u_Material.specularColor.rgb;
+	float metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, texCoord).r : u_Material.metallic;
 
 	// ambient 
 	vec3 ambient = u_Light.ambient * albedoColor.rgb;
@@ -87,7 +90,7 @@ void main()
 	// normal
 	vec3 norm = normalize(v_Normal);
 	if (u_Material.hasNormalMap) {
-        vec3 tangentNormal = texture(u_Material.normalMap, v_TexCoord).rgb;
+        vec3 tangentNormal = texture(u_Material.normalMap, texCoord).rgb;
         tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
         norm = normalize(tangentNormal);
     }
@@ -100,11 +103,11 @@ void main()
 	// specular
 	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 	vec3 reflectDir = reflect(-lightDir, norm);
-	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess * u_Material.smoothness);
 	vec3 specular = u_Light_specular * (spec * specularColor);
 
 	// emission
-	vec3 emission = u_Material.hasEmissionMap ? texture(u_Material.emissionMap, v_TexCoord).rgb : u_Material.emissionColor.rgb;
+	vec3 emission = u_Material.hasEmissionMap ? texture(u_Material.emissionMap, texCoord).rgb : u_Material.emissionColor.rgb;
 
 	// final color
 	vec3 final = ambient + (1.0 - metallic) * diffuse + (metallic * specular) + emission;

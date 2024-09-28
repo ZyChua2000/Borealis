@@ -17,6 +17,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+    void Material::Init()
+    {
+        glm::vec4 defaultColor(0.0f, 0.0f, 0.0f, 1.0f);
+        for (int i = TextureMaps::Albedo; i <= TextureMaps::Emission; ++i)
+        {
+            mTextureMapColor[static_cast<TextureMaps>(i)] = defaultColor;
+        }
+
+        mPropertiesVec2[Tiling] = { 1.f, 1.f };
+    }
+
 	void Material::SetUniforms(Ref<Shader> shader)
 	{
 		shader->Bind();
@@ -112,108 +123,10 @@ namespace Borealis
         }
 
         // Set other properties
-        /*shader->Set("u_Material.tiling", mProperties[Tiling]);
-        shader->Set("u_Material.offset", mProperties[Offset]);
-        shader->Set("u_Material.smoothness", mProperties[Smoothness]);*/
+        shader->Set("u_Material.tiling", mPropertiesVec2[Tiling]);
+        shader->Set("u_Material.offset", mPropertiesVec2[Offset]);
+        shader->Set("u_Material.smoothness", mPropertiesFloat[Smoothness]);
         shader->Set("u_Material.shininess", mPropertiesFloat[Shininess]);
-
-        //mShader->Bind();
-        //int textureUnit = 0;
-
-        //// Albedo Map
-        //if (mTextureMaps[Albedo])
-        //{
-        //    mShader->Set("u_Material.hasAlbedoMap", true);
-        //    mShader->Set("u_Material.albedoMap", textureUnit);
-        //    mTextureMaps[Albedo]->Bind(textureUnit);
-        //    textureUnit++;
-        //}
-        //else
-        //{
-        //    mShader->Set("u_Material.hasAlbedoMap", false);
-        //    mShader->Set("u_Material.albedoColor", { 1.f, 0.f, 0.f, 1.f });
-        //}
-
-        //// Specular Map
-        //if (mTextureMaps[Specular])
-        //{
-        //    mShader->Set("u_Material.specularMap", textureUnit);
-        //    mTextureMaps[Specular]->Bind(textureUnit);
-        //    mShader->Set("u_Material.hasSpecularMap", true);
-        //    textureUnit++;
-        //}
-        //else
-        //{
-        //    mShader->Set("u_Material.hasSpecularMap", false);
-        //    mShader->Set("u_Material.specularColor", { 1.0, 1.0, 1.0 });
-        //}
-
-        //// Metallic
-        //if (mTextureMaps[Metallic])
-        //{
-        //    mShader->Set("u_Material.metallic", textureUnit);
-        //    mTextureMaps[DetailMask]->Bind(textureUnit);
-        //    mShader->Set("u_Material.hasMetallicMap", true);
-        //    textureUnit++;
-        //}
-        //else
-        //{
-        //    mShader->Set("u_Material.metallic", 0.5f);
-        //    mShader->Set("u_Material.hasMetallicMap", false);
-        //}
-
-        //// Emission Map
-        //if (mTextureMaps[Emission])
-        //{
-        //    mShader->Set("u_Material.emissionMap", textureUnit);
-        //    mTextureMaps[Emission]->Bind(textureUnit);
-        //    mShader->Set("u_Material.hasEmission", true);
-        //    textureUnit++;
-        //}
-        //else
-        //{
-        //    mShader->Set("u_Material.hasEmission", false);
-        //    mShader->Set("u_Material.emissionColor", mTextureMapColor[Emission]);
-        //}
-
-        //// Normal Map
-        //if (mTextureMaps[NormalMap])
-        //{
-        //    mShader->Set("u_Material.normalMap", textureUnit);
-        //    mTextureMaps[NormalMap]->Bind(textureUnit);
-        //    mShader->Set("u_Material.hasNormalMap", true);
-        //    textureUnit++;
-        //}
-
-        //// Height Map
-        //if (mTextureMaps[HeightMap])
-        //{
-        //    mShader->Set("u_Material.heightMap", textureUnit);
-        //    mTextureMaps[HeightMap]->Bind(textureUnit);
-        //    textureUnit++;
-        //}
-
-        //// Occlusion
-        //if (mTextureMaps[Occlusion])
-        //{
-        //    mShader->Set("u_Material.occlusionMap", textureUnit);
-        //    mTextureMaps[Occlusion]->Bind(textureUnit);
-        //    textureUnit++;
-        //}
-
-        //// Detail Mask
-        //if (mTextureMaps[DetailMask])
-        //{
-        //    mShader->Set("u_Material.detailMaskMap", textureUnit);
-        //    mTextureMaps[DetailMask]->Bind(textureUnit);
-        //    textureUnit++;
-        //}
-
-        ////// Set other properties
-        //mShader->Set("u_Material.tiling", mProperties[Tiling]);
-        //mShader->Set("u_Material.offset", mProperties[Offset]);
-        //mShader->Set("u_Material.smoothness", mProperties[Smoothness]);
-        //mShader->Set("u_Material.shininess", 100.f);
 	}
 
     std::string Material::TextureMapToString(TextureMaps map)

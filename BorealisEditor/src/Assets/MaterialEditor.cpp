@@ -22,22 +22,22 @@ namespace Borealis
         ImGui::SameLine();
         ImGui::Text("R");
         ImGui::SameLine();
-        ImGui::DragFloat(labelStrX.c_str(), &values.x, 0.1f, min, max, "%.2f");
+        ImGui::DragFloat(labelStrX.c_str(), &values.x, 0.01f, min, max, "%.2f");
 
         ImGui::SameLine();
         ImGui::Text("G");
         ImGui::SameLine();
-        ImGui::DragFloat(labelStrY.c_str(), &values.y, 0.1f, min, max, "%.2f");
+        ImGui::DragFloat(labelStrY.c_str(), &values.y, 0.01f, min, max, "%.2f");
 
         ImGui::SameLine();
         ImGui::Text("B");
         ImGui::SameLine();
-        ImGui::DragFloat(labelStrY.c_str(), &values.z, 0.1f, min, max, "%.2f");
+        ImGui::DragFloat(labelStrZ.c_str(), &values.z, 0.01f, min, max, "%.2f");
 
         ImGui::SameLine();
         ImGui::Text("A");
         ImGui::SameLine();
-        ImGui::DragFloat(labelStrW.c_str(), &values.w, 0.1f, min, max, "%.2f");
+        ImGui::DragFloat(labelStrW.c_str(), &values.w, 0.01f, min, max, "%.2f");
 
         ImGui::PopItemWidth();
     }
@@ -70,46 +70,22 @@ namespace Borealis
 
 	void MaterialEditor::RenderEditor()
 	{
-		if (!mRender) return;
+        if (!mRender) return;
 
-		static char materialName[128] = "New Material";
-		ImGui::InputText("Material Name", materialName, IM_ARRAYSIZE(materialName));
+        static char materialName[128] = "New Material";
+        ImGui::InputText("Material Name", materialName, IM_ARRAYSIZE(materialName));
 
-		// Texture Maps
-        ImGui::Text("Texture Maps:");
-        for (int i = Material::Albedo; i <= Material::Emission; ++i)
-        {
-            Material::TextureMaps textureMap = static_cast<Material::TextureMaps>(i);
+        static Ref<Material> material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
 
-            std::string textureName;
-            switch (textureMap)
-            {
-            case Material::Albedo: textureName = "Albedo"; break;
-            case Material::Specular: textureName = "Specular"; break;
-            case Material::Metallic: textureName = "Metallic"; break;
-            case Material::NormalMap: textureName = "Normal Map"; break;
-            case Material::HeightMap: textureName = "Height Map"; break;
-            case Material::Occlusion: textureName = "Occlusion"; break;
-            case Material::DetailMask: textureName = "Detail Mask"; break;
-            case Material::Emission: textureName = "Emission"; break;
-            }
+    	ImGui::Separator();
 
-            ImGui::Button((textureName).c_str());
-            if (ImGui::BeginDragDropTarget())
-            {
-                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
-                {
-                    
-                }
-                ImGui::EndDragDropTarget();
-            }
-        }
+    	RenderProperties(material);
 
         ImGui::Separator();
 
 		if (ImGui::Button("Save Material"))
 		{
-			
+			// todo
 		}
 	}
 
@@ -144,13 +120,14 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::Albedo, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
 
                 static glm::vec4 albedoColor = material->GetTextureMapColor()[Material::Albedo];
-                DrawVec4Control("Color:", albedoColor);
+                DrawVec4Control("Albedo:", albedoColor);
+                material->SetTextureMapColor(Material::Albedo, albedoColor);
 
                 break;
             }
@@ -164,13 +141,14 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::Specular, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
 
                 static glm::vec4 specularColor = material->GetTextureMapColor()[Material::Specular];
-                DrawVec4Control("Color:", specularColor);
+                DrawVec4Control("Specular", specularColor);
+                material->SetTextureMapColor(Material::Specular, specularColor);
 
                 break;
             }
@@ -184,7 +162,7 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::Metallic, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -192,6 +170,7 @@ namespace Borealis
                 ImGui::SameLine();
                 static float metallicValue = material->GetTextureMapFloats()[Material::Metallic];
                 DrawFloatSlider("Metallic", &metallicValue);
+                material->SetTextureMapFloat(Material::Metallic, metallicValue);
 
                 break;
             }
@@ -205,7 +184,7 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::NormalMap, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -221,7 +200,7 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::HeightMap, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -237,7 +216,7 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::Occlusion, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -253,7 +232,7 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::DetailMask, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -269,13 +248,14 @@ namespace Borealis
                         const char* data = (const char*)payload->Data;
                         std::string imageName = "assets/";
                         imageName += data;
-                        // component.Texture = Texture2D::Create(imageName);
+                        material->SetTextureMap(Material::Emission, Texture2D::Create(imageName));
                     }
                     ImGui::EndDragDropTarget();
                 }
 
                 static glm::vec4 emissionColor = material->GetTextureMapColor()[Material::Emission];
-                DrawVec4Control("Color:", emissionColor);
+                DrawVec4Control("Emission", emissionColor);
+                material->SetTextureMapColor(Material::Emission, emissionColor);
 
                 break;
             }
@@ -299,24 +279,28 @@ namespace Borealis
             {
                 static glm::vec2 tilingValue = material->GetPropertiesVec2()[Material::Tiling];
                 DrawVec2Control("Tiling", tilingValue);
+                material->SetPropertyVec2(Material::Tiling, tilingValue);
                 break;
             }
             case Material::Offset:
             {
                 static glm::vec2 offsetValue = material->GetPropertiesVec2()[Material::Offset];
                 DrawVec2Control("Offset", offsetValue);
+                material->SetPropertyVec2(Material::Offset, offsetValue);
                 break;
             }
             case Material::Smoothness:
             {
                 static float smoothnessValue = material->GetPropertiesFloats()[Material::Smoothness];
                 DrawFloatSlider("Smoothness", &smoothnessValue);
+                material->SetPropertyFloat(Material::Smoothness, smoothnessValue);
                 break;
             }
             case Material::Shininess:
             {
                 static float shininessValue = material->GetPropertiesFloats()[Material::Shininess];
-                DrawFloatSlider("Shininess", &shininessValue, 0.f, 100.f);
+                DrawFloatSlider("Shininess", &shininessValue, 0.f, 128.f);
+                material->SetPropertyFloat(Material::Shininess, shininessValue);
                 break;
             }
             default:
