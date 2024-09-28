@@ -27,6 +27,9 @@ namespace Borealis
 	public:
 		void LoadRegistry(Borealis::ProjectInfo projectInfo);
 
+	private:
+		bool ImportAsset(AssetMetaData metaData);
+
 		void SerializeRegistry();
 		void DeserializeRegistry(std::string const& registryFileString, AssetRegistry& assetRegistry);
 

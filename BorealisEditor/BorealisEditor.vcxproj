@@ -149,10 +149,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp" />
     <ClInclude Include="inc\EditorAssets\FontImporter.hpp" />
     <ClInclude Include="inc\EditorAssets\MeshImporter.hpp" />
     <ClInclude Include="inc\EditorAssets\MetaSerializer.hpp" />
@@ -162,10 +159,7 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp" />
-    <ClCompile Include="src\EditorAssets\AssetImporter.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="src\EditorAssets\AssetImporter.cpp" />
     <ClCompile Include="src\EditorAssets\FontImporter.cpp" />
     <ClCompile Include="src\EditorAssets\MeshImporter.cpp" />
     <ClCompile Include="src\EditorAssets\MetaSerializer.cpp" />

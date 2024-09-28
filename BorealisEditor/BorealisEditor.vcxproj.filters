@@ -21,6 +21,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp">
+      <Filter>inc\EditorAssets</Filter>
+    </ClInclude>
     <ClInclude Include="inc\EditorAssets\FontImporter.hpp">
       <Filter>inc\EditorAssets</Filter>
     </ClInclude>
@@ -39,13 +42,13 @@
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp">
       <Filter>inc\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp">
-      <Filter>inc\EditorAssets</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\AssetImporter.cpp">
+      <Filter>src\EditorAssets</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorAssets\FontImporter.cpp">
       <Filter>src\EditorAssets</Filter>
@@ -64,9 +67,6 @@
     </ClCompile>
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp">
       <Filter>src\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EditorAssets\AssetImporter.cpp">
-      <Filter>src\EditorAssets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

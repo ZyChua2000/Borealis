@@ -67,6 +67,10 @@ namespace Borealis
 		//check if assets needs to be imported
 
 		//if yes pass info to compiler
+
+		//system()
+
+		return false;
 	}
 
 	void AssetImporter::SerializeRegistry()
