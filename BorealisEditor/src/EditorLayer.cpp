@@ -66,7 +66,7 @@ namespace Borealis {
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		Ref<Material> material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
-		testEntity = mActiveScene->CreateEntity("testObject");
+		testEntity = SceneManager::GetActiveScene()->CreateEntity("testObject");
 		testEntity.AddComponent<MeshFilterComponent>();
 		auto& meshRenderer = testEntity.AddComponent<MeshRendererComponent>();
 		//material->SetTextureMap(Material::Albedo, Texture2D::Create("assets/textures/Dragon_Bump.png"));

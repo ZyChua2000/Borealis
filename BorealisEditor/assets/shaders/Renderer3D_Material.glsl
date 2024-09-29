@@ -81,6 +81,9 @@ void main()
 	vec2 texCoord = v_TexCoord * u_Material.tiling + u_Material.offset;
 
 	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, texCoord) : u_Material.albedoColor;
+	if (u_Material.hasAlbedoMap) {
+		albedoColor = mix(u_Material.albedoColor, albedoColor, 0.8);
+	}
 	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, texCoord).rgb : u_Material.specularColor.rgb;
 	float metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, texCoord).r : u_Material.metallic;
 
