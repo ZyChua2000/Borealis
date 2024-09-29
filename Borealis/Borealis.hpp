@@ -21,12 +21,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/InputSystem.hpp>
 #include <Core/KeyCodes.hpp>
 #include <Core/Utils.hpp>
+#include <Core/Project.hpp>
 
 #include <Scene/OrthographicCameraController.hpp>
 #include <Scene/Scene.hpp>
 #include <Scene/ScriptEntity.hpp>
 #include <Scene/Components.hpp>
 #include <Scene/Entity.hpp>
+#include <Scene/SceneManager.hpp>
+
+#include <Scripting/ScriptingSystem.hpp>
+#include <Scripting/ScriptInstance.hpp>
 
 
 #include <ImGui/ImGuiLayer.hpp>

@@ -18,12 +18,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Entity.hpp>
 #include <Scene/ScriptEntity.hpp>
 #include <Scene/Components.hpp>
+#include <Scripting/ScriptInstance.hpp>
 #include <Graphics/Renderer2D.hpp>
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
-	Scene::Scene()
+	Scene::Scene(std::string name, std::string path) : mName(name), mScenePath(path)
 	{
 
 	}
@@ -34,19 +35,59 @@ namespace Borealis
 	}
 	void Scene::UpdateRuntime(float dt)
 	{
-
+		if (hasRuntimeStarted)
 		{
-			mRegistry.view<NativeScriptComponent>().each([=](auto entity, auto& component)
 			{
-				if (!component.Instance)
+				mRegistry.view<NativeScriptComponent>().each([=](auto entity, auto& component)
+					{
+						if (!component.Instance)
+						{
+							component.Instance = component.Init();
+							component.Instance->mEntity = Entity{ entity, this };
+							component.Instance->Start();
+						}
+						component.Instance->Update(dt);
+					});
+			}
+
+			// Update for scripts -> make it more effecient by doing event-based and
+			// overridden-based rather than running every script every loop.
+			auto view = mRegistry.view<ScriptComponent>();
+			for (auto entity : view)
+			{
+				auto& scriptComponent = view.get<ScriptComponent>(entity);
+				for (auto& [name, script] : scriptComponent.mScripts)
 				{
-					component.Instance = component.Init();
-					component.Instance->mEntity = Entity{ entity, this };
-					component.Instance->Start();
+					script->Update();
 				}
-				component.Instance->Update(dt);
-			});
+			}
+
+			int timeStep = dt / 1.66667f;
+			for (auto entity : view)
+			{
+				auto& scriptComponent = view.get<ScriptComponent>(entity);
+				for (auto& [name, script] : scriptComponent.mScripts)
+				{
+					for (int i = 0; i < timeStep; i++)
+						script->FixedUpdate();
+				}
+			}
+
+			//------------------------
+			// Physics Simulation here
+			//------------------------
+
+
+			for (auto entity : view)
+			{
+				auto& scriptComponent = view.get<ScriptComponent>(entity);
+				for (auto& [name, script] : scriptComponent.mScripts)
+				{
+					script->LateUpdate();
+				}
+			}
 		}
+
 		Camera* mainCamera = nullptr;
 		glm::mat4 mainCameratransform(1.f);
 	
@@ -65,7 +106,7 @@ namespace Borealis
 			}
 		}
 
-
+		// Pre-Render
 		if (mainCamera)
 		{
 			{
@@ -91,6 +132,8 @@ namespace Borealis
 			}
 			
 		}
+
+		//Post-Render
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
@@ -122,6 +165,14 @@ namespace Borealis
 				Renderer2D::DrawCircle(transform, circle.Colour, circle.thickness, circle.fade, (int)entity);
 			}
 		}
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
+				Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
+			}
+		}
 
 		Renderer2D::End();
 
@@ -133,6 +184,7 @@ namespace Borealis
 		entity.AddComponent<IDComponent>();
 		name == "" ? entity.AddComponent<TagComponent>("unnamedEntity" + std::to_string(unnamedID++)) : entity.AddComponent<TagComponent>(name);
 		entity.AddComponent<TransformComponent>();
+		mEntityMap[entity.GetUUID()] = entity;
 		return entity;
 	}
 	Entity Scene::CreateEntityWithUUID(const std::string& name, uint64_t UUID)
@@ -142,10 +194,19 @@ namespace Borealis
 		entity.AddComponent<IDComponent>(UUID);
 		name == "" ? entity.AddComponent<TagComponent>("unnamedEntity" + std::to_string(unnamedID++)) : entity.AddComponent<TagComponent>(name);
 		entity.AddComponent<TransformComponent>();
+		mEntityMap[UUID] = entity;
 		return entity;
+	}
+	Entity Scene::GetEntityByUUID(UUID uuid)
+	{
+		if (mEntityMap.find(uuid) != mEntityMap.end())
+			return { mEntityMap.at(uuid), this };
+
+		return {};
 	}
 	void Scene::DestroyEntity(Entity entity)
 	{		
+		mEntityMap.erase(entity.GetUUID());
 		mRegistry.destroy(entity);
 	}
 
@@ -172,6 +233,7 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newEntity, entity);
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
+		CopyComponent<TextComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -233,16 +295,19 @@ namespace Borealis
 		CopyComponent<RigidBodyComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
 
 	void Scene::RuntimeStart()
 	{
+		hasRuntimeStarted = true;
 	}
 
 	void Scene::RuntimeEnd()
 	{
+		hasRuntimeStarted = false;
 	}
 
 	Entity Scene::GetPrimaryCameraEntity()
@@ -327,6 +392,18 @@ namespace Borealis
 
 	template<>
 	void Scene::OnComponentAdded<CircleRendererComponent>(Entity entity, CircleRendererComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<TextComponent>(Entity entity, TextComponent& component)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
 	{
 
 	}

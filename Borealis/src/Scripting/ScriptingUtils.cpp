@@ -13,9 +13,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
+#include <mono/metadata/assembly.h>
+#include <mono/metadata/appdomain.h>
 #include <Core/LoggerSystem.hpp>
 #include <Scripting/ScriptingUtils.hpp>
-#include <mono/metadata/assembly.h>
 
 namespace Borealis
 {
@@ -84,7 +85,7 @@ namespace Borealis
 
 		if (klass == nullptr)
 		{
-			// Log error here
+			BOREALIS_CORE_WARN("Failed to get class {0}::{1}", namespaceName, className);
 			return nullptr;
 		}
 
@@ -94,19 +95,25 @@ namespace Borealis
 	MonoObject* InstantiateClass(MonoAssembly* assembly, MonoDomain* appDomain, const char* namespaceName, const char* className)
 	{
 		// Get a reference to the class we want to instantiate
-		MonoClass* testingClass = GetClassInAssembly(assembly, namespaceName, className);
+		MonoClass* klass = GetClassInAssembly(assembly, namespaceName, className);
 
 		// Allocate an instance of our class
-		MonoObject* classInstance = mono_object_new(appDomain, testingClass);
+		MonoObject* classInstance = mono_object_new(appDomain, klass);
 
 		if (classInstance == nullptr)
 		{
-			// Log error here and abort
+			BOREALIS_CORE_WARN("Failed to get class {0}::{1}", namespaceName, className);
+			return nullptr;
 		}
 
 		// Call the parameterless (default) constructor
 		mono_runtime_object_init(classInstance);
 		return classInstance;
+	}
+
+	MonoObject* InstantiateClass(MonoClass* klass)
+	{
+		return mono_object_new(mono_domain_get(), klass);
 	}
 	
 	std::vector<uint8_t> mono_array_to_vector(MonoArray* monoArray)
@@ -116,6 +123,86 @@ namespace Borealis
 		void* data = mono_array_addr_with_size(monoArray, sizeof(uint8_t), 0);
 		memcpy(result.data(), data, length);
 		return result;
+	}
+
+	std::string ScriptFieldType2String(ScriptFieldType type)
+	{
+		switch (type)
+		{
+			case ScriptFieldType::UChar:
+				return "unsigned char";
+			case ScriptFieldType::Char:
+				return "char";
+			case ScriptFieldType::UShort:
+				return "unsigned short";
+			case ScriptFieldType::Short:
+				return "short";
+			case ScriptFieldType::UInt:
+				return "unsigned int";
+			case ScriptFieldType::Int:
+				return "int";
+			case ScriptFieldType::ULong:
+				return "unsigned long";
+			case ScriptFieldType::Long:
+				return "long";
+			case ScriptFieldType::Float:
+				return "float";
+			case ScriptFieldType::Double:
+				 return "double";
+			case ScriptFieldType::String:
+				return "string";
+			case ScriptFieldType::Bool:
+				return "bool";
+			case ScriptFieldType:: Vector2:
+				return "Vector2";
+			case ScriptFieldType::Vector3:
+				return "Vector3";
+			case ScriptFieldType::Vector4:
+				return "Vector4";
+			case ScriptFieldType::None:
+				return "None";
+		}
+		BOREALIS_CORE_ASSERT(false, "Unknown ScriptFieldType");
+		return "None";
+	}
+
+	ScriptFieldType MonoType2ScriptFieldType(MonoType* type)
+	{
+		char* name = mono_type_get_name(type);
+		std::string strName = name;
+
+		if (strName == "System.Byte")
+			return ScriptFieldType::UChar;
+		else if (strName == "System.SByte")
+			return ScriptFieldType::Char;
+		else if (strName == "System.UInt16")
+			return ScriptFieldType::UShort;
+		else if (strName == "System.Int16")
+			return ScriptFieldType::Short;
+		else if (strName == "System.UInt32")
+			return ScriptFieldType::UInt;
+		else if (strName == "System.Int32")
+			return ScriptFieldType::Int;
+		else if (strName == "System.UInt64")
+			return ScriptFieldType::ULong;
+		else if (strName == "System.Int64")
+			return ScriptFieldType::Long;
+		else if (strName == "System.Single")
+			return ScriptFieldType::Float;
+		else if (strName == "System.Double")
+			return ScriptFieldType::Double;
+		else if (strName == "System.String")
+			return ScriptFieldType::String;
+		else if (strName == "System.Boolean")
+			return ScriptFieldType::Bool;
+		else if (strName == "Borealis.Vector2")
+			return ScriptFieldType::Vector2;
+		else if (strName == "Borealis.Vector3")
+			return ScriptFieldType::Vector3;
+		else if (strName == "Borealis.Vector4" || strName == "Borealis.Color")
+			return ScriptFieldType::Vector4;
+		else
+			return ScriptFieldType::None;
 	}
 
 

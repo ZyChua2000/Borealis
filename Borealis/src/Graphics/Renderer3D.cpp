@@ -26,13 +26,15 @@ namespace Borealis
 		Ref<Shader> mModelShader;
 	};
 
-	static Renderer3DData* sData;
+	static std::unique_ptr<Renderer3DData> sData;
 
 	void Renderer3D::Init()
 	{
-		sData = new Renderer3DData();
-		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Material.glsl");
+		sData =  std::make_unique<Renderer3DData>();
+		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Model.glsl");
 	}
+
+
 
 	void Renderer3D::Begin(const EditorCamera& camera)
 	{

@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Debug\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Debug\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants>
     </DefineConstants>
@@ -33,7 +33,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Release\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Release\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants>
     </DefineConstants>
@@ -46,7 +46,7 @@
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <OutputPath>..\BorealisEditor\Resources\Scripts\Core\</OutputPath>
-    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Distribution\</BaseIntermediateOutputPath>
+    <BaseIntermediateOutputPath>..\BorealisEditor\Resources\Scripts\Core\Intermediate\Distribution\BorealisScriptCore\</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
     <DefineConstants>
     </DefineConstants>
@@ -66,11 +66,21 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffers" />
-    <Reference Include="System.Collections.Immutable" />
-    <Reference Include="System.Memory" />
-    <Reference Include="System.Reflection.Metadata" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe" />
+    <Reference Include="Systems.Buffer">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\Systems.Buffer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>..\packages\System.Reflection.Metadata.8.0.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <Reference Include="Microsoft.CodeAnalysis">
@@ -85,11 +95,21 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffers" />
-    <Reference Include="System.Collections.Immutable" />
-    <Reference Include="System.Memory" />
-    <Reference Include="System.Reflection.Metadata" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe" />
+    <Reference Include="Systems.Buffer">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\Systems.Buffer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>..\packages\System.Reflection.Metadata.8.0.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)|$(Platform)' == 'Distribution|x64' ">
     <Reference Include="Microsoft.CodeAnalysis">
@@ -104,13 +124,40 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffers" />
-    <Reference Include="System.Collections.Immutable" />
-    <Reference Include="System.Memory" />
-    <Reference Include="System.Reflection.Metadata" />
-    <Reference Include="System.Runtime.CompilerServices.Unsafe" />
+    <Reference Include="Systems.Buffer">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\Systems.Buffer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reflection.Metadata">
+      <HintPath>..\packages\System.Reflection.Metadata.8.0.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\Attributes.cs" />
+    <Compile Include="src\Behaviour.cs" />
+    <Compile Include="src\Components\Component.cs" />
+    <Compile Include="src\Components\SpriteRenderer.cs" />
+    <Compile Include="src\Components\Transform.cs" />
+    <Compile Include="src\ExampleScript.cs" />
+    <Compile Include="src\GameObject.cs" />
+    <Compile Include="src\InternalCalls.cs" />
+    <Compile Include="src\Math\Color.cs" />
+    <Compile Include="src\Math\Color32.cs" />
+    <Compile Include="src\Math\Mathf.cs" />
+    <Compile Include="src\Math\Quaternion.cs" />
+    <Compile Include="src\Math\Vector2.cs" />
+    <Compile Include="src\Math\Vector3.cs" />
+    <Compile Include="src\Math\Vector4.cs" />
+    <Compile Include="src\MonoBehaviour.cs" />
+    <Compile Include="src\Object.cs" />
     <Compile Include="src\RoslynCompiler.cs" />
   </ItemGroup>
   <ItemGroup>

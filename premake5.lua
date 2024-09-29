@@ -27,14 +27,30 @@ workspace "Borealis"
 	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
 	IncludeDir["Mono"] = "Borealis/lib/mono/include"
 	IncludeDir["xproperty"] = "Borealis/lib/xproperty/include"
+	IncludeDir["RTTR"] = "Borealis/lib/RTTR/include"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
+	IncludeDir["MSDF"] = "BorealisEditor/lib/MSDF/Include"
 
 	LibraryDir = {}
 	LibraryDir["FMOD"] = "lib/FMOD/lib"
 	LibraryDir["Mono_Debug"] = "lib/mono/lib/Deb"
 	LibraryDir["Mono_Release"] = "lib/mono/lib/Rel"
+	LibraryDir["MSDF_Debug"] = "lib/MSDF/Build/Debug"
+	LibraryDir["MSDF_Release"] = "lib/MSDF/Build/Release"
+	LibraryDir["GLAD_Debug"] = "lib/GLAD/lib/Deb"
+	LibraryDir["GLAD_Release"] = "lib/GLAD/lib/Rel"
+	LibraryDir["GLFW_Debug"] = "lib/GLFW/lib/Deb"
+	LibraryDir["GLFW_Release"] = "lib/GLFW/lib/Rel"
+	LibraryDir["Jolt_Debug"] = "lib/JoltPhysics/lib/Deb"
+	LibraryDir["Jolt_Release"] = "lib/JoltPhysics/lib/Rel"
+	LibraryDir["YAML_Debug"] = "lib/yaml-cpp/lib/Deb"
+	LibraryDir["YAML_Release"] = "lib/yaml-cpp/lib/Rel"
+	LibraryDir["IMGUI_Debug"] = "lib/IMGUI/lib/Deb"
+	LibraryDir["IMGUI_Release"] = "lib/IMGUI/lib/Rel"
+	LibraryDir["RTTR_Debug"] = "lib/RTTR/lib/Deb"
+	LibraryDir["RTTR_Release"] = "lib/RTTR/lib/Rel"
 
 	Library = {}
 	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
@@ -42,15 +58,40 @@ workspace "Borealis"
 	Library["Mono_Debug"] = "%{LibraryDir.Mono_Debug}/mono-2.0-sgen.lib"
 	Library["Mono_Release"] = "%{LibraryDir.Mono_Release}/mono-2.0-sgen.lib"
 
+	Library["MSDF_Debug_atlas"] = "%{LibraryDir.MSDF_Debug}/msdf-atlas-gen.lib"
+	Library["MSDF_Debug_core"] = "%{LibraryDir.MSDF_Debug}/msdfgen-core.lib"
+	Library["MSDF_Debug_ext"] = "%{LibraryDir.MSDF_Debug}/msdfgen-ext.lib"
+	Library["MSDF_Debug_FreeType"] = "%{LibraryDir.MSDF_Debug}/freetyped.lib"
+	Library["MSDF_Debug_LibPNG"] = "%{LibraryDir.MSDF_Debug}/libpng16d.lib"
+	Library["MSDF_Debug_LibBZ2"] = "%{LibraryDir.MSDF_Debug}/bz2d.lib"
+	Library["MSDF_Debug_LibBrotli"] = "%{LibraryDir.MSDF_Debug}/brotlidec.lib"
+	Library["MSDF_Debug_LibBrotliCommon"] = "%{LibraryDir.MSDF_Debug}/brotlicommon.lib"
+
+	Library["MSDF_Release_atlas"] = "%{LibraryDir.MSDF_Release}/msdf-atlas-gen.lib"
+	Library["MSDF_Release_core"] = "%{LibraryDir.MSDF_Release}/msdfgen-core.lib"
+	Library["MSDF_Release_ext"] = "%{LibraryDir.MSDF_Release}/msdfgen-ext.lib"
+	Library["MSDF_Release_FreeType"] = "%{LibraryDir.MSDF_Release}/freetype.lib"
+	Library["MSDF_Release_LibPNG"] = "%{LibraryDir.MSDF_Release}/libpng16.lib"
+	Library["MSDF_Release_LibBZ2"] = "%{LibraryDir.MSDF_Release}/bz2.lib"
+	Library["MSDF_Release_LibBrotli"] = "%{LibraryDir.MSDF_Release}/brotlidec.lib"
+	Library["MSDF_Release_LibBrotliCommon"] = "%{LibraryDir.MSDF_Release}/brotlicommon.lib"
+
+	Library["GLAD_Debug"] = "%{LibraryDir.GLAD_Debug}/GLAD.lib"
+	Library["GLAD_Release"] = "%{LibraryDir.GLAD_Release}/GLAD.lib"
+	Library["GLFW_Debug"] = "%{LibraryDir.GLFW_Debug}/GLFW.lib"
+	Library["GLFW_Release"] = "%{LibraryDir.GLFW_Release}/GLFW.lib"
+	Library["Jolt_Debug"] = "%{LibraryDir.Jolt_Debug}/JoltPhysics.lib"
+	Library["Jolt_Release"] = "%{LibraryDir.Jolt_Release}/JoltPhysics.lib"
+	Library["YAML_Debug"] = "%{LibraryDir.YAML_Debug}/yaml-cpp.lib"
+	Library["YAML_Release"] = "%{LibraryDir.YAML_Release}/yaml-cpp.lib"
+	Library["IMGUI_Debug"] = "%{LibraryDir.IMGUI_Debug}/IMGUI.lib"
+	Library["IMGUI_Release"] = "%{LibraryDir.IMGUI_Release}/IMGUI.lib"
+	Library["RTTR_Debug"] = "%{LibraryDir.RTTR_Debug}/librttr_core.lib"
+	Library["RTTR_Release"] = "%{LibraryDir.RTTR_Release}/librttr_core.lib"
 
 	group "Dependencies"
-		include "Borealis/lib/GLFW"
-		include "Borealis/lib/GLAD"
-		include "Borealis/lib/ImGui"
-		include "Borealis/lib/yaml-cpp"
 		include "Borealis/lib/Tracy"
-		include "Borealis/lib/JoltPhysics"
-		include "BorealisEditor/lib/assimp"
+		include "BorealisEditor/lib/Assimp"
 		include "BorealisEditor/lib/imgui-node-editor"
 	group ""
 
@@ -59,7 +100,7 @@ workspace "Borealis"
 		kind "StaticLib"
 		language "C++"
 		cppdialect "C++20"
-		staticruntime "off"
+		staticruntime "on"
 		systemversion "latest"
 
 		targetdir ("build/" .. outputdir .. "/%{prj.name}")
@@ -99,19 +140,15 @@ workspace "Borealis"
 			"%{IncludeDir.STBI}",
 			"%{IncludeDir.JoltPhysics}",
 			"%{IncludeDir.Mono}",
-			"%{IncludeDir.xproperty}"
+			"%{IncludeDir.xproperty}",
+			"%{IncludeDir.RTTR}"
 		}
 
 
 		links
 		{
-			"GLFW",
-			"GLAD",
-			"ImGui",
-			"yaml-cpp",
 			"opengl32.lib",
 			"Tracy",
-			"JoltPhysics"
 		}
 
 
@@ -135,7 +172,13 @@ workspace "Borealis"
 			links
 			{
 				"%{Library.FMOD_Debug}",
-				"%{Library.Mono_Debug}"
+				"%{Library.Mono_Debug}",
+				"%{Library.GLAD_Debug}",
+				"%{Library.GLFW_Debug}",
+				"%{Library.Jolt_Debug}",
+				"%{Library.YAML_Debug}",
+				"%{Library.IMGUI_Debug}",
+				"%{Library.RTTR_Debug}"
 			}
 
 		filter "configurations:Release"
@@ -145,7 +188,13 @@ workspace "Borealis"
 			links
 			{
 				"%{Library.FMOD_Release}",
-				"%{Library.Mono_Release}"
+				"%{Library.Mono_Release}",
+				"%{Library.GLAD_Release}",
+				"%{Library.GLFW_Release}",
+				"%{Library.Jolt_Release}",
+				"%{Library.YAML_Release}",
+				"%{Library.IMGUI_Release}",
+				"%{Library.RTTR_Release}"
 			}
 
 		filter "configurations:Distribution"
@@ -155,7 +204,13 @@ workspace "Borealis"
 			links
 			{
 				"%{Library.FMOD_Release}",
-				"%{Library.Mono_Release}"
+				"%{Library.Mono_Release}",
+				"%{Library.GLAD_Release}",
+				"%{Library.GLFW_Release}",
+				"%{Library.Jolt_Release}",
+				"%{Library.YAML_Release}",
+				"%{Library.IMGUI_Release}",
+				"%{Library.RTTR_Release}"
 			}
 
 	project "BorealisEditor"
@@ -163,7 +218,7 @@ workspace "Borealis"
 		kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++20"
-		staticruntime "off"
+		staticruntime "on"
 		systemversion "latest"
 
 		targetdir ("build/" .. outputdir .. "/%{prj.name}")
@@ -188,6 +243,7 @@ workspace "Borealis"
 			"%{IncludeDir.ImGuizmo}",
 			"%{IncludeDir.ImGuiNodeEditor}",
 			"%{IncludeDir.assimp}",
+			"%{IncludeDir.MSDF}",
 		}
 
 		defines
@@ -199,14 +255,10 @@ workspace "Borealis"
 		links
 		{
 			"Borealis",
-			"Assimp",
-			"yaml-cpp",
-			"ImGuiNodeEditor"
-		}
-
-		linkoptions
-		{
-			"/NODEFAULTLIB:LIBCMTD"
+			"ImGuiNodeEditor",
+			"BorealisScriptCore",
+			"BorealisRuntime",
+			"Assimp"
 		}
 
 		filter "configurations:Debug"
@@ -216,8 +268,19 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
+			links
+			{
+				"%{Library.MSDF_Debug_atlas}",
+				"%{Library.MSDF_Debug_core}",
+				"%{Library.MSDF_Debug_ext}",
+				"%{Library.MSDF_Debug_FreeType}",
+				"%{Library.MSDF_Debug_LibPNG}",
+				"%{Library.MSDF_Debug_LibBZ2}",
+				"%{Library.MSDF_Debug_LibBrotli}",
+				"%{Library.MSDF_Debug_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Debug}"
+			}
 
 		filter "configurations:Release"
 			defines "_REL"
@@ -226,8 +289,19 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
+			 links
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}",
+				"%{Library.MSDF_Release_LibBZ2}",
+				"%{Library.MSDF_Release_LibBrotli}",
+				"%{Library.MSDF_Release_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Release}"
+			}
 
 		filter "configurations:Distribution"
 			defines "_DIST"
@@ -236,15 +310,26 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
-				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/MonoPosixHelper.dll\" \"$(TargetDir)\""
 			 }
+			 links
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}",
+				"%{Library.MSDF_Release_LibBZ2}",
+				"%{Library.MSDF_Release_LibBrotli}",
+				"%{Library.MSDF_Release_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Release}"
+			}
 
 			project "Sandbox"
 			location "Sandbox"
 			kind "ConsoleApp"
 			language "C++"
 			cppdialect "C++20"
-			staticruntime "off"
+			staticruntime "on"
 			systemversion "latest"
 	
 			targetdir ("build/" .. outputdir .. "/%{prj.name}")
@@ -275,11 +360,6 @@ workspace "Borealis"
 			links
 			{
 				"Borealis"
-			}
-			
-			linkoptions
-			{
-				"/NODEFAULTLIB:LIBCMTD"
 			}
 			
 			filter "configurations:Debug"
@@ -318,11 +398,11 @@ workspace "Borealis"
 			"packages/Microsoft.CodeAnalysis.CSharp.4.11.0/lib/netstandard2.0/Microsoft.CodeAnalysis.CSharp",
 			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.Analyzers",
 			"packages/Microsoft.CodeAnalysis.Analyzers.3.3.4/analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.Analyzers",
-			"System.Buffers",
-			"System.Collections.Immutable",
-			"System.Memory",
-			"System.Reflection.Metadata",
-			"System.Runtime.CompilerServices.Unsafe"
+			"packages/System.Buffers.4.5.1/lib/netstandard2.0/Systems.Buffer",
+			"packages/System.Collections.Immutable.8.0.0/lib/netstandard2.0/System.Collections.Immutable",
+			"packages/System.Memory.4.5.5/lib/netstandard2.0/System.Memory",
+			"packages/System.Reflection.Metadata.8.0.0/lib/netstandard2.0/System.Reflection.Metadata",
+			"packages/System.Runtime.CompilerServices.Unsafe.6.0.0/lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe"
 		}
 
 		filter "configurations:Debug"
@@ -336,3 +416,56 @@ workspace "Borealis"
 		filter "configurations:Distribution"
 			optimize "Full"
 			symbols "Off"
+
+	project "BorealisRuntime"
+		location "BorealisRuntime"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++20"
+		staticruntime "on"
+		systemversion "latest"
+
+		targetdir("BorealisEditor")
+		objdir ("BorealisEditor/Resources/Scripts/Core/Intermediate")
+
+		files
+		{
+			"%{prj.name}/inc/**.hpp",
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"Borealis",
+			"Borealis/inc",
+			"Borealis/lib/spdlog/include",
+			"%{IncludeDir.GLM}",
+			"%{IncludeDir.ImGui}",
+			"%{prj.name}/inc",
+			"%{IncludeDir.ENTT}"
+		}
+
+		defines
+		{
+			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+		}
+
+		links
+		{
+			"Borealis"
+		}
+
+		filter "configurations:Debug"
+			defines "_DEB"
+			symbols "On"
+			runtime "Debug"
+
+		filter "configurations:Release"
+			defines "_REL"
+			optimize "On"
+			runtime "Release"
+
+		filter "configurations:Distribution"
+			defines "_DIST"
+			optimize "On"
+			runtime "Release"

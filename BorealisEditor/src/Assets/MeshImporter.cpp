@@ -98,13 +98,13 @@ namespace Borealis
 
 	void MeshImporter::ProcessNode(aiNode* node, const aiScene* scene, Model& model)
 	{
-		for (int i{}; i < node->mNumMeshes; ++i)
+		for (unsigned int i{}; i < node->mNumMeshes; ++i)
 		{
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
 			model.mMeshes.push_back(ProcessMesh(mesh, scene));
 		}
 
-		for (int i{}; i < node->mNumChildren; ++i)
+		for (unsigned int i{}; i < node->mNumChildren; ++i)
 		{
 			ProcessNode(node->mChildren[i], scene, model);
 		}

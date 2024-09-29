@@ -136,7 +136,7 @@ namespace Borealis
 		shader->Set("u_ModelTransform", transform);
 
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, mIndices.size(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, (int)mIndices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 

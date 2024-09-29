@@ -77,10 +77,10 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;lib\RTTR\lib\Deb\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,13 +98,13 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -123,13 +123,13 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -154,6 +154,7 @@
     <ClInclude Include="inc\Core\Layer.hpp" />
     <ClInclude Include="inc\Core\LayerSystem.hpp" />
     <ClInclude Include="inc\Core\LoggerSystem.hpp" />
+    <ClInclude Include="inc\Core\Project.hpp" />
     <ClInclude Include="inc\Core\UUID.hpp" />
     <ClInclude Include="inc\Core\Utils.hpp" />
     <ClInclude Include="inc\Core\WindowManager.hpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
+    <ClInclude Include="inc\Graphics\Font.hpp" />
     <ClInclude Include="inc\Graphics\Framebuffer.hpp" />
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp" />
     <ClInclude Include="inc\Graphics\Material.hpp" />
@@ -195,8 +197,13 @@
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
     <ClInclude Include="inc\Scene\Scene.hpp" />
     <ClInclude Include="inc\Scene\SceneCamera.hpp" />
+    <ClInclude Include="inc\Scene\SceneManager.hpp" />
     <ClInclude Include="inc\Scene\ScriptEntity.hpp" />
     <ClInclude Include="inc\Scene\Serialiser.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptClass.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptField.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptInstance.hpp" />
+    <ClInclude Include="inc\Scripting\ScriptingExposedInternal.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingSystem.hpp" />
     <ClInclude Include="inc\Scripting\ScriptingUtils.hpp" />
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
@@ -677,6 +684,7 @@
     <ClCompile Include="src\Core\Layer.cpp" />
     <ClCompile Include="src\Core\LayerSystem.cpp" />
     <ClCompile Include="src\Core\LoggerSystem.cpp" />
+    <ClCompile Include="src\Core\Project.cpp" />
     <ClCompile Include="src\Core\UUID.cpp" />
     <ClCompile Include="src\Core\Utils.cpp" />
     <ClCompile Include="src\Core\WindowManager.cpp" />
@@ -685,6 +693,7 @@
     <ClCompile Include="src\Graphics\Animation\VertexBone.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
+    <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
@@ -710,32 +719,23 @@
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiFontLib.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Scene\Components.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />
     <ClCompile Include="src\Scene\SceneCamera.cpp" />
+    <ClCompile Include="src\Scene\SceneManager.cpp" />
     <ClCompile Include="src\Scene\Serialiser.cpp" />
+    <ClCompile Include="src\Scripting\ScriptClass.cpp" />
+    <ClCompile Include="src\Scripting\ScriptField.cpp" />
+    <ClCompile Include="src\Scripting\ScriptInstance.cpp" />
+    <ClCompile Include="src\Scripting\ScriptingExposedInternal.cpp" />
     <ClCompile Include="src\Scripting\ScriptingSystem.cpp" />
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="lib\GLFW\GLFW.vcxproj">
-      <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\GLAD\GLAD.vcxproj">
-      <Project>{5D4A857C-4981-860D-F26D-6C10DE83020F}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\ImGui\ImGui.vcxproj">
-      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\yaml-cpp\yaml-cpp.vcxproj">
-      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
-    </ProjectReference>
     <ProjectReference Include="lib\Tracy\Tracy.vcxproj">
       <Project>{88372F0E-F44B-57BF-BDCD-FA1E29A153F0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="lib\JoltPhysics\JoltPhysics.vcxproj">
-      <Project>{812AB974-EDDF-316A-76D4-2B41E288286E}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
