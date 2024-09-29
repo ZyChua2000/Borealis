@@ -64,18 +64,6 @@ namespace Borealis {
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
-		Ref<Material> material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
-		testEntity = SceneManager::GetActiveScene()->CreateEntity("testObject");
-		testEntity.AddComponent<MeshFilterComponent>();
-		auto& meshRenderer = testEntity.AddComponent<MeshRendererComponent>();
-		//material->SetTextureMap(Material::Albedo, Texture2D::Create("assets/textures/Dragon_Bump.png"));
-		/*material->SetTextureMapFloat(Material::Metallic, { 0.5f });
-		material->SetTextureMap(Material::NormalMap, Texture2D::Create("assets/textures/Dragon_Nor.png"));*/
-		/*material->SetTextureMapColor(Material::Specular, { 0.5f, 0.5f, 0.5f, 1.0f });
-		material->SetTextureMapColor(Material::Emission, { 0.1f, 0.1f, 0.0f, 1.0f });
-		material->SetPropertyFloat(Material::Shininess, 25.f);*/
-		meshRenderer.Material = material;
 		ScriptingSystem::InitCoreAssembly();
 		
 		//TEMP
