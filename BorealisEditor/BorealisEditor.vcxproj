@@ -149,15 +149,19 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Assets\MaterialEditor.hpp" />
     <ClInclude Include="inc\Assets\FontImporter.hpp" />
     <ClInclude Include="inc\Assets\MeshImporter.hpp" />
+    <ClInclude Include="inc\Assets\SkinnedMeshImporter.hpp" />
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\MaterialEditor.cpp" />
     <ClCompile Include="src\Assets\FontImporter.cpp" />
     <ClCompile Include="src\Assets\MeshImporter.cpp" />
+    <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />

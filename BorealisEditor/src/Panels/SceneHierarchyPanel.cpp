@@ -23,6 +23,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/FontImporter.hpp>
 
 
+#include "Assets/MaterialEditor.hpp"
+
 namespace Borealis
 {
 	static void DrawVec3Controller(const std::string& label, glm::vec3& values, float resetValue = 0.f, float columnWidth = 100.f)
@@ -227,15 +229,17 @@ namespace Borealis
 			}
 			ImGui::EndPopup();
 		}
-		
 
 		ImGui::End();
 
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
+			MaterialEditor::SetRender(false);
 			DrawComponents(mSelectedEntity);
 		}
+		MaterialEditor::RenderEditor();
+
 		ImGui::End();
 
 	}
@@ -673,6 +677,11 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if (component.Material)
+				{
+					MaterialEditor::RenderProperties(component.Material);
+				}
+
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))

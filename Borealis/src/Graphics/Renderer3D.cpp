@@ -31,7 +31,7 @@ namespace Borealis
 	void Renderer3D::Init()
 	{
 		sData =  std::make_unique<Renderer3DData>();
-		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Model.glsl");
+		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Material.glsl");
 	}
 
 
@@ -49,8 +49,10 @@ namespace Borealis
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID)
 	{
-		if(meshFilter.Model)
+		if (meshFilter.Model) {
+			meshRenderer.Material->SetUniforms(sData->mModelShader);
 			meshFilter.Model->Draw(transform, sData->mModelShader);
+		}
 	}
 
 }
