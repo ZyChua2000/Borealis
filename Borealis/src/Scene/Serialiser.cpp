@@ -137,7 +137,7 @@ namespace Borealis
 	Serialiser::Serialiser(const Ref<Scene>& scene) : mScene(scene) {}
 
 
-	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const BehaviourNode* node) {
+	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const Ref<BehaviourNode> node) {
 		out << YAML::Key << "name" << YAML::Value << node->get_name();
 		if (!node->children.empty())
 		{

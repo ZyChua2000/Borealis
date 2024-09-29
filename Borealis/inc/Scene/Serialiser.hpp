@@ -34,7 +34,7 @@ namespace Borealis
 
 		static bool SerialiseEditorStyle();
 		static bool DeserialiseEditorStyle();
-		static bool SerializeBehaviourNode(YAML::Emitter& out, const BehaviourNode* node);
+		static bool SerializeBehaviourNode(YAML::Emitter& out, const Ref<BehaviourNode> node);
 	private:
 		Ref<Scene> mScene;
 

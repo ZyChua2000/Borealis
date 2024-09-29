@@ -1,4 +1,5 @@
 #pragma once
+#include <Core/Core.hpp>
 #include <string>
 #include <memory>
 #include <vector>
@@ -28,15 +29,14 @@ namespace Borealis
         FAILURE // node failed
     };
 
-    class  BehaviourNode
+    class  BehaviourNode : std::enable_shared_from_this<BehaviourNode>
     {
-        friend class BehaviorTreePrototype;
+        //friend class BehaviorTreePrototype;
         friend class NodeFactory;
         friend class Serialiser;
     public:
-        BehaviourNode() = default;
+        BehaviourNode()=default;
         BehaviourNode(NodeType type, int depth, const std::string& name);
-        ~BehaviourNode();
 
         // Getters for type, depth, and name
         NodeType get_type() const;
@@ -44,7 +44,7 @@ namespace Borealis
         std::string get_name() const;
 
         // Node management
-        void add_child(BehaviourNode* child);
+        void add_child(Ref<BehaviourNode>& child);
 
         // readability status getters
         bool is_ready() const;
@@ -75,15 +75,15 @@ namespace Borealis
         //const char* get_name() const;
         //const char* get_summary() const;
 
-        virtual BehaviourNode* clone() = 0;
+        virtual Ref<BehaviourNode> clone() = 0;
 
     protected:
         //BehaviorAgent* agent;
         NodeType nodeType;
         NodeStatus status;
         NodeResult result;
-        BehaviourNode* parent;
-        std::vector<BehaviourNode*> children;
+        WeakRef<BehaviourNode> parent;
+        std::vector<Ref<BehaviourNode>> children;
         std::string name;  // Name of the node
 
         void on_leaf_enter();
@@ -107,10 +107,9 @@ namespace Borealis
     class BaseNode : public BehaviourNode
     {
     public:
-        virtual BehaviourNode* clone()
+        virtual Ref<BehaviourNode> clone()
         {
-            T& self = *static_cast<T*>(this);
-            return new T(self);
+            return std::make_shared<T>(static_cast<const T&>(*this));
         }
     };
 }

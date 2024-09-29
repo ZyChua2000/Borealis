@@ -27,7 +27,7 @@ namespace Borealis
     {
     private:
         // Recursive function to build the tree from the added nodes
-        void recursive_add(BehaviourNode* parent, BehaviourNode* child)
+        void recursive_add(Ref<BehaviourNode> parent, Ref<BehaviourNode> child)
         {
             // Add the child node to the parent node recursively, building the tree
             if (parent)
@@ -43,20 +43,20 @@ namespace Borealis
         }
 
         // Tree root node
-        BehaviourNode* rootNode;
+        Ref<BehaviourNode> rootNode;
 
         // Tracks the most recently added node for managing hierarchy
-        BehaviourNode* previousNode;
+        Ref<BehaviourNode> previousNode;
 
         // Name of the behavior tree
-        const char* treeName;
+        std::string treeName;
 
         // Function to find the correct parent node based on depth
-        BehaviourNode* find_parent_node(int depth)
+        Ref<BehaviourNode> find_parent_node(int depth)
         {
             // Find the correct parent node based on the depth
             // This could be a stack-based approach or simply walking the tree from the rootNode
-            BehaviourNode* currentNode = rootNode;
+            Ref<BehaviourNode> currentNode = rootNode;
 
             // Traverse the tree to find the node at the desired depth
             while (currentNode && currentNode->get_depth() != depth - 1)
@@ -73,30 +73,32 @@ namespace Borealis
 
             return currentNode;
         }
+
+        std::string get_tree_name()
+        {
+            return treeName;
+        }
+
+        void set_tree_name(const char* name)
+        {
+            treeName = name;
+        }
     public:
-        NodeFactory() : rootNode(nullptr), previousNode(nullptr), treeName(nullptr)
+        NodeFactory() : rootNode(nullptr), previousNode(nullptr), treeName("")
         {
         }
         // Map to store prototypes
-        std::unordered_map<std::string, BehaviourNode*> nodePrototypes;
+        std::unordered_map<std::string, Ref<BehaviourNode>> nodePrototypes;
 
         // Function to register a node prototype in the map
-        void registerNodePrototype(const std::string& nodeName, BehaviourNode* prototype) 
+        void registerNodePrototype(const std::string& nodeName, Ref<BehaviourNode> prototype) 
         {
             nodePrototypes[nodeName] = prototype;
-        }
-        void deRegisterNodePrototype()
-        {
-            // Clean up prototypes
-            for (auto& pair : nodePrototypes)
-            {
-                delete pair.second;  // Delete the prototype
-            }
         }
 
         // Macro definitions to register nodes dynamically
 #define REGISTER_CONTROLFLOW(Name) \
-    registerNodePrototype(#Name, new Name());
+    registerNodePrototype(#Name, std::make_shared Name());
 
 #define REGISTER_DECORATOR(Name) \
     registerNodePrototype(#Name, new Name());
@@ -110,7 +112,7 @@ namespace Borealis
         }
 
         // Function to create a node by name
-        BehaviourNode* createNodeByName(const std::string& nodeName) 
+        Ref<BehaviourNode> createNodeByName(const std::string& nodeName) 
         {
             auto it = nodePrototypes.find(nodeName);
             if (it != nodePrototypes.end()) 
@@ -146,56 +148,65 @@ namespace Borealis
             return NodeType::UNKNOWN;  // Return INVALID if the prefix doesn't match any known type
         }
         // Parse the behavior tree file and build the tree for the entity
-        BehaviourNode* build_tree_from_file(const std::string& filename, Entity ent) {
+        void build_tree_from_file(const std::string& filename, Entity ent)
+        {
             std::ifstream file(filename);
-            if (!file.is_open()) {
+            if (!file.is_open())
+            {
                 std::cerr << "Error: Could not open file " << filename << std::endl;
-                return nullptr;
+                return;
             }
 
-            std::vector<BehaviourNode*> nodeByDepth;  // To manage nodes by depth
-            BehaviourNode* root = nullptr;
+            std::vector<Ref<BehaviourNode>> nodeByDepth;  // To manage nodes by depth
+            Ref<BehaviourNode> root = nullptr;
             std::string line;
 
-            while (std::getline(file, line)) {
+            while (std::getline(file, line))
+            {
                 std::istringstream iss(line);
                 std::string keyword;
                 iss >> keyword;
 
-                if (keyword == "TREENAME") {
+                if (keyword == "TREENAME")
+                {
                     std::string treeName;
                     iss >> treeName;
                     std::cout << "Building Tree: " << treeName << std::endl;
                 }
-                else if (keyword == "TREENODE") {
+                else if (keyword == "TREENODE")
+                {
                     std::string nodeTypeStr;
                     int depth;
                     iss >> nodeTypeStr >> depth;
 
                     // Create the node using the node name
-                    BehaviourNode* newNode = createNodeByName(nodeTypeStr);
-                    if (!newNode) {
+                    Ref<BehaviourNode> newNode = createNodeByName(nodeTypeStr);
+                    if (!newNode)
+                    {
                         std::cerr << "Error: Failed to create node of type " << nodeTypeStr << std::endl;
                         continue;
                     }
 
                     // Ensure that nodeByDepth has enough space to hold the current depth
-                    if (depth >= nodeByDepth.size()) {
+                    if (depth >= nodeByDepth.size())
+                    {
                         nodeByDepth.resize(depth + 1, nullptr);  // Resize to fit the current depth
                     }
 
-                   
-
-                    if (depth == 0) {
+                    if (depth == 0)
+                    {
                         // The first node at depth 0 is the root node
                         root = newNode;
                     }
-                    else {
+                    else
+                    {
                         // Attach this node to its parent at depth - 1
-                        if (nodeByDepth[depth - 1]) {
+                        if (nodeByDepth[depth - 1])
+                        {
                             nodeByDepth[depth - 1]->add_child(newNode);
                         }
-                        else {
+                        else
+                        {
                             std::cerr << "Error: No valid parent node found for depth " << depth << std::endl;
                         }
                     }
@@ -207,19 +218,26 @@ namespace Borealis
 
             file.close();
 
-            // Return the root of the built tree
-            if (!root) {
+            // Check if root node was created
+            if (!root)
+            {
                 std::cerr << "Error: Tree root not found." << std::endl;
+                return;
             }
-            return root;
+
+            // Properly initialize the BehaviourTree
+            Ref<BehaviourTree> treeContainer = std::make_shared<BehaviourTree>();
+            treeContainer->SetRootNode(root);
+
+            // Ensure the entity has the BehaviourTreeComponent before adding the tree
+            if (!ent.HasComponent<BehaviourTreeComponent>()) {
+                std::cerr << "Error: Entity does not have a BehaviourTreeComponent." << std::endl;
+                return;
+            }
+
+            ent.GetComponent<BehaviourTreeComponent>().AddTree(treeContainer);
         }
 
-
-
-        void set_tree_name(const char* name)
-        {
-            treeName = name;
-        }
 
 
     };

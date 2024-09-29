@@ -5,17 +5,12 @@
 namespace Borealis
 {
 
-
     BehaviourNode::BehaviourNode(NodeType type, int depth, const std::string& name)
-        : nodeType(type), mDepth(depth), name(name), parent(nullptr) {}
-
-    BehaviourNode::~BehaviourNode()
+        : nodeType(type), mDepth(depth), name(name)
     {
-        for (auto&& child : children)
-        {
-            delete child;
-        }
-
+        parent.reset();
+        result = NodeResult::FAILURE;
+        status = NodeStatus::SUSPENDED;
     }
     // Get the node type
     NodeType BehaviourNode::get_type() const
@@ -36,10 +31,10 @@ namespace Borealis
     }
 
     // Add a child node to this node
-    void BehaviourNode::add_child(BehaviourNode* child)
+    void BehaviourNode::add_child(Ref<BehaviourNode>& child)
     {
         children.emplace_back(child);
-        child->parent = this;
+        child->parent = this->parent;
         //child->agent = agent;
     }
 

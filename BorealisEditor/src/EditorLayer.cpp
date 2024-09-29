@@ -79,12 +79,12 @@ namespace Borealis {
 
 		auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
 		auto& btC = entity.AddComponent<BehaviourTreeComponent>();
-		L_Idle* idleNode = new L_Idle();
-		C_Sequencer* sequencerNode = new C_Sequencer();
-		L_CheckMouseClick* clickNode = new L_CheckMouseClick();
-		BehaviourNode* clonedIdleNode = idleNode->clone();
-		BehaviourNode* clonedSequenceNode = sequencerNode->clone();
-		BehaviourNode* clonedClickNode = clickNode->clone();
+		L_Idle idleNode;
+		C_Sequencer sequencerNode  ;
+		L_CheckMouseClick clickNode;
+		Ref<BehaviourNode> clonedIdleNode = idleNode.clone();
+		Ref<BehaviourNode> clonedSequenceNode = sequencerNode.clone();
+		Ref<BehaviourNode> clonedClickNode = clickNode.clone();
 		NodeFactory factory;
 		factory.registerNodePrototype("L_Idle", clonedIdleNode);
 		factory.createNodeByName("L_Idle");

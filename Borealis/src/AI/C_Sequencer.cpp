@@ -15,7 +15,7 @@ namespace Borealis
     {
         // if any child fails, the node fails
         // if all children succeed, the node succeeds
-        BehaviourNode* currentNode = children[currentIndex];
+        Ref<BehaviourNode> currentNode = children[currentIndex];
         currentNode->tick(dt);
 
         if (currentNode->failed() == true)

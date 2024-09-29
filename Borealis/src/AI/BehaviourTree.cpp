@@ -6,12 +6,7 @@ namespace Borealis
 {
     BehaviourTree::BehaviourTree() : rootNode(nullptr), treeName(nullptr)
     {}
-
-    BehaviourTree::~BehaviourTree()
-    {
-        delete rootNode;
-    }
-
+    BehaviourTree::~BehaviourTree(){}
     void BehaviourTree::update(float dt)
     {
         rootNode->tick(dt);
@@ -22,7 +17,7 @@ namespace Borealis
             rootNode->set_status(NodeStatus::READY);
         }
     }
-    void BehaviourTree::AddNode(BehaviourNode* parent, BehaviourNode* child)
+    void BehaviourTree::AddNode(Ref<BehaviourNode> parent, Ref<BehaviourNode> child)
     {
         if (!parent) {
             if (!rootNode) {
@@ -36,11 +31,11 @@ namespace Borealis
             parent->add_child(child);  // Add the child to the given parent
         }
     }
-    void BehaviourTree::SetRootNode(BehaviourNode* root) 
+    void BehaviourTree::SetRootNode(Ref<BehaviourNode> root) 
     {
         rootNode = root;
     } 
-    BehaviourNode* BehaviourTree::GetRootNode() 
+    Ref<BehaviourNode> BehaviourTree::GetRootNode() 
     {
         return rootNode;
     }
