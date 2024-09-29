@@ -101,10 +101,10 @@ namespace Borealis
     registerNodePrototype(#Name, std::make_shared Name());
 
 #define REGISTER_DECORATOR(Name) \
-    registerNodePrototype(#Name, new Name());
+    registerNodePrototype(#Name,  std::make_shared Name());
 
 #define REGISTER_LEAF(Name) \
-    registerNodePrototype(#Name, new Name());
+    registerNodePrototype(#Name,  std::make_shared Name());
 
 // Function to initialize and register all nodes from Nodes.def
         void initializeNodePrototypes() {
