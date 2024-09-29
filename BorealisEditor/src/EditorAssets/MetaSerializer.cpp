@@ -64,6 +64,12 @@ namespace Borealis
 	AssetMetaData MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path path)
 	{
 		std::ifstream metaFile(path);
+
+		if (!metaFile.is_open()) {
+			BOREALIS_CORE_ASSERT("Failed to open meta file: {}", path.string());
+			return {};
+		}
+
 		std::stringstream metaStream;
 		metaStream << metaFile.rdbuf();
 		metaFile.close();

@@ -27,7 +27,8 @@ namespace Borealis
 	{
 		if (!mAssetRegistry.contains(assetHandle))
 		{
-			BOREALIS_CORE_ASSERT("NO Asset Handle : {}", assetHandle);
+			BOREALIS_CORE_ERROR("NO Asset Handle : {}", assetHandle);
+			return nullptr;
 		}
 
 		Ref<Asset> asset = nullptr;
