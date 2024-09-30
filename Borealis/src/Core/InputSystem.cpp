@@ -24,8 +24,6 @@ namespace Borealis
 	uint16_t InputSystem::KeyCurrentState[349];
 	uint16_t InputSystem::KeyPrevState[349];
 	double InputSystem::ScrollY = 0;
-	bool InputSystem::anyKey = false;
-	bool InputSystem::anyKeyDown = false;
 
 	static std::vector<uint16_t> KeysToPoll
 	{
