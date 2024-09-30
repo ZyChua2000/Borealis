@@ -28,11 +28,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Graphics/Font.hpp>
 #include <Assets/FontImporter.hpp>
-#include <AI/MacrosToRegisterNodes.hpp>
-#include <AI/L_Idle.hpp>
-#include <AI/C_Sequencer.hpp>
-#include <AI/L_CheckMouseClick.hpp>
-#include <AI/BehaviourTree.hpp>
+#include <AI/BehaviourTree/RegisterNodes.hpp>
+#include <AI/BehaviourTree/BehaviourTree.hpp>
 
 namespace Borealis {
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
@@ -79,19 +76,13 @@ namespace Borealis {
 
 		auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
 		auto& btC = entity.AddComponent<BehaviourTreeComponent>();
-		L_Idle idleNode;
-		C_Sequencer sequencerNode  ;
-		L_CheckMouseClick clickNode;
-		Ref<BehaviourNode> clonedIdleNode = idleNode.clone();
-		Ref<BehaviourNode> clonedSequenceNode = sequencerNode.clone();
-		Ref<BehaviourNode> clonedClickNode = clickNode.clone();
-		NodeFactory factory;
-		factory.registerNodePrototype("L_Idle", clonedIdleNode);
-		factory.createNodeByName("L_Idle");
+		auto idleNode = NodeFactory::createNodeByName("L_Idle");
+		auto sequenceNode = NodeFactory::createNodeByName("C_Sequencer");
+		auto clickNode = NodeFactory::createNodeByName("L_CheckMouseClick");
 		Ref<BehaviourTree> betree = MakeRef<BehaviourTree>();
-		betree->SetRootNode(clonedSequenceNode);
-		betree->AddNode(betree->GetRootNode(),clonedIdleNode);
-		betree->AddNode(betree->GetRootNode(),clonedClickNode);
+		betree->SetRootNode(sequenceNode);
+		betree->AddNode(betree->GetRootNode(), idleNode);
+		betree->AddNode(betree->GetRootNode(),clickNode);
 		//selector->add child idle, mouseclick
 		//betree->add selector(root)
 

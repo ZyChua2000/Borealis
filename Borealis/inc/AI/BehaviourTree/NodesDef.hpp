@@ -1,0 +1,36 @@
+/******************************************************************************
+/*!
+\file       NodesDef.hpp
+\author     Chua Zheng Yang
+\par        email: c.zhengyang@digipen.edu
+\date       September 15, 2024
+\brief      Declares
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
+#ifndef NodesDef_HPP
+#define NodesDef_HPP
+#include <AI/BehaviourTree/RegisterNodes.hpp>
+#include <Core/Core.hpp>
+
+// Include all the nodes here
+#include <AI/BehaviourTree/ControlFlow/C_Sequencer.hpp>
+#include <AI/BehaviourTree/Leaf/L_Idle.hpp>
+#include <AI/BehaviourTree/Leaf/L_CheckMouseClick.hpp>
+namespace Borealis
+{
+#ifndef REGISTER_ALL_NODES
+	// Macro definitions to register nodes dynamically, add "\" at the end of non-last lines
+#define REGISTER_ALL_NODES \
+	REGISTER_CONTROLFLOW(C_Sequencer) \
+	REGISTER_LEAF(L_Idle) \
+	REGISTER_LEAF(L_CheckMouseClick)
+
+#endif
+}
+
+#endif

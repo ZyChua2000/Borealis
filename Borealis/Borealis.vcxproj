@@ -144,15 +144,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
-    <ClInclude Include="inc\AI\BehaviorTreeBuilder.hpp" />
-    <ClInclude Include="inc\AI\BehaviourNode.hpp" />
-    <ClInclude Include="inc\AI\BehaviourTree.hpp" />
-    <ClInclude Include="inc\AI\BehaviourTreePrototype.hpp" />
-    <ClInclude Include="inc\AI\Blackboard.hpp" />
-    <ClInclude Include="inc\AI\C_Sequencer.hpp" />
-    <ClInclude Include="inc\AI\L_CheckMouseClick.hpp" />
-    <ClInclude Include="inc\AI\L_Idle.hpp" />
-    <ClInclude Include="inc\AI\MacrosToRegisterNodes.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourNode.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTree.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTreePrototype.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Blackboard.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\ControlFlow\C_Sequencer.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_CheckMouseClick.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_Idle.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp" />
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />
@@ -682,13 +685,16 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
-    <ClCompile Include="src\AI\BehaviorTreeBuilder.cpp" />
-    <ClCompile Include="src\AI\BehaviourNode.cpp" />
-    <ClCompile Include="src\AI\BehaviourTree.cpp" />
-    <ClCompile Include="src\AI\BehaviourTreePrototype.cpp" />
-    <ClCompile Include="src\AI\C_Sequencer.cpp" />
-    <ClCompile Include="src\AI\L_CheckMouseClick.cpp" />
-    <ClCompile Include="src\AI\L_Idle.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourNode.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTree.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTreePrototype.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_CheckMouseClick.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_Idle.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

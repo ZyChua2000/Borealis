@@ -18,7 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>
 #include <Scene/Entity.hpp>
 #include <Scene/Components.hpp>
-#include <AI/BehaviourNode.hpp>
+#include <AI/BehaviourTree/BehaviourNode.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 

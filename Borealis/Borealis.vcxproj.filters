@@ -118,31 +118,28 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
-    <ClInclude Include="inc\AI\BehaviorTreeBuilder.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourNode.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourNode.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTree.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourTree.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTreePrototype.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourTreePrototype.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\Blackboard.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\Blackboard.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\ControlFlow\C_Sequencer.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\C_Sequencer.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_CheckMouseClick.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\L_CheckMouseClick.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_Idle.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\L_Idle.hpp">
-      <Filter>inc\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\AI\MacrosToRegisterNodes.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp">
       <Filter>inc\AI</Filter>
     </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
@@ -1714,6 +1711,7 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1722,25 +1720,22 @@
     <ClCompile Include="lib\stb_image\stb_image.cpp">
       <Filter>lib\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\BehaviorTreeBuilder.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourNode.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\BehaviourNode.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTree.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\BehaviourTree.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTreePrototype.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\BehaviourTreePrototype.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\C_Sequencer.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_CheckMouseClick.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\L_CheckMouseClick.cpp">
-      <Filter>src\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AI\L_Idle.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_Idle.cpp">
       <Filter>src\AI</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
@@ -1896,5 +1891,6 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp" />
   </ItemGroup>
 </Project>

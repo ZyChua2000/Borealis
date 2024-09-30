@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/InputSystem.hpp>
 #include <Graphics/Renderer.hpp>
 #include <Scripting/ScriptingSystem.hpp>
+#include <AI/BehaviourTree/RegisterNodes.hpp>
 
 namespace Borealis
 {
@@ -45,6 +46,8 @@ namespace Borealis
 		Renderer::Init();
 
 		ScriptingSystem::Init();
+
+		NodeFactory::Init();
 	}
 
 	/*!***********************************************************************

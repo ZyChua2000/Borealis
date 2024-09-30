@@ -24,7 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
-#include <AI/BehaviourTree.hpp>
+#include <AI/BehaviourTree/BehaviourTree.hpp>
 #include <Core/UUID.hpp>
 namespace Borealis
 {
