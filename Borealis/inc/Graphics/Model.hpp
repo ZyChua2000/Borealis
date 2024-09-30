@@ -26,8 +26,11 @@ namespace Borealis
 	class Model
 	{
 	public:
-		void Load();
 		void Draw(const glm::mat4& transform, Ref<Shader> shader);
+
+		void LoadModel();
+		void SaveModel();
+
 		std::vector<Mesh> mMeshes;
 	private:
 	}; // class Model

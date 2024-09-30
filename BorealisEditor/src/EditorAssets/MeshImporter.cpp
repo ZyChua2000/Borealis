@@ -26,7 +26,6 @@ namespace Borealis
 		}
 
 		//BOREALIS_CORE_TRACE("FBX load from {0}", path);
-
 		Model model;
 		ProcessNode(scene->mRootNode, scene, model);
 		return MakeRef<Model>(model);

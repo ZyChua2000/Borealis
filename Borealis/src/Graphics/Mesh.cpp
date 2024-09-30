@@ -32,6 +32,8 @@ namespace Borealis
 
 		//mVertices = vertices;
 		mIndices = indices;
+		mIndicesCount = indices.size();
+		mVerticesCount = vertices.size();
 		//mNormals = normals;
 
 		for (int i{}; i < vertices.size(); i++)
@@ -53,6 +55,9 @@ namespace Borealis
 	{
 		mVertices = vertices;
 		mIndices = indices;
+
+		mVerticesCount = vertices.size();
+		mIndicesCount = indices.size();
 
 		SetupMesh();
 	}
@@ -119,6 +124,46 @@ namespace Borealis
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, (int)mIndices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
+	}
+
+	std::vector<unsigned int> const& Mesh::GetIndices() const
+	{
+		return mIndices;
+	}
+
+	std::vector<unsigned int>& Mesh::GetIndices()
+	{
+		return mIndices;
+	}
+
+	std::vector<Vertex> const& Mesh::GetVertices() const
+	{
+		return mVertices;
+	}
+
+	std::vector<Vertex>& Mesh::GetVertices()
+	{
+		return mVertices;
+	}
+
+	uint32_t Mesh::GetVerticesCount() const
+	{
+		return mVerticesCount;
+	}
+
+	void Mesh::SetVerticesCount(uint32_t count)
+	{
+		mVerticesCount = count;
+	}
+
+	uint32_t Mesh::GetIndicesCount() const
+	{
+		return mIndicesCount;
+	}
+
+	void Mesh::SetIndicesCount(uint32_t count)
+	{
+		mIndicesCount = count;
 	}
 
 	//void Mesh::SetVertices(const std::vector<glm::vec3>& vertices)
