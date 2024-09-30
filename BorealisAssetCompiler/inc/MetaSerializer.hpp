@@ -30,6 +30,7 @@ namespace BorealisAssetCompiler
 		Shader,
 		Texture2D,
 		Folder,
+		Font,
 		Scene,
 	};
 

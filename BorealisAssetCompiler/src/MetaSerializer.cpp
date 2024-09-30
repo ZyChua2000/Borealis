@@ -54,6 +54,7 @@ namespace BorealisAssetCompiler
 		case AssetType::Shader:		return "AssetType::Shader";
 		case AssetType::Texture2D:	return "AssetType::Texture2D";
 		case AssetType::Folder:		return "AssetType::Folder";
+		case AssetType::Font:		return "AssetType::Font";
 		case AssetType::Scene:		return "AssetType::Scene";
 		}
 
@@ -68,6 +69,7 @@ namespace BorealisAssetCompiler
 		if (type == "AssetType::Shader")		return AssetType::Shader;
 		if (type == "AssetType::Texture2D")		return AssetType::Texture2D;
 		if (type == "AssetType::Folder")		return AssetType::Folder;
+		if (type == "AssetType::Font")			return AssetType::Font;
 		if (type == "AssetType::Scene")			return AssetType::Scene;
 
 		return AssetType::None;

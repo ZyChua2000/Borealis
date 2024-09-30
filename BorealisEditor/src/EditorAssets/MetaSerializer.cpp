@@ -34,6 +34,7 @@ namespace Borealis
 		out << YAML::Key << "AssetType" << YAML::Value << Asset::AssetTypeToString(assetMetaData.Type);
 		//out << YAML::Key << "SourcePath" << YAML::Value << assetMetaData.SourcePath.lexically_relative(PathToAssetFolder).string();
 		out << YAML::Key << "SourcePath" << YAML::Value << std::filesystem::relative(assetMetaData.SourcePath, PathToAssetFolder).string();
+		out << YAML::Key << "CachePath" << YAML::Value << std::filesystem::relative(assetMetaData.CachePath, PathToAssetFolder).string();
 		out << YAML::Key << "LastModifiedDate" << YAML::Value << assetMetaData.importDate;
 		out << YAML::EndMap;
 	}
@@ -55,7 +56,18 @@ namespace Borealis
 			str.erase(pos, pattern.length());
 		}
 
-		metaData.SourcePath = PathToAssetFolder / str;
+		metaData.SourcePath = PathToAssetFolder.parent_path() / str;
+
+		str = node["CachePath"].as<std::string>();
+
+		pos = str.find(pattern);
+
+		// If the pattern is found, erase it
+		if (pos != std::string::npos) {
+			str.erase(pos, pattern.length());
+		}
+
+		metaData.CachePath = PathToAssetFolder.parent_path() / str;
 		metaData.importDate = node["LastModifiedDate"].as<uint64_t>();
 		
 		return metaData;

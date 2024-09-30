@@ -99,7 +99,7 @@ namespace Borealis
 		switch (metaData.Type)
 		{
 		case AssetType::Texture2D:
-			asset = Texture2D::Create(metaData.SourcePath.string());
+			asset = Texture2D::Create(metaData.CachePath.string());
 			break;
 		default:
 			break;

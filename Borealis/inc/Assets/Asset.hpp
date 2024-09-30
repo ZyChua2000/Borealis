@@ -31,6 +31,7 @@ namespace Borealis
 		Shader,
 		Texture2D,
 		Folder,
+		Font,
 		Scene,
 	};
 

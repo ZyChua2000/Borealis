@@ -21,6 +21,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/AssetImporter.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
 
+#include <thread>
+
 namespace Borealis
 {
 	void AssetImporter::LoadRegistry(Borealis::ProjectInfo projectInfo)
@@ -99,6 +101,7 @@ namespace Borealis
 		{
 			AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
 			bool imported = ImportAsset(meta);
+			meta = MetaFileSerializer::GetAssetMetaDataFile(path.replace_extension(".meta"));
 			assetRegistry.insert({ meta.Handle, meta });
 		}
 	}

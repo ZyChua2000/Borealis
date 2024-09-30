@@ -16,7 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include "ispc_texcomp.h"
+//#include "ispc_texcomp.h"
 
 #define FOURCC_DX10 0x30315844  // 'DX10' in ASCII
 #define DXGI_FORMAT_BC7_UNORM 98  // The BC7 format value for DX10 header
@@ -85,6 +85,5 @@ namespace BorealisAssetCompiler
 
         stbi_image_free(imageData);
     }
-
 }
 

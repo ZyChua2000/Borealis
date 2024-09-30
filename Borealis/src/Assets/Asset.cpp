@@ -27,7 +27,8 @@ namespace Borealis
 
 		if (extension == ".png") return AssetType::Texture2D;
 		if (extension == ".sc") return AssetType::Scene;
-		if (extension == ".glsl") return AssetType::Scene;
+		if (extension == ".glsl") return AssetType::Shader;
+		if (extension == ".ttf") return AssetType::Font;
 
 		return AssetType::None;
 	}
@@ -42,6 +43,7 @@ namespace Borealis
 		case AssetType::Shader:		return "AssetType::Shader";
 		case AssetType::Texture2D:	return "AssetType::Texture2D";
 		case AssetType::Folder:		return "AssetType::Folder";
+		case AssetType::Font:		return "AssetType::Font";
 		case AssetType::Scene:		return "AssetType::Scene";
 		}
 
@@ -56,6 +58,7 @@ namespace Borealis
 		if (type == "AssetType::Shader")		return AssetType::Shader;
 		if (type == "AssetType::Texture2D")		return AssetType::Texture2D;
 		if (type == "AssetType::Folder")		return AssetType::Folder;
+		if (type == "AssetType::Font")			return AssetType::Font;
 		if (type == "AssetType::Scene")			return AssetType::Scene;
 
 		return AssetType::None;

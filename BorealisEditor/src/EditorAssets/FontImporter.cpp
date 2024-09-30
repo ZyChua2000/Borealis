@@ -58,7 +58,7 @@ namespace Borealis
 		return texture;
 	}
 
-	Ref<FontInfo> FontImporter::generateAtlas(const char* fontFilename)
+	FontInfo FontImporter::generateAtlas(const char* fontFilename)
 	{
 		FontInfo fontInfo;
 		if (msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype())
@@ -149,6 +149,6 @@ namespace Borealis
 			msdfgen::deinitializeFreetype(ft);
 		}
 
-		return MakeRef<FontInfo>(fontInfo);
+		return fontInfo;
 	}
 }

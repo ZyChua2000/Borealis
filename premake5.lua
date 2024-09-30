@@ -27,6 +27,7 @@ workspace "Borealis"
 	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
 	IncludeDir["Mono"] = "Borealis/lib/mono/include"
 	IncludeDir["xproperty"] = "Borealis/lib/xproperty/include"
+	IncludeDir["Gli"] = "Borealis/lib/gli"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
@@ -138,7 +139,8 @@ workspace "Borealis"
 			"%{IncludeDir.STBI}",
 			"%{IncludeDir.JoltPhysics}",
 			"%{IncludeDir.Mono}",
-			"%{IncludeDir.xproperty}"
+			"%{IncludeDir.xproperty}",
+			"%{IncludeDir.Gli}"
 		}
 
 

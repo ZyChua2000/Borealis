@@ -21,6 +21,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <fstream>
 #include <filesystem>
 
+#include "ispc_texcomp.h"
+
 namespace BorealisAssetCompiler
 {
     struct DDSHeader {
@@ -63,9 +65,55 @@ namespace BorealisAssetCompiler
     {
     public:
         static void SaveFile(std::filesystem::path const& sourcePath, std::filesystem::path& cachePath);
+
+        template <typename T>
+        static void SaveFile(const T * bitmap, int width, int height, std::filesystem::path& cachePath);
     private:
         static void SaveDDSFile(const std::string& filePath, int width, int height, const std::vector<uint8_t>& compressedData);
     };
+
+    //OPTIMIZE IT
+    template <typename T>
+    void FlipBitmapVertically(std::vector<T>& bitmap, int width, int height, int channels) {
+        int stride = width * channels;
+        std::vector<T> rowBuffer(stride);
+
+        for (int y = 0; y < height / 2; ++y) {
+            T* topRow = bitmap.data() + y * stride;
+            T* bottomRow = bitmap.data() + (height - y - 1) * stride;
+
+            // Swap the rows
+            std::memcpy(rowBuffer.data(), topRow, stride);
+            std::memcpy(topRow, bottomRow, stride);
+            std::memcpy(bottomRow, rowBuffer.data(), stride);
+        }
+    }
+
+    //move to tpp file
+    template <typename T>
+    void TextureImporter::SaveFile(const T * bitmap, int width, int height, std::filesystem::path& cachePath)
+    {
+        int totalSize = width * height * 4;  // Assuming 4 bytes per pixel (RGBA)
+        std::vector<T> bitmapCopy(bitmap, bitmap + totalSize);
+
+        FlipBitmapVertically(bitmapCopy, width, height, 4);
+
+        bc7_enc_settings settings;
+        GetProfile_alpha_basic(&settings);
+
+        rgba_surface srcSurface;
+        srcSurface.ptr = bitmapCopy.data();
+        srcSurface.width = width;
+        srcSurface.height = height;
+        srcSurface.stride = width * 4;
+
+        int compressedSize = (width / 4) * (height / 4) * 16;
+        std::vector<uint8_t> compressedData(compressedSize);
+
+        CompressBlocksBC7(&srcSurface, compressedData.data(), &settings);
+
+        SaveDDSFile(cachePath.string(), width, height, compressedData);
+    }
 }
 
 #endif

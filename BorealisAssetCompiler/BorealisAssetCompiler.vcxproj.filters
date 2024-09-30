@@ -15,17 +15,26 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="inc\Importer\AssetImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Importer\FontImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
     <ClInclude Include="inc\Importer\TextureImporter.hpp">
       <Filter>inc\Importer</Filter>
     </ClInclude>
     <ClInclude Include="inc\MetaSerializer.hpp">
       <Filter>inc</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Importer\AssetImporter.hpp">
-      <Filter>inc\Importer</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Importer\AssetImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Importer\FontImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Importer\TextureImporter.cpp">
       <Filter>src\Importer</Filter>
     </ClCompile>
@@ -34,9 +43,6 @@
     </ClCompile>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Importer\AssetImporter.cpp">
-      <Filter>src\Importer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

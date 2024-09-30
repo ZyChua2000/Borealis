@@ -26,7 +26,7 @@ namespace Borealis
 	class FontImporter
 	{
 	public:
-		static Ref<FontInfo> generateAtlas(const char* fontFilename);
+		static FontInfo generateAtlas(const char* fontFilename);
 	private:
 	};
 }

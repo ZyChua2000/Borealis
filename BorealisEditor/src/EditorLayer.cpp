@@ -44,7 +44,7 @@ namespace Borealis {
 		}
 
 		PROFILE_FUNCTION();
-		mTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
+		mTexture = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
 		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
 
 		FrameBufferProperties props{ 1280, 720, false };
@@ -67,10 +67,14 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			//Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
-			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
+			//FontInfo fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
 
-			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+			//Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+
+			Font font(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
+
+			Font::SetDefaultFont(MakeRef<Font>(font));
 		}
 
 	}
