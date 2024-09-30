@@ -25,9 +25,9 @@ namespace Borealis
 		}
 	}
 
-	void Model::LoadModel()
+	void Model::LoadModel(std::filesystem::path const& path)
 	{
-		std::ifstream inFile("model.mesh", std::ios::binary);
+		std::ifstream inFile(path, std::ios::binary);
 
 		uint32_t meshCount;
 		inFile.read(reinterpret_cast<char*>(&meshCount), sizeof(meshCount));

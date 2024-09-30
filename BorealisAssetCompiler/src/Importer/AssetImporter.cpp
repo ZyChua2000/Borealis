@@ -15,6 +15,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Importer/AssetImporter.hpp"
 #include "Importer/TextureImporter.hpp"
 #include "Importer/FontImporter.hpp"
+#include "Importer/MeshImporter.hpp"
 
 namespace BorealisAssetCompiler
 {
@@ -51,6 +52,9 @@ namespace BorealisAssetCompiler
 			break;
 		case AssetType::Font:
 			FontImporter::SaveFile(metaData.SourcePath, cachePath);
+			break;
+		case AssetType::Mesh:
+			MeshImporter::SaveFile(metaData.SourcePath, cachePath);
 			break;
 		case AssetType::None:
 		default:

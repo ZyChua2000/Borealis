@@ -17,18 +17,19 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <vector>
 #include <glm/glm.hpp>
 
+#include <Assets/Asset.hpp>
 #include <Core/Core.hpp>
 #include <Graphics/Shader.hpp>
 #include <Graphics/Mesh.hpp>
 
 namespace Borealis
 {
-	class Model
+	class Model : public Asset
 	{
 	public:
 		void Draw(const glm::mat4& transform, Ref<Shader> shader);
 
-		void LoadModel();
+		void LoadModel(std::filesystem::path const& path);
 		void SaveModel();
 
 		std::vector<Mesh> mMeshes;

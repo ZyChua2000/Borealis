@@ -662,20 +662,20 @@ namespace Borealis
 
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
-				if (ImGui::Button("Mesh"))
-				{
-					if (!component.Model)
-						component.Model = MakeRef<Model>();
-					component.Model->LoadModel();
-				}
+				ImGui::Button("Mesh");
+				//{
+				//	if (!component.Model)
+				//		component.Model = MakeRef<Model>();
+				//	component.Model->LoadModel();
+				//}
 				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string meshName = "assets/";
-						meshName += data;
+						//const char* data = (const char*)payload->Data;
+						//std::string meshName = "assets/";
+						//meshName += data;
 						// Should reference off asset manager's mesh
 						// imageName += ".meta";
 						// Read UUID from .meta
@@ -685,10 +685,10 @@ namespace Borealis
 						//LoadModel(meshName, model);
 						//component.Model = MakeRef<Model>(model); 
 						//component.Model = MeshImporter::LoadFBXModel(meshName);
-						component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
 
-						component.Model->SaveModel();
-
+						//component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Model = AssetManager::GetAsset<Model>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}

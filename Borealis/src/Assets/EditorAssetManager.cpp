@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/EditorAssetManager.hpp>
 
 #include <Graphics/Texture.hpp>
+#include <Graphics/Model.hpp>
 
 #include <yaml-cpp/yaml.h>
 
@@ -96,10 +97,15 @@ namespace Borealis
 		AssetMetaData metaData = mAssetRegistry.at(assetHandle);
 
 		Ref<Asset> asset = nullptr;
+		Model model;
 		switch (metaData.Type)
 		{
 		case AssetType::Texture2D:
 			asset = Texture2D::Create(metaData.CachePath.string());
+			break;
+		case AssetType::Mesh:
+			model.LoadModel(metaData.CachePath.string());
+			asset = MakeRef<Model>(model);
 			break;
 		default:
 			break;

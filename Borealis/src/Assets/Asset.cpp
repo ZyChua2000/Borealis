@@ -29,6 +29,7 @@ namespace Borealis
 		if (extension == ".sc") return AssetType::Scene;
 		if (extension == ".glsl") return AssetType::Shader;
 		if (extension == ".ttf") return AssetType::Font;
+		if (extension == ".fbx") return AssetType::Mesh;
 
 		return AssetType::None;
 	}
