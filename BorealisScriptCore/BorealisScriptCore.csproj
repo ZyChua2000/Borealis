@@ -141,6 +141,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Input.cs" />
+    <Compile Include="KeyCode.cs" />
     <Compile Include="src\Attributes.cs" />
     <Compile Include="src\Behaviour.cs" />
     <Compile Include="src\Components\Component.cs" />

@@ -127,7 +127,6 @@ namespace Borealis {
 		}
 		mViewportFrameBuffer->ClearAttachment(1, -1);
 		{
-			auto meshRen = testEntity.GetComponent<MeshRendererComponent>();
 			PROFILE_SCOPE("Renderer::Draw");
 			mViewportFrameBuffer->Bind();
 			SceneManager::GetActiveScene()->UpdateEditor(dt,mEditorCamera);
