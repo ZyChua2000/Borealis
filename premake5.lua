@@ -32,6 +32,9 @@ workspace "Borealis"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
 	IncludeDir["MSDF"] = "BorealisEditor/lib/MSDF/Include"
 
+	IncludeDir["STBI_Compiler"] = "BorealisAssetCompiler/lib/stb_image"
+  	IncludeDir["ISPC"] = "BorealisAssetCompiler/lib/ispc"
+
 	LibraryDir = {}
 	LibraryDir["FMOD"] = "lib/FMOD/lib"
 	LibraryDir["Mono_Debug"] = "lib/mono/lib/Deb"
@@ -246,6 +249,7 @@ workspace "Borealis"
 		links
 		{
 			"Borealis",
+			"BorealisAssetCompiler",
 			"ImGuiNodeEditor",
 			"BorealisScriptCore",
 			"BorealisRuntime",
@@ -461,90 +465,104 @@ workspace "Borealis"
 			optimize "On"
 			runtime "Release"
 
-		project "BorealisAssetCompiler"
-			location "BorealisAssetCompiler"
-			kind "ConsoleApp"
-			language "C++"
-			cppdialect "C++20"
-			staticruntime "on"
-			systemversion "latest"
-	
-			targetdir ("build/" .. outputdir .. "/%{prj.name}")
-			objdir ("build-int/" .. outputdir .. "/%{prj.name}")
-	
-			files
-			{
-				"%{prj.name}/inc/**.hpp",
-				"%{prj.name}/src/**.cpp"
-			}
-	
-			includedirs
-			{
-				"%{IncludeDir.YAML}",
-				"%{IncludeDir.GLM}",
-				"%{prj.name}/inc",
-				"%{IncludeDir.assimp}",
-				"%{IncludeDir.MSDF}",
-			}
-	
-			defines
-			{
-				"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-				"YAML_CPP_STATIC_DEFINE"
-			}
-	
+	project "BorealisAssetCompiler"
+		location "BorealisAssetCompiler"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++20"
+		staticruntime "on"
+		systemversion "latest"
+
+		targetdir ("build/" .. outputdir .. "/%{prj.name}")
+		objdir ("build-int/" .. outputdir .. "/%{prj.name}")
+
+		files
+		{
+			"%{prj.name}/inc/**.hpp",
+			"%{prj.name}/src/**.cpp"
+		}
+
+		includedirs
+		{
+			"%{IncludeDir.YAML}",
+			"%{IncludeDir.GLM}",
+			"%{prj.name}/inc",
+			"%{IncludeDir.assimp}",
+			"%{IncludeDir.MSDF}",
+			"%{IncludeDir.STBI_Compiler}",
+			"%{IncludeDir.ISPC}"
+		}
+
+		defines
+		{
+			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+			"YAML_CPP_STATIC_DEFINE"
+		}
+
+
+
+		libdirs
+		{
+			"BorealisAssetCompiler/lib/ispc/build"
+		}
+
+		links
+		{
+			"Assimp",
+			"ispc_texcomp"
+		}
+
+		postbuildcommands {
+			"{COPYFILE} \"../BorealisAssetCompiler/lib/ispc/dll/ispc_texcomp.dll\" \"$(TargetDir)\""
+		 }
+
+		filter "configurations:Debug"
+			defines "_DEB"
+			symbols "On"
+			runtime "Debug"
 			links
 			{
-				"Assimp"
+				"%{Library.MSDF_Debug_atlas}",
+				"%{Library.MSDF_Debug_core}",
+				"%{Library.MSDF_Debug_ext}",
+				"%{Library.MSDF_Debug_FreeType}",
+				"%{Library.MSDF_Debug_LibPNG}",
+				"%{Library.MSDF_Debug_LibBZ2}",
+				"%{Library.MSDF_Debug_LibBrotli}",
+				"%{Library.MSDF_Debug_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Debug}"
 			}
-	
-			filter "configurations:Debug"
-				defines "_DEB"
-				symbols "On"
-				runtime "Debug"
+
+		filter "configurations:Release"
+			defines "_REL"
+			optimize "On"
+			runtime "Release"
 				links
-				{
-					"%{Library.MSDF_Debug_atlas}",
-					"%{Library.MSDF_Debug_core}",
-					"%{Library.MSDF_Debug_ext}",
-					"%{Library.MSDF_Debug_FreeType}",
-					"%{Library.MSDF_Debug_LibPNG}",
-					"%{Library.MSDF_Debug_LibBZ2}",
-					"%{Library.MSDF_Debug_LibBrotli}",
-					"%{Library.MSDF_Debug_LibBrotliCommon}",
-					"Borealis/%{Library.YAML_Debug}"
-				}
-	
-			filter "configurations:Release"
-				defines "_REL"
-				optimize "On"
-				runtime "Release"
-				 links
-				{
-					"%{Library.MSDF_Release_atlas}",
-					"%{Library.MSDF_Release_core}",
-					"%{Library.MSDF_Release_ext}",
-					"%{Library.MSDF_Release_FreeType}",
-					"%{Library.MSDF_Release_LibPNG}",
-					"%{Library.MSDF_Release_LibBZ2}",
-					"%{Library.MSDF_Release_LibBrotli}",
-					"%{Library.MSDF_Release_LibBrotliCommon}",
-					"Borealis/%{Library.YAML_Release}"
-				}
-	
-			filter "configurations:Distribution"
-				defines "_DIST"
-				optimize "On"
-				runtime "Release"
-				 links
-				{
-					"%{Library.MSDF_Release_atlas}",
-					"%{Library.MSDF_Release_core}",
-					"%{Library.MSDF_Release_ext}",
-					"%{Library.MSDF_Release_FreeType}",
-					"%{Library.MSDF_Release_LibPNG}",
-					"%{Library.MSDF_Release_LibBZ2}",
-					"%{Library.MSDF_Release_LibBrotli}",
-					"%{Library.MSDF_Release_LibBrotliCommon}",
-					"Borealis/%{Library.YAML_Release}"
-				}
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}",
+				"%{Library.MSDF_Release_LibBZ2}",
+				"%{Library.MSDF_Release_LibBrotli}",
+				"%{Library.MSDF_Release_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Release}"
+			}
+
+		filter "configurations:Distribution"
+			defines "_DIST"
+			optimize "On"
+			runtime "Release"
+				links
+			{
+				"%{Library.MSDF_Release_atlas}",
+				"%{Library.MSDF_Release_core}",
+				"%{Library.MSDF_Release_ext}",
+				"%{Library.MSDF_Release_FreeType}",
+				"%{Library.MSDF_Release_LibPNG}",
+				"%{Library.MSDF_Release_LibBZ2}",
+				"%{Library.MSDF_Release_LibBrotli}",
+				"%{Library.MSDF_Release_LibBrotliCommon}",
+				"Borealis/%{Library.YAML_Release}"
+			}

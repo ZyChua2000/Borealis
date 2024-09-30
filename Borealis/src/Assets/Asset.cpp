@@ -57,6 +57,8 @@ namespace Borealis
 		if (type == "AssetType::Texture2D")		return AssetType::Texture2D;
 		if (type == "AssetType::Folder")		return AssetType::Folder;
 		if (type == "AssetType::Scene")			return AssetType::Scene;
+
+		return AssetType::None;
 	}
 }
 

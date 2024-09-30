@@ -171,6 +171,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     <ProjectReference Include="..\Borealis\Borealis.vcxproj">
       <Project>{765073D6-621D-CEE1-8B36-BC8977620370}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\BorealisAssetCompiler\BorealisAssetCompiler.vcxproj">
+      <Project>{719FBB84-DD0B-777F-A6FF-0EDD122B99E7}</Project>
+    </ProjectReference>
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>
     </ProjectReference>

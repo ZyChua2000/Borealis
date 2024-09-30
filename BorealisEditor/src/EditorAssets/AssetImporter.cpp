@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Core/Project.hpp>
 
+#include <Assets/Asset.hpp>
 #include <EditorAssets/AssetImporter.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
 
@@ -69,6 +70,15 @@ namespace Borealis
 		//if yes pass info to compiler
 
 		//system()
+
+		std::filesystem::path compilerPath = std::filesystem::canonical("../build/Debug-x86_64/BorealisAssetCompiler/BorealisAssetCompiler.exe");
+		std::string sourcePath = metaData.SourcePath.string();
+		std::string assetType = Asset::AssetTypeToString(metaData.Type);
+		std::string assetHandle = std::to_string(metaData.Handle);
+
+		std::string command = compilerPath.string() + " " + sourcePath;// +" " + assetType + " " + assetHandle;
+
+		int result = system(command.c_str());
 
 		return false;
 	}
