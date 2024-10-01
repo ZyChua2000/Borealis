@@ -36,6 +36,7 @@ namespace Borealis
 
 		for (Mesh& mesh : mMeshes) 
 		{
+			//always the same?
 			uint32_t verticesCount, indicesCount;
 			inFile.read(reinterpret_cast<char*>(&verticesCount), sizeof(verticesCount));
 			mesh.SetVerticesCount(verticesCount);

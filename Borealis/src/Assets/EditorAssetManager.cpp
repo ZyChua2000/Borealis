@@ -40,6 +40,7 @@ namespace Borealis
 		else
 		{
 			asset = LoadAsset(assetHandle);
+			mLoadedAssets.insert({ assetHandle, asset });
 		}
 		return asset;
 	}

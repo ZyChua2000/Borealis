@@ -18,7 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/AssetMetaData.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
 
-#include "Assets/MaterialEditor.hpp"
+#include "EditorAssets/MaterialEditor.hpp"
 
 namespace Borealis
 {

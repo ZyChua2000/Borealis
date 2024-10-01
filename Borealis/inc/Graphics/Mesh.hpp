@@ -26,7 +26,7 @@ namespace Borealis
 		glm::vec3 Position;
 		glm::vec3 Normal;
 		glm::vec2 TexCoords;
-		VertexBoneData BoneData;
+		//VertexBoneData BoneData;
 	};
 
 	class Mesh

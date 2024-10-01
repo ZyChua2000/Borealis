@@ -145,7 +145,7 @@ workspace "Borealis"
 			"%{IncludeDir.JoltPhysics}",
 			"%{IncludeDir.Mono}",
 			"%{IncludeDir.xproperty}",
-			"%{IncludeDir.Gli}"
+			"%{IncludeDir.Gli}",
 			"%{IncludeDir.RTTR}"
 		}
 

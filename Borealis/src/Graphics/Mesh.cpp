@@ -62,7 +62,7 @@ namespace Borealis
 			vertex.Position = vertices[i];
 			vertex.Normal = normals[i];
 			vertex.TexCoords = texCoords[i];
-			vertex.BoneData = boneData[i];
+			//vertex.BoneData = boneData[i];
 
 			mVertices.push_back(vertex);
 		}

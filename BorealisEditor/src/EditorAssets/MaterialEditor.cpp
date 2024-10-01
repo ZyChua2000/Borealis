@@ -1,5 +1,6 @@
 #include <imgui.h>
-#include "Assets/MaterialEditor.hpp"
+#include "EditorAssets/MaterialEditor.hpp"
+#include "Assets/AssetManager.hpp"
 
 #include <string>
 
@@ -117,10 +118,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::Albedo, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::Albedo, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::Albedo, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -138,10 +142,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::Specular, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::Specular, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::Specular, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -159,10 +166,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::Metallic, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::Metallic, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::Metallic, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -181,10 +191,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::NormalMap, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::NormalMap, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::NormalMap, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -197,10 +210,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::HeightMap, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::HeightMap, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::HeightMap, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -213,10 +229,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::Occlusion, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::Occlusion, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::Occlusion, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -229,10 +248,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::DetailMask, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::DetailMask, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::DetailMask, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }
@@ -245,10 +267,13 @@ namespace Borealis
                 {
                     if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
                     {
-                        const char* data = (const char*)payload->Data;
-                        std::string imageName = "assets/";
-                        imageName += data;
-                        material->SetTextureMap(Material::Emission, Texture2D::Create(imageName));
+                        //const char* data = (const char*)payload->Data;
+                        //std::string imageName = "assets/";
+                        //imageName += data;
+                        //material->SetTextureMap(Material::Emission, Texture2D::Create(imageName));
+
+                        AssetHandle data = *(const uint64_t*)payload->Data;
+                        material->SetTextureMap(Material::Emission, AssetManager::GetAsset<Texture2D>(data));
                     }
                     ImGui::EndDragDropTarget();
                 }

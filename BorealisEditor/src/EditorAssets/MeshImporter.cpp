@@ -13,7 +13,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <EditorAssets/MeshImporter.hpp>
-#include <Assets/MeshImporter.hpp>
 #include <Graphics/Animation/VertexBone.hpp>
 #include <map>
 

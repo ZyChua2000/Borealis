@@ -25,10 +25,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Core/Project.hpp>
 
-
-
-
-#include "Assets/MaterialEditor.hpp"
+#include "EditorAssets/MaterialEditor.hpp"
 
 namespace Borealis
 {
@@ -639,10 +636,6 @@ namespace Borealis
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
 					{
 						AssetHandle data = *(const uint64_t*)payload->Data;
-						//std::string imageName = "assets/";
-						//std::string imageName = data;
-						//imageName += data;
-						//component.Texture = Texture2D::Create(imageName);
 						component.Texture = AssetManager::GetAsset<Texture2D>(data);
 					}
 					ImGui::EndDragDropTarget();
@@ -693,6 +686,12 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+
+				if (!component.Material)
+				{
+					component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
+				}
+
 				if (component.Material)
 				{
 					MaterialEditor::RenderProperties(component.Material);
