@@ -13,6 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
+#define NOMINMAX
 #include <windows.h>
 #include <GLFW/glfw3.h>
 #include <Core/LoggerSystem.hpp>
@@ -45,7 +46,7 @@ namespace Borealis
 
 		ScriptingSystem::Init();
 
-
+		InputSystem::Init();
 	}
 
 	/*!***********************************************************************
@@ -85,6 +86,7 @@ namespace Borealis
 
 			if (!mIsMinimized)
 			{
+				InputSystem::PollInput();
 				{
 					PROFILE_SCOPE("LayerStack Updates");
 					for (Layer* layer : mLayerSystem)
@@ -101,7 +103,7 @@ namespace Borealis
 				mImGuiLayer->EndFrame();
 			}
 
-
+			InputSystem::ResetScroll();
 			mWindowManager->OnUpdate();
 		}
 		

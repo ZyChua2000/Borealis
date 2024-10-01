@@ -16,6 +16,31 @@ namespace Borealis
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static ulong CreateEntity(string text);
 
+        #region Input
+
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void Input_AnyKey(out bool key);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static void Input_AnyKeyDown(out bool key);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static Vector3 Input_GetMousePosition();
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static Vector3 Input_GetMouseScrollDelta();
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetKey(int key);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetKeyDown(int key);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetKeyUp(int key);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetMouse(int mouse);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetMouseDown(int mouse);
+        [MethodImplAttribute(MethodImplOptions.InternalCall)]
+        internal extern static bool Input_GetMouseUp(int mouse);
+
+        #endregion
+
         #region GameObject
         [MethodImplAttribute(MethodImplOptions.InternalCall)]
         internal extern static void Entity_AddComponent(ulong entityID, Type type);

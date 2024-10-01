@@ -27,6 +27,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	class ComponentRegistry
+	{
+	public:
+		static std::vector<std::string> getPropertyNames(std::string componentName);
+		static std::vector<std::string> getComponentNames();
+	};
+
 	struct IDComponent
 	{
 		UUID ID;

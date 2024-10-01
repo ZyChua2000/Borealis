@@ -31,6 +31,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/FontImporter.hpp>
 
 namespace Borealis {
+
+	Entity testEntity;
+
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
@@ -62,7 +65,6 @@ namespace Borealis {
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
-
 		ScriptingSystem::InitCoreAssembly();
 		
 		//TEMP
@@ -613,7 +615,7 @@ namespace Borealis {
 			{
 				if (shift) // minus key
 				{
-					imGuizmoClipSpace = max(0.1f, imGuizmoClipSpace - 0.1f);
+					imGuizmoClipSpace = std::max(0.1f, imGuizmoClipSpace - 0.1f);
 					ImGuizmo::SetGizmoSizeClipSpace(imGuizmoClipSpace);
 				}
 			}
