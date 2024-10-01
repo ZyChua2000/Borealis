@@ -91,6 +91,7 @@ namespace Borealis
 		}
 
 		operator entt::entity() const { return mID; }
+
 	private:
 		entt::entity mID;
 		Scene* mScene;

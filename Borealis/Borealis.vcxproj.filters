@@ -1681,7 +1681,9 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Scene\ComponentRegistry.hpp" />
+    <ClInclude Include="inc\Scene\ComponentRegistry.hpp">
+      <Filter>inc\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">

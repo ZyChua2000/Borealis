@@ -28,6 +28,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Entity.hpp>
 #include <Core/UUID.hpp>
 #include <PrefabManager.hpp>
+#include <Scene/ComponentRegistry.hpp>
+
 namespace Borealis
 {
 
@@ -53,6 +55,9 @@ namespace Borealis
 
 		void AddChild(Ref<Entity> entity);
 		void RemoveChild(Ref<Entity> entity);
+
+		//Testing
+		void PrintComponentList();
 
 	private:
 		entt::entity mPrefabID;

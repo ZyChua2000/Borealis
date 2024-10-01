@@ -67,25 +67,83 @@ namespace Borealis {
 		}
 	}
 
-void Prefab::UpdateAllInstances()
+//void Prefab::UpdateAllInstances()
+//{
+//    for (auto& child : mChildren)
+//    {
+//        // Dereference the smart pointer to access the child entity
+//        if (child->HasComponent<SpriteRendererComponent>())
+//        {
+//			auto prefabComp = child->GetComponent<PrefabComponent>(); //All child must have this component
+//            // Add or replace the SpriteRendererComponent in the child entity
+//			for (auto variableName : ComponentRegistry::GetPropertyNames("SpriteRendererComponent"))
+//			{
+//				if (prefabComp.mEditedComponentList.contains(std::string("SpriteRendererComponent") + "::" + variableName))
+//				{
+//					// Cout	
+//					//child->thisvariablename = parent's->thisvariablename
+//				}
+//			}
+//        }
+//    }
+//}
+
+	//void Prefab::UpdateAllInstances()
+	//{
+	//	// Retrieve the list of component names registered in the system
+	//	std::vector<std::string> properties = ComponentRegistry::GetComponentNames();
+
+	//	for (auto& child : mChildren)
+	//	{
+	//		// Ensure that the child has the PrefabComponent (to track edited properties)
+	//		if (!child->HasComponent<PrefabComponent>())
+	//			continue;
+
+	//		auto& prefabComp = child->GetComponent<PrefabComponent>();
+
+	//		// Loop through each component name dynamically
+	//		for (const auto& componentName : properties)
+	//		{
+	//			// Check if the child has this component
+	//			if (!child->HasComponent(componentName))
+	//				continue; // Child doesn't have this component, skip
+
+	//			// Retrieve the component from both the prefab and the child
+	//			auto& childComponent = child->GetComponent(componentName);
+	//			auto& prefabComponent = PrefabManager::GetRegistry().get(componentName, mPrefabID);
+
+	//			// Get the property names of this component dynamically
+	//			std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames(componentName);
+
+	//			// Copy properties from the prefab to the child unless the child has overridden them
+	//			for (const auto& variableName : variableNames)
+	//			{
+	//				// Construct a full property identifier like "SpriteRendererComponent::Colour"
+	//				std::string fullPropertyName = componentName + "::" + variableName;
+
+	//				// Check if this property has been edited in the child (skip it if it has)
+	//				if (prefabComp.mEditedComponentList.contains(fullPropertyName))
+	//					continue; // Property was edited in the child, don't overwrite it
+
+	//				// Use the existing CopyPropertyValue function to copy from prefab to child
+	//				ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
+	//			}
+	//		}
+	//	}
+	//}
+
+
+
+void Prefab::PrintComponentList()
 {
-    for (auto& child : mChildren)
-    {
-        // Dereference the smart pointer to access the child entity
-        if (child->HasComponent<SpriteRendererComponent>())
-        {
-			auto prefabComp = child->GetComponent<PrefabComponent>(); //All child must have this component
-            // Add or replace the SpriteRendererComponent in the child entity
-			for (auto variableName : ComponentRegistry::GetPropertyNames("SpriteRendererComponent"))
-			{
-				if (prefabComp.mEditedComponentList.contains(std::string("SpriteRendererComponent") + "::" + variableName))
-				{
-					// Cout	
-					//child->thisvariablename = parent's->thisvariablename
-				}
-			}
-        }
-    }
+	// Retrieve the list of component names
+	std::vector<std::string> properties = ComponentRegistry::GetComponentNames();
+
+	// Iterate through the vector and print each component name
+	for (const auto& property : properties)
+	{
+		std::cout << property << std::endl;
+	}
 }
 	
 	struct PrefabInstanceComponent

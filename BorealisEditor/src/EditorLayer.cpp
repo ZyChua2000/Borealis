@@ -65,6 +65,7 @@ namespace Borealis {
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
+		//PREFAB TESTING AREA
 		auto entity = mEditorScene->CreateEntity("testEntity");
 		auto& src = entity.AddComponent<SpriteRendererComponent>();
 		src.Colour.r = 0.5f;
@@ -73,6 +74,7 @@ namespace Borealis {
 		prefab.AddChild(MakeRef<Entity>(entity));
 		prefab.GetComponent<SpriteRendererComponent>().Colour.g = 0.5f;
 		prefab.UpdateAllInstances();
+		prefab.PrintComponentList();
 		
 		ScriptingSystem::InitCoreAssembly();
 		
