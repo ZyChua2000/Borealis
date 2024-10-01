@@ -527,13 +527,6 @@ namespace Borealis
 			ImGui::OpenPopup("AddComponentPopup");
 		}
 
-		if (ImGui::Button("Load Image"))
-		{
-			auto asset = Project::GetEditorAssetsManager()->GetAsset(10003230356368635959);
-			Ref<Texture2D> text = std::static_pointer_cast<Texture2D>(asset);
-			int x = 0;
-		}
-
 		ImGui::PopItemWidth();
 
 		static char search_buffer[128] = "";

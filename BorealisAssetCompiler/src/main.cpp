@@ -31,14 +31,6 @@ int main(int argc, char** argv)
 
     BorealisAssetCompiler::AssetMetaData data = BorealisAssetCompiler::MetaSerializer::GetAssetMetaDataFile(filePath);
 
-    {
-        std::ofstream registry("lol.txt");
-        registry << "File Path: " << data.SourcePath.string() << std::endl;
-        registry << "File Name: " << data.name << std::endl;
-        registry << "Asset Type: " << BorealisAssetCompiler::Asset::AssetTypeToString(data.Type) << std::endl;
-        registry.close();
-    }
-
     BorealisAssetCompiler::AssetMetaData finalData = BorealisAssetCompiler::AssetImporter::ImportAsset(data);
 
     BorealisAssetCompiler::MetaSerializer::SaveMetaFile(finalData, filePath);

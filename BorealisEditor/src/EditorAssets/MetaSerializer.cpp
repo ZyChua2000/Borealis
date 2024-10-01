@@ -140,7 +140,7 @@ namespace Borealis
 
 		if (assetMetaInfo)
 		{
-			std::filesystem::path pathToAssetFolder = PathToAssetFolder.parent_path();
+			std::filesystem::path pathToAssetFolder = PathToAssetFolder;
 			for (YAML::Node metaInfo : assetMetaInfo)
 			{
 				AssetMetaData metaData = DeserializeMetaFile(metaInfo, pathToAssetFolder);
