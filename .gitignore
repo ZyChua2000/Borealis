@@ -405,3 +405,10 @@ FodyWeavers.xsd
 !BorealisEditor/lib/MSDF/Build/
 !BorealisEditor/lib/MSDF/Build/Debug/
 !BorealisEditor/lib/MSDF/Build/Release/
+
+!BorealisAssetCompiler/lib/assimp/code/AssetLib/Obj/
+!BorealisAssetCompiler/lib/MSDF/Build/
+!BorealisAssetCompiler/lib/MSDF/Build/Debug/
+!BorealisAssetCompiler/lib/MSDF/Build/Release/
+!BorealisAssetCompiler/lib/ispc/build/
+!BorealisAssetCompiler/lib/ispc/dll/
