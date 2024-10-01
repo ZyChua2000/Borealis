@@ -784,14 +784,14 @@ namespace Borealis
 						ImGui::EndCombo();
 					}
 
-					if (component.type == LightComponent::Type::Spot)
+					/*if (component.type == LightComponent::Type::Spot)
 					{
 						ImGui::DragFloat("Inner Spot", &component.InnerOuterSpot.x, 0.025f);
 						ImGui::DragFloat("Outer Spot", &component.InnerOuterSpot.y, 0.025f);
-					}
+					}*/
 				}
 
-				if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* LightAppearanceStr[]{ "Colour", "Filter and Temperature" };
 					const char* currentLightAppearanceStr = LightAppearanceStr[(int)component.lightAppearance];
@@ -826,10 +826,10 @@ namespace Borealis
 					ImGui::DragFloat("Intensity", &component.Intensity, 0.025f);
 					ImGui::DragFloat("Indirect Multiplier", &component.IndirectMultiplier, 0.025f);
 					ImGui::DragFloat("Range", &component.Range, 0.025f);
-				}
+				}*/
 
 				
-				if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* ShadowStr[]{ "No Shadows", "Soft Shadows", "Hard Shadows" };
 					const char* currentShadowStr = ShadowStr[(int)component.shadowType];
@@ -850,7 +850,7 @@ namespace Borealis
 						}
 						ImGui::EndCombo();
 					}
-				}
+				}*/
 			});
 
 		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)

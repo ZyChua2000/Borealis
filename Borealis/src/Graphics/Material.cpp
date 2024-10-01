@@ -33,11 +33,14 @@ namespace Borealis
 		shader->Bind();
         int textureUnit = 0;
 
+        shader->Set("hasMaterial", true);
+
         // Albedo Map
         if (mTextureMaps[Albedo])
         {
             shader->Set("u_Material.hasAlbedoMap", true);
             shader->Set("u_Material.albedoMap", textureUnit);
+            shader->Set("u_Material.albedoColor", mTextureMapColor[Albedo]);
             mTextureMaps[Albedo]->Bind(textureUnit);
             textureUnit++;
 		}

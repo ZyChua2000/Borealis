@@ -1702,6 +1702,9 @@
     <ClInclude Include="inc\Graphics\SkinnedMesh.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\Light.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1870,6 +1873,9 @@
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Material.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Light.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>

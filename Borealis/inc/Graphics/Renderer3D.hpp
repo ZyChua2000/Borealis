@@ -19,6 +19,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/EditorCamera.hpp>
 #include <Scene/Components.hpp>
 
+#include "Light.hpp"
+
 namespace Borealis
 {
 	class Renderer3D
@@ -30,7 +32,7 @@ namespace Borealis
 
 		static void Begin(const Camera& camera, const glm::mat4& transform);
 
-		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID = -1);
+		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, const Light* light, int entityID = -1);
 	};
 }
 

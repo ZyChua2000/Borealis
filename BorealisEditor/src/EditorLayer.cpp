@@ -31,8 +31,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis {
 
-	Entity testEntity;
-
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
@@ -127,7 +125,6 @@ namespace Borealis {
 		}
 		mViewportFrameBuffer->ClearAttachment(1, -1);
 		{
-			auto meshRen = testEntity.GetComponent<MeshRendererComponent>();
 			PROFILE_SCOPE("Renderer::Draw");
 			mViewportFrameBuffer->Bind();
 			SceneManager::GetActiveScene()->UpdateEditor(dt,mEditorCamera);
