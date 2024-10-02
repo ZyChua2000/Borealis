@@ -593,9 +593,15 @@ namespace Borealis
 				ImGui::Checkbox("Loop", &component.isLoop);
 
 				ImGui::DragFloat("Volume", &component.Volume, 5.0f);
-
 				component.audio = MakeRef<Audio>();
 				component.audio->AudioPath = "assets/Audio/meow.mp3";
+
+				if (ImGui::Button("Play"))
+				{ 	
+					component.isPlaying = true;
+					// Play audio with mute and loop settings from the component
+					//AudioEngine::PlayAudio(component.audio->AudioPath, Vector3(0, 0, 0), component.Volume, component.isMute, component.isLoop);
+				}
 				
 			});
 

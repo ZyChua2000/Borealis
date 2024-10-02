@@ -250,7 +250,9 @@ namespace Borealis
 	{
 		bool isLoop = false;
 		bool isMute = false;
+		bool isPlaying = false;
 		float Volume = 1.0f;
+		int channelID = 0;
 
 		Ref<Audio> audio;
 

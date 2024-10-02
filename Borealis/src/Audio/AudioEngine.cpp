@@ -135,22 +135,25 @@ namespace Borealis
         sgpImplementation->mSounds.erase(tFoundIt);
     }
 
-    int AudioEngine::PlayAudio(const std::string& strSoundName, const Vector3& vPosition, float fVolumedB)
+    int AudioEngine::PlayAudio(const std::string& strSoundName, const Vector3& vPosition, float fVolumedB, bool bMute, bool bLoop)
     {
         int nChannelId = sgpImplementation->mnNextChannelId++;
+
+        // Load the sound if it hasn't been loaded yet
         auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
         if (tFoundIt == sgpImplementation->mSounds.end())
         {
-            AudioEngine::LoadAudio(strSoundName, true, true);
+            AudioEngine::LoadAudio(strSoundName, true, bLoop);  // Load with loop if needed
             tFoundIt = sgpImplementation->mSounds.find(strSoundName);
             if (tFoundIt == sgpImplementation->mSounds.end())
             {
-                return nChannelId;
+                return -1;  // Error: Sound not found or failed to load
             }
         }
 
         FMOD::Channel* pChannel = nullptr;
         ErrorCheck(sgpImplementation->mpSystem->playSound(tFoundIt->second, nullptr, true, &pChannel));
+
         if (pChannel)
         {
             FMOD_MODE currMode;
@@ -161,11 +164,31 @@ namespace Borealis
                 ErrorCheck(pChannel->set3DAttributes(&position, nullptr));
             }
 
+            // Set the volume, mute, and loop properties
             ErrorCheck(pChannel->setVolume(dbToVolume(fVolumedB)));
             ErrorCheck(pChannel->setPaused(false));
+            ErrorCheck(pChannel->setMute(bMute));  // Mute the sound if necessary
+            ErrorCheck(pChannel->setMode(bLoop ? FMOD_LOOP_NORMAL : FMOD_LOOP_OFF));  // Set loop mode
+
+            // Store the channel in the channel map
             sgpImplementation->mChannels[nChannelId] = pChannel;
         }
-        return nChannelId;
+
+        return nChannelId;  // Return the channel ID for tracking
+    }
+
+    bool AudioEngine::isSoundPlaying(int nChannelId)
+    {
+        // Find the channel using the channel ID
+        auto tFoundChannel = sgpImplementation->mChannels.find(nChannelId);
+        if (tFoundChannel == sgpImplementation->mChannels.end())
+            return false; // Channel not found
+
+        bool bIsPlaying = false;
+        // Check if the channel is currently playing
+        ErrorCheck(tFoundChannel->second->isPlaying(&bIsPlaying));
+
+        return bIsPlaying;
     }
 
     void AudioEngine::SetChannel3DPosition(int nChannelId, const Vector3& vPosition)

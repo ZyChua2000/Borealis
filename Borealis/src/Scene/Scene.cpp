@@ -115,7 +115,11 @@ namespace Borealis
 				for (auto& entity : group)
 				{
 					auto [transform, audio] = group.get<TransformComponent, AudioComponent>(entity);
-					Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath);
+					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
+					{
+						audio.isPlaying = false;
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath, {}, 5.0, audio.isMute, audio.isLoop);
+					}
 				}
 			}
 		}
