@@ -31,7 +31,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/FontImporter.hpp>
 
 namespace Borealis {
-
+	EditorLayer::SceneState EditorLayer::mSceneState = EditorLayer::SceneState::Edit;
 
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
@@ -388,8 +388,8 @@ namespace Borealis {
 
 				mViewportFocused = ImGui::IsWindowFocused();
 				mViewportHovered = ImGui::IsWindowHovered();
-				// Truw when viewport not focused or not hovered
-				if (!ImGui::IsAnyItemActive())
+				// True when viewport not focused or not hovered
+				if (mViewportFocused && mViewportHovered)
 					ApplicationManager::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused && !mViewportHovered);
 				else
 					ApplicationManager::Get().GetImGuiLayer()->SetBlockEvents(true);
