@@ -54,10 +54,15 @@ struct Material {
 };
 
 struct Light {
+	int type; // 0 = Spotlight, 1 = Directional , 2 = Point
 	vec3 position;
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	vec3 direction;
+
+	//float range;
+	vec2 innerOuterAngle;
 };
 
 in vec2 v_TexCoord;
@@ -68,135 +73,156 @@ uniform mat4 u_ViewProjection;
 uniform vec3 u_ViewPos;
 uniform Material u_Material;
 uniform Light u_Light;
-uniform bool hasMaterial;
 			
 uniform sampler2D u_Texture;
 
-vec4 blinnPhong() 
+vec2 GetTexCoord() 
 {
-	// Set default values for cases without a material
-    vec4 albedoColor = vec4(0.8, 0.8, 0.8, 1.0);
-    vec3 specularColor = vec3(1.0, 1.0, 1.0);
-    float shininess = 32.0;
-	float metallic = 1.0;
+	return v_TexCoord * u_Material.tiling + u_Material.offset;
+}
 
-	if (u_Light.position == v_FragPos)
-	{
-		return vec4(0.f, 0.f, 0.f, 1.f);
+vec4 GetAlbedoColor()
+{
+	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, GetTexCoord()) : u_Material.albedoColor;
+	if (u_Material.hasAlbedoMap) {
+		albedoColor = mix(u_Material.albedoColor, albedoColor, 0.8);
 	}
 
-	float smoothness;
-	vec3 emission;
-	vec3 norm;
-	vec3 lightDir = normalize(u_Light.position - v_FragPos);
-	vec3 viewDir = -v_FragPos;
+	return albedoColor;
+}
 
-	vec3 normal = v_Normal;
-	if (length(normal) > 0.f)
-		normal = normalize(normal);
-	if (length(lightDir) > 0.f)
-		lightDir = normalize(lightDir);
-	if (length(viewDir) > 0.f)
-		viewDir = normalize(viewDir);
+vec3 GetSpecular()
+{
+	return u_Material.hasSpecularMap ? texture(u_Material.specularMap, GetTexCoord()).rgb : u_Material.specularColor.rgb;
+}
 
-	if (hasMaterial) 
-	{
-		vec2 texCoord = v_TexCoord * u_Material.tiling + u_Material.offset;
-		
-		albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, texCoord) : u_Material.albedoColor;
-		if (u_Material.hasAlbedoMap) {
-			albedoColor = mix(u_Material.albedoColor, albedoColor, 0.8);
-		}
-		specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, texCoord).rgb : u_Material.specularColor.rgb;
-		
-		metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, texCoord).r : u_Material.metallic;
+float GetMetallic() 
+{
+	return u_Material.hasMetallicMap ? texture(u_Material.metallicMap, GetTexCoord()).r : u_Material.metallic;
+}
 
-		shininess = u_Material.shininess;
+vec3 GetEmission()
+{
+	return u_Material.hasEmissionMap ? texture(u_Material.emissionMap, GetTexCoord()).rgb : u_Material.emissionColor.rgb;
+}
 
-		smoothness = u_Material.smoothness;
+vec3 ComputeDirectionalLight(vec3 normal, vec3 viewDir) 
+{
+	vec3 lightDir = normalize(-u_Light.direction);
 
-		// normal
-		norm = normalize(v_Normal);
-		if (u_Material.hasNormalMap) {
-			vec3 tangentNormal = texture(u_Material.normalMap, texCoord).rgb;
-			tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
-			norm = normalize(tangentNormal);
-		}
-
-		// emission
-		emission = u_Material.hasEmissionMap ? texture(u_Material.emissionMap, texCoord).rgb : u_Material.emissionColor.rgb;
-	}
-
-	vec3 ambient = u_Light.ambient * albedoColor.rgb; 
-	
+    vec3 ambient = u_Light.ambient * GetAlbedoColor().rgb;
 	vec3 color = ambient;
+	float metallic = GetMetallic();
+	vec3 emission = GetEmission();
+
+	float diff = max(dot(normal, lightDir), 0.0);
+
+    if (diff > 0.0) 
+	{
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), u_Material.shininess * u_Material.smoothness);
+
+        vec3 diffuse = u_Light.diffuse * diff * (1.0 - metallic);
+        vec3 specular = u_Light.specular * spec * GetSpecular() * metallic; 
+
+        color = ambient + diffuse + specular + emission;
+    }
+	return color;
+}
+
+vec3 ComputePointLight(vec3 normal, vec3 viewDir)
+{
+	vec3 lightDir = normalize(u_Light.position - v_FragPos);
+
+	float distance = length(u_Light.position - v_FragPos);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance); 
+
+	// ambient
+	vec3 ambient = u_Light.ambient * GetAlbedoColor().rgb;
+	vec3 color = ambient;
+	float metallic = GetMetallic();
+	vec3 emission = GetEmission();
+
+	float diff = max(dot(normal, lightDir), 0.0);
+
+    if (diff > 0.0) 
+	{
+        vec3 halfwayDir = normalize(lightDir + viewDir);
+
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), u_Material.shininess * u_Material.smoothness);
+
+        vec3 diffuse = u_Light.diffuse * diff * attenuation * (1.0 - metallic);
+        vec3 specular = u_Light.specular * spec * GetSpecular() * attenuation * metallic;
+
+        color = ambient + diffuse + specular + emission;
+    }
+
+	return color;
+}
+
+vec3 ComputeSpotLight(vec3 normal, vec3 viewDir)
+{
+	vec3 lightDir = normalize(u_Light.position - v_FragPos);
+
+	float distance = length(u_Light.position - v_FragPos);
+    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance); 
+
+	// ambient
+	vec3 ambient = u_Light.ambient * GetAlbedoColor().rgb;
+	vec3 color = ambient;
+	float metallic = GetMetallic();
+	vec3 emission = GetEmission();
 
 	vec3 halfwayDir = normalize(lightDir + viewDir);
 
-	// diffuse
-	float diff = max(dot(norm, lightDir), 0.0);
-	vec3 diffuse = u_Light.diffuse * diff * albedoColor.rgb;
+    float diff = max(dot(normal, lightDir), 0.0);
 
-	// specular
-	float spec = pow(max(dot(normal, halfwayDir), 0.0), shininess * smoothness);
-	vec3 specular = u_Light.specular * (spec * specularColor);
+    if (diff > 0.0)
+    {
+        float spec = pow(max(dot(normal, halfwayDir), 0.0), u_Material.shininess * u_Material.smoothness);
 
-	// final color
-	color = ambient + (1.0 - metallic) * diffuse + (metallic * specular) + emission;
+        float theta = dot(lightDir, normalize(-u_Light.direction)); 
+        float epsilon = u_Light.innerOuterAngle.x - u_Light.innerOuterAngle.y;
+        float intensity = clamp((theta - u_Light.innerOuterAngle.y) / epsilon, 0.0, 1.0); 
 
-	return vec4(color, albedoColor.a);
+        vec3 diffuse = u_Light.diffuse * diff * (1.0 - metallic);
+        vec3 specular = u_Light.specular * spec * GetSpecular() * metallic;
+
+		ambient *= intensity * attenuation;
+		diffuse *= intensity * attenuation;
+		specular *= intensity * attenuation;
+        color = ambient + diffuse + specular + emission;
+    }
+
+	return color;
 }
 
 void main() {
-	fragColor = blinnPhong();
+	vec4 color = vec4(0.f, 0.f, 0.f, 1.f);
+
+	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
+
+	vec3 normal = normalize(v_Normal);
+	if (u_Material.hasNormalMap) 
+	{
+		vec3 tangentNormal = texture(u_Material.normalMap, GetTexCoord()).rgb;
+		tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
+		normal = normalize(tangentNormal);
+	}
+
+	if (u_Light.type == 0) 
+	{
+		color = vec4(ComputeSpotLight(normal, viewDir), 1.f);
+	}
+	else if (u_Light.type == 1)
+	{
+		color = vec4(ComputeDirectionalLight(normal, viewDir), 1.f);
+	}
+	else if (u_Light.type == 2)
+	{
+		color = vec4(ComputePointLight(normal, viewDir), 1.f);
+	}
+
+	fragColor = color;
 }
-
-
-//
-// void main()
-// {
-// 	// Temporary light variables
-// 	vec3 u_Light_position = vec3(0.0f, 100.0f, 0.0f);
-// 	vec3 u_Light_ambient = vec3(0.4f, 0.4f, 0.4f);
-// 	vec3 u_Light_diffuse = vec3(1.0f, 1.0f, 1.0f);
-// 	vec3 u_Light_specular = vec3(1.0f, 1.0f, 1.0f);
-
-// 	vec2 texCoord = v_TexCoord * u_Material.tiling + u_Material.offset;
-
-// 	vec4 albedoColor = u_Material.hasAlbedoMap ? texture(u_Material.albedoMap, texCoord) : u_Material.albedoColor;
-// 	if (u_Material.hasAlbedoMap) {
-// 		albedoColor = mix(u_Material.albedoColor, albedoColor, 0.8);
-// 	}
-// 	vec3 specularColor = u_Material.hasSpecularMap ? texture(u_Material.specularMap, texCoord).rgb : u_Material.specularColor.rgb;
-// 	float metallic = u_Material.hasMetallicMap ? texture(u_Material.metallicMap, texCoord).r : u_Material.metallic;
-
-// 	// ambient 
-// 	vec3 ambient = u_Light.ambient * albedoColor.rgb;
-
-// 	// normal
-// 	vec3 norm = normalize(v_Normal);
-// 	if (u_Material.hasNormalMap) {
-//         vec3 tangentNormal = texture(u_Material.normalMap, texCoord).rgb;
-//         tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
-//         norm = normalize(tangentNormal);
-//     }
-
-// 	// diffuse
-// 	vec3 lightDir = normalize(u_Light_position - v_FragPos);
-// 	float diff = max(dot(norm, lightDir), 0.0);
-// 	vec3 diffuse = u_Light_diffuse * diff * albedoColor.rgb;
-
-// 	// specular
-// 	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
-// 	vec3 reflectDir = reflect(-lightDir, norm);
-// 	float spec = pow(max(dot(viewDir, reflectDir), 0.0), u_Material.shininess * u_Material.smoothness);
-// 	vec3 specular = u_Light_specular * (spec * specularColor);
-
-// 	// emission
-// 	vec3 emission = u_Material.hasEmissionMap ? texture(u_Material.emissionMap, texCoord).rgb : u_Material.emissionColor.rgb;
-
-// 	// final color
-// 	vec3 final = ambient + (1.0 - metallic) * diffuse + (metallic * specular) + emission;
-// 	color = vec4(final, albedoColor.a);
-// }
-

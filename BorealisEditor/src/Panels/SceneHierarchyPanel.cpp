@@ -677,6 +677,11 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if(!component.Material)
+				{
+					component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
+				}
+
 				if (component.Material)
 				{
 					MaterialEditor::RenderProperties(component.Material);

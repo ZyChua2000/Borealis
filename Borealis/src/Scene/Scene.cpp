@@ -150,9 +150,9 @@ namespace Borealis
 				MeshRendererComponent meshRenderer{};
 				if (!groupLight.empty())
 				{
-					auto [transform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
-					Light lightS(transform, light);
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, &lightS, (int)entity);
+					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
 				}
 				else
 				{
@@ -169,9 +169,9 @@ namespace Borealis
 				
 				if (!groupLight.empty())
 				{
-					auto [transform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
-					Light lightS(transform, light);
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, &lightS, (int)entity);
+					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
 				}
 				else
 				{

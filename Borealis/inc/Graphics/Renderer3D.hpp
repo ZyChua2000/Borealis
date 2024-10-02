@@ -32,7 +32,7 @@ namespace Borealis
 
 		static void Begin(const Camera& camera, const glm::mat4& transform);
 
-		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, const Light* light, int entityID = -1);
+		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, Ref<Light> light, int entityID = -1);
 	};
 }
 

@@ -31,6 +31,10 @@ namespace Borealis
 		shader->Set("u_Light.ambient", mLight.ambient);
 		shader->Set("u_Light.diffuse", mLight.diffuse);
 		shader->Set("u_Light.specular", mLight.specular);
+		shader->Set("u_Light.direction", mLight.direction);
+		//->Set("u_Light.range", mLight.Range);
+		shader->Set("u_Light.innerOuterAngle", mLight.InnerOuterSpot);
+		shader->Set("u_Light.type", static_cast<int>(mLight.type));
 
 		shader->Unbind();
 	}
