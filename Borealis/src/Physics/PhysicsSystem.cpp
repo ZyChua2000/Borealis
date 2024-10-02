@@ -1,6 +1,12 @@
 #include "BorealisPCH.hpp"
 
-#include "PhysicsSystem.hpp"
+// STL includes
+#include <iostream>
+#include <cstdarg>
+#include <thread>
+#include <chrono>
+
+#include <Physics/PhysicsSystem.hpp>
 
 #include <Jolt/Jolt.h>
 
@@ -16,10 +22,6 @@
 #include <Jolt/Physics/Body/BodyCreationSettings.h>
 #include <Jolt/Physics/Body/BodyActivationListener.h>
 
-// STL includes
-#include <iostream>
-#include <cstdarg>
-#include <thread>
 
 JPH_SUPPRESS_WARNINGS
 
@@ -273,7 +275,66 @@ void ::PhysicsSystem::Init()
 	JPH::PhysicsSystem physics_system;
 	physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface, object_vs_broadphase_layer_filter, object_vs_object_layer_filter);
 	
+	// A body activation listener gets notified when bodies activate and go to sleep
+	// Note that this is called from a job so whatever you do here needs to be thread safe.
+	// Registering one is entirely optional.
+	MyBodyActivationListener body_activation_listener;
+	physics_system.SetBodyActivationListener(&body_activation_listener);
+
+	// A contact listener gets notified when bodies (are about to) collide, and when they separate again.
+	// Note that this is called from a job so whatever you do here needs to be thread safe.
+	// Registering one is entirely optional.
+	MyContactListener contact_listener;
+	physics_system.SetContactListener(&contact_listener);
+
+	// The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
+	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
+	BodyInterface &body_interface = physics_system.GetBodyInterface();
+
+	//============================\\
+	//========EXAMPLE=============\\
+	//============================\\
+
+
+	// Next we can create a rigid body to serve as the floor, we make a large box
+	// Create the settings for the collision volume (the shape).
+	// Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
+	BoxShapeSettings floor_shape_settings(Vec3(100.0f, 1.0f, 100.0f));
+	floor_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+	// Create the shape
+	ShapeSettings::ShapeResult floor_shape_result = floor_shape_settings.Create();
+	ShapeRefC floor_shape = floor_shape_result.Get(); // We don't expect an error here, but you can check floor_shape_result for HasError() / GetError()
+
+	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+	BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -1.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
+
+
+	// Create the actual rigid body
+	Body* floor = body_interface.CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
+
+	// Add it to the world
+	body_interface.AddBody(floor->GetID(), EActivation::DontActivate);
+
+	// Now create a dynamic body to bounce on the floor
+	// Note that this uses the shorthand version of creating and adding a body to the world
+	BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 2.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+	BodyID sphere_id = body_interface.CreateAndAddBody(sphere_settings, EActivation::Activate);
+
+	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
+	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
+	body_interface.SetLinearVelocity(sphere_id, Vec3(0.0f, -5.0f, 0.0f));
+
+	// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
+	const float cDeltaTime = 1.0f / 60.0f;
+
+	// Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
+	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
+	// Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
+	physics_system.OptimizeBroadPhase();
+
 	sData.mSystem = &physics_system;
+
 }
 
 void ::PhysicsSystem::Update(float dt)

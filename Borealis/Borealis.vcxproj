@@ -189,6 +189,7 @@
     <ClInclude Include="inc\Graphics\VertexArray.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiFontLib.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp" />
+    <ClInclude Include="inc\Physics\PhysicsSystem.hpp" />
     <ClInclude Include="inc\Scene\Components.hpp" />
     <ClInclude Include="inc\Scene\Entity.hpp" />
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
@@ -667,14 +668,12 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xobserved.hpp" />
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty.hpp" />
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp" />
-    <ClInclude Include="PhysicsSystem.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
-    <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -715,6 +714,7 @@
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiFontLib.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />

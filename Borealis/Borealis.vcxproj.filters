@@ -1684,7 +1684,7 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsSystem.hpp">
+    <ClInclude Include="inc\Physics\PhysicsSystem.hpp">
       <Filter>src\Physics</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1845,7 +1845,7 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
+    <ClCompile Include="src\Physics\PhysicsSystem.cpp">
       <Filter>src\Physics</Filter>
     </ClCompile>
   </ItemGroup>

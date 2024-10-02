@@ -20,6 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/InputSystem.hpp>
 #include <Graphics/Renderer.hpp>
 #include <Scripting/ScriptingSystem.hpp>
+#include <Physics/PhysicsSystem.hpp>
 
 namespace Borealis
 {
@@ -44,6 +45,8 @@ namespace Borealis
 		Renderer::Init();
 
 		ScriptingSystem::Init();
+
+		PhysicsSystem::Init();
 	}
 
 	/*!***********************************************************************
@@ -57,6 +60,7 @@ namespace Borealis
 		Renderer::Free();
 		mLayerSystem.Clear();
 		ScriptingSystem::Free();
+		PhysicsSystem::Free();
 		delete mWindowManager;
 		glfwTerminate(); // Terminate after system shuts down
 
