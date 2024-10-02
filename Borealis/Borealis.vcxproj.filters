@@ -163,6 +163,9 @@
     <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp">
       <Filter>inc\AI\BehaviourTree</Filter>
     </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -1732,7 +1735,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1760,6 +1762,9 @@
       <Filter>src\AI\BehaviourTree\Leaf</Filter>
     </ClCompile>
     <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp">
+      <Filter>src\AI\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp">
       <Filter>src\AI\BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
@@ -1915,6 +1920,5 @@
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
     </ClCompile>
-    <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp" />
   </ItemGroup>
 </Project>

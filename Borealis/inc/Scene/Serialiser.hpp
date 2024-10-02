@@ -24,10 +24,12 @@ namespace YAML
 namespace Borealis
 {
 	class BehaviourNode;
+	class BehaviourTree;
 	class Serialiser
 	{
 	public:
 		Serialiser(const Ref<Scene>& scene);
+		void ParseTree(YAML::Node& node, Ref<BehaviourNode> parentNode, BehaviourTree& tree, int parentDepth);
 
 		bool SerialiseScene(const std::string& filepath);
 		bool DeserialiseScene(const std::string& filepath);

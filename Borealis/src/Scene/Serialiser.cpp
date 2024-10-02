@@ -21,6 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <AI/BehaviourTree/BehaviourNode.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
+#include <AI/BehaviourTree/RegisterNodes.hpp>
 
 namespace YAML
 {
@@ -108,6 +109,31 @@ namespace YAML
 }
 namespace Borealis
 {
+	void Serialiser::ParseTree(YAML::Node& node, Ref<BehaviourNode> parentNode, BehaviourTree& tree, int parentDepth)
+	{
+		// Extract the node name and depth from the YAML
+		std::string nodeName = node["name"].as<std::string>();
+		int depth = node["depth"].as<int>();
+
+		// Create the node using NodeFactory based on its name
+		Ref<BehaviourNode> currentNode = Borealis::NodeFactory::createNodeByName(nodeName);
+		currentNode->set_depth(depth); // Assuming setDepth is implemented in BehaviourNode
+
+		// Add the current node to the tree
+		tree.AddNode(parentNode, currentNode, depth);
+
+		BOREALIS_CORE_TRACE("Deserialising node: {} at depth {}", nodeName, depth);
+
+		// Process children if they exist
+		if (node["children"])
+		{
+			for (auto childNode : node["children"])
+			{
+				// Recursively process each child node
+				ParseTree(childNode, currentNode, tree, depth);
+			}
+		}
+	}
 
 	// Overrides:
 	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vec)
@@ -518,15 +544,38 @@ namespace Borealis
 					lc.shadowType = (LightComponent::ShadowType)lightComponent["ShadowType"].as<int>();
 					lc.lightAppearance = (LightComponent::LightAppearance)lightComponent["LightAppearance"].as<int>();
 				}
-				//auto behaviourTreeComponent = entity["BehaviourTreeComponent"];
-				//if (behaviourTreeComponent)
-				//{
-				//	auto& btc = loadedEntity.AddComponent<BehaviourTreeComponent>();
-				//	for (auto& tree : btc.mBehaviourTrees)
-				//	{
-				//		tree->SetRootNode(behaviourTreeComponent[])
-				//	}
-				//}
+				auto behaviourTreeComponent = entity["BehaviourTreeComponent"];
+				/*
+					extract the name of tree and root node, then iteritivly build the tree, then call the clone method by createfromname function
+					behaviourNode["name"]
+				*/
+				if (behaviourTreeComponent)
+				{
+					auto& btc = loadedEntity.AddComponent<BehaviourTreeComponent>();
+					BehaviourTree tempTree;
+
+					// Get the root node name and depth
+					std::string rootName = behaviourTreeComponent["Tree Name"].as<std::string>();
+					int rootDepth = behaviourTreeComponent["depth"].as<int>();
+
+					// Create root node using NodeFactory
+					Ref<BehaviourNode> rootNode = Borealis::NodeFactory::createNodeByName(rootName);
+					rootNode->set_depth(rootDepth); // Assuming setDepth is implemented
+
+					// Set the root node of the tree
+					tempTree.SetRootNode(rootNode);
+					BOREALIS_CORE_TRACE("Deserialising BT {}", rootName);
+
+					// If the root node has children, parse them recursively
+					if (behaviourTreeComponent["children"])
+					{
+						for (auto childNode : behaviourTreeComponent["children"])
+						{
+							ParseTree(childNode, rootNode, tempTree, rootDepth);
+						}
+					}
+				}
+
 //
 			}
 		}

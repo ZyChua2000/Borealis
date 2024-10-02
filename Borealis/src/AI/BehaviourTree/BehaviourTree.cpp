@@ -69,6 +69,7 @@ namespace Borealis
     }
     void BehaviourTree::SetRootNode(Ref<BehaviourNode> root)
     {
+        root->set_depth(0);
         rootNode = root;
     } 
     Ref<BehaviourNode> BehaviourTree::GetRootNode() 

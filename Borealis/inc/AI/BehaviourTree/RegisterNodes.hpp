@@ -39,11 +39,6 @@ namespace Borealis
         // Function to register a node prototype in the map
         inline static void registerNodePrototype(const std::string& nodeName, Ref<BehaviourNode> prototype) { nodePrototypes[nodeName] = prototype; }
 
-// Function to initialize and register all nodes from Nodes.def
-        static void initializeNodePrototypes() {
-            //#include "Nodes.def"  // Include the definition file
-        }
-
         // Function to create a node by name
         static Ref<BehaviourNode> createNodeByName(const std::string& nodeName);
 
