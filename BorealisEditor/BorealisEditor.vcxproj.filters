@@ -24,7 +24,13 @@
     <ClInclude Include="inc\Assets\FontImporter.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\MaterialEditor.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
     <ClInclude Include="inc\Assets\MeshImporter.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\SkinnedMeshImporter.hpp">
       <Filter>inc\Assets</Filter>
     </ClInclude>
     <ClInclude Include="inc\EditorLayer.hpp">
@@ -36,13 +42,21 @@
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp">
       <Filter>inc\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="inc\ResourceManager.hpp" />
+    <ClInclude Include="inc\ResourceManager.hpp">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Assets\FontImporter.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
+    <ClCompile Include="src\Assets\MaterialEditor.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
     <ClCompile Include="src\Assets\MeshImporter.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp">
       <Filter>src\Assets</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorApp.cpp">
@@ -57,6 +71,8 @@
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp">
       <Filter>src\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResourceManager.cpp" />
+    <ClCompile Include="src\ResourceManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
