@@ -20,12 +20,16 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <string>
 #include <filesystem>
 
+#include <Assets/EditorAssetManager.hpp>
+
 namespace Borealis
 {
 	class AssetImporter
 	{
 	public:
 		void LoadRegistry(Borealis::ProjectInfo projectInfo);
+
+		static AssetHandle GetAssetHandle(std::filesystem::path const& path);
 
 	private:
 		bool ImportAsset(AssetMetaData metaData);
@@ -41,6 +45,7 @@ namespace Borealis
 
 	private:
 		std::filesystem::path mAssetRegistryPath;
+		inline static std::unordered_map<std::size_t, AssetHandle> mPathRegistry;
 	};
 }
 

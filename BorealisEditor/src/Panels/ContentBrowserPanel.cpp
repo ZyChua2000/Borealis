@@ -19,6 +19,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/MetaSerializer.hpp>
 
 #include "EditorAssets/MaterialEditor.hpp"
+#include <EditorAssets/AssetImporter.hpp>
 
 namespace Borealis
 {
@@ -177,7 +178,8 @@ namespace Borealis
 				//std::string itemPath = relativePath.string();
 				std::string itemPath = std::filesystem::path(path).string();
 
-				AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path(path).replace_extension(".meta"));
+				//AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path(path).replace_extension(".meta"));
+				AssetHandle assetHandle = AssetImporter::GetAssetHandle(std::filesystem::path(path));
 				//get the meta file instead and pass the handle as the data?
 				const char* itemPathcStr = itemPath.c_str();
 
@@ -204,7 +206,7 @@ namespace Borealis
 					}
 				}
 
-				ImGui::SetDragDropPayload(payloadName.c_str(), &metaData.Handle, sizeof(AssetHandle), ImGuiCond_Once);
+				ImGui::SetDragDropPayload(payloadName.c_str(), &assetHandle, sizeof(AssetHandle), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
 			

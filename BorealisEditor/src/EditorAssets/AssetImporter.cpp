@@ -22,7 +22,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/MetaSerializer.hpp>
 
 #include <thread>
-
 namespace Borealis
 {
 	void AssetImporter::LoadRegistry(Borealis::ProjectInfo projectInfo)
@@ -65,6 +64,13 @@ namespace Borealis
 		SerializeRegistry();
 	}
 
+	AssetHandle AssetImporter::GetAssetHandle(std::filesystem::path const& path)
+	{
+		std::size_t hash = std::hash<std::string>{}(path.string());
+		if (mPathRegistry.contains(hash)) return mPathRegistry.at(hash);
+		return {};
+	}
+
 	bool AssetImporter::ImportAsset(AssetMetaData metaData)
 	{
 		//check if assets needs to be imported
@@ -101,8 +107,10 @@ namespace Borealis
 		{
 			AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
 			bool imported = ImportAsset(meta);
-			meta = MetaFileSerializer::GetAssetMetaDataFile(path.replace_extension(".meta"));
+			std::filesystem::path metaPath = path;
+			meta = MetaFileSerializer::GetAssetMetaDataFile(metaPath.replace_extension(".meta"));
 			assetRegistry.insert({ meta.Handle, meta });
+			VerifyMetaFile(path, assetRegistry);
 		}
 	}
 
@@ -124,6 +132,7 @@ namespace Borealis
 				{
 					AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(entry);
 					assetRegistry.insert({ meta.Handle, meta });
+					VerifyMetaFile(entry, assetRegistry);
 				}
 
 				RegisterAllAssets(entry.path(), assetRegistry);
@@ -143,6 +152,9 @@ namespace Borealis
 	bool AssetImporter::VerifyMetaFile(std::filesystem::path path, AssetRegistry& assetRegistry)
 	{
 		std::filesystem::path metaFilePath;
+
+		std::size_t hash = std::hash<std::string>{}(path.string());
+
 		if (std::filesystem::is_directory(path))
 		{
 			metaFilePath = path.string() + ".meta";
@@ -164,6 +176,7 @@ namespace Borealis
 			{
 				if (assetRegistry.at(metaData.Handle).importDate == metaData.importDate)
 				{
+					mPathRegistry.insert({ hash, metaData.Handle });
 					return true;
 				}
 				else
@@ -171,6 +184,10 @@ namespace Borealis
 					BOREALIS_CORE_ASSERT(false, "IMPORT DATE DIFF");
 				}
 			}
+
+			assetRegistry.insert({ metaData.Handle, metaData });
+			BOREALIS_CORE_ASSERT(!mPathRegistry.contains(hash), "Duplicate hash");
+			mPathRegistry.insert({ hash, metaData.Handle });
 		}
 
 		return false;

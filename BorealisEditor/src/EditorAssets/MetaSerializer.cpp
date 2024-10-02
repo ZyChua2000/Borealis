@@ -21,7 +21,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
-	void MetaFileSerializer::SetAssetFolderPath(std::filesystem::path path)
+	void MetaFileSerializer::SetAssetFolderPath(std::filesystem::path const& path)
 	{
 		PathToAssetFolder = path;
 	}
@@ -73,7 +73,7 @@ namespace Borealis
 		return metaData;
 	}
 
-	AssetMetaData MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path path)
+	AssetMetaData MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path const& path)
 	{
 		std::ifstream metaFile(path);
 
@@ -91,7 +91,7 @@ namespace Borealis
 		return DeserializeMetaFile(metaRoot, PathToAssetFolder);
 	}
 
-	AssetMetaData MetaFileSerializer::CreateAssetMetaFile(std::filesystem::path path)
+	AssetMetaData MetaFileSerializer::CreateAssetMetaFile(std::filesystem::path const& path)
 	{
 		AssetMetaData metaData = GetAssetMetaData(path);
 
@@ -168,7 +168,7 @@ namespace Borealis
 		return std::chrono::system_clock::to_time_t(sctp);
 	}
 
-	AssetMetaData MetaFileSerializer::GetAssetMetaData(std::filesystem::path path)
+	AssetMetaData MetaFileSerializer::GetAssetMetaData(std::filesystem::path const& path)
 	{
 		AssetMetaData metaData;
 

@@ -22,11 +22,11 @@ namespace Borealis
 	class MetaFileSerializer
 	{
 	public:
-		static void SetAssetFolderPath(std::filesystem::path path);
+		static void SetAssetFolderPath(std::filesystem::path const& path);
 
-		static AssetMetaData GetAssetMetaDataFile(std::filesystem::path path);
+		static AssetMetaData GetAssetMetaDataFile(std::filesystem::path const& path);
 
-		static AssetMetaData CreateAssetMetaFile(std::filesystem::path path);
+		static AssetMetaData CreateAssetMetaFile(std::filesystem::path const& path);
 
 		static void SerialzeRegistry(std::filesystem::path assetRegistryPath, std::unordered_map<AssetHandle, AssetMetaData> const& assetRegistry);
 
@@ -35,7 +35,7 @@ namespace Borealis
 	private:
 		static void SaveAsFile(const std::filesystem::path& path, const char* outputFile);
 		static std::time_t GetLastWriteTime(const std::filesystem::path& path);
-		static AssetMetaData GetAssetMetaData(std::filesystem::path path);
+		static AssetMetaData GetAssetMetaData(std::filesystem::path const& path);
 
 	private:
 		inline static std::filesystem::path PathToAssetFolder;
