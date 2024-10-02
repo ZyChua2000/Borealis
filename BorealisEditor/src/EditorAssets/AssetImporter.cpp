@@ -106,9 +106,23 @@ namespace Borealis
 		if (!VerifyMetaFile(path, assetRegistry))
 		{
 			AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
-			bool imported = ImportAsset(meta);
-			std::filesystem::path metaPath = path;
-			meta = MetaFileSerializer::GetAssetMetaDataFile(metaPath.replace_extension(".meta"));
+
+			bool imported = false;
+			std::filesystem::path metaPath = {};
+
+			switch (meta.Type)
+			{
+			case AssetType::Mesh:
+			case AssetType::Texture2D:
+			case AssetType::Font:
+				imported = ImportAsset(meta);
+				metaPath = path;
+				meta = MetaFileSerializer::GetAssetMetaDataFile(metaPath.replace_extension(".meta"));
+				break;
+			default:
+				break;
+			}
+
 			assetRegistry.insert({ meta.Handle, meta });
 			VerifyMetaFile(path, assetRegistry);
 		}
@@ -128,12 +142,7 @@ namespace Borealis
 				//check for existing meta file
 				//if exist, check last modified date
 				//if anything is wrong, create meta file
-				if(!VerifyMetaFile(entry, assetRegistry))
-				{
-					AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(entry);
-					assetRegistry.insert({ meta.Handle, meta });
-					VerifyMetaFile(entry, assetRegistry);
-				}
+				RegisterAsset(entry, assetRegistry);
 
 				RegisterAllAssets(entry.path(), assetRegistry);
 			}
@@ -184,10 +193,6 @@ namespace Borealis
 					BOREALIS_CORE_ASSERT(false, "IMPORT DATE DIFF");
 				}
 			}
-
-			assetRegistry.insert({ metaData.Handle, metaData });
-			BOREALIS_CORE_ASSERT(!mPathRegistry.contains(hash), "Duplicate hash");
-			mPathRegistry.insert({ hash, metaData.Handle });
 		}
 
 		return false;
