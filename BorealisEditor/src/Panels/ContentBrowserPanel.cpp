@@ -15,27 +15,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
+#include <ResourceManager.hpp>
 
 namespace Borealis
 {
-	enum iconList
-	{
-		DirectoryIcon = 0,
-		TTFIcon,
-		SCIcon,
-		TXTIcon,
-		CSIcon
-	};
 
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
 		// Load by serialisation in the future
-		mThumbnails[DirectoryIcon] = Texture2D::Create("resources/Icons/directoryIcon.png");
-		mThumbnails[TTFIcon] = Texture2D::Create("resources/Icons/file-ttf.png");
-		mThumbnails[SCIcon] = Texture2D::Create("resources/Icons/file-sc.png");
-		mThumbnails[TXTIcon] = Texture2D::Create("resources/Icons/file-txt.png");
-		mThumbnails[CSIcon] = Texture2D::Create("resources/Icons/file-cs.png");
 		mAssetsDir = "assets";
 	}
 
@@ -127,7 +115,7 @@ namespace Borealis
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
-				screenID = static_cast<uint64_t>(mThumbnails[DirectoryIcon]->GetRendererID());
+				screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Directory)->GetRendererID());
 			}
 			else
 			{
@@ -137,11 +125,11 @@ namespace Borealis
 				}
 				else if (extension == ".txt")
 				{
-					screenID = static_cast<uint64_t>(mThumbnails[TXTIcon]->GetRendererID());
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Text)->GetRendererID());
 				}
 				else if (extension == ".sc")
 				{
-					screenID = static_cast<uint64_t>(mThumbnails[SCIcon]->GetRendererID());
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Scene)->GetRendererID());
 				}
 				else if (extension == ".glsl")
 				{
@@ -149,7 +137,7 @@ namespace Borealis
 				}
 				else if (extension == ".ttf")
 				{
-					screenID = static_cast<uint64_t>(mThumbnails[TTFIcon]->GetRendererID());
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Font)->GetRendererID());
 				}
 				else if (extension == ".prefab")
 				{
@@ -157,7 +145,7 @@ namespace Borealis
 				}
 				else if (extension == ".cs")
 				{
-					screenID = static_cast<uint64_t>(mThumbnails[CSIcon]->GetRendererID());
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Script)->GetRendererID());
 				}
 				else
 				{

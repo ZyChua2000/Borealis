@@ -32,7 +32,6 @@ namespace Borealis
 
 	private:
 		 char textBuffer[128] = { 0 };
-		 std::unordered_map<int, Ref<Texture2D>> mThumbnails;
 		 std::filesystem::path mCurrDir;
 		 std::string mAssetsDir;
 		 int mThumbnailSize = 256;

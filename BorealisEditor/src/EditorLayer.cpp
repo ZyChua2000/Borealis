@@ -24,6 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
+#include <ResourceManager.hpp>
 
 
 #include <Graphics/Font.hpp>
@@ -65,6 +66,8 @@ namespace Borealis {
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 
 		ScriptingSystem::InitCoreAssembly();
+		ResourceManager::Init();
+
 		
 		//TEMP
 		{
@@ -78,6 +81,8 @@ namespace Borealis {
 	void EditorLayer::Free()
 	{
 		PROFILE_FUNCTION();
+		ResourceManager::Free();
+
 	}
 
 	void EditorLayer::UpdateFn(float dt)
