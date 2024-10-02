@@ -96,7 +96,8 @@ namespace BorealisAssetCompiler
         int totalSize = width * height * 4;  // Assuming 4 bytes per pixel (RGBA)
         std::vector<T> bitmapCopy(bitmap, bitmap + totalSize);
 
-        FlipBitmapVertically(bitmapCopy, width, height, 4);
+        //FlipBitmapVertically(bitmapCopy, width, height, 4);
+
 
         bc7_enc_settings settings;
         GetProfile_alpha_basic(&settings);
@@ -110,7 +111,9 @@ namespace BorealisAssetCompiler
         int compressedSize = (width / 4) * (height / 4) * 16;
         std::vector<uint8_t> compressedData(compressedSize);
 
-        CompressBlocksBC7(&srcSurface, compressedData.data(), &settings);
+        //CompressBlocksBC7(&srcSurface, compressedData.data(), &settings);
+
+        CompressBlocksBC3(&srcSurface, compressedData.data());
 
         SaveDDSFile(cachePath.string(), width, height, compressedData);
     }

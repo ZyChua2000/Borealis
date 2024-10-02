@@ -29,7 +29,7 @@ namespace Borealis
 	{
 	public:
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;
-
+		AssetMetaData const& GetMetaData(AssetHandle assetHandle);
 		AssetRegistry& GetAssetRegistry();
 
 		//Load all available assets into Registry

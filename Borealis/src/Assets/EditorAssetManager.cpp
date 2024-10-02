@@ -45,6 +45,14 @@ namespace Borealis
 		return asset;
 	}
 
+	AssetMetaData const& EditorAssetManager::GetMetaData(AssetHandle assetHandle)
+	{
+		if (mAssetRegistry.contains(assetHandle))
+		{
+			return mAssetRegistry.at(assetHandle);
+		}
+	}
+
 	AssetRegistry& EditorAssetManager::GetAssetRegistry()
 	{
 		return mAssetRegistry;
