@@ -30,6 +30,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/FontImporter.hpp>
 
 namespace Borealis {
+	EditorLayer::SceneState EditorLayer::mSceneState = EditorLayer::SceneState::Edit;
+
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
@@ -219,15 +221,15 @@ namespace Borealis {
 				if (ImGui::BeginMenu("File"))
 				{
 
-					if (ImGui::MenuItem("New","Ctrl+N")) {
+					if (ImGui::MenuItem("New Project...","Ctrl+N")) {
 						NewProject();
 					}
 
-					if (ImGui::MenuItem("Open...","Ctrl+O")) {
+					if (ImGui::MenuItem("Open Project...","Ctrl+O")) {
 						LoadProject();
 					}
 
-					if (ImGui::MenuItem("Save","Ctrl+S")) {
+					if (ImGui::MenuItem("Save Project...","Ctrl+S")) {
 						SaveProject();
 					}
 
@@ -732,7 +734,11 @@ namespace Borealis {
 		}
 		mSceneState = SceneState::Play;
 
-		SceneManager::GetActiveScene() = Scene::Copy(mEditorScene);
+		Ref<Scene> copiedScene = Scene::Copy(SceneManager::GetActiveScene());
+		copiedScene->SetName(copiedScene->GetName() + "-runtime");
+		SceneManager::AddScene(copiedScene->GetName(), "");
+		mEditorScene = SceneManager::GetActiveScene();
+		SceneManager::SetActiveScene(copiedScene);
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 		SceneManager::GetActiveScene()->RuntimeStart();
 
@@ -752,7 +758,9 @@ namespace Borealis {
 		mSceneState = SceneState::Edit;
 		SceneManager::GetActiveScene()->RuntimeEnd();
 		SCPanel.SetSelectedEntity({});
-		SceneManager::GetActiveScene() = mEditorScene;
+		std::string tmpName = SceneManager::GetActiveScene()->GetName();
+		SceneManager::SetActiveScene(mEditorScene);
+		SceneManager::RemoveScene(tmpName);
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 
 		auto view = SceneManager::GetActiveScene()->GetRegistry().view<CameraComponent>();

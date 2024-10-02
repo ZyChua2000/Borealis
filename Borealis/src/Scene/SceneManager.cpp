@@ -33,7 +33,18 @@ namespace Borealis
     {
         std::transform(sceneName.begin(), sceneName.end(), sceneName.begin(), ::tolower);
         if (mSceneLibrary.find(sceneName) != mSceneLibrary.end())
-            mSceneLibrary.erase(sceneName);
+            if (mActiveScene->GetName() == sceneName)
+            {
+                mSceneLibrary.erase(sceneName);
+                if (!mSceneLibrary.empty())
+                    SetActiveScene(mSceneLibrary.begin()->first);
+                else
+                    mActiveScene = nullptr;
+            }
+            else
+            {
+                mSceneLibrary.erase(sceneName);
+            }
         else
             BOREALIS_CORE_ERROR("Scene {0} not found in Scene Library", sceneName);
     }

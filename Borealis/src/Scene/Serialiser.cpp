@@ -312,7 +312,7 @@ namespace Borealis
 	{
 		YAML::Emitter out;
 		out << YAML::BeginMap
-		    << YAML::Key << "Scene"		<<	YAML::Value << "SceneName"
+			<< YAML::Key << "Scene" << YAML::Value << mScene->GetName()
 		    << YAML::Key <<"Entities"	<<	YAML::Value << YAML::BeginSeq;
 
 		auto view = mScene->mRegistry.view<entt::entity>();

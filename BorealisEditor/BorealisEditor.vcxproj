@@ -154,6 +154,10 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
+    <ClInclude Include="ResourceManager.hpp">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Assets\FontImporter.cpp" />

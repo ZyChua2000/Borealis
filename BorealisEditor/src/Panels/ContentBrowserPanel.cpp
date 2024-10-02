@@ -18,10 +18,24 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	enum iconList
+	{
+		DirectoryIcon = 0,
+		TTFIcon,
+		SCIcon,
+		TXTIcon,
+		CSIcon
+	};
+
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
-		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
+		// Load by serialisation in the future
+		mThumbnails[DirectoryIcon] = Texture2D::Create("resources/Icons/directoryIcon.png");
+		mThumbnails[TTFIcon] = Texture2D::Create("resources/Icons/file-ttf.png");
+		mThumbnails[SCIcon] = Texture2D::Create("resources/Icons/file-sc.png");
+		mThumbnails[TXTIcon] = Texture2D::Create("resources/Icons/file-txt.png");
+		mThumbnails[CSIcon] = Texture2D::Create("resources/Icons/file-cs.png");
 		mAssetsDir = "assets";
 	}
 
@@ -97,17 +111,23 @@ namespace Borealis
 
 		for (auto& entry : std::filesystem::directory_iterator(mCurrDir))
 		{
-		;
+		
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
+			if (extension == ".meta") // Skip meta files
+			{
+				continue;
+			}
 			ImGui::PushID(filenameStr.c_str());
+
+			
 			
 
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
-				screenID = static_cast<uint64_t>(mDirectoryIcon->GetRendererID());
+				screenID = static_cast<uint64_t>(mThumbnails[DirectoryIcon]->GetRendererID());
 			}
 			else
 			{
@@ -117,11 +137,11 @@ namespace Borealis
 				}
 				else if (extension == ".txt")
 				{
-
+					screenID = static_cast<uint64_t>(mThumbnails[TXTIcon]->GetRendererID());
 				}
 				else if (extension == ".sc")
 				{
-
+					screenID = static_cast<uint64_t>(mThumbnails[SCIcon]->GetRendererID());
 				}
 				else if (extension == ".glsl")
 				{
@@ -129,18 +149,22 @@ namespace Borealis
 				}
 				else if (extension == ".ttf")
 				{
-
+					screenID = static_cast<uint64_t>(mThumbnails[TTFIcon]->GetRendererID());
 				}
 				else if (extension == ".prefab")
 				{
 
+				}
+				else if (extension == ".cs")
+				{
+					screenID = static_cast<uint64_t>(mThumbnails[CSIcon]->GetRendererID());
 				}
 				else
 				{
 					// default case
 				}
 			}
-			#
+			
 			if (mThumbnailSize == mMinThumbnailSize)
 			{
 				printedThumbnailSize = 0;
