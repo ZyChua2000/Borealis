@@ -89,6 +89,14 @@ namespace Borealis
 		virtual void Bind(uint32_t unit = 0) const = 0;
 
 		/*!***********************************************************************
+		\brief
+			Get validity of texture
+		\return
+			bool - validity of texture
+		*************************************************************************/
+		virtual bool IsValid() const = 0;
+
+		/*!***********************************************************************
 			\brief
 				Operator overload for comparing two Textures
 			\param[in] other
@@ -118,6 +126,11 @@ namespace Borealis
 				const std::string& - Path to the Texture
 		*************************************************************************/
 		static Ref<Texture2D> Create(const std::string& path);
+
+		static Ref<Texture2D> GetDefaultTexture();
+
+	private:
+		static Ref<Texture2D> mDefault;
 	}; // Class Texture2D
 
 } // Namespace Borealis

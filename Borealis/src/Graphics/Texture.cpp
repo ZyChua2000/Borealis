@@ -17,28 +17,59 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/OpenGL/TextureOpenGLImpl.hpp>
 namespace Borealis
 {
+	Ref<Texture2D> Texture2D::mDefault = nullptr;
 	Ref<Texture2D> Texture2D::Create(const TextureInfo& textureInfo)
 	{
+		Ref<Texture2D> texture = nullptr;
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
-			case RendererAPI::API::OpenGL: return MakeRef<OpenGLTexture2D>(textureInfo);
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported");
+			case RendererAPI::API::OpenGL: 
+				texture = MakeRef<OpenGLTexture2D>(textureInfo);
+				if (!texture->IsValid())
+				{
+					texture = nullptr;
+				}
+				break;
 		}
-		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
-		return nullptr;
+		if (!texture)
+		{
+			BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
+			texture = GetDefaultTexture();
+		}
+		return texture;
 
 		return Ref<Texture2D>();
 	}
 	Ref<Texture2D> Texture2D::Create(const std::string& path)
 	{
+		Ref<Texture2D> texture = nullptr;
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
-			case RendererAPI::API::OpenGL: return MakeRef<OpenGLTexture2D>(path);
+			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported");
+			case RendererAPI::API::OpenGL: 
+				texture = MakeRef<OpenGLTexture2D>(path);
+				if (!texture->IsValid())
+				{
+					texture = nullptr;
+				}
+				break;
 		}
-		BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
-		return nullptr;
+		if(!texture)
+		{
+			BOREALIS_CORE_ASSERT(false, "Unknown RendererAPI");
+			texture = GetDefaultTexture();
+		}
+		return texture;
 
 		return Ref<Texture2D>();
+	}
+	Ref<Texture2D> Texture2D::GetDefaultTexture()
+	{
+		if (!mDefault)
+		{
+			mDefault = Create("../Borealis/Resources/textures/missing_texture.DDS");
+		}
+		return mDefault;
 	}
 }

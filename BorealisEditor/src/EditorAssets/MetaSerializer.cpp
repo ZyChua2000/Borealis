@@ -78,7 +78,7 @@ namespace Borealis
 		std::ifstream metaFile(path);
 
 		if (!metaFile.is_open()) {
-			BOREALIS_CORE_ASSERT("Failed to open meta file: {}", path.string());
+			BOREALIS_CORE_ASSERT(false, "Failed to open meta file");
 			return {};
 		}
 

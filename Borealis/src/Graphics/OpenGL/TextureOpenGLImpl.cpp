@@ -25,7 +25,11 @@ namespace Borealis
 
 		gli::texture Texture = gli::load(path);
 		if (Texture.empty())
+		{
+			BOREALIS_CORE_ASSERT(false,"Invalid texture file {}");
+			mValid = false;
 			return;
+		}
 
 
 		gli::gl GL(gli::gl::PROFILE_GL33);
@@ -77,6 +81,8 @@ namespace Borealis
 		}
 
 		glBindTexture(Target, 0);
+
+		mValid = true;
 
 		//int width, height, channels;
 		//stbi_set_flip_vertically_on_load(1);
@@ -167,6 +173,8 @@ namespace Borealis
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+
+		mValid = true;
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
@@ -195,6 +203,10 @@ namespace Borealis
 
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(GL_TEXTURE_2D, mRendererID);
+	}
+	bool OpenGLTexture2D::IsValid() const
+	{
+		return mValid;
 	}
 }
 

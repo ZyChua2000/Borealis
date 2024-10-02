@@ -37,7 +37,7 @@ namespace Borealis
 				BOREALIS_CORE_INFO("Registry file created successfully.");
 			}
 			else {
-				BOREALIS_CORE_ASSERT("Failed to create registry file.");
+				BOREALIS_CORE_ASSERT(false, "Failed to create registry file.");
 				return;
 			}
 			registry.close();
@@ -110,7 +110,7 @@ namespace Borealis
 	{
 		if (!std::filesystem::exists(path))
 		{
-			BOREALIS_CORE_ASSERT("No such directory");
+			BOREALIS_CORE_ASSERT(false, "No such directory");
 		}
 
 		for (const auto& entry : std::filesystem::directory_iterator(path))
@@ -168,7 +168,7 @@ namespace Borealis
 				}
 				else
 				{
-					BOREALIS_CORE_ASSERT("IMPORT DATE DIFF");
+					BOREALIS_CORE_ASSERT(false, "IMPORT DATE DIFF");
 				}
 			}
 		}
