@@ -139,6 +139,7 @@ namespace Borealis
 
 	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const Ref<BehaviourNode> node) {
 		out << YAML::Key << "name" << YAML::Value << node->get_name();
+		out << YAML::Key << "depth" << YAML::Value << node->get_depth();
 		if (!node->children.empty())
 		{
 			out << YAML::Key << "children" << YAML::Value << YAML::BeginSeq;
@@ -333,6 +334,7 @@ namespace Borealis
 			{
 				out << YAML::Key << "BehaviourTree";
 				out << YAML::BeginMap;
+				out << YAML::Key << "Tree Name" << YAML::Value << tree->GetBehaviourTreeName();
 				Serialiser::SerializeBehaviourNode(out, tree->GetRootNode());
 				out << YAML::EndMap;
 			}
@@ -516,6 +518,15 @@ namespace Borealis
 					lc.shadowType = (LightComponent::ShadowType)lightComponent["ShadowType"].as<int>();
 					lc.lightAppearance = (LightComponent::LightAppearance)lightComponent["LightAppearance"].as<int>();
 				}
+				//auto behaviourTreeComponent = entity["BehaviourTreeComponent"];
+				//if (behaviourTreeComponent)
+				//{
+				//	auto& btc = loadedEntity.AddComponent<BehaviourTreeComponent>();
+				//	for (auto& tree : btc.mBehaviourTrees)
+				//	{
+				//		tree->SetRootNode(behaviourTreeComponent[])
+				//	}
+				//}
 //
 			}
 		}

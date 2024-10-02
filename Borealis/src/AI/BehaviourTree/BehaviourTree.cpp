@@ -1,10 +1,10 @@
 #include "BorealisPCH.hpp"
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 #include "AI/BehaviourTree/BehaviourTree.hpp"
-
+#include "Core/LoggerSystem.hpp"
 namespace Borealis
 {
-    BehaviourTree::BehaviourTree() : rootNode(nullptr), treeName(nullptr)
+    BehaviourTree::BehaviourTree() : rootNode(nullptr), treeName("")
     {}
     BehaviourTree::~BehaviourTree(){}
     void BehaviourTree::update(float dt)
@@ -17,21 +17,57 @@ namespace Borealis
             rootNode->set_status(NodeStatus::READY);
         }
     }
-    void BehaviourTree::AddNode(Ref<BehaviourNode> parent, Ref<BehaviourNode> child)
+    void BehaviourTree::AddNode(Ref<BehaviourNode> parent, Ref<BehaviourNode> child, int depth)
     {
-        if (!parent) {
+        if (depth == 0) {
+            // The root node is being added at depth 0
             if (!rootNode) {
                 rootNode = child;  // If no root node exists, make the child the root
+                rootNode->set_depth(0);  // Set depth for root node
+                previousNode = rootNode;  // Set previousNode to rootNode after it is added
             }
             else {
-                rootNode->add_child(child);  // Add to the root if no parent is specified
+                BOREALIS_CORE_ERROR("Error: Root node already exists!");
             }
         }
         else {
-            parent->add_child(child);  // Add the child to the given parent
+            if (!parent) {
+                // If no parent is provided, assume we're continuing from the last added node
+                parent = previousNode;
+            }
+
+            if (!parent) {
+                BOREALIS_CORE_ERROR("Error: No valid parent for depth {0}.", depth);
+                return;
+            }
+
+            if (depth > parent->get_depth()) {
+                // Add child to the parent if the depth is greater than the parent's depth
+                child->set_depth(depth);
+                parent->add_child(child);
+                previousNode = child;  // Update previousNode to the newly added child
+            }
+            else {
+                // Traverse up the tree to find the appropriate parent for the current depth
+                Ref<BehaviourNode> current = parent;
+                while (current->get_depth() >= depth) {
+                    // Safely convert weak_ptr to shared_ptr using lock()
+                    auto parentPtr = current->get_parent().lock();  // Convert weak_ptr to shared_ptr
+                    if (!parentPtr) {
+                        BOREALIS_CORE_ERROR("Error: Parent node is no longer valid.");
+                        return;
+                    }
+                    current = parentPtr;  // Update current to the parent
+                }
+
+                // Add child to the appropriate parent node
+                child->set_depth(depth);
+                current->add_child(child);
+                previousNode = child;  // Update previousNode to the newly added child
+            }
         }
     }
-    void BehaviourTree::SetRootNode(Ref<BehaviourNode> root) 
+    void BehaviourTree::SetRootNode(Ref<BehaviourNode> root)
     {
         rootNode = root;
     } 
@@ -39,5 +75,14 @@ namespace Borealis
     {
         return rootNode;
     }
+    void BehaviourTree::SetBehaviourTreeName(std::string&& name)
+    {
+        treeName = name;
+        BOREALIS_CORE_TRACE("Name of tree set to {}",treeName);
 
+    }
+    std::string BehaviourTree::GetBehaviourTreeName() const
+    {
+        return treeName;
+    }
 }

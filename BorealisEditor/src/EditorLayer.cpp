@@ -73,21 +73,7 @@ namespace Borealis {
 
 			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
 		}
-
-		auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
-		auto& btC = entity.AddComponent<BehaviourTreeComponent>();
-		auto idleNode = NodeFactory::createNodeByName("L_Idle");
-		auto sequenceNode = NodeFactory::createNodeByName("C_Sequencer");
-		auto clickNode = NodeFactory::createNodeByName("L_CheckMouseClick");
-		Ref<BehaviourTree> betree = MakeRef<BehaviourTree>();
-		betree->SetRootNode(sequenceNode);
-		betree->AddNode(betree->GetRootNode(), idleNode);
-		betree->AddNode(betree->GetRootNode(),clickNode);
-		//selector->add child idle, mouseclick
-		//betree->add selector(root)
-
-
-		btC.AddTree(betree);
+;
 	}
 
 	void EditorLayer::Free()
@@ -703,6 +689,21 @@ namespace Borealis {
 
 			DeserialiseEditorScene();
 		}
+		auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
+		auto& btC = entity.AddComponent<BehaviourTreeComponent>();
+		auto idleNode = NodeFactory::createNodeByName("L_Idle");
+		auto sequenceNode = NodeFactory::createNodeByName("C_Sequencer");
+		auto clickNode = NodeFactory::createNodeByName("L_CheckMouseClick");
+		Ref<BehaviourTree> betree = MakeRef<BehaviourTree>();
+		betree->SetBehaviourTreeName("Test-Tree");
+		betree->SetRootNode(sequenceNode);
+		betree->AddNode(betree->GetRootNode(), idleNode,1);
+		betree->AddNode(betree->GetRootNode(), clickNode,1);
+		//selector->add child idle, mouseclick
+		//betree->add selector(root)
+
+
+		btC.AddTree(betree);
 	}
 
 	void EditorLayer::SaveScene()

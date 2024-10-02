@@ -151,11 +151,12 @@
     <ClInclude Include="inc\AI\BehaviourTree\ControlFlow\C_Sequencer.hpp" />
     <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_CheckMouseClick.hpp" />
     <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_Idle.hpp" />
-    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp">
+    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp" />
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />
@@ -691,7 +692,8 @@
     <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp" />
     <ClCompile Include="src\AI\BehaviourTree\Leaf\L_CheckMouseClick.cpp" />
     <ClCompile Include="src\AI\BehaviourTree\Leaf\L_Idle.cpp" />
-    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp">
+    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp">
       <SubType>
       </SubType>
     </ClCompile>

@@ -36,12 +36,15 @@ namespace Borealis
         friend class Serialiser;
     public:
         BehaviourNode()=default;
-        BehaviourNode(NodeType type, int depth, const std::string& name);
+        //BehaviourNode(NodeType type, int depth, const std::string& name);
 
         // Getters for type, depth, and name
         NodeType get_type() const;
+        void set_depth(int depth);
         int get_depth() const;
         std::string get_name() const;
+        WeakRef<BehaviourNode> get_parent() const;
+        void set_name(const std::string& setName);
 
         // Node management
         void add_child(Ref<BehaviourNode> child);

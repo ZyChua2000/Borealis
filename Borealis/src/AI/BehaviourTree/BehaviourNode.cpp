@@ -1,17 +1,18 @@
 #include "BorealisPCH.hpp"
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 #include "AI/BehaviourTree/BehaviourTree.hpp"
+#include <Core/LoggerSystem.hpp>
 
 namespace Borealis
 {
 
-    BehaviourNode::BehaviourNode(NodeType type, int depth, const std::string& name)
-        : nodeType(type), mDepth(depth), name(name)
-    {
-        parent.reset();
-        result = NodeResult::FAILURE;
-        status = NodeStatus::SUSPENDED;
-    }
+    //BehaviourNode::BehaviourNode(NodeType type, int depth, const std::string& name)
+    //    : nodeType(type), mDepth(depth), name(name)
+    //{
+    //    parent.reset();
+    //    result = NodeResult::FAILURE;
+    //    status = NodeStatus::SUSPENDED;
+    //}
     // Get the node type
     NodeType BehaviourNode::get_type() const
     {
@@ -23,11 +24,27 @@ namespace Borealis
     {
         return mDepth;
     }
+    WeakRef<BehaviourNode> BehaviourNode::get_parent() const
+    {
+        return parent;
+    }
+    // Get the depth of the node
+    void BehaviourNode::set_depth(int depth) 
+    {
+        mDepth = depth;
+    }
+
 
     // Get the name of the node
     std::string BehaviourNode::get_name() const
     {
         return name;
+    }
+    void BehaviourNode::set_name(const std::string& setName)
+    {
+        name = setName;
+        BOREALIS_CORE_TRACE("Name of node set to {}", name);
+
     }
 
     // Add a child node to this node

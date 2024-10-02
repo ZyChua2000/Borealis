@@ -1,5 +1,6 @@
 #pragma once
 #include <Core/Core.hpp>
+#include <string>
 namespace Borealis
 {
     // forward declaration
@@ -12,13 +13,16 @@ namespace Borealis
     public:
         BehaviourTree();
         ~BehaviourTree();
-        void AddNode(Ref<BehaviourNode> parent, Ref<BehaviourNode> child);
+        void AddNode(Ref<BehaviourNode> parent, Ref<BehaviourNode> child, int depth);
         void SetRootNode(Ref<BehaviourNode> root);
         Ref<BehaviourNode> GetRootNode();
         void update(float dt);
+        void SetBehaviourTreeName(std::string&& name);
+        std::string GetBehaviourTreeName() const;
 
     private:
         Ref<BehaviourNode> rootNode;
-        const char* treeName;
+        Ref<BehaviourNode> previousNode;
+        std::string treeName;
     };
 }

@@ -73,7 +73,9 @@ namespace Borealis
         auto it = nodePrototypes.find(nodeName);
         if (it != nodePrototypes.end())
         {
-            return it->second->clone();  // Clone the prototype to get a new instance
+            Ref<BehaviourNode> newNode = it->second->clone();
+            newNode->set_name(nodeName);
+            return newNode;// Clone the prototype to get a new instance
         }
         else
         {
