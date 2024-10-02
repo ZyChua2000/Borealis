@@ -25,8 +25,8 @@ namespace Borealis
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
-		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
-		//mDirectoryIcon = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
+		//mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
+		mDirectoryIcon = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
 		mAssetsDir = "assets";
 	}
 
