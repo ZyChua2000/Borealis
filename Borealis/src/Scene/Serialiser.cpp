@@ -111,7 +111,7 @@ namespace Borealis
 {
 	void Serialiser::ParseTree(YAML::Node& node, Ref<BehaviourNode> parentNode, BehaviourTree& tree, int parentDepth)
 	{
-		// Extract the node name and depth from the YAML
+		// Extract the node name and depth
 		std::string nodeName = node["name"].as<std::string>();
 		int depth = node["depth"].as<int>();
 
