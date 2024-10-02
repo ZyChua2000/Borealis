@@ -13,23 +13,196 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-#include <Core/InputSystem.hpp>
 #include <GLFW/glfw3.h>
+#include <Core/InputSystem.hpp>
 #include <Core/ApplicationManager.hpp>
-
+#include <Core/EventSystem.hpp>
+#include <Core/KeyCodes.hpp>
+#include <Events/EventInput.hpp>
 namespace Borealis
 {
+	uint16_t InputSystem::KeyCurrentState[349];
+	uint16_t InputSystem::KeyPrevState[349];
+	double InputSystem::ScrollY = 0;
+
+	static std::vector<uint16_t> KeysToPoll
+	{
+			32,
+			39, /* ' */
+			44, /* , */
+			45, /* - */
+			46, /* . */
+			47, /* / */
+
+			48, /* 0 */
+			49, /* 1 */
+			50, /* 2 */
+			51, /* 3 */
+			52, /* 4 */
+			53, /* 5 */
+			54, /* 6 */
+			55, /* 7 */
+			56, /* 8 */
+			57, /* 9 */
+
+			59, /* ; */
+			61, /* = */
+
+			65,
+			66,
+			67,
+			68,
+			69,
+			70,
+			71,
+			72,
+			73,
+			74,
+			75,
+			76,
+			77,
+			78,
+			79,
+			80,
+			81,
+			82,
+			83,
+			84,
+			85,
+			86,
+			87,
+			88,
+			89,
+			90,
+
+			91,  /* [ */
+			92,  /* \ */
+			93,  /* ] */
+			96,  /* ` */
+
+			161, /* non-US #1 */
+			162, /* non-US #2 */
+
+			/* Function keys */
+			256,
+			257,
+			258,
+			259,
+			260,
+			261,
+			262,
+			263,
+			264,
+			265,
+			266,
+			267,
+			268,
+			269,
+			280,
+			281,
+			282,
+			283,
+			284,
+			290,
+			291,
+			292,
+			293,
+			294,
+			295,
+			296,
+			297,
+			298,
+			299,
+			300,
+			301,
+			302,
+			303,
+			304,
+			305,
+			306,
+			307,
+			308,
+			309,
+			310,
+			311,
+			312,
+			313,
+			314,
+
+			/* Keypad */
+			320,
+			321,
+			322,
+			323,
+			324,
+			325,
+			326,
+			327,
+			328,
+			329,
+			330,
+			331,
+			332,
+			333,
+			334,
+			335,
+			336,
+			340,
+			341,
+			342,
+			343,
+			344,
+			345,
+			346,
+			347,
+			348
+	};
+	static std::vector<uint16_t> MouseToPoll
+	{
+			0,
+			1,
+			2,
+			3,
+			4,
+			5,
+			6,
+			7
+	};
+
+	void InputSystem::Init()
+	{
+		std::memset(KeyCurrentState, 0, sizeof(KeyCurrentState));
+		std::memset(KeyPrevState, 0, sizeof(KeyPrevState));
+	}
 
 	bool InputSystem::IsKeyPressed(int key)
 	{
-		auto state = glfwGetKey(static_cast<GLFWwindow*>(ApplicationManager::Get().GetWindow()->GetNativeWindow()), key);
-		return state == GLFW_PRESS || state == GLFW_REPEAT;
+		return KeyCurrentState[key];
+	}
+
+	bool InputSystem::IsKeyTriggered(int key)
+	{
+		return !KeyPrevState[key] && KeyCurrentState[key];
+	}
+
+	bool InputSystem::IsKeyReleased(int key)
+	{
+		return KeyPrevState[key] && !KeyCurrentState[key];
 	}
 
 	bool InputSystem::IsMouseButtonPressed(int key)
 	{
-		auto state = glfwGetMouseButton(static_cast<GLFWwindow*>(ApplicationManager::Get().GetWindow()->GetNativeWindow()), key);
-		return state == GLFW_PRESS;
+		return KeyCurrentState[key];
+	}
+
+	bool InputSystem::IsMouseButtonTriggered(int key)
+	{
+		return !KeyPrevState[key] && KeyCurrentState[key];
+	}
+
+	bool InputSystem::IsMouseButtonReleased(int key)
+	{
+		return KeyPrevState[key] && !KeyCurrentState[key];
 	}
 
 	std::pair<float, float> InputSystem::GetMousePos()
@@ -48,5 +221,34 @@ namespace Borealis
 	{
 		auto [x, y] = GetMousePos();
 		return y;
+	}
+	void InputSystem::PollInput()
+	{
+		std::memcpy(KeyPrevState, KeyCurrentState, sizeof(KeyCurrentState));
+		for (auto key : KeysToPoll)
+		{
+			auto state = glfwGetKey(static_cast<GLFWwindow*>(ApplicationManager::Get().GetWindow()->GetNativeWindow()), key);
+			if (state == GLFW_PRESS || state == GLFW_REPEAT)
+			{
+				KeyCurrentState[key] = true;
+			}
+			else
+			{
+				KeyCurrentState[key] = false;
+			}
+		}
+
+		for (auto mouse : MouseToPoll)
+		{
+			auto state = glfwGetMouseButton(static_cast<GLFWwindow*>(ApplicationManager::Get().GetWindow()->GetNativeWindow()), mouse);
+			if (state == GLFW_PRESS)
+			{
+				KeyCurrentState[mouse] = true;
+			}
+			else
+			{
+				KeyCurrentState[mouse] = false;
+			}
+		}
 	}
 } // End of namespace Borealis

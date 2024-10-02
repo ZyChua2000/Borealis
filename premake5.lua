@@ -27,6 +27,7 @@ workspace "Borealis"
 	IncludeDir["JoltPhysics"] = "Borealis/lib/JoltPhysics"
 	IncludeDir["Mono"] = "Borealis/lib/mono/include"
 	IncludeDir["xproperty"] = "Borealis/lib/xproperty/include"
+	IncludeDir["RTTR"] = "Borealis/lib/RTTR/include"
 
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
@@ -48,6 +49,8 @@ workspace "Borealis"
 	LibraryDir["YAML_Release"] = "lib/yaml-cpp/lib/Rel"
 	LibraryDir["IMGUI_Debug"] = "lib/IMGUI/lib/Deb"
 	LibraryDir["IMGUI_Release"] = "lib/IMGUI/lib/Rel"
+	LibraryDir["RTTR_Debug"] = "lib/RTTR/lib/Deb"
+	LibraryDir["RTTR_Release"] = "lib/RTTR/lib/Rel"
 
 	Library = {}
 	Library["FMOD_Debug"] = "%{LibraryDir.FMOD}/fmodL_vc.lib"
@@ -83,6 +86,8 @@ workspace "Borealis"
 	Library["YAML_Release"] = "%{LibraryDir.YAML_Release}/yaml-cpp.lib"
 	Library["IMGUI_Debug"] = "%{LibraryDir.IMGUI_Debug}/IMGUI.lib"
 	Library["IMGUI_Release"] = "%{LibraryDir.IMGUI_Release}/IMGUI.lib"
+	Library["RTTR_Debug"] = "%{LibraryDir.RTTR_Debug}/librttr_core.lib"
+	Library["RTTR_Release"] = "%{LibraryDir.RTTR_Release}/librttr_core.lib"
 
 	group "Dependencies"
 		include "Borealis/lib/Tracy"
@@ -135,7 +140,8 @@ workspace "Borealis"
 			"%{IncludeDir.STBI}",
 			"%{IncludeDir.JoltPhysics}",
 			"%{IncludeDir.Mono}",
-			"%{IncludeDir.xproperty}"
+			"%{IncludeDir.xproperty}",
+			"%{IncludeDir.RTTR}"
 		}
 
 
@@ -171,7 +177,8 @@ workspace "Borealis"
 				"%{Library.GLFW_Debug}",
 				"%{Library.Jolt_Debug}",
 				"%{Library.YAML_Debug}",
-				"%{Library.IMGUI_Debug}"
+				"%{Library.IMGUI_Debug}",
+				"%{Library.RTTR_Debug}"
 			}
 
 		filter "configurations:Release"
@@ -186,7 +193,8 @@ workspace "Borealis"
 				"%{Library.GLFW_Release}",
 				"%{Library.Jolt_Release}",
 				"%{Library.YAML_Release}",
-				"%{Library.IMGUI_Release}"
+				"%{Library.IMGUI_Release}",
+				"%{Library.RTTR_Release}"
 			}
 
 		filter "configurations:Distribution"
@@ -201,7 +209,8 @@ workspace "Borealis"
 				"%{Library.GLFW_Release}",
 				"%{Library.Jolt_Release}",
 				"%{Library.YAML_Release}",
-				"%{Library.IMGUI_Release}"
+				"%{Library.IMGUI_Release}",
+				"%{Library.RTTR_Release}"
 			}
 
 	project "BorealisEditor"

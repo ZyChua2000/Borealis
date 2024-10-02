@@ -24,6 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <Graphics/Model.hpp>
+#include <map>
 
 namespace Borealis
 {
@@ -34,6 +35,10 @@ namespace Borealis
 	private:
 		static void ProcessNode(aiNode* node, const aiScene* scene, Model& model);
 		static Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+
+		static int GetBoneId(const aiBone* pBone);
+
+		static std::map<std::string, unsigned int> mBoneToIndexMap;
 	};
 }
 

@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -89,7 +89,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;lib\RTTR\lib\Deb\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -98,7 +98,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -114,7 +114,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -123,7 +123,7 @@
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -161,6 +161,8 @@
     <ClInclude Include="inc\Debugging\Profiler.hpp" />
     <ClInclude Include="inc\Events\EventInput.hpp" />
     <ClInclude Include="inc\Events\EventWindow.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\Bone.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp" />
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
@@ -184,6 +186,7 @@
     <ClInclude Include="inc\Graphics\Renderer3D.hpp" />
     <ClInclude Include="inc\Graphics\RendererAPI.hpp" />
     <ClInclude Include="inc\Graphics\Shader.hpp" />
+    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp" />
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp" />
     <ClInclude Include="inc\Graphics\Texture.hpp" />
     <ClInclude Include="inc\Graphics\VertexArray.hpp" />
@@ -687,10 +690,12 @@
     <ClCompile Include="src\Core\WindowManager.cpp" />
     <ClCompile Include="src\Events\EventInput.cpp" />
     <ClCompile Include="src\Events\EventWindow.cpp" />
+    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp" />
@@ -707,12 +712,14 @@
     <ClCompile Include="src\Graphics\Renderer3D.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\SkinnedMesh.cpp" />
     <ClCompile Include="src\Graphics\SubTexture2D.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiFontLib.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Scene\Components.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />
     <ClCompile Include="src\Scene\Scene.cpp" />

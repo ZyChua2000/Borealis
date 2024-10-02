@@ -99,6 +99,17 @@ namespace Borealis
 	*************************************************************************/
 	bool Entity_HasComponent(uint64_t entityID, MonoReflectionType* reflectionType);
 
+	glm::vec3 Input_GetMousePosition();
+	glm::vec3 Input_GetMouseScrollDelta();
+	bool Input_AnyKey();
+	bool Input_AnyKeyDown();
+	bool Input_GetKey(int key);
+	bool Input_GetKeyDown(int key);
+	bool Input_GetKeyUp(int key);
+	bool Input_GetMouse(int key);
+	bool Input_GetMouseDown(int key);
+	bool Input_GetMouseUp(int key);
+
 
 	void TransformComponent_GetTranslation(UUID uuid, glm::vec3* outTranslation);
 	void TransformComponent_SetTranslation(UUID uuid, glm::vec3* translation);
