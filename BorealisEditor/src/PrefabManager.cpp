@@ -4,10 +4,10 @@
 
 namespace Borealis
 {
-	entt::registry PrefabManager::mPrefabRegistry;
+	Scene PrefabManager::mPrefabScene;
 	entt::entity PrefabManager::CreateEntity()
 	{
-		return mPrefabRegistry.create();
+		return mPrefabScene.GetRegistry().create();
 	}
 
 }

@@ -69,13 +69,21 @@ namespace Borealis {
 		auto entity = mEditorScene->CreateEntity("testEntity");
 		auto& src = entity.AddComponent<SpriteRendererComponent>();
 		src.Colour.r = 0.5f;
+		//auto& transform = entity.AddComponent<TransformComponent>();
+		//transform.Scale.x = 100;
 
-		Prefab prefab(entity);
-		prefab.AddChild(MakeRef<Entity>(entity));
-		prefab.GetComponent<SpriteRendererComponent>().Colour.g = 0.5f;
-		prefab.UpdateAllInstances();
-		prefab.PrintComponentList();
-		
+		//Prefab prefab(entity);
+		//prefab.AddChild(MakeRef<Entity>(entity));
+		//prefab.GetComponent<SpriteRendererComponent>().Colour.g = 0.5f;
+		//prefab.GetComponent<TransformComponent>().Scale.x = 50;
+		//prefab.UpdateAllInstances();
+		//prefab.PrintComponentList();
+
+		//Entity makePrefab(prefab.GetPrefabID(), PrefabManager::GetScenePtr());
+
+		//Serialiser::SerialisePrefab("assets/Prefab/test.prefab", makePrefab);
+
+
 		ScriptingSystem::InitCoreAssembly();
 		
 		//TEMP

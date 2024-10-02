@@ -59,6 +59,8 @@ namespace Borealis
 		//Testing
 		void PrintComponentList();
 
+		entt::entity GetPrefabID() { return mPrefabID; }
+
 	private:
 		entt::entity mPrefabID;
 		std::unordered_set<Ref<Entity>> mChildren;

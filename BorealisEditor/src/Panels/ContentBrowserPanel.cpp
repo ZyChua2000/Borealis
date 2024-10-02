@@ -15,6 +15,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Scene/Serialiser.hpp>
+#include <Scene/Scene.hpp>
+#include <Prefab.hpp>
 
 namespace Borealis
 {
@@ -29,9 +32,52 @@ namespace Borealis
 	{
 		ImGui::Begin("Content Browser");
 
+		
+
 		ImVec2 windowSize = ImGui::GetWindowSize();
 		float scrollableHeight = windowSize.y - 100; // Adjust for the fixed bottom row
 		ImGui::BeginChild("ScrollableRegion", ImVec2(windowSize.x, scrollableHeight), true);
+		
+		//WORK IN PROGRESS
+		//Dragged Prefab
+			// Content Browser panel drop target for creating prefabs
+			if (ImGui::BeginDragDropTarget() && (mCurrDir.filename() == "Prefab"))
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
+				{
+					std::cout << "DROPPED";
+					UUID droppedEntityID = *(const UUID*)payload->Data; // Retrieve the dragged entity ID
+
+					// Retrieve the entity using the dropped entity ID
+					Entity droppedEntity = SceneManager::GetActiveScene()->GetEntityByUUID(droppedEntityID); // Assuming you have a function to get an entity by UUID
+
+
+					Prefab prefab(droppedEntity);
+					prefab.AddChild(MakeRef<Entity>(droppedEntity));
+
+
+					Entity makePrefab(prefab.GetPrefabID(), PrefabManager::GetScenePtr());
+					std::string dir = mCurrDir.string();
+					dir += +"/" + droppedEntity.GetName() + ".prefab";
+					Serialiser::SerialisePrefab(dir.c_str(), makePrefab);
+
+
+					// You might want to add some feedback or a log message here to indicate success
+					std::cout << "Prefab created at: " << mCurrDir.string() << std::endl;
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropEntity"))
+			{
+				const char* data = (const char*)payload->Data;
+				
+			}
+
+			ImGui::EndDragDropTarget();
+		}
 
 		// Begin the upper scrollable section
 

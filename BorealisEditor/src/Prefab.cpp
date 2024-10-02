@@ -88,49 +88,135 @@ namespace Borealis {
 //    }
 //}
 
-	//void Prefab::UpdateAllInstances()
-	//{
-	//	// Retrieve the list of component names registered in the system
-	//	std::vector<std::string> properties = ComponentRegistry::GetComponentNames();
+    //Currently updates manually.
+    void Prefab::UpdateAllInstances()
+    {
+        // Retrieve the list of component names registered in the system
+        std::vector<std::string> properties = ComponentRegistry::GetComponentNames();
 
-	//	for (auto& child : mChildren)
-	//	{
-	//		// Ensure that the child has the PrefabComponent (to track edited properties)
-	//		if (!child->HasComponent<PrefabComponent>())
-	//			continue;
+        for (auto& child : mChildren)
+        {
+            // Ensure that the child has the PrefabComponent (to track edited properties)
+            if (!child->HasComponent<PrefabComponent>())
+                continue;
 
-	//		auto& prefabComp = child->GetComponent<PrefabComponent>();
+            auto& prefabComp = child->GetComponent<PrefabComponent>();
 
-	//		// Loop through each component name dynamically
-	//		for (const auto& componentName : properties)
-	//		{
-	//			// Check if the child has this component
-	//			if (!child->HasComponent(componentName))
-	//				continue; // Child doesn't have this component, skip
+            // Loop through each component name dynamically
+            for (const auto& componentName : properties)
+            {
+                if (componentName == "SpriteRendererComponent")
+                {
+                    // Check if the child has this component
+                    if (!child->HasComponent<SpriteRendererComponent>())
+                        continue; // Child doesn't have this component, skip
 
-	//			// Retrieve the component from both the prefab and the child
-	//			auto& childComponent = child->GetComponent(componentName);
-	//			auto& prefabComponent = PrefabManager::GetRegistry().get(componentName, mPrefabID);
+                    // Retrieve the component from both the prefab and the child
+                    auto& childComponent = child->GetComponent<SpriteRendererComponent>();
+                    auto& prefabComponent = PrefabManager::GetRegistry().get<SpriteRendererComponent>(mPrefabID);
 
-	//			// Get the property names of this component dynamically
-	//			std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames(componentName);
+                    // Get the property names of this component dynamically
+                    std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames("SpriteRendererComponent");
 
-	//			// Copy properties from the prefab to the child unless the child has overridden them
-	//			for (const auto& variableName : variableNames)
-	//			{
-	//				// Construct a full property identifier like "SpriteRendererComponent::Colour"
-	//				std::string fullPropertyName = componentName + "::" + variableName;
+                    // Copy properties from the prefab to the child unless the child has overridden them
+                    for (const auto& variableName : variableNames)
+                    {
+                        // Construct a full property identifier like "SpriteRendererComponent::Colour"
+                        std::string fullPropertyName = "SpriteRendererComponent::" + variableName;
 
-	//				// Check if this property has been edited in the child (skip it if it has)
-	//				if (prefabComp.mEditedComponentList.contains(fullPropertyName))
-	//					continue; // Property was edited in the child, don't overwrite it
+                        // Check if this property has been edited in the child (skip it if it has)
+                        if (prefabComp.mEditedComponentList.contains(fullPropertyName))
+                            continue; // Property was edited in the child, don't overwrite it
 
-	//				// Use the existing CopyPropertyValue function to copy from prefab to child
-	//				ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
-	//			}
-	//		}
-	//	}
-	//}
+                        // Use the CopyPropertyValue function to copy from prefab to child
+                        ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
+                    }
+                }
+                else if (componentName == "TransformComponent")
+                {
+                    // Check if the child has this component
+                    if (!child->HasComponent<TransformComponent>())
+                        continue; // Child doesn't have this component, skip
+
+                    // Retrieve the component from both the prefab and the child
+                    auto& childComponent = child->GetComponent<TransformComponent>();
+                    auto& prefabComponent = PrefabManager::GetRegistry().get<TransformComponent>(mPrefabID);
+
+                    // Get the property names of this component dynamically
+                    std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames("TransformComponent");
+
+                    // Copy properties from the prefab to the child unless the child has overridden them
+                    for (const auto& variableName : variableNames)
+                    {
+                        // Construct a full property identifier like "TransformComponent::Translate"
+                        std::string fullPropertyName = "TransformComponent::" + variableName;
+
+                        // Check if this property has been edited in the child (skip it if it has)
+                        if (prefabComp.mEditedComponentList.contains(fullPropertyName))
+                            continue; // Property was edited in the child, don't overwrite it
+
+                        // Use the CopyPropertyValue function to copy from prefab to child
+                        ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
+                    }
+                }
+                else if (componentName == "CircleRendererComponent")
+                {
+                    // Check if the child has this component
+                    if (!child->HasComponent<CircleRendererComponent>())
+                        continue; // Child doesn't have this component, skip
+
+                    // Retrieve the component from both the prefab and the child
+                    auto& childComponent = child->GetComponent<CircleRendererComponent>();
+                    auto& prefabComponent = PrefabManager::GetRegistry().get<CircleRendererComponent>(mPrefabID);
+
+                    // Get the property names of this component dynamically
+                    std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames("CircleRendererComponent");
+
+                    // Copy properties from the prefab to the child unless the child has overridden them
+                    for (const auto& variableName : variableNames)
+                    {
+                        // Construct a full property identifier like "TransformComponent::Translate"
+                        std::string fullPropertyName = "CircleRendererComponent::" + variableName;
+
+                        // Check if this property has been edited in the child (skip it if it has)
+                        if (prefabComp.mEditedComponentList.contains(fullPropertyName))
+                            continue; // Property was edited in the child, don't overwrite it
+
+                        // Use the CopyPropertyValue function to copy from prefab to child
+                        ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
+                    }
+                }
+                else if (componentName == "CameraComponent")
+                {
+                    // Check if the child has this component
+                    if (!child->HasComponent<CircleRendererComponent>())
+                        continue; // Child doesn't have this component, skip
+
+                    // Retrieve the component from both the prefab and the child
+                    auto& childComponent = child->GetComponent<CameraComponent>();
+                    auto& prefabComponent = PrefabManager::GetRegistry().get<CameraComponent>(mPrefabID);
+
+                    // Get the property names of this component dynamically
+                    std::vector<std::string> variableNames = ComponentRegistry::GetPropertyNames("CameraComponent");
+
+                    // Copy properties from the prefab to the child unless the child has overridden them
+                    for (const auto& variableName : variableNames)
+                    {
+                        // Construct a full property identifier like "TransformComponent::Translate"
+                        std::string fullPropertyName = "CameraComponent::" + variableName;
+
+                        // Check if this property has been edited in the child (skip it if it has)
+                        if (prefabComp.mEditedComponentList.contains(fullPropertyName))
+                            continue; // Property was edited in the child, don't overwrite it
+
+                        // Use the CopyPropertyValue function to copy from prefab to child
+                        ComponentRegistry::CopyPropertyValue(variableName, prefabComponent, childComponent);
+                    }
+                }
+            }
+        }
+    }
+
 
 
 

@@ -247,6 +247,17 @@ namespace Borealis
 		flags |= ImGuiTreeNodeFlags_SpanAvailWidth;
 		uint64_t entityID = static_cast<uint64_t>((uint32_t)entity);
 		bool opened = ImGui::TreeNodeEx((void*)entityID, flags, tag.c_str());
+
+
+
+		//Dragging of items for creation of prefab
+		if (ImGui::BeginDragDropSource())
+		{
+			ImGui::SetDragDropPayload("DragPrefab", (const void*)&entity.GetUUID(), sizeof(UUID));
+			ImGui::Text("%s", tag.c_str()); // Display the entity tag as the payload text
+			ImGui::EndDragDropSource();
+		}
+
 		if (ImGui::IsItemClicked())
 		{
 			mSelectedEntity = entity;

@@ -25,6 +25,7 @@ namespace Borealis
 
 		bool SerialiseScene(const std::string& filepath);
 		bool DeserialiseScene(const std::string& filepath);
+		static void SerialisePrefab(const std::string& filepath, Entity entity);
 
 		static bool SerialiseEditorStyle();
 		static bool DeserialiseEditorStyle();
