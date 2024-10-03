@@ -17,6 +17,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <Assets/EditorAssetManager.hpp>
 
+#include <Audio/AudioEngine.hpp>
+
 #include <Graphics/Texture.hpp>
 #include <Graphics/Model.hpp>
 
@@ -109,6 +111,9 @@ namespace Borealis
 		Model model;
 		switch (metaData.Type)
 		{
+		case AssetType::Audio:
+			asset = MakeRef<Audio>(AudioEngine::LoadAudio(metaData.SourcePath.string()));
+			break;
 		case AssetType::Texture2D:
 			asset = Texture2D::Create(metaData.CachePath.string());
 			break;

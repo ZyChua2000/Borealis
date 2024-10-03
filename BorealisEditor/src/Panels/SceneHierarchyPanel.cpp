@@ -942,10 +942,7 @@ namespace Borealis
 				if (ImGui::Button("Play"))
 				{ 	
 					component.isPlaying = true;
-					// Play audio with mute and loop settings from the component
-					//AudioEngine::PlayAudio(component.audio->AudioPath, Vector3(0, 0, 0), component.Volume, component.isMute, component.isLoop);
 				}
-				
 			});
 
 		DrawComponent<AudioListenerComponent>("Audio Listener", mSelectedEntity, [](auto& component)

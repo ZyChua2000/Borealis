@@ -1,12 +1,21 @@
 #pragma once
 #include <Core/Core.hpp>
-#include "Audio/AudioEngine.hpp"
+#include <Assets/Asset.hpp>
+
+//forward declare
+namespace FMOD
+{
+	class Sound;
+}
 
 namespace Borealis
 {
-	class Audio
+	using AudioPtr = FMOD::Sound*;
+
+	class Audio : public Asset
 	{
 	public:
 		std::string AudioPath;
+		AudioPtr audio = nullptr;
 	};
 }

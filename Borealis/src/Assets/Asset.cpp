@@ -31,6 +31,8 @@ namespace Borealis
 		if (extension == ".ttf") return AssetType::Font;
 		if (extension == ".fbx") return AssetType::Mesh;
 		if (extension == ".mat") return AssetType::Material;
+		if (extension == ".mp3") return AssetType::Audio;
+		if (extension == ".wav") return AssetType::Audio;
 
 		return AssetType::None;
 	}

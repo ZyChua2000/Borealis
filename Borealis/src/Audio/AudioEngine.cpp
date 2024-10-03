@@ -106,11 +106,11 @@ namespace Borealis
         sgpImplementation->Update();
     }
 
-    void AudioEngine::LoadAudio(const std::string& strSoundName, bool b3d, bool bLooping, bool bStream)
+    Audio AudioEngine::LoadAudio(const std::string& strAudioName, bool b3d, bool bLooping, bool bStream)
     {
-        auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
+        auto tFoundIt = sgpImplementation->mSounds.find(strAudioName);
         if (tFoundIt != sgpImplementation->mSounds.end())
-            return;
+            return Audio();
 
         FMOD_MODE eMode = FMOD_DEFAULT;
         eMode |= b3d ? FMOD_3D : FMOD_2D;
@@ -118,11 +118,18 @@ namespace Borealis
         eMode |= bStream ? FMOD_CREATESTREAM : FMOD_CREATECOMPRESSEDSAMPLE;
 
         FMOD::Sound* pSound = nullptr;
-        ErrorCheck(sgpImplementation->mpSystem->createSound(strSoundName.c_str(), eMode, nullptr, &pSound));
+        ErrorCheck(sgpImplementation->mpSystem->createSound(strAudioName.c_str(), eMode, nullptr, &pSound));
         if (pSound)
         {
-            sgpImplementation->mSounds[strSoundName] = pSound;
+            sgpImplementation->mSounds[strAudioName] = pSound;
+            Audio audio;
+            audio.AudioPath = strAudioName;
+            audio.audio = pSound;
+
+            return audio;
         }
+
+        return Audio();
     }
 
     void AudioEngine::UnLoadAudio(const std::string& strSoundName)
