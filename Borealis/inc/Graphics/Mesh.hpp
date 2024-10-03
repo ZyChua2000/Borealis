@@ -67,7 +67,7 @@ namespace Borealis
 
 		void SetupMesh();
 
-		void Draw(const glm::mat4& transform, Ref<Shader> shader);
+		void Draw(const glm::mat4& transform, Ref<Shader> shader, int entityID);
 
 		std::vector<unsigned int> const& GetIndices() const;
 		std::vector<unsigned int>& GetIndices();

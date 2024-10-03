@@ -27,7 +27,7 @@ namespace Borealis
 	class Model : public Asset
 	{
 	public:
-		void Draw(const glm::mat4& transform, Ref<Shader> shader);
+		void Draw(const glm::mat4& transform, Ref<Shader> shader, int entityID);
 
 		void LoadModel(std::filesystem::path const& path);
 		void SaveModel();

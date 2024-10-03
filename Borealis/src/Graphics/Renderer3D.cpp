@@ -52,7 +52,7 @@ namespace Borealis
 	{
 		if (meshFilter.Model) {
 			meshRenderer.Material->SetUniforms(sData->mModelShader);
-			meshFilter.Model->Draw(transform, sData->mModelShader);
+			meshFilter.Model->Draw(transform, sData->mModelShader, entityID);
 		}
 	}
 

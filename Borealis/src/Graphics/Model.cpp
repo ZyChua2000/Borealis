@@ -17,11 +17,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
-	void Model::Draw(const glm::mat4& transform, Ref<Shader> shader)
+	void Model::Draw(const glm::mat4& transform, Ref<Shader> shader, int entityID)
 	{
 		for (auto mesh : mMeshes)
 		{
-			mesh.Draw(transform, shader);
+			mesh.Draw(transform, shader, entityID);
 		}
 	}
 
