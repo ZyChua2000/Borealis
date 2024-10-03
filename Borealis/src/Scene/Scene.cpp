@@ -22,6 +22,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer2D.hpp>
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
+
+#include "Graphics/Light.hpp"
+
 namespace Borealis
 {
 	Scene::Scene(std::string name, std::string path) : mName(name), mScenePath(path)
@@ -139,12 +142,41 @@ namespace Borealis
 	{
 		Renderer3D::Begin(camera);
 		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			for (auto& entity : group)
+			{
+				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
+				auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
+				MeshRendererComponent meshRenderer{};
+				if (!groupLight.empty())
+				{
+					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
+				}
+				else
+				{
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
+				}
+			}
+		}
+		{
 			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
 			for (auto& entity : group)
 			{
 				auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
+				auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
 				
-				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
+				if (!groupLight.empty())
+				{
+					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
+				}
+				else
+				{
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
+				}
 			}
 		}
 
