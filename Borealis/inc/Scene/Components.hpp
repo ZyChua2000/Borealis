@@ -287,7 +287,7 @@ namespace Borealis
 		{
 			return mScripts.find(name) != mScripts.end();
 		}
-	}
+	};
 	
 	struct AudioComponent
 	{

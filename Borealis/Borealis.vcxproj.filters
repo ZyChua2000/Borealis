@@ -7,6 +7,9 @@
     <Filter Include="inc\Assets">
       <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Audio">
+      <UniqueIdentifier>{6069B274-CCD3-66EB-1512-189181BB4440}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -103,6 +106,9 @@
     <Filter Include="src\Assets">
       <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{EE2696B2-5A91-4A29-A3CF-FBCE0F79287E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -127,12 +133,6 @@
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Audio">
-      <UniqueIdentifier>{21ad2ec7-6fc1-417d-b2d5-27f566ea3494}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="inc\Audio">
-      <UniqueIdentifier>{91f2ed38-1b1b-43cc-8b8d-6db5f265ed60}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
@@ -150,6 +150,12 @@
     </ClInclude>
     <ClInclude Include="inc\Assets\IAssetManager.hpp">
       <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\Audio.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\AudioEngine.hpp">
+      <Filter>inc\Audio</Filter>
     </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
@@ -1891,12 +1897,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Audio\AudioEngine.hpp">
-      <Filter>inc\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Audio\Audio.hpp">
-      <Filter>inc\Audio</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1913,6 +1913,9 @@
     </ClCompile>
     <ClCompile Include="src\Assets\EditorAssetManager.cpp">
       <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioEngine.cpp">
+      <Filter>src\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>
@@ -2075,9 +2078,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Audio\AudioEngine.cpp">
-      <Filter>src\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
