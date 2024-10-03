@@ -127,6 +127,12 @@
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{21ad2ec7-6fc1-417d-b2d5-27f566ea3494}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Audio">
+      <UniqueIdentifier>{91f2ed38-1b1b-43cc-8b8d-6db5f265ed60}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
@@ -1885,6 +1891,12 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Audio\AudioEngine.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\Audio.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -2063,6 +2075,9 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioEngine.cpp">
+      <Filter>src\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

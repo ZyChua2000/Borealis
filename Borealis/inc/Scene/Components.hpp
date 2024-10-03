@@ -24,6 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
+#include "Audio/Audio.hpp"
 
 namespace Borealis
 {
@@ -286,6 +287,25 @@ namespace Borealis
 		{
 			return mScripts.find(name) != mScripts.end();
 		}
+	}
+	
+	struct AudioComponent
+	{
+		bool isLoop = false;
+		bool isMute = false;
+		bool isPlaying = false;
+		float Volume = 1.0f;
+		int channelID = 0;
+
+		Ref<Audio> audio;
+
+		AudioComponent() = default;
+		AudioComponent(const AudioComponent&) = default;
+	};
+
+	struct AudioListener
+	{
+		bool isAudioListener = true;
 	};
 
 
