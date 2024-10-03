@@ -147,7 +147,7 @@
     <Compile Include="src\Components\Component.cs" />
     <Compile Include="src\Components\SpriteRenderer.cs" />
     <Compile Include="src\Components\Transform.cs" />
-    <Compile Include="src\ExampleScript.cs" />
+    <Compile Include="src\Scripts\CameraController.cs" />
     <Compile Include="src\GameObject.cs" />
     <Compile Include="src\InternalCalls.cs" />
     <Compile Include="src\Math\Color.cs" />

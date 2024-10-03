@@ -10,8 +10,6 @@ namespace Borealis
     {
         public RoslynCompiler()
         {
-            GameObject gameObject = new GameObject("C#Creation");
-            gameObject.AddComponent<CameraController>();
         }
         /*!***********************************************************************
             \brief

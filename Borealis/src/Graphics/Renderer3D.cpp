@@ -44,7 +44,9 @@ namespace Borealis
 
 	void Renderer3D::Begin(const Camera& camera, const glm::mat4& transform)
 	{
-
+		sData->mModelShader->Bind();
+		glm::mat4 viewProj = camera.GetProjectionMatrix() * glm::inverse(transform);
+		sData->mModelShader->Set("u_ViewProjection", viewProj);
 	}
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, Ref<Light> light, int entityID)
