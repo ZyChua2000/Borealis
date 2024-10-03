@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef CONTENT_BROWSER_PANEL_HPP
 #define CONTENT_BROWSER_PANEL_HPP
+#include <unordered_map>
 #include <filesystem>
 #include <Scene/scene.hpp>
 #include <Scene/Entity.hpp>
@@ -30,15 +31,14 @@ namespace Borealis
 		void SetCurrDir(std::string path);
 
 	private:
-		 bool isCreatingScene = false;
 		 char textBuffer[128] = { 0 };
 		 std::filesystem::path mCurrDir;
 		 std::string mAssetsDir;
 		 int mThumbnailSize = 256;
 		 int mPadding = 2;
 		 const int mMinThumbnailSize = 62;
+		 bool isCreatingScene = false;
 
-		 Ref<Texture2D> mDirectoryIcon;
 	};
 }
 
