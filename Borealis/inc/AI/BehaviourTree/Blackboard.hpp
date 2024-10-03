@@ -1,4 +1,3 @@
-#pragma once
 /******************************************************************************
 /*!
 \file       RegisterNodes.hpp
@@ -12,6 +11,9 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
+#ifndef BLACKBOARD_HPP
+#define BLACKBOARD_HPP
+
 #include <any>
 #include <unordered_map>
 #include <string>
