@@ -245,15 +245,21 @@ namespace Borealis
 		};
 
 		
-		glm::vec4 Colour = { 1,1,1,1 };
-		glm::vec2 InnerOuterSpot = { 10,120 };
-		float Temperature = 6500;
-		float Intensity = 1;
-		float IndirectMultiplier = 1;
-		float Range = 10;
+		//glm::vec4 Colour = { 1,1,1,1 };
+		glm::vec2 InnerOuterSpot = { 100, 120 };
+		//float Temperature = 6500;
+		//float Intensity = 1;
+		//float IndirectMultiplier = 1;
+		//float Range = 10;
 		Type type = Type::Point;
-		ShadowType shadowType = ShadowType::None;
-		LightAppearance lightAppearance = LightAppearance::Colour;
+		glm::vec3 direction = {0.0, -1.0, 0.0};
+		glm::vec3 ambient = {0.4, 0.4, 0.4};
+		glm::vec3 diffuse = {1.f, 1.f, 1.f};
+		glm::vec3 specular = {1.f, 1.f, 1.f};
+		float linear = 0.05f;
+		float quadratic = 0.032f;
+		/*ShadowType shadowType = ShadowType::None;
+		LightAppearance lightAppearance = LightAppearance::Colour;*/
 	};
 
 	struct TextComponent

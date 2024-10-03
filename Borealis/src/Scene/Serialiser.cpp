@@ -290,7 +290,7 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& lightComponent = entity.GetComponent<LightComponent>();
-			out << YAML::Key << "Colour" << YAML::Value << lightComponent.Colour;
+			/*out << YAML::Key << "Colour" << YAML::Value << lightComponent.Colour;
 			out << YAML::Key << "InnerSpot" << YAML::Value << lightComponent.InnerOuterSpot.x;
 			out << YAML::Key << "OuterSpot" << YAML::Value << lightComponent.InnerOuterSpot.y;
 			out << YAML::Key << "Temperature" << YAML::Value << lightComponent.Temperature;
@@ -299,7 +299,7 @@ namespace Borealis
 			out << YAML::Key << "Range" << YAML::Value << lightComponent.Range;
 			out << YAML::Key << "Type" << YAML::Value << (int)lightComponent.type;
 			out << YAML::Key << "ShadowType" << YAML::Value << (int)lightComponent.shadowType;
-			out << YAML::Key << "LightAppearance" << YAML::Value << (int)lightComponent.lightAppearance;
+			out << YAML::Key << "LightAppearance" << YAML::Value << (int)lightComponent.lightAppearance;*/
 
 			out << YAML::EndMap;
 		}
@@ -472,7 +472,7 @@ namespace Borealis
 				if (lightComponent)
 				{
 					auto& lc = loadedEntity.AddComponent<LightComponent>();
-					lc.Colour = lightComponent["Colour"].as<glm::vec4>();
+					/*lc.Colour = lightComponent["Colour"].as<glm::vec4>();
 					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpot"].as<float>(), lightComponent["OuterSpot"].as<float>());
 					lc.Temperature = lightComponent["Temperature"].as<float>();
 					lc.Intensity = lightComponent["Intensity"].as<float>();
@@ -480,7 +480,7 @@ namespace Borealis
 					lc.Range = lightComponent["Range"].as<float>();
 					lc.type = (LightComponent::Type)lightComponent["Type"].as<int>();
 					lc.shadowType = (LightComponent::ShadowType)lightComponent["ShadowType"].as<int>();
-					lc.lightAppearance = (LightComponent::LightAppearance)lightComponent["LightAppearance"].as<int>();
+					lc.lightAppearance = (LightComponent::LightAppearance)lightComponent["LightAppearance"].as<int>();*/
 				}
 //
 			}
