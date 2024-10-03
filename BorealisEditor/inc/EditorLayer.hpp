@@ -25,6 +25,16 @@ namespace Borealis {
 	class EditorLayer : public Layer
 	{
 	public:
+
+
+		enum class SceneState
+		{
+			Edit = 0,
+			Play = 1,
+			Pause = 2
+		};
+
+
 		EditorLayer();
 		~EditorLayer() {}
 		void Init() override;
@@ -35,6 +45,7 @@ namespace Borealis {
 
 		bool onKeyPressed(EventKeyPressed& e);
 		bool onMousePressed(EventMouseButtonTriggered& e);
+		static SceneState mSceneState;
 	private:
 
 		void NewScene();
@@ -85,15 +96,6 @@ namespace Borealis {
 		SceneHierarchyPanel SCPanel;
 		ContentBrowserPanel CBPanel;
 		bool mLightMode = true;
-
-		enum class SceneState
-		{
-			Edit = 0,
-			Play = 1,
-			Pause = 2
-		};
-
-		SceneState mSceneState = SceneState::Edit;
 
 		float mLineThickness = 1.0f;
 

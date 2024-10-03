@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneManager.hpp>
 #include <Assets/AssetMetaData.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
+#include <ResourceManager.hpp>
 
 #include "EditorAssets/MaterialEditor.hpp"
 #include <EditorAssets/AssetImporter.hpp>
@@ -27,8 +28,7 @@ namespace Borealis
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
-		//mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
-		mDirectoryIcon = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
+		// Load by serialisation in the future
 		mAssetsDir = "assets";
 	}
 
@@ -111,11 +111,15 @@ namespace Borealis
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
+			if (extension == ".meta") // Skip meta files
+			{
+				continue;
+			}
 			ImGui::PushID(filenameStr.c_str());
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
-				screenID = static_cast<uint64_t>(mDirectoryIcon->GetRendererID());
+				screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Directory)->GetRendererID());
 			}
 			else
 			{
@@ -130,11 +134,11 @@ namespace Borealis
 				}
 				else if (extension == ".txt")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Text)->GetRendererID());
 				}
 				else if (extension == ".sc")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Scene)->GetRendererID());
 				}
 				else if (extension == ".glsl")
 				{
@@ -142,18 +146,22 @@ namespace Borealis
 				}
 				else if (extension == ".ttf")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Font)->GetRendererID());
 				}
 				else if (extension == ".prefab")
 				{
 
+				}
+				else if (extension == ".cs")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Script)->GetRendererID());
 				}
 				else
 				{
 					// default case
 				}
 			}
-			#
+			
 			if (mThumbnailSize == mMinThumbnailSize)
 			{
 				printedThumbnailSize = 0;

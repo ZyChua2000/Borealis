@@ -47,6 +47,8 @@ namespace Borealis
 		entt::registry& GetRegistry() { return mRegistry; }
 		const std::string& GetName() const { return mName; }
 		const std::string& GetScenePath() const { return mScenePath; }
+		void SetName(const std::string& name) { mName = name; }
+		void SetScenePath(const std::string& path) { mScenePath = path; }
 		
 
 		void RuntimeStart();

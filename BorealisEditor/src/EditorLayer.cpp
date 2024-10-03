@@ -26,6 +26,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorLayer.hpp>
 //	#include <Project/Project.hpp>
 #include "Audio/AudioEngine.hpp"
+#include <ResourceManager.hpp>
 
 #include <EditorAssets/AssetImporter.hpp>
 
@@ -34,8 +35,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/MeshImporter.hpp>
 
 namespace Borealis {
-
-	Entity testEntity;
+	EditorLayer::SceneState EditorLayer::mSceneState = EditorLayer::SceneState::Edit;
 
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
@@ -69,6 +69,8 @@ namespace Borealis {
 
 		mEditorCamera = EditorCamera(30.0f, 1.778f, 0.1f, 1000.0f);
 		ScriptingSystem::InitCoreAssembly();
+		ResourceManager::Init();
+
 		
 		//TEMP
 		{
@@ -88,6 +90,8 @@ namespace Borealis {
 	{
 		Borealis::AudioEngine::Shutdown();
 		PROFILE_FUNCTION();
+		ResourceManager::Free();
+
 	}
 
 	void EditorLayer::UpdateFn(float dt)
@@ -231,15 +235,15 @@ namespace Borealis {
 				if (ImGui::BeginMenu("File"))
 				{
 
-					if (ImGui::MenuItem("New","Ctrl+N")) {
+					if (ImGui::MenuItem("New Project...","Ctrl+N")) {
 						NewProject();
 					}
 
-					if (ImGui::MenuItem("Open...","Ctrl+O")) {
+					if (ImGui::MenuItem("Open Project...","Ctrl+O")) {
 						LoadProject();
 					}
 
-					if (ImGui::MenuItem("Save","Ctrl+S")) {
+					if (ImGui::MenuItem("Save Project...","Ctrl+S")) {
 						SaveProject();
 					}
 
@@ -393,8 +397,8 @@ namespace Borealis {
 
 				mViewportFocused = ImGui::IsWindowFocused();
 				mViewportHovered = ImGui::IsWindowHovered();
-				// Truw when viewport not focused or not hovered
-				if (!ImGui::IsAnyItemActive())
+				// True when viewport not focused or not hovered
+				if (mViewportFocused && mViewportHovered)
 					ApplicationManager::Get().GetImGuiLayer()->SetBlockEvents(!mViewportFocused && !mViewportHovered);
 				else
 					ApplicationManager::Get().GetImGuiLayer()->SetBlockEvents(true);
@@ -744,7 +748,11 @@ namespace Borealis {
 		}
 		mSceneState = SceneState::Play;
 
-		SceneManager::GetActiveScene() = Scene::Copy(mEditorScene);
+		Ref<Scene> copiedScene = Scene::Copy(SceneManager::GetActiveScene());
+		copiedScene->SetName(copiedScene->GetName() + "-runtime");
+		SceneManager::AddScene(copiedScene->GetName(), "");
+		mEditorScene = SceneManager::GetActiveScene();
+		SceneManager::SetActiveScene(copiedScene);
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 		SceneManager::GetActiveScene()->RuntimeStart();
 
@@ -764,7 +772,9 @@ namespace Borealis {
 		mSceneState = SceneState::Edit;
 		SceneManager::GetActiveScene()->RuntimeEnd();
 		SCPanel.SetSelectedEntity({});
-		SceneManager::GetActiveScene() = mEditorScene;
+		std::string tmpName = SceneManager::GetActiveScene()->GetName();
+		SceneManager::SetActiveScene(mEditorScene);
+		SceneManager::RemoveScene(tmpName);
 		SCPanel.SetContext(SceneManager::GetActiveScene());
 
 		auto view = SceneManager::GetActiveScene()->GetRegistry().view<CameraComponent>();

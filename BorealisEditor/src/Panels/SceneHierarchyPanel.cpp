@@ -24,6 +24,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/FontImporter.hpp>
 #include <EditorAssets/AssetImporter.hpp>
 #include <Assets/AssetManager.hpp>
+#include <Assets/MeshImporter.hpp>
+#include <Assets/FontImporter.hpp>
+#include <EditorLayer.hpp>
 
 #include <Core/Project.hpp>
 
@@ -201,11 +204,15 @@ namespace Borealis
 				ImGui::PopFont();
 				if (ImGui::BeginPopupContextItem())
 				{
-					if (ImGui::MenuItem("Load Scene"))
+					if (EditorLayer::mSceneState == EditorLayer::SceneState::Edit)
 					{
-						SceneManager::SetActiveScene(name);
-						mContext = SceneManager::GetActiveScene();
-						mSelectedEntity = {};
+						if (ImGui::MenuItem("Load Scene"))
+						{
+							SceneManager::SaveActiveScene();
+							SceneManager::SetActiveScene(name);
+							mContext = SceneManager::GetActiveScene();
+							mSelectedEntity = {};
+						}
 					}
 					ImGui::EndPopup();
 				}
