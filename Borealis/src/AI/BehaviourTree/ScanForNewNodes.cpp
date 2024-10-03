@@ -62,8 +62,8 @@ namespace Borealis
         std::set<std::string> registeredNodes = GetRegisteredNodes(filePath);
 
         // Scan for new nodes in ControlFlow and Leaf directories
-        auto controlFlowNodes = ScanForNodes("Borealis\inc\AI\BehaviourTree\ControlFlow", "REGISTER_CONTROLFLOW");
-        auto leafNodes = ScanForNodes("Borealis\inc\AI\BehaviourTree\Leaf", "REGISTER_LEAF");
+        auto controlFlowNodes = ScanForNodes("Borealis\\inc\\AI\\BehaviourTree\\ControlFlow", "REGISTER_CONTROLFLOW");
+        auto leafNodes = ScanForNodes("Borealis\\inc\\AI\\BehaviourTree\\Leaf", "REGISTER_LEAF");
 
         // Open the NodesDef.hpp file for appending new nodes
         std::ofstream fileOut(filePath, std::ios_base::app);

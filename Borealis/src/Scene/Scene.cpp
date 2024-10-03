@@ -242,6 +242,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
+		CopyComponent<ScriptComponent>(newEntity, entity);
+		CopyComponent<BehaviourTreeComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -307,6 +309,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<ScriptComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<BehaviourTreeComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
