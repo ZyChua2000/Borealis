@@ -1,3 +1,16 @@
+/******************************************************************************
+/*!
+\file       BehaviourNode.cpp
+\author     Joey Chua
+\par        email: joeyjunyu.c@digipen.edu
+\date       September 15, 2024
+\brief      Defines the class for behaviour node
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
 #include "BorealisPCH.hpp"
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 #include "AI/BehaviourTree/BehaviourTree.hpp"
@@ -6,13 +19,6 @@
 namespace Borealis
 {
 
-    //BehaviourNode::BehaviourNode(NodeType type, int depth, const std::string& name)
-    //    : nodeType(type), mDepth(depth), name(name)
-    //{
-    //    parent.reset();
-    //    result = NodeResult::FAILURE;
-    //    status = NodeStatus::SUSPENDED;
-    //}
     // Get the node type
     NodeType BehaviourNode::get_type() const
     {

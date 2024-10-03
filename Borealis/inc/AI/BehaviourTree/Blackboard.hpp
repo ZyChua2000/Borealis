@@ -1,4 +1,17 @@
 #pragma once
+/******************************************************************************
+/*!
+\file       RegisterNodes.hpp
+\author     Joey Chua
+\par        email: joeyjunyu.c@digipen.edu
+\date       September 15, 2024
+\brief      Declares the blackboard class used to share data within behaviour nodes
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
 #include <any>
 #include <unordered_map>
 #include <string>

@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define SERIALISER_HPP
 #include <Core/Core.hpp>
 #include <Scene/Scene.hpp>
+#include <yaml-cpp/yaml.h>
 
 namespace YAML
 {

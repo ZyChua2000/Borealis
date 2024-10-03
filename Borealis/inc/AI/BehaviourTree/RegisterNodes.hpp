@@ -44,9 +44,6 @@ namespace Borealis
 
         static NodeType string_to_node_type(const std::string& typeStr);
 
-        // Parse the behavior tree file and build the tree for the entity
-        static void build_tree_from_file(const std::string& filename, Entity ent);
-
     private:
 
         // Recursive function to build the tree from the added nodes

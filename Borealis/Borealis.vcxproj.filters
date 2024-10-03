@@ -142,9 +142,6 @@
     <ClInclude Include="inc\AI\BehaviourTree\BehaviourTree.hpp">
       <Filter>inc\AI\BehaviourTree</Filter>
     </ClInclude>
-    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTreePrototype.hpp">
-      <Filter>inc\AI\BehaviourTree</Filter>
-    </ClInclude>
     <ClInclude Include="inc\AI\BehaviourTree\Blackboard.hpp">
       <Filter>inc\AI\BehaviourTree</Filter>
     </ClInclude>
@@ -1747,9 +1744,6 @@
       <Filter>src\AI\BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="src\AI\BehaviourTree\BehaviourTree.cpp">
-      <Filter>src\AI\BehaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AI\BehaviourTree\BehaviourTreePrototype.cpp">
       <Filter>src\AI\BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp">

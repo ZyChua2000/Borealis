@@ -1,3 +1,17 @@
+/******************************************************************************
+/*!
+\file       L_Idle.cpp
+\author     Joey Chua
+\par        email: joeyjunyu.c@digipen.edu
+\date       September 15, 2024
+\brief      Defines the class for leaf node idle
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
 #include <BorealisPCH.hpp>
 #include "AI//BehaviourTree/Leaf/L_Idle.hpp"
 #include <Core/InputSystem.hpp>

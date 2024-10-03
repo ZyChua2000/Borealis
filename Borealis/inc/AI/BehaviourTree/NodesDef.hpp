@@ -4,7 +4,7 @@
 \author     Chua Zheng Yang
 \par        email: c.zhengyang@digipen.edu
 \date       September 15, 2024
-\brief      Declares
+\brief      Declares macros to register behaviouor nodes
 
 Copyright (C) 2024 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the

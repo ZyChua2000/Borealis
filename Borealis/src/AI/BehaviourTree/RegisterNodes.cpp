@@ -1,6 +1,6 @@
 /******************************************************************************
 /*!
-\file       RegisterNodes.hpp
+\file       RegisterNodes.cpp
 \author     Joey Chua
 \par        email: joeyjunyu.c@digipen.edu
 \date       September 15, 2024
@@ -104,95 +104,6 @@ namespace Borealis
         }
 
         return NodeType::UNKNOWN;  // Return INVALID if the prefix doesn't match any known type
-    }
-    void NodeFactory::build_tree_from_file(const std::string& filename, Entity ent)
-    {
-        std::ifstream file(filename);
-        if (!file.is_open())
-        {
-            BOREALIS_CORE_ERROR("Error: Could not open file {}!", filename);
-            return;
-        }
-
-        std::vector<Ref<BehaviourNode>> nodeByDepth;  // To manage nodes by depth
-        Ref<BehaviourNode> root = nullptr;
-        std::string line;
-
-        while (std::getline(file, line))
-        {
-            std::istringstream iss(line);
-            std::string keyword;
-            iss >> keyword;
-
-            if (keyword == "TREENAME")
-            {
-                std::string treeName;
-                iss >> treeName;
-                BOREALIS_CORE_INFO("Building Tree: {0}", treeName);
-            }
-            else if (keyword == "TREENODE")
-            {
-                std::string nodeTypeStr;
-                int depth;
-                iss >> nodeTypeStr >> depth;
-
-                // Create the node using the node name
-                Ref<BehaviourNode> newNode = createNodeByName(nodeTypeStr);
-                if (!newNode)
-                {
-                    BOREALIS_CORE_ERROR("Error: Failed to create node of type {0}", nodeTypeStr);
-                    continue;
-                }
-
-                // Ensure that nodeByDepth has enough space to hold the current depth
-                if (depth >= nodeByDepth.size())
-                {
-                    nodeByDepth.resize(depth + 1, nullptr);  // Resize to fit the current depth
-                }
-
-                if (depth == 0)
-                {
-                    // The first node at depth 0 is the root node
-                    root = newNode;
-                }
-                else
-                {
-                    // Attach this node to its parent at depth - 1
-                    if (nodeByDepth[depth - 1])
-                    {
-                        nodeByDepth[depth - 1]->add_child(newNode);
-                    }
-                    else
-                    {
-                        BOREALIS_CORE_ERROR("Error: No valid parent node found for depth {0}", depth);
-                    }
-                }
-
-                // Store the current node at its depth in the vector
-                nodeByDepth[depth] = newNode;
-            }
-        }
-
-        file.close();
-
-        // Check if root node was created
-        if (!root)
-        {
-            BOREALIS_CORE_ERROR("Error: Tree root not found.");
-            return;
-        }
-
-        // Properly initialize the BehaviourTree
-        Ref<BehaviourTree> treeContainer = std::make_shared<BehaviourTree>();
-        treeContainer->SetRootNode(root);
-
-        // Ensure the entity has the BehaviourTreeComponent before adding the tree
-        if (!ent.HasComponent<BehaviourTreeComponent>()) {
-            BOREALIS_CORE_ERROR("Error: Entity does not have a BehaviourTreeComponent.");
-            return;
-        }
-
-        ent.GetComponent<BehaviourTreeComponent>().AddTree(treeContainer);
     }
 }
 
