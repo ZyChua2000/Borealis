@@ -30,6 +30,14 @@ namespace Borealis
 	{
 	public:
 		Serialiser(const Ref<Scene>& scene);
+		
+		/*
+		    @brief Recursively parses the YAML node to construct the behavior tree.
+		    @param node The current YAML node to parse.
+		    @param parentNode The parent node in the behavior tree to which the parsed node will be added.
+		    @param tree The behaviour tree object to which nodes are being added.
+		    @param parentDepth The depth of the parent node in the behavior tree.
+		*/
 		void ParseTree(YAML::Node& node, Ref<BehaviourNode> parentNode, BehaviourTree& tree, int parentDepth);
 
 		bool SerialiseScene(const std::string& filepath);
