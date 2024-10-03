@@ -19,12 +19,26 @@ namespace Borealis
     class C_Sequencer : public BaseNode<C_Sequencer>
     {
     public:
+        /*
+            @brief Default constructor for the C_Sequencer node.
+        */
         C_Sequencer();
+
     protected:
-        size_t currentIndex;
+        size_t currentIndex;  // Tracks the current child node being executed
 
+        /*
+            @brief Called when the sequencer node starts execution.
+            This method resets the currentIndex to begin processing child nodes.
+        */
         virtual void on_enter() override;
-        virtual void on_update(float dt) override;
 
+        /*
+            @brief Called to update the sequencer node during execution.
+            It processes child nodes in sequence, moving to the next one when the current child succeeds.
+            @param dt The delta time for the update.
+        */
+        virtual void on_update(float dt) override;
     };
 }
+
