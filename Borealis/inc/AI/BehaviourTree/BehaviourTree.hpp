@@ -76,5 +76,3 @@ namespace Borealis
         std::string treeName;  // Name of the behavior tree
     };
 }
-
-}
