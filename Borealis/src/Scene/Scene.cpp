@@ -79,7 +79,7 @@ namespace Borealis
 			// Physics Simulation here
 			//------------------------
 
-			//PhysicsSystem::Update(dt);
+			PhysicsSystem::Update(1/60.f);
 			
 
 			for (auto entity : view)

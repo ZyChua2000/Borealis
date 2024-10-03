@@ -206,6 +206,9 @@ struct PhysicsSystemData
 	JPH::PhysicsSystem* mSystem;
 	JPH::TempAllocatorImpl* temp_allocator;
 	JPH::JobSystemThreadPool* job_system;
+	JPH::BodyInterface* body_interface;
+	JPH::BodyID sphere_id;
+
 };
 
 static PhysicsSystemData sData;
@@ -291,7 +294,7 @@ void ::PhysicsSystem::Init()
 
 	// The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
 	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
-	BodyInterface &body_interface = sData.mSystem->GetBodyInterface();
+	sData.body_interface = &sData.mSystem->GetBodyInterface();
 
 	//============================\\
 	//========EXAMPLE=============\\
@@ -313,19 +316,19 @@ void ::PhysicsSystem::Init()
 
 
 	// Create the actual rigid body
-	Body* floor = body_interface.CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
+	Body* floor = sData.body_interface->CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
 
 	// Add it to the world
-	body_interface.AddBody(floor->GetID(), EActivation::DontActivate);
+	sData.body_interface->AddBody(floor->GetID(), EActivation::DontActivate);
 
 	// Now create a dynamic body to bounce on the floor
 	// Note that this uses the shorthand version of creating and adding a body to the world
 	BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 2.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
-	BodyID sphere_id = body_interface.CreateAndAddBody(sphere_settings, EActivation::Activate);
+	sData.sphere_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
 
 	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
 	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	body_interface.SetLinearVelocity(sphere_id, Vec3(0.0f, -5.0f, 0.0f));
+	sData.body_interface->SetLinearVelocity(sData.sphere_id, Vec3(0.0f, -5.0f, 0.0f));
 
 	// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
 	const float cDeltaTime = 1.0f / 60.0f;
@@ -334,11 +337,30 @@ void ::PhysicsSystem::Init()
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
 	// Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
 	sData.mSystem->OptimizeBroadPhase();
+
+	
+
 }
 
 void ::PhysicsSystem::Update(float dt)
 {
-	sData.mSystem->Update(dt,1,sData.temp_allocator,sData.job_system);
+	// Now we're ready to simulate the body, keep simulating until it goes to sleep
+	uint step = 0;
+	while (sData.body_interface->IsActive(sData.sphere_id))
+	{
+		// Next step
+		++step;
+
+		// Output current position and velocity of the sphere
+		RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.sphere_id);
+		Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.sphere_id);
+		cout << "Step " << step << ": Position = (" << position.GetX() << ", " << position.GetY() << ", " << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", " << velocity.GetZ() << ")" << endl;
+
+		// If you take larger steps than 1 / 60th of a second you need to do multiple collision steps in order to keep the simulation stable. Do 1 collision step per 1 / 60th of a second (round up).
+		const int cCollisionSteps = 1;
+		sData.mSystem->Update(dt, cCollisionSteps, sData.temp_allocator, sData.job_system);
+	}
+	cout << "Physics System Updated" << endl;
 }
 
 void ::PhysicsSystem::Free()
