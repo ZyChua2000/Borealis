@@ -27,6 +27,7 @@ namespace Borealis
 		static void AddScene(std::string sceneName, std::string scenePath);
 		static void RemoveScene(std::string sceneName);
 		static void SetActiveScene(std::string sceneName);
+		static void SetActiveScene(Ref<Scene> scene) {mActiveScene = scene;}
 		static Ref<Scene> GetActiveScene() { return mActiveScene; };
 		static Entity GetEntity(uint64_t entityID);
 		static std::unordered_set<std::string> GetSceneNames();

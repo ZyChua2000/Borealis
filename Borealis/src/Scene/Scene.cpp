@@ -272,6 +272,9 @@ namespace Borealis
 		newScene->mViewportWidth = other->mViewportWidth;
 		newScene->mViewportHeight = other->mViewportHeight;
 
+		newScene->mScenePath = other->mScenePath;
+		newScene->mName = other->mName;
+
 		std::unordered_map<UUID, entt::entity> UUIDtoENTT;
 
 		auto& originalRegistry = other->mRegistry;

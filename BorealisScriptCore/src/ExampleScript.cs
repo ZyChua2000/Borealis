@@ -17,7 +17,7 @@ namespace Borealis
 
         public override void Update()
         {
-            InternalCalls.Log(Input.mouseScrollDelta.y.ToString());
+            //InternalCalls.Log(Input.mouseScrollDelta.y.ToString());
         }
 
     }
