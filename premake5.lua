@@ -116,7 +116,9 @@ workspace "Borealis"
 		defines
 		{
 			"_CRT_SECURE_NO_WARNINGS",
-			"YAML_CPP_STATIC_DEFINE"
+			"YAML_CPP_STATIC_DEFINE",
+			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
+			"JPH_CROSS_PLATFORM_DETERMINISTIC",
 		}
 
 		includedirs
@@ -240,7 +242,9 @@ workspace "Borealis"
 		defines
 		{
 			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-			"YAML_CPP_STATIC_DEFINE"
+			"YAML_CPP_STATIC_DEFINE",
+			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
+			"JPH_CROSS_PLATFORM_DETERMINISTIC",
 		}
 
 		links
@@ -270,7 +274,8 @@ workspace "Borealis"
 				"%{Library.MSDF_Debug_LibBZ2}",
 				"%{Library.MSDF_Debug_LibBrotli}",
 				"%{Library.MSDF_Debug_LibBrotliCommon}",
-				"Borealis/%{Library.YAML_Debug}"
+				"Borealis/%{Library.YAML_Debug}",
+				"Borealis/%{Library.Jolt_Debug}"
 			}
 
 		filter "configurations:Release"
@@ -357,6 +362,10 @@ workspace "Borealis"
 				defines "_DEB"
 				symbols "On"
 				runtime "Debug"
+			links
+			{
+				"Borealis/%{Library.Jolt_Debug}"
+			}
 	
 			filter "configurations:Release"
 				defines "_REL"
@@ -439,6 +448,8 @@ workspace "Borealis"
 		defines
 		{
 			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
+			"JPH_CROSS_PLATFORM_DETERMINISTIC"		
 		}
 
 		links
@@ -451,6 +462,10 @@ workspace "Borealis"
 			symbols "On"
 			runtime "Debug"
 
+		links
+		{
+			"Borealis/%{Library.Jolt_Debug}"
+		}
 		filter "configurations:Release"
 			defines "_REL"
 			optimize "On"

@@ -22,6 +22,9 @@
     <Filter Include="inc\ImGui">
       <UniqueIdentifier>{89503E75-F5BA-F2EB-3EF9-A391AAA2D040}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Physics">
+      <UniqueIdentifier>{9132CAD0-FDE7-42C6-86DC-3C9DF29039CA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Scene">
       <UniqueIdentifier>{7C48EE75-E8B2-A2EC-31F1-53929D9A8041}</UniqueIdentifier>
     </Filter>
@@ -103,14 +106,14 @@
     <Filter Include="src\ImGui">
       <UniqueIdentifier>{170E22B3-8378-D629-CCB6-87CF3860B47E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Scene">
       <UniqueIdentifier>{0A06D2B3-7670-862A-BFAE-37D02B58647F}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Physics">
-      <UniqueIdentifier>{836b725e-e065-4dba-a53e-f9161a244e4c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -249,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp">
       <Filter>inc\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Physics\PhysicsSystem.hpp">
+      <Filter>inc\Physics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\Components.hpp">
       <Filter>inc\Scene</Filter>
@@ -1684,9 +1690,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Physics\PhysicsSystem.hpp">
-      <Filter>src\Physics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -1809,6 +1812,9 @@
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
       <Filter>src\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Physics\PhysicsSystem.cpp">
+      <Filter>src\Physics</Filter>
+    </ClCompile>
     <ClCompile Include="src\Scene\Entity.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
@@ -1844,9 +1850,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Physics\PhysicsSystem.cpp">
-      <Filter>src\Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

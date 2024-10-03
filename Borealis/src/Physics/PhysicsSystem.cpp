@@ -204,14 +204,15 @@ public:
 struct PhysicsSystemData
 {
 	JPH::PhysicsSystem* mSystem;
+	JPH::TempAllocatorImpl* temp_allocator;
+	JPH::JobSystemThreadPool* job_system;
 };
 
 static PhysicsSystemData sData;
-JPH::TempAllocatorImpl temp_allocator(10 * 1024 * 1024);
-JPH::JobSystemThreadPool job_system(2048,8,thread::hardware_concurrency()-1);
 
 void ::PhysicsSystem::Init()
 {
+
 	// Register allocation hook. In this example we'll just let Jolt use malloc / free but you can override these if you want (see Memory.h).
 	// This needs to be done before any other Jolt function is called.
 	RegisterDefaultAllocator();
@@ -222,7 +223,7 @@ void ::PhysicsSystem::Init()
 
 		// Create a factory, this class is responsible for creating instances of classes based on their name or hash and is mainly used for deserialization of saved data.
 		// It is not directly used in this example but still required.
-		Factory::sInstance = new Factory();
+	Factory::sInstance = new Factory();
 
 	// Register all physics types with the factory and install their collision handlers with the CollisionDispatch class.
 	// If you have your own custom shape types you probably need to register their handlers with the CollisionDispatch before calling this function.
@@ -234,7 +235,8 @@ void ::PhysicsSystem::Init()
 	// B.t.w. 10 MB is way too much for this example but it is a typical value you can use.
 	// If you don't want to pre-allocate you can also use TempAllocatorMalloc to fall back to
 	// malloc / free.
-	TempAllocatorImpl temp_allocator(10 * 1024 * 1024);
+	sData.temp_allocator = new TempAllocatorImpl(10 * 1024 * 1024);
+	sData.job_system = new JobSystemThreadPool(2048, 8, thread::hardware_concurrency() - 1);
 
 	// We need a job system that will execute physics jobs on multiple threads. Typically
 	// you would implement the JobSystem interface yourself and let Jolt Physics run on top
@@ -272,24 +274,24 @@ void ::PhysicsSystem::Init()
 	ObjectLayerPairFilterImpl object_vs_object_layer_filter;
 
 	// Now we can create the actual physics system.
-	JPH::PhysicsSystem physics_system;
-	physics_system.Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface, object_vs_broadphase_layer_filter, object_vs_object_layer_filter);
+	sData.mSystem = new JPH::PhysicsSystem();
+	sData.mSystem->Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface, object_vs_broadphase_layer_filter, object_vs_object_layer_filter);
 	
 	// A body activation listener gets notified when bodies activate and go to sleep
 	// Note that this is called from a job so whatever you do here needs to be thread safe.
 	// Registering one is entirely optional.
 	MyBodyActivationListener body_activation_listener;
-	physics_system.SetBodyActivationListener(&body_activation_listener);
+	sData.mSystem->SetBodyActivationListener(&body_activation_listener);
 
 	// A contact listener gets notified when bodies (are about to) collide, and when they separate again.
 	// Note that this is called from a job so whatever you do here needs to be thread safe.
 	// Registering one is entirely optional.
 	MyContactListener contact_listener;
-	physics_system.SetContactListener(&contact_listener);
+	sData.mSystem->SetContactListener(&contact_listener);
 
 	// The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
 	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
-	BodyInterface &body_interface = physics_system.GetBodyInterface();
+	BodyInterface &body_interface = sData.mSystem->GetBodyInterface();
 
 	//============================\\
 	//========EXAMPLE=============\\
@@ -331,18 +333,18 @@ void ::PhysicsSystem::Init()
 	// Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
 	// Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
-	physics_system.OptimizeBroadPhase();
-
-	sData.mSystem = &physics_system;
-
+	sData.mSystem->OptimizeBroadPhase();
 }
 
 void ::PhysicsSystem::Update(float dt)
 {
-	sData.mSystem->Update(dt,1,&temp_allocator,&job_system);
+	sData.mSystem->Update(dt,1,sData.temp_allocator,sData.job_system);
 }
 
 void ::PhysicsSystem::Free()
 {
+	delete sData.temp_allocator;
+	delete sData.job_system;
 	delete sData.mSystem;
+	delete Factory::sInstance;
 }
