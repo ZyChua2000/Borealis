@@ -1,4 +1,3 @@
-#pragma once
 /******************************************************************************
 /*!
 \file       L_Idle.cpp
@@ -12,6 +11,9 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
+#ifndef L_IDLE_HPP
+#define L_IDLE_HPP
+
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 namespace Borealis
 {
