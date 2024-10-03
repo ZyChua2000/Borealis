@@ -23,6 +23,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	UUID ContentBrowserPanel::sSelectedAsset = 0;
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
@@ -52,7 +53,7 @@ namespace Borealis
 
 		// Right click
 		{
-			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems;
+			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_NoOpenOverExistingPopup;
 			if (ImGui::BeginPopupContextWindow(0, popupFlagsItem))
 			{
 				if (ImGui::MenuItem("Create Folder"))
@@ -64,6 +65,10 @@ namespace Borealis
 					// Create a Scene
 					isCreatingScene = true;
 					latestMousePos = ImGui::GetMousePos();
+				}
+				if (ImGui::MenuItem("Create New Material"))
+				{
+					MaterialEditor::SetRender(true);
 				}
 				ImGui::EndPopup();
 			}
@@ -107,7 +112,6 @@ namespace Borealis
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
 			ImGui::PushID(filenameStr.c_str());
-
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
@@ -155,11 +159,21 @@ namespace Borealis
 				printedThumbnailSize = 0;
 				ImGui::Image((ImTextureID)screenID, { ImGui::GetFontSize(), ImGui::GetFontSize() });
 				ImGui::SameLine();
-				ImGui::Button(filenameStr.c_str());
+				if (ImGui::Button(filenameStr.c_str()))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)screenID, {printedThumbnailSize, printedThumbnailSize}, {0,1}, {1,0}, -1 , {0,0,0,0}, {1,1,1,1});
+				if (ImGui::ImageButton((ImTextureID)screenID, { printedThumbnailSize, printedThumbnailSize }, { 0,1 }, { 1,0 }, -1, { 0,0,0,0 }, { 1,1,1,1 }))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
+				if (sSelectedAsset == AssetImporter::GetAssetHandle(path))
+				{
+					ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 0, 0, 255));
+				}
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Delete"))
@@ -223,6 +237,11 @@ namespace Borealis
 				}
 			}
 
+			if (!ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			{
+				sSelectedAsset = 0;
+			}
+
 			if (mThumbnailSize != mMinThumbnailSize)
 			{
 				ImGui::TextWrapped(filenameStr.c_str());
@@ -234,20 +253,6 @@ namespace Borealis
 		{
 			ImGui::PopStyleColor();
 			ImGui::Columns(1);
-		}
-
-		// Material Creation
-		if (mCurrDir.filename() == "materials")
-		{
-			// Right-click popup for the Materials folder
-			if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
-			{
-				if (ImGui::MenuItem("Create New Material"))
-				{
-					MaterialEditor::SetRender(true);
-				}
-				ImGui::EndPopup();
-			}
 		}
 
 		// End the upper scrollable section

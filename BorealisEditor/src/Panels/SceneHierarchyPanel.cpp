@@ -18,9 +18,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneManager.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
+#include <Panels/ContentBrowserPanel.hpp>
 
 #include <EditorAssets/MeshImporter.hpp>
 #include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/AssetImporter.hpp>
 #include <Assets/AssetManager.hpp>
 
 #include <Core/Project.hpp>
@@ -239,6 +241,45 @@ namespace Borealis
 		{
 			MaterialEditor::SetRender(false);
 			DrawComponents(mSelectedEntity);
+		}
+		else if (ContentBrowserPanel::sSelectedAsset)
+		{
+			auto& metadata = Project::GetEditorAssetsManager()->GetMetaData(ContentBrowserPanel::sSelectedAsset);
+#ifdef _DEB
+			ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
+#endif
+			ImGui::Text(("Name: " + metadata.name).c_str());
+			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
+			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
+
+			switch (metadata.Type)
+			{
+				case AssetType::Texture2D:
+				{
+					break;
+				}
+				case AssetType::Audio:
+				{
+					break;
+				}
+				case AssetType::Shader:
+				{
+					break;
+				}
+				case AssetType::Mesh:
+				{
+					break;
+				}
+				case AssetType::Material:
+				{
+					break;
+				}
+				default:
+				{
+					break;
+				}
+				
+			}
 		}
 		MaterialEditor::RenderEditor();
 

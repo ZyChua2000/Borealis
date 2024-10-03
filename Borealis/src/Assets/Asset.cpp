@@ -30,6 +30,7 @@ namespace Borealis
 		if (extension == ".glsl") return AssetType::Shader;
 		if (extension == ".ttf") return AssetType::Font;
 		if (extension == ".fbx") return AssetType::Mesh;
+		if (extension == ".mat") return AssetType::Material;
 
 		return AssetType::None;
 	}
@@ -46,6 +47,7 @@ namespace Borealis
 		case AssetType::Folder:		return "AssetType::Folder";
 		case AssetType::Font:		return "AssetType::Font";
 		case AssetType::Scene:		return "AssetType::Scene";
+		case AssetType::Material:	return "AssetType::Material";
 		}
 
 		return "AssetType::<Invalid>";
@@ -61,7 +63,7 @@ namespace Borealis
 		if (type == "AssetType::Folder")		return AssetType::Folder;
 		if (type == "AssetType::Font")			return AssetType::Font;
 		if (type == "AssetType::Scene")			return AssetType::Scene;
-
+		if (type == "AssetType::Material")		return AssetType::Material;
 		return AssetType::None;
 	}
 }

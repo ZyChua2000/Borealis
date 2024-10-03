@@ -33,6 +33,7 @@ namespace Borealis
 		Folder,
 		Font,
 		Scene,
+		Material,
 	};
 
 	class Asset

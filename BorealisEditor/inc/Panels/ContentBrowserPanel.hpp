@@ -28,6 +28,7 @@ namespace Borealis
 		ContentBrowserPanel();
 		void ImGuiRender();
 		void SetCurrDir(std::string path);
+		static UUID sSelectedAsset;
 
 	private:
 		 bool isCreatingScene = false;
