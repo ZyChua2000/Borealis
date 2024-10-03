@@ -79,17 +79,11 @@ namespace Borealis {
 			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
 
 			Font::SetDefaultFont(MakeRef<Font>(font));
-
-			//MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
 		}
-
-		Borealis::AudioEngine::Init();
-		//Borealis::AudioEngine::PlayAudio("assets/Audio/meow.mp3");
 	}
 
 	void EditorLayer::Free()
 	{
-		Borealis::AudioEngine::Shutdown();
 		PROFILE_FUNCTION();
 		ResourceManager::Free();
 
@@ -158,7 +152,10 @@ namespace Borealis {
 			{
 				if (mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY) != -1)
 				{
+					//int id_ent = mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY);
 					mHoveredEntity = { (entt::entity)mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY), SceneManager::GetActiveScene().get()};
+					//BOREALIS_CORE_INFO("picking id {}", id_ent);
+					//BOREALIS_CORE_INFO("Name : {}", mHoveredEntity.GetName());
 				}
 				else
 				{
