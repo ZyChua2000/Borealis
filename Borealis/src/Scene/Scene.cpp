@@ -234,6 +234,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
+		CopyComponent<ScriptComponent>(newEntity, entity);
+
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -263,6 +265,29 @@ namespace Borealis
 
 			auto srcComponent = view.get<Component>(srcEntity);
 			dst.emplace_or_replace<Component>(dstEntity, srcComponent);
+		}
+	}
+
+	template <>
+	static void CopyComponent <ScriptComponent> (entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& entitymap)
+	{
+		auto view = src.view<ScriptComponent>();
+		for (auto srcEntity : view)
+		{
+			UUID uuid = src.get<IDComponent>(srcEntity).ID;
+			auto dstEntity = entitymap.at(uuid);
+
+			auto srcComponent = view.get<ScriptComponent>(srcEntity);
+
+			auto& newScriptComponent = dst.emplace<ScriptComponent>(dstEntity);
+
+
+			for (auto script : srcComponent.mScripts)
+			{
+				Ref<ScriptInstance> newScript = MakeRef<ScriptInstance>(script.second->GetScriptClass());
+				newScript->Init(uuid);
+				newScriptComponent.AddScript(script.first, newScript);
+			}
 		}
 	}
 
@@ -299,6 +324,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<ScriptComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+
 
 		return newScene;
 	}

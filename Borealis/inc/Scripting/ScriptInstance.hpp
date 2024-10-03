@@ -33,6 +33,8 @@ namespace Borealis
 				Reference to the Script Class being created
 		*************************************************************************/
 		ScriptInstance(Ref<ScriptClass> scriptClass);
+		
+		void Init(uint64_t UUIDAddress);
 
 		/*!***********************************************************************
 			\brief
