@@ -1,4 +1,3 @@
-#pragma once
 /******************************************************************************
 /*!
 \file       BehaviurNode.hpp
@@ -12,6 +11,9 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
+#ifndef BEHAVIOURNODE_HPP
+#define BEHAVIOURNODE_HPP
+
 #include <Core/Core.hpp>
 #include <string>
 #include <memory>
