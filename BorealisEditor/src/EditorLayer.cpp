@@ -24,7 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
-//#include <Project/Project.hpp>
+//	#include <Project/Project.hpp>
 #include "Audio/AudioEngine.hpp"
 
 #include <EditorAssets/AssetImporter.hpp>

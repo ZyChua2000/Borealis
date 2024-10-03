@@ -137,11 +137,11 @@ namespace Borealis
 
 		//Post-Render
 		{
-			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListener>);
+			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListenerComponent>);
 			int listener = 0;
 			for (auto& entity : group)
 			{
-				auto [transform, audioListener] = group.get<TransformComponent, AudioListener>(entity);
+				auto [transform, audioListener] = group.get<TransformComponent, AudioListenerComponent>(entity);
 				if (listener == 0)
 				{
 					listener = 1;
@@ -154,10 +154,10 @@ namespace Borealis
 
 			if (listener == 1)
 			{
-				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioSource>);
+				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioSourceComponent>);
 				for (auto& entity : group)
 				{
-					auto [transform, audio] = group.get<TransformComponent, AudioSource>(entity);
+					auto [transform, audio] = group.get<TransformComponent, AudioSourceComponent>(entity);
 					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
 					{
 						audio.isPlaying = false;
@@ -266,6 +266,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
+		CopyComponent<AudioSourceComponent>(newEntity, entity);
+		CopyComponent<AudioListenerComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -328,6 +330,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioSourceComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioListenerComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
@@ -440,14 +444,14 @@ namespace Borealis
 
 	}
 
-
 	template<>
-	void Scene::OnComponentAdded<AudioSource>(Entity entity, AudioSource& component)
+	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component)
 	{
 
 	}
+
 	template<>
-	void Scene::OnComponentAdded<AudioListener>(Entity entity, AudioListener& component)
+	void Scene::OnComponentAdded<AudioListenerComponent>(Entity entity, AudioListenerComponent& component)
 	{
 
 	}
