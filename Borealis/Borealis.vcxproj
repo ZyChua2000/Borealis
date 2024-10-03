@@ -170,6 +170,8 @@
     <ClInclude Include="inc\Debugging\Profiler.hpp" />
     <ClInclude Include="inc\Events\EventInput.hpp" />
     <ClInclude Include="inc\Events\EventWindow.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\Bone.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp" />
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
@@ -193,6 +195,7 @@
     <ClInclude Include="inc\Graphics\Renderer3D.hpp" />
     <ClInclude Include="inc\Graphics\RendererAPI.hpp" />
     <ClInclude Include="inc\Graphics\Shader.hpp" />
+    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp" />
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp" />
     <ClInclude Include="inc\Graphics\Texture.hpp" />
     <ClInclude Include="inc\Graphics\VertexArray.hpp" />
@@ -703,10 +706,12 @@
     <ClCompile Include="src\Core\WindowManager.cpp" />
     <ClCompile Include="src\Events\EventInput.cpp" />
     <ClCompile Include="src\Events\EventWindow.cpp" />
+    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp" />
@@ -723,6 +728,7 @@
     <ClCompile Include="src\Graphics\Renderer3D.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\SkinnedMesh.cpp" />
     <ClCompile Include="src\Graphics\SubTexture2D.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\VertexArray.cpp" />

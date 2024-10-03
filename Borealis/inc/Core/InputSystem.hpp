@@ -21,6 +21,7 @@ namespace Borealis
 	class BOREALIS_API InputSystem
 	{
 	public:
+		static void Init();
 		/*!***********************************************************************
 			\brief
 				Checks if a key is pressed
@@ -30,6 +31,8 @@ namespace Borealis
 				True if pressed, false if not
 		*************************************************************************/
 		static bool IsKeyPressed(int key);
+		static bool IsKeyTriggered(int key);
+		static bool IsKeyReleased(int key);
 
 		/*!***********************************************************************
 			\brief
@@ -40,6 +43,9 @@ namespace Borealis
 				True if pressed, false if not
 		*************************************************************************/
 		static bool IsMouseButtonPressed(int key);
+
+		static bool IsMouseButtonTriggered(int key);
+		static bool IsMouseButtonReleased(int key);
 
 		/*!***********************************************************************
 			\brief
@@ -64,6 +70,20 @@ namespace Borealis
 				y position of the mouse
 		*************************************************************************/
 		static float GetMouseY();
+
+		static void PollInput();
+
+		static void AccumulateScroll(double yoffset) { ScrollY += yoffset; }
+
+		static float GetScroll() { return (float)ScrollY; }
+
+		static void ResetScroll() { ScrollY = 0; }
+
+	private:
+
+		static double ScrollY;
+		static uint16_t KeyCurrentState[349];
+		static uint16_t KeyPrevState[349];
 	};
 
 } // End of namespace Borealis

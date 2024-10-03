@@ -15,13 +15,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
+#include <ResourceManager.hpp>
+
+#include "Assets/MaterialEditor.hpp"
 
 namespace Borealis
 {
+
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
-		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
+		// Load by serialisation in the future
 		mAssetsDir = "assets";
 	}
 
@@ -97,17 +101,19 @@ namespace Borealis
 
 		for (auto& entry : std::filesystem::directory_iterator(mCurrDir))
 		{
-		;
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
+			if (extension == ".meta") // Skip meta files
+			{
+				continue;
+			}
 			ImGui::PushID(filenameStr.c_str());
-			
 
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
-				screenID = static_cast<uint64_t>(mDirectoryIcon->GetRendererID());
+				screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Directory)->GetRendererID());
 			}
 			else
 			{
@@ -117,11 +123,11 @@ namespace Borealis
 				}
 				else if (extension == ".txt")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Text)->GetRendererID());
 				}
 				else if (extension == ".sc")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Scene)->GetRendererID());
 				}
 				else if (extension == ".glsl")
 				{
@@ -129,18 +135,22 @@ namespace Borealis
 				}
 				else if (extension == ".ttf")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Font)->GetRendererID());
 				}
 				else if (extension == ".prefab")
 				{
 
+				}
+				else if (extension == ".cs")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Script)->GetRendererID());
 				}
 				else
 				{
 					// default case
 				}
 			}
-			#
+			
 			if (mThumbnailSize == mMinThumbnailSize)
 			{
 				printedThumbnailSize = 0;
@@ -209,7 +219,6 @@ namespace Borealis
 				}
 			}
 
-
 			if (mThumbnailSize != mMinThumbnailSize)
 			{
 				ImGui::TextWrapped(filenameStr.c_str());
@@ -222,6 +231,21 @@ namespace Borealis
 			ImGui::PopStyleColor();
 			ImGui::Columns(1);
 		}
+
+		// Material Creation
+		if (mCurrDir.filename() == "materials")
+		{
+			// Right-click popup for the Materials folder
+			if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
+			{
+				if (ImGui::MenuItem("Create New Material"))
+				{
+					MaterialEditor::SetRender(true);
+				}
+				ImGui::EndPopup();
+			}
+		}
+
 		// End the upper scrollable section
 		ImGui::EndChild();
 		if (ImGui::SliderInt("##Thumbnail Size", &mThumbnailSize, mMinThumbnailSize, 512, "", ImGuiSliderFlags_NoInput))

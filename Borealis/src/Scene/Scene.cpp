@@ -147,11 +147,11 @@ namespace Borealis
 	{
 		Renderer3D::Begin(camera);
 		{
-			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
 			for (auto& entity : group)
 			{
-				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
-				MeshRendererComponent meshRenderer;
+				auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
+				
 				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 			}
 		}
@@ -279,6 +279,9 @@ namespace Borealis
 		Ref<Scene> newScene = MakeRef<Scene>();
 		newScene->mViewportWidth = other->mViewportWidth;
 		newScene->mViewportHeight = other->mViewportHeight;
+
+		newScene->mScenePath = other->mScenePath;
+		newScene->mName = other->mName;
 
 		std::unordered_map<UUID, entt::entity> UUIDtoENTT;
 

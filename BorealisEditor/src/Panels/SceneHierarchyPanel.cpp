@@ -21,7 +21,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
+#include <EditorLayer.hpp>
 
+
+#include "Assets/MaterialEditor.hpp"
 
 namespace Borealis
 {
@@ -195,11 +198,15 @@ namespace Borealis
 				ImGui::PopFont();
 				if (ImGui::BeginPopupContextItem())
 				{
-					if (ImGui::MenuItem("Load Scene"))
+					if (EditorLayer::mSceneState == EditorLayer::SceneState::Edit)
 					{
-						SceneManager::SetActiveScene(name);
-						mContext = SceneManager::GetActiveScene();
-						mSelectedEntity = {};
+						if (ImGui::MenuItem("Load Scene"))
+						{
+							SceneManager::SaveActiveScene();
+							SceneManager::SetActiveScene(name);
+							mContext = SceneManager::GetActiveScene();
+							mSelectedEntity = {};
+						}
 					}
 					ImGui::EndPopup();
 				}
@@ -227,15 +234,17 @@ namespace Borealis
 			}
 			ImGui::EndPopup();
 		}
-		
 
 		ImGui::End();
 
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
+			MaterialEditor::SetRender(false);
 			DrawComponents(mSelectedEntity);
 		}
+		MaterialEditor::RenderEditor();
+
 		ImGui::End();
 
 	}
@@ -674,6 +683,11 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if (component.Material)
+				{
+					MaterialEditor::RenderProperties(component.Material);
+				}
+
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
