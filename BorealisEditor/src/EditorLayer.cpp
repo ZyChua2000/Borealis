@@ -29,6 +29,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Graphics/Font.hpp>
 #include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/MeshImporter.hpp>
 
 namespace Borealis {
 
@@ -69,14 +70,12 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			//FontInfo fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
-
-			//Font::SetDefaultFont(MakeRef<Font>(fontInfo));
-
 			Font font(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.bfi"));
 			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
 
 			Font::SetDefaultFont(MakeRef<Font>(font));
+
+			//MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
 		}
 
 	}

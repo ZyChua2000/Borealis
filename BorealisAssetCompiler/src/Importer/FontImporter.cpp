@@ -189,7 +189,7 @@ namespace BorealisAssetCompiler
 						charSet.add(c);
 					}
 				}
-				double fontScale = 1.0;
+				double fontScale = 4.0; // let meta decide in the future
 				msdf_atlas::FontGeometry fontGeometry = msdf_atlas::FontGeometry(&glyphs);
 				int loadedGlyphs = fontGeometry.loadCharset(font, fontScale, charSet);
 

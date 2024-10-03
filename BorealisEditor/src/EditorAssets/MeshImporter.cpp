@@ -30,6 +30,16 @@ namespace Borealis
 			return nullptr;
 		}
 
+		aiMaterial* material = scene->mMaterials[0];
+		aiString texture_file;
+		material->Get(AI_MATKEY_TEXTURE(aiTextureType_DIFFUSE, 0), texture_file);
+		if (auto texture = scene->GetEmbeddedTexture(texture_file.C_Str())) {
+			//returned pointer is not null, read texture from memory
+		}
+		else {
+			//regular file, check if it exists and read it
+		}
+
 		//BOREALIS_CORE_TRACE("FBX load from {0}", path);
 		Model model;
 		ProcessNode(scene->mRootNode, scene, model);
