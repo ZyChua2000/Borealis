@@ -293,7 +293,6 @@ void ::PhysicsSystem::Init()
 	//========EXAMPLE=============\\
 	//============================\\
 
-
 	// Next we can create a rigid body to serve as the floor, we make a large box
 	// Create the settings for the collision volume (the shape).
 	// Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
@@ -306,7 +305,6 @@ void ::PhysicsSystem::Init()
 
 	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
 	BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -1.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
-
 
 	// Create the actual rigid body
 	Body* floor = sData.body_interface->CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
@@ -330,9 +328,6 @@ void ::PhysicsSystem::Init()
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
 	// Instead insert all new objects in batches instead of 1 at a time to keep the broad phase efficient.
 	sData.mSystem->OptimizeBroadPhase();
-
-	
-
 }
 
 void ::PhysicsSystem::Update(float dt, int step)
@@ -341,7 +336,7 @@ void ::PhysicsSystem::Update(float dt, int step)
 	RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.sphere_id);
 	Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.sphere_id);
 
-	sData.mSystem->Update(dt, step, sData.temp_allocator, sData.job_system);
+	sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
 
 	cout << "Position: " << position << " Velocity: " << velocity << endl;
 
