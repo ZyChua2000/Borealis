@@ -11,7 +11,8 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-#pragma once
+#ifndef L_CHECKMOUSECLICK_HPP
+#define L_CHECKMOUSECLICK_HPP
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 namespace Borealis
 {
