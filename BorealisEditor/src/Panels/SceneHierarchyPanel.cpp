@@ -789,11 +789,35 @@ namespace Borealis
 						ImGui::EndCombo();
 					}
 
-					/*if (component.type == LightComponent::Type::Spot)
+					ImGui::ColorEdit3("Ambient", glm::value_ptr(component.ambient));
+					ImGui::ColorEdit3("Diffuse", glm::value_ptr(component.diffuse));
+					ImGui::ColorEdit3("Specular", glm::value_ptr(component.specular));
+					
+
+					if (component.type == LightComponent::Type::Spot)
 					{
 						ImGui::DragFloat("Inner Spot", &component.InnerOuterSpot.x, 0.025f);
 						ImGui::DragFloat("Outer Spot", &component.InnerOuterSpot.y, 0.025f);
-					}*/
+					}
+
+					if (component.type == LightComponent::Type::Directional)
+					{
+						ImGui::PushItemWidth(80.f);
+						ImGui::Text("Direction");
+						ImGui::SameLine(100.f);
+						ImGui::DragFloat("X##direction", &component.direction.x, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Y##direction", &component.direction.y, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Z##direction", &component.direction.z, 0.025f, -1, 1);
+						ImGui::PopItemWidth();
+					}
+
+					if (component.type == LightComponent::Type::Spot || component.type == LightComponent::Type::Point)
+					{
+						ImGui::DragFloat("Linear", &component.linear, 0.025f);
+						ImGui::DragFloat("Quadratic", &component.quadratic, 0.025f);
+					}
 				}
 
 				/*if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))

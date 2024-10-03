@@ -26,6 +26,8 @@ namespace Borealis
         }
 
         mPropertiesVec2[Tiling] = { 1.f, 1.f };
+        mPropertiesFloat[Smoothness] = 0.01f;
+        mPropertiesFloat[Shininess] = 1.f;
     }
 
 	void Material::SetUniforms(Ref<Shader> shader)

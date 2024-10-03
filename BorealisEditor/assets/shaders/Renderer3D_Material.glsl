@@ -4,12 +4,16 @@
 layout(location = 0) in vec3 a_Position;
 layout(location = 1) in vec3 a_Normal;
 layout(location = 2) in vec2 a_TexCoord;
+layout(location = 3) in vec3 a_Tangent;
+layout(location = 4) in vec3 a_Bitangent;
 
 uniform mat4 u_ModelTransform;
 uniform mat4 u_ViewProjection;
 
 out vec2 v_TexCoord;
 out vec3 v_FragPos;
+out vec3 v_Tangent;
+out vec3 v_Bitangent;
 out vec3 v_Normal;
 
 void main()
@@ -17,7 +21,18 @@ void main()
 	v_TexCoord = a_TexCoord;
 
 	v_FragPos = vec3(u_ModelTransform * vec4(a_Position, 1.0));
-	v_Normal = mat3(transpose(inverse(u_ModelTransform))) * a_Normal;
+	//v_Normal = mat3(transpose(inverse(u_ModelTransform))) * a_Normal;
+	
+	mat3 normalMatrix = transpose(inverse(mat3(u_ModelTransform)));
+    vec3 N = normalize(normalMatrix * a_Normal);
+    vec3 T = normalize(normalMatrix * a_Tangent);
+    T = normalize(T - dot(T, N) * N); // Gram-Schmidt orthogonalization
+    vec3 B = cross(N, T);
+
+    v_Normal = N;
+    v_Tangent = T;
+    v_Bitangent = B;
+
 	gl_Position = u_ViewProjection * vec4(v_FragPos, 1.0);	
 }
 
@@ -63,10 +78,15 @@ struct Light {
 
 	//float range;
 	vec2 innerOuterAngle;
+
+	float linear;
+	float quadratic;
 };
 
 in vec2 v_TexCoord;
 in vec3 v_FragPos;
+in vec3 v_Tangent;
+in vec3 v_Bitangent;
 in vec3 v_Normal;
 
 uniform mat4 u_ViewProjection;
@@ -136,7 +156,7 @@ vec3 ComputePointLight(vec3 normal, vec3 viewDir)
 	vec3 lightDir = normalize(u_Light.position - v_FragPos);
 
 	float distance = length(u_Light.position - v_FragPos);
-    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance); 
+    float attenuation = 1.0 / (1.0 + u_Light.linear * distance + u_Light.quadratic * distance * distance); 
 
 	// ambient
 	vec3 ambient = u_Light.ambient * GetAlbedoColor().rgb;
@@ -166,7 +186,7 @@ vec3 ComputeSpotLight(vec3 normal, vec3 viewDir)
 	vec3 lightDir = normalize(u_Light.position - v_FragPos);
 
 	float distance = length(u_Light.position - v_FragPos);
-    float attenuation = 1.0 / (1.0 + 0.09 * distance + 0.032 * distance * distance); 
+    float attenuation = 1.0 / (1.0 + u_Light.linear * distance + u_Light.quadratic * distance * distance); 
 
 	// ambient
 	vec3 ambient = u_Light.ambient * GetAlbedoColor().rgb;
@@ -199,29 +219,35 @@ vec3 ComputeSpotLight(vec3 normal, vec3 viewDir)
 }
 
 void main() {
-	vec4 color = vec4(0.f, 0.f, 0.f, 1.f);
-
 	vec3 viewDir = normalize(u_ViewPos - v_FragPos);
 
-	vec3 normal = normalize(v_Normal);
-	if (u_Material.hasNormalMap) 
-	{
-		vec3 tangentNormal = texture(u_Material.normalMap, GetTexCoord()).rgb;
-		tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
-		normal = normalize(tangentNormal);
-	}
+	mat3 TBN = mat3(v_Tangent, v_Bitangent, v_Normal);
+	vec3 normal;
+    if (u_Material.hasNormalMap) 
+    {
+        // Sample normal map in tangent space
+        vec3 tangentNormal = texture(u_Material.normalMap, GetTexCoord()).rgb;
+        tangentNormal = tangentNormal * 2.0 - 1.0;  // Convert from [0, 1] to [-1, 1]
+        // Transform to world space
+        normal = normalize(TBN * tangentNormal);
+    }
+    else
+    {
+        normal = normalize(v_Normal);
+    }
 
+	vec4 color;
 	if (u_Light.type == 0) 
 	{
-		color = vec4(ComputeSpotLight(normal, viewDir), 1.f);
+		color = vec4(ComputeSpotLight(normal, viewDir), GetAlbedoColor().a);
 	}
 	else if (u_Light.type == 1)
 	{
-		color = vec4(ComputeDirectionalLight(normal, viewDir), 1.f);
+		color = vec4(ComputeDirectionalLight(normal, viewDir), GetAlbedoColor().a);
 	}
 	else if (u_Light.type == 2)
 	{
-		color = vec4(ComputePointLight(normal, viewDir), 1.f);
+		color = vec4(ComputePointLight(normal, viewDir), GetAlbedoColor().a);
 	}
 
 	fragColor = color;

@@ -27,13 +27,17 @@ namespace Borealis
 	{
 		shader->Bind();
 
+		glm::vec2 innerOuterSpot = glm::vec2{ cos(glm::radians(mLight.InnerOuterSpot.x)), cos(glm::radians(mLight.InnerOuterSpot.y)) };
+
 		shader->Set("u_Light.position", mTranslate);
 		shader->Set("u_Light.ambient", mLight.ambient);
 		shader->Set("u_Light.diffuse", mLight.diffuse);
 		shader->Set("u_Light.specular", mLight.specular);
 		shader->Set("u_Light.direction", mLight.direction);
 		//->Set("u_Light.range", mLight.Range);
-		shader->Set("u_Light.innerOuterAngle", mLight.InnerOuterSpot);
+		shader->Set("u_Light.innerOuterAngle", innerOuterSpot);
+		shader->Set("u_Light.linear", mLight.linear);
+		shader->Set("u_Light.quadratic", mLight.quadratic);
 		shader->Set("u_Light.type", static_cast<int>(mLight.type));
 
 		shader->Unbind();
