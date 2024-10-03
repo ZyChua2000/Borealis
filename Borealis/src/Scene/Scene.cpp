@@ -65,8 +65,9 @@ namespace Borealis
 			}
 			static float accumDt = 0;
 			accumDt += dt;
-			int timeStep = (int)(accumDt / 1.66667f);
+			int timeStep = std::max(1, (int)(accumDt / 1.66667f));
 			accumDt -= timeStep * 1.66667f;
+
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);
@@ -81,7 +82,7 @@ namespace Borealis
 			// Physics Simulation here
 			//------------------------
 
-			PhysicsSystem::Update(1/60.f);
+			PhysicsSystem::Update(dt, timeStep);
 			
 
 			for (auto entity : view)

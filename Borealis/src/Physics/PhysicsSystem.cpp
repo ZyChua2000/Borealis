@@ -207,6 +207,11 @@ struct PhysicsSystemData
 	JPH::TempAllocatorImpl* temp_allocator;
 	JPH::JobSystemThreadPool* job_system;
 	JPH::BodyInterface* body_interface;
+	BPLayerInterfaceImpl* broad_phase_layer_interface;
+	ObjectVsBroadPhaseLayerFilterImpl* object_vs_broadphase_layer_filter;
+	ObjectLayerPairFilterImpl* object_vs_object_layer_filter;
+	MyContactListener* contact_listener;
+	MyBodyActivationListener* body_activation_listener;
 	JPH::BodyID sphere_id;
 
 };
@@ -216,6 +221,12 @@ static PhysicsSystemData sData;
 void ::PhysicsSystem::Init()
 {
 
+
+	sData.broad_phase_layer_interface = new BPLayerInterfaceImpl();
+	sData.object_vs_broadphase_layer_filter = new ObjectVsBroadPhaseLayerFilterImpl();
+	sData.object_vs_object_layer_filter = new ObjectLayerPairFilterImpl();
+	sData.contact_listener = new MyContactListener();
+	sData.body_activation_listener = new MyBodyActivationListener();
 	// Register allocation hook. In this example we'll just let Jolt use malloc / free but you can override these if you want (see Memory.h).
 	// This needs to be done before any other Jolt function is called.
 	RegisterDefaultAllocator();
@@ -241,11 +252,6 @@ void ::PhysicsSystem::Init()
 	sData.temp_allocator = new TempAllocatorImpl(10 * 1024 * 1024);
 	sData.job_system = new JobSystemThreadPool(2048, 8, thread::hardware_concurrency() - 1);
 
-	// We need a job system that will execute physics jobs on multiple threads. Typically
-	// you would implement the JobSystem interface yourself and let Jolt Physics run on top
-	// of your own job scheduler. JobSystemThreadPool is an example implementation.
-	JobSystemThreadPool job_system(cMaxPhysicsJobs, cMaxPhysicsBarriers, thread::hardware_concurrency() - 1);
-
 	// This is the max amount of rigid bodies that you can add to the physics system. If you try to add more you'll get an error.
 	// Note: This value is low because this is a simple test. For a real project use something in the order of 65536.
 	const uint cMaxBodies = 1024;
@@ -264,33 +270,20 @@ void ::PhysicsSystem::Init()
 	// Note: This value is low because this is a simple test. For a real project use something in the order of 10240.
 	const uint cMaxContactConstraints = 1024;
 
-	// Create mapping table from object layer to broadphase layer
-	// Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
-	BPLayerInterfaceImpl broad_phase_layer_interface;
-
-	// Create class that filters object vs broadphase layers
-	// Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
-	ObjectVsBroadPhaseLayerFilterImpl object_vs_broadphase_layer_filter;
-
-	// Create class that filters object vs object layers
-	// Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay alive!
-	ObjectLayerPairFilterImpl object_vs_object_layer_filter;
-
 	// Now we can create the actual physics system.
 	sData.mSystem = new JPH::PhysicsSystem();
-	sData.mSystem->Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, broad_phase_layer_interface, object_vs_broadphase_layer_filter, object_vs_object_layer_filter);
+	sData.mSystem->Init(cMaxBodies, cNumBodyMutexes, cMaxBodyPairs, cMaxContactConstraints, *sData.broad_phase_layer_interface, *sData.object_vs_broadphase_layer_filter, *sData.object_vs_object_layer_filter);
 	
 	// A body activation listener gets notified when bodies activate and go to sleep
 	// Note that this is called from a job so whatever you do here needs to be thread safe.
 	// Registering one is entirely optional.
-	MyBodyActivationListener body_activation_listener;
-	sData.mSystem->SetBodyActivationListener(&body_activation_listener);
+	
+	sData.mSystem->SetBodyActivationListener(sData.body_activation_listener);
 
 	// A contact listener gets notified when bodies (are about to) collide, and when they separate again.
 	// Note that this is called from a job so whatever you do here needs to be thread safe.
 	// Registering one is entirely optional.
-	MyContactListener contact_listener;
-	sData.mSystem->SetContactListener(&contact_listener);
+	sData.mSystem->SetContactListener(sData.contact_listener);
 
 	// The main way to interact with the bodies in the physics system is through the body interface. There is a locking and a non-locking
 	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
@@ -342,31 +335,29 @@ void ::PhysicsSystem::Init()
 
 }
 
-void ::PhysicsSystem::Update(float dt)
+void ::PhysicsSystem::Update(float dt, int step)
 {
-	// Now we're ready to simulate the body, keep simulating until it goes to sleep
-	uint step = 0;
-	while (sData.body_interface->IsActive(sData.sphere_id))
-	{
-		// Next step
-		++step;
+	// Output current position and velocity of the sphere
+	RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.sphere_id);
+	Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.sphere_id);
 
-		// Output current position and velocity of the sphere
-		RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.sphere_id);
-		Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.sphere_id);
-		cout << "Step " << step << ": Position = (" << position.GetX() << ", " << position.GetY() << ", " << position.GetZ() << "), Velocity = (" << velocity.GetX() << ", " << velocity.GetY() << ", " << velocity.GetZ() << ")" << endl;
+	sData.mSystem->Update(dt, step, sData.temp_allocator, sData.job_system);
 
-		// If you take larger steps than 1 / 60th of a second you need to do multiple collision steps in order to keep the simulation stable. Do 1 collision step per 1 / 60th of a second (round up).
-		const int cCollisionSteps = 1;
-		sData.mSystem->Update(dt, cCollisionSteps, sData.temp_allocator, sData.job_system);
-	}
+	cout << "Position: " << position << " Velocity: " << velocity << endl;
+
 	cout << "Physics System Updated" << endl;
 }
 
 void ::PhysicsSystem::Free()
 {
+	delete sData.body_activation_listener;
+	delete sData.broad_phase_layer_interface;
+	delete sData.object_vs_broadphase_layer_filter;
+	delete sData.object_vs_object_layer_filter;
+	delete sData.contact_listener;
 	delete sData.temp_allocator;
 	delete sData.job_system;
 	delete sData.mSystem;
+	
 	delete Factory::sInstance;
 }
