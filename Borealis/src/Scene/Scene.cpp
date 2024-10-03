@@ -135,7 +135,7 @@ namespace Borealis
 			
 		}
 
-		//Post-Render
+		//Audio
 		{
 			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListenerComponent>);
 			int listener = 0;
@@ -146,9 +146,9 @@ namespace Borealis
 				{
 					listener = 1;
 				}
-				if (listener >= 1)
+				if (listener > 1)
 				{
-					BOREALIS_CORE_ASSERT("More than 1 listener");
+					BOREALIS_CORE_ASSERT(false, "More than 1 listener");
 				}
 			}
 
@@ -158,10 +158,11 @@ namespace Borealis
 				for (auto& entity : group)
 				{
 					auto [transform, audio] = group.get<TransformComponent, AudioSourceComponent>(entity);
-					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
+					if (audio.isPlaying && (!Borealis::AudioEngine::isSoundPlaying(audio.channelID) || !audio.isLoop))
 					{
+						AudioEngine::StopChannel(audio.channelID);
 						audio.isPlaying = false;
-						audio.channelID = Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath, {}, 5.0, audio.isMute, audio.isLoop);
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio, {}, 5.0, audio.isMute, audio.isLoop);
 					}
 				}
 			}

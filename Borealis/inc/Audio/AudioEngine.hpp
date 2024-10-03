@@ -23,6 +23,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <iostream>
 
 #include <Audio/Audio.hpp>
+#include <Scene/Components.hpp>
 
 namespace Borealis
 {
@@ -59,7 +60,7 @@ namespace Borealis
         static Audio LoadAudio(const std::string& strAudioName, bool b3d = true, bool bLooping = false, bool bStream = false);
         static void UnLoadAudio(const std::string& strAudioName);
         static void Set3DListenerAndOrientation(const Vector3& vPos = Vector3{ 0, 0, 0 }, float fVolumedB = 0.0f);
-        static int PlayAudio(const std::string& strSoundName, const Vector3& vPosition = Vector3{ 0, 0, 0 }, float fVolumedB = 5.0f, bool bMute = false, bool bLoop = false);
+        static int PlayAudio(const AudioSourceComponent& audio, const Vector3& vPosition = Vector3{ 0, 0, 0 }, float fVolumedB = 5.0f, bool bMute = false, bool bLoop = false);
         static bool isSoundPlaying(int nChannelId);
         static void StopChannel(int nChannelId);
         static void StopAllChannels();

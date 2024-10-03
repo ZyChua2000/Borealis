@@ -218,6 +218,10 @@ namespace Borealis
 					{
 						payloadName = "DragDropMeshItem";
 					}
+					else if (extension == ".mp3" || extension == ".wav")
+					{
+						payloadName = "DragDropAudioItem";
+					}
 				}
 
 				ImGui::SetDragDropPayload(payloadName.c_str(), &assetHandle, sizeof(AssetHandle), ImGuiCond_Once);

@@ -932,16 +932,38 @@ namespace Borealis
 
 			DrawComponent<AudioSourceComponent>("Audio Source", mSelectedEntity, [](auto& component)
 			{
-				ImGui::Checkbox("Mute", &component.isMute);
-				ImGui::Checkbox("Loop", &component.isLoop);
+				ImGui::Button("Audio");
 
-				ImGui::DragFloat("Volume", &component.Volume, 5.0f);
-				component.audio = MakeRef<Audio>();
-				component.audio->AudioPath = "assets/Audio/meow.mp3";
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropAudioItem"))
+					{
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.audio = AssetManager::GetAsset<Audio>(data);
+					}
+					ImGui::EndDragDropTarget();
+				}
 
-				if (ImGui::Button("Play"))
-				{ 	
-					component.isPlaying = true;
+				if(component.audio)
+				{
+					bool loop = component.isLoop;
+					ImGui::Checkbox("Mute", &component.isMute);
+					ImGui::Checkbox("Loop", &component.isLoop);
+					if (loop != component.isLoop)
+					{
+						component.isPlaying = true;
+					}
+
+					ImGui::DragFloat("Volume", &component.Volume, 5.0f);
+					//component.audio = MakeRef<Audio>();
+					//component.audio->AudioPath = "assets/Audio/meow.mp3";
+
+
+
+					if (ImGui::Button("Play"))
+					{
+						component.isPlaying = true;
+					}
 				}
 			});
 

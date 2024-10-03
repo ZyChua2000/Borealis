@@ -24,7 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
-#include "Audio/Audio.hpp"
+#include <Audio/Audio.hpp>
 
 namespace Borealis
 {

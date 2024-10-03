@@ -16,6 +16,6 @@ namespace Borealis
 	{
 	public:
 		std::string AudioPath;
-		AudioPtr audio = nullptr;
+		AudioPtr audioPtr = nullptr;
 	};
 }

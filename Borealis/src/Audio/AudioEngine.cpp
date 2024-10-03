@@ -29,10 +29,10 @@ namespace Borealis
 
         int mnNextChannelId;
 
-        typedef std::map<std::string, FMOD::Sound*> SoundMap;
+        //typedef std::map<std::string, FMOD::Sound*> SoundMap;
         typedef std::map<int, FMOD::Channel*> ChannelMap;
 
-        SoundMap mSounds;
+        //SoundMap mSounds;
         ChannelMap mChannels;
     };
 
@@ -108,9 +108,9 @@ namespace Borealis
 
     Audio AudioEngine::LoadAudio(const std::string& strAudioName, bool b3d, bool bLooping, bool bStream)
     {
-        auto tFoundIt = sgpImplementation->mSounds.find(strAudioName);
-        if (tFoundIt != sgpImplementation->mSounds.end())
-            return Audio();
+        //auto tFoundIt = sgpImplementation->mSounds.find(strAudioName);
+        //if (tFoundIt != sgpImplementation->mSounds.end())
+        //    return Audio();
 
         FMOD_MODE eMode = FMOD_DEFAULT;
         eMode |= b3d ? FMOD_3D : FMOD_2D;
@@ -121,10 +121,10 @@ namespace Borealis
         ErrorCheck(sgpImplementation->mpSystem->createSound(strAudioName.c_str(), eMode, nullptr, &pSound));
         if (pSound)
         {
-            sgpImplementation->mSounds[strAudioName] = pSound;
+            //sgpImplementation->mSounds[strAudioName] = pSound;
             Audio audio;
             audio.AudioPath = strAudioName;
-            audio.audio = pSound;
+            audio.audioPtr = pSound;
 
             return audio;
         }
@@ -134,37 +134,43 @@ namespace Borealis
 
     void AudioEngine::UnLoadAudio(const std::string& strSoundName)
     {
-        auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
-        if (tFoundIt == sgpImplementation->mSounds.end())
-            return;
+        //auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
+        //if (tFoundIt == sgpImplementation->mSounds.end())
+        //    return;
 
-        ErrorCheck(tFoundIt->second->release());
-        sgpImplementation->mSounds.erase(tFoundIt);
+        //ErrorCheck(tFoundIt->second->release());
+        //sgpImplementation->mSounds.erase(tFoundIt);
     }
 
-    int AudioEngine::PlayAudio(const std::string& strSoundName, const Vector3& vPosition, float fVolumedB, bool bMute, bool bLoop)
+    int AudioEngine::PlayAudio(const AudioSourceComponent& audio, const Vector3& vPosition, float fVolumedB, bool bMute, bool bLoop)
     {
         int nChannelId = sgpImplementation->mnNextChannelId++;
 
         // Load the sound if it hasn't been loaded yet
-        auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
-        if (tFoundIt == sgpImplementation->mSounds.end())
+        
+        //auto tFoundIt = sgpImplementation->mSounds.find(strSoundName);
+        //if (tFoundIt == sgpImplementation->mSounds.end())
+        //{
+        //    AudioEngine::LoadAudio(strSoundName, true, bLoop);  // Load with loop if needed
+        //    tFoundIt = sgpImplementation->mSounds.find(strSoundName);
+        //    if (tFoundIt == sgpImplementation->mSounds.end())
+        //    {
+        //        return -1;  // Error: Sound not found or failed to load
+        //    }
+        //}
+        FMOD::Sound* fmodSound = audio.audio->audioPtr;
+        if (!fmodSound)
         {
-            AudioEngine::LoadAudio(strSoundName, true, bLoop);  // Load with loop if needed
-            tFoundIt = sgpImplementation->mSounds.find(strSoundName);
-            if (tFoundIt == sgpImplementation->mSounds.end())
-            {
-                return -1;  // Error: Sound not found or failed to load
-            }
+            return -1;
         }
 
         FMOD::Channel* pChannel = nullptr;
-        ErrorCheck(sgpImplementation->mpSystem->playSound(tFoundIt->second, nullptr, true, &pChannel));
+        ErrorCheck(sgpImplementation->mpSystem->playSound(fmodSound, nullptr, true, &pChannel));
 
         if (pChannel)
         {
             FMOD_MODE currMode;
-            tFoundIt->second->getMode(&currMode);
+            fmodSound->getMode(&currMode);
             if (currMode & FMOD_3D)
             {
                 FMOD_VECTOR position = VectorToFmod(vPosition);
@@ -196,6 +202,28 @@ namespace Borealis
         ErrorCheck(tFoundChannel->second->isPlaying(&bIsPlaying));
 
         return bIsPlaying;
+    }
+
+    void AudioEngine::StopChannel(int nChannelId)
+    {
+        auto tFoundIt = sgpImplementation->mChannels.find(nChannelId); // Attempt to find the channel by ID
+
+        // Check if the channel is found
+        if (tFoundIt != sgpImplementation->mChannels.end())
+        {
+            FMOD::Channel* pChannel = tFoundIt->second;
+            bool bIsPlaying = false;
+
+            // Check if the channel is currently playing
+            pChannel->isPlaying(&bIsPlaying);
+
+            // If the channel is playing, stop it
+            if (bIsPlaying)
+            {
+                ErrorCheck(pChannel->stop()); // Stop the channel
+                sgpImplementation->mChannels.erase(nChannelId); // Remove channel from map
+            }
+        }
     }
 
     void AudioEngine::SetChannel3DPosition(int nChannelId, const Vector3& vPosition)
