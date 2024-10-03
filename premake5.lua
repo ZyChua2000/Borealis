@@ -119,6 +119,7 @@ workspace "Borealis"
 			"YAML_CPP_STATIC_DEFINE",
 			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
 			"JPH_CROSS_PLATFORM_DETERMINISTIC",
+			"JPH_ENABLE_ASSERTS"
 		}
 
 		includedirs
@@ -152,7 +153,8 @@ workspace "Borealis"
 		{
 			"BOREALIS_BUILD_DLL",
 			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-			"GLFW_INCLUDE_NONE"
+			"GLFW_INCLUDE_NONE",
+			
 		}
 
 		pchheader "BorealisPCH.hpp"
@@ -245,6 +247,7 @@ workspace "Borealis"
 			"YAML_CPP_STATIC_DEFINE",
 			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
 			"JPH_CROSS_PLATFORM_DETERMINISTIC",
+			"JPH_ENABLE_ASSERTS"
 		}
 
 		links
@@ -296,7 +299,8 @@ workspace "Borealis"
 				"%{Library.MSDF_Release_LibBZ2}",
 				"%{Library.MSDF_Release_LibBrotli}",
 				"%{Library.MSDF_Release_LibBrotliCommon}",
-				"Borealis/%{Library.YAML_Release}"
+				"Borealis/%{Library.YAML_Release}",
+				"Borealis/%{Library.Jolt_Release}"
 			}
 
 		filter "configurations:Distribution"
@@ -317,7 +321,8 @@ workspace "Borealis"
 				"%{Library.MSDF_Release_LibBZ2}",
 				"%{Library.MSDF_Release_LibBrotli}",
 				"%{Library.MSDF_Release_LibBrotliCommon}",
-				"Borealis/%{Library.YAML_Release}"
+				"Borealis/%{Library.YAML_Release}",
+				"Borealis/%{Library.Jolt_Release}"
 			}
 
 			project "Sandbox"
@@ -351,6 +356,9 @@ workspace "Borealis"
 			defines
 			{
 				"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
+				"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
+				"JPH_CROSS_PLATFORM_DETERMINISTIC",
+				"JPH_ENABLE_ASSERTS"
 			}
 	
 			links
@@ -371,11 +379,19 @@ workspace "Borealis"
 				defines "_REL"
 				optimize "On"
 				runtime "Release"
+			links
+			{
+				"Borealis/%{Library.Jolt_Release}",
+			}
 	
 			filter "configurations:Distribution"
 				defines "_DIST"
 				optimize "On"
 				runtime "Release"
+			links
+			{
+				"Borealis/%{Library.Jolt_Release}",
+			}
 
 	project "BorealisScriptCore"
 		location "BorealisScriptCore"
@@ -449,7 +465,8 @@ workspace "Borealis"
 		{
 			"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
 			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
-			"JPH_CROSS_PLATFORM_DETERMINISTIC"		
+			"JPH_CROSS_PLATFORM_DETERMINISTIC",
+			"JPH_ENABLE_ASSERTS"		
 		}
 
 		links
@@ -464,14 +481,22 @@ workspace "Borealis"
 
 		links
 		{
-			"Borealis/%{Library.Jolt_Debug}"
+			"Borealis/%{Library.Jolt_Debug}",
 		}
 		filter "configurations:Release"
 			defines "_REL"
 			optimize "On"
 			runtime "Release"
+		links
+		{
+			"Borealis/%{Library.Jolt_Release}",
+		}
 
 		filter "configurations:Distribution"
 			defines "_DIST"
 			optimize "On"
 			runtime "Release"
+		links
+		{
+			"Borealis/%{Library.Jolt_Release}",
+		}

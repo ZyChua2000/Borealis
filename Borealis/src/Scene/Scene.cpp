@@ -63,8 +63,10 @@ namespace Borealis
 					script->Update();
 				}
 			}
-
-			int timeStep = dt / 1.66667f;
+			static float accumDt = 0;
+			accumDt += dt;
+			int timeStep = (int)(accumDt / 1.66667f);
+			accumDt -= timeStep * 1.66667f;
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);
