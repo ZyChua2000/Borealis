@@ -149,6 +149,8 @@
     <ClInclude Include="inc\Assets\AssetMetaData.hpp" />
     <ClInclude Include="inc\Assets\EditorAssetManager.hpp" />
     <ClInclude Include="inc\Assets\IAssetManager.hpp" />
+    <ClInclude Include="inc\Audio\Audio.hpp" />
+    <ClInclude Include="inc\Audio\AudioEngine.hpp" />
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />
@@ -738,6 +740,7 @@
     <ClCompile Include="src\Assets\Asset.cpp" />
     <ClCompile Include="src\Assets\AssetManager.cpp" />
     <ClCompile Include="src\Assets\EditorAssetManager.cpp" />
+    <ClCompile Include="src\Audio\AudioEngine.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

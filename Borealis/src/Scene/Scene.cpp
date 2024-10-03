@@ -22,6 +22,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer2D.hpp>
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
+#include "Audio/AudioEngine.hpp"
+
 namespace Borealis
 {
 	Scene::Scene(std::string name, std::string path) : mName(name), mScenePath(path)
@@ -134,6 +136,36 @@ namespace Borealis
 		}
 
 		//Post-Render
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListener>);
+			int listener = 0;
+			for (auto& entity : group)
+			{
+				auto [transform, audioListener] = group.get<TransformComponent, AudioListener>(entity);
+				if (listener == 0)
+				{
+					listener = 1;
+				}
+				if (listener >= 1)
+				{
+					BOREALIS_CORE_ASSERT("More than 1 listener");
+				}
+			}
+
+			if (listener == 1)
+			{
+				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioComponent>);
+				for (auto& entity : group)
+				{
+					auto [transform, audio] = group.get<TransformComponent, AudioComponent>(entity);
+					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
+					{
+						audio.isPlaying = false;
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath, {}, 5.0, audio.isMute, audio.isLoop);
+					}
+				}
+			}
+		}
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
@@ -409,4 +441,14 @@ namespace Borealis
 	}
 
 
+	template<>
+	void Scene::OnComponentAdded<AudioComponent>(Entity entity, AudioComponent& component)
+	{
+
+	}
+	template<>
+	void Scene::OnComponentAdded<AudioListener>(Entity entity, AudioListener& component)
+	{
+
+	}
 }

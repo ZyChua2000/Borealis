@@ -7,6 +7,9 @@
     <Filter Include="inc\Assets">
       <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Audio">
+      <UniqueIdentifier>{6069B274-CCD3-66EB-1512-189181BB4440}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -103,6 +106,9 @@
     <Filter Include="src\Assets">
       <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{EE2696B2-5A91-4A29-A3CF-FBCE0F79287E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -144,6 +150,12 @@
     </ClInclude>
     <ClInclude Include="inc\Assets\IAssetManager.hpp">
       <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\Audio.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\AudioEngine.hpp">
+      <Filter>inc\Audio</Filter>
     </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
@@ -1901,6 +1913,9 @@
     </ClCompile>
     <ClCompile Include="src\Assets\EditorAssetManager.cpp">
       <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioEngine.cpp">
+      <Filter>src\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>

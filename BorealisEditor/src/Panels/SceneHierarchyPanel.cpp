@@ -590,6 +590,8 @@ namespace Borealis
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
 			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
+			SearchBar<AudioComponent		  >(search_text, mSelectedEntity, "Audio Component", search_buffer);
+			SearchBar<AudioListener		>(search_text, mSelectedEntity, "Audio Listener", search_buffer);
 
 			ImGui::EndPopup();
 					
@@ -926,6 +928,30 @@ namespace Borealis
 
 				component.text = inputText;
 				component.fontSize = textSize;
+			});
+
+			DrawComponent<AudioComponent>("Audio Source", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Mute", &component.isMute);
+				ImGui::Checkbox("Loop", &component.isLoop);
+
+				ImGui::DragFloat("Volume", &component.Volume, 5.0f);
+				component.audio = MakeRef<Audio>();
+				component.audio->AudioPath = "assets/Audio/meow.mp3";
+
+				if (ImGui::Button("Play"))
+				{ 	
+					component.isPlaying = true;
+					// Play audio with mute and loop settings from the component
+					//AudioEngine::PlayAudio(component.audio->AudioPath, Vector3(0, 0, 0), component.Volume, component.isMute, component.isLoop);
+				}
+				
+			});
+
+		DrawComponent<AudioListener>("Audio Listener", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Audio Listener", &component.isAudioListener);
+
 			});
 
 		

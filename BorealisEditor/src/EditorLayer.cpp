@@ -24,6 +24,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
+//#include <Project/Project.hpp>
+#include "Audio/AudioEngine.hpp"
 
 #include <EditorAssets/AssetImporter.hpp>
 
@@ -78,10 +80,13 @@ namespace Borealis {
 			//MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
 		}
 
+		Borealis::AudioEngine::Init();
+		//Borealis::AudioEngine::PlayAudio("assets/Audio/meow.mp3");
 	}
 
 	void EditorLayer::Free()
 	{
+		Borealis::AudioEngine::Shutdown();
 		PROFILE_FUNCTION();
 	}
 
