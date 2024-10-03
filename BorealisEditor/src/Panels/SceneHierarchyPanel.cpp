@@ -24,8 +24,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <EditorAssets/FontImporter.hpp>
 #include <EditorAssets/AssetImporter.hpp>
 #include <Assets/AssetManager.hpp>
-#include <Assets/MeshImporter.hpp>
-#include <Assets/FontImporter.hpp>
+//#include <Assets/MeshImporter.hpp>
+//#include <Assets/FontImporter.hpp>
 #include <EditorLayer.hpp>
 
 #include <Core/Project.hpp>
@@ -251,7 +251,7 @@ namespace Borealis
 		}
 		else if (ContentBrowserPanel::sSelectedAsset)
 		{
-			auto& metadata = Project::GetEditorAssetsManager()->GetMetaData(ContentBrowserPanel::sSelectedAsset);
+			AssetMetaData const& metadata = AssetManager::GetMetaData(ContentBrowserPanel::sSelectedAsset);
 #ifdef _DEB
 			ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
 #endif

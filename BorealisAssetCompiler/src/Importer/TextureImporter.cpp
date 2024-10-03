@@ -80,6 +80,21 @@ namespace BorealisAssetCompiler
         }
     }
 
+    void FlipBitmapVertically(unsigned char* bitmap, int width, int height, int channels) {
+        int stride = width * channels;
+        std::vector<unsigned char> rowBuffer(stride);
+
+        for (int y = 0; y < height / 2; ++y) {
+            unsigned char* topRow = bitmap + y * stride;
+            unsigned char* bottomRow = bitmap + (height - y - 1) * stride;
+
+            // Swap the rows
+            std::memcpy(rowBuffer.data(), topRow, stride);
+            std::memcpy(topRow, bottomRow, stride);
+            std::memcpy(bottomRow, rowBuffer.data(), stride);
+        }
+    }
+
     void TextureImporter::SaveFile(std::filesystem::path const& sourcePath, std::filesystem::path & cachePath)
     {
         int width, height, channels;
@@ -91,6 +106,8 @@ namespace BorealisAssetCompiler
 
         bc7_enc_settings settings;
         GetProfile_alpha_basic(&settings);
+
+        FlipBitmapVertically(imageData, width, height, 4);
 
         rgba_surface srcSurface;
         srcSurface.ptr = imageData;

@@ -53,6 +53,7 @@ namespace Borealis
 		{
 			return mAssetRegistry.at(assetHandle);
 		}
+		return{};
 	}
 
 	AssetRegistry& EditorAssetManager::GetAssetRegistry()

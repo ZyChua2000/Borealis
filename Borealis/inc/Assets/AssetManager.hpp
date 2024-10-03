@@ -29,6 +29,11 @@ namespace Borealis
 			Ref<Asset> asset = Project::GetEditorAssetsManager()->GetAsset(handle);
 			return std::static_pointer_cast<T>(asset);
 		}
+
+		static AssetMetaData const& GetMetaData(AssetHandle handle)
+		{
+			return Project::GetEditorAssetsManager()->GetMetaData(handle);
+		}
 	};
 }
 

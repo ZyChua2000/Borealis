@@ -31,7 +31,7 @@ namespace Borealis
 		
 		// Create directory if doesnt exist
 		std::string projectFilePath = path;
-		projectFilePath += "/";
+		projectFilePath += "\\";
 		projectFilePath += name;
 
 		std::filesystem::path fileSystemPaths = projectFilePath;

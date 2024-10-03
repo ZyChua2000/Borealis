@@ -46,14 +46,14 @@ namespace Borealis
 		Ref<Texture2D> texture = nullptr;
 		switch (Renderer::GetAPI())
 		{
-			case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported");
-			case RendererAPI::API::OpenGL: 
-				texture = MakeRef<OpenGLTexture2D>(path);
-				if (!texture->IsValid())
-				{
-					texture = nullptr;
-				}
-				break;
+		case RendererAPI::API::None: BOREALIS_CORE_ASSERT(false, "RendererAPI::None is not supported"); break;
+		case RendererAPI::API::OpenGL: 
+			texture = MakeRef<OpenGLTexture2D>(path);
+			if (!texture->IsValid())
+			{
+				texture = nullptr;
+			}
+			break;
 		}
 		if(!texture)
 		{

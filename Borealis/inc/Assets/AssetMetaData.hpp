@@ -25,16 +25,16 @@ namespace Borealis
 {
 	struct AssetMetaData
 	{
-		std::string name;
+		std::string name{};
 
 		AssetHandle Handle;
-		AssetType Type;
+		AssetType Type = AssetType::None;
 
-		std::filesystem::path CachePath;
-		std::filesystem::path SourcePath;
+		std::filesystem::path CachePath{};
+		std::filesystem::path SourcePath{};
 
-		std::time_t importDate;
-		std::time_t cacheCreationDate;
+		std::time_t importDate{};
+		std::time_t cacheCreationDate{};
 	};
 }
 

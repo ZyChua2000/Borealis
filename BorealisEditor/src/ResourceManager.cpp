@@ -20,11 +20,16 @@ namespace Borealis
 	void Borealis::ResourceManager::LoadResources()
 	{
 		// Load Icons
-		mFileIcons[FileIcon::Directory] = Texture2D::Create("resources/icons/directoryIcon.png");
-		mFileIcons[FileIcon::Scene] = Texture2D::Create("resources/icons/file-sc.png");
-		mFileIcons[FileIcon::Script] = Texture2D::Create("resources/icons/file-cs.png");
-		mFileIcons[FileIcon::Font] = Texture2D::Create("resources/icons/file-ttf.png");
-		mFileIcons[FileIcon::Text] = Texture2D::Create("resources/icons/file-txt.png");
+		mFileIcons[FileIcon::Directory] = Texture2D::Create("resources/icons/directoryIcon.dds");
+		mFileIcons[FileIcon::Scene] = Texture2D::Create("resources/icons/file-sc.dds");
+		mFileIcons[FileIcon::Script] = Texture2D::Create("resources/icons/file-cs.dds");
+		mFileIcons[FileIcon::Font] = Texture2D::Create("resources/icons/file-ttf.dds");
+		mFileIcons[FileIcon::Text] = Texture2D::Create("resources/icons/file-txt.dds");
+		//mFileIcons[FileIcon::Directory] = Texture2D::Create("resources/icons/tilemap_packed.dds");
+		//mFileIcons[FileIcon::Scene] = Texture2D::Create("resources/icons/tilemap_packed.dds");
+		//mFileIcons[FileIcon::Script] = Texture2D::Create("resources/icons/tilemap_packed.dds");
+		//mFileIcons[FileIcon::Font] = Texture2D::Create("resources/icons/tilemap_packed.dds");
+		//mFileIcons[FileIcon::Text] = Texture2D::Create("resources/icons/tilemap_packed.dds");
 	}
 	void ResourceManager::Init()
 	{

@@ -28,9 +28,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Audio/AudioEngine.hpp"
 #include <ResourceManager.hpp>
 
-#include <EditorAssets/AssetImporter.hpp>
-
+#include <Assets/AssetManager.hpp>
 #include <Graphics/Font.hpp>
+
+#include <EditorAssets/AssetImporter.hpp>
 #include <EditorAssets/FontImporter.hpp>
 #include <EditorAssets/MeshImporter.hpp>
 
@@ -411,12 +412,15 @@ namespace Borealis {
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropSceneItem"))
 					{
-						const char* data= (const char*)payload->Data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						//const char* data= (const char*)payload->Data;
 						if (Project::GetProjectPath() != "")
 						{
 							std::string sceneName = Project::GetProjectPath() + "/assets/";
 							sceneName += data;
-							OpenScene(sceneName.c_str());
+							AssetMetaData assetMeta = AssetManager::GetMetaData(data);
+							//OpenScene(sceneName.c_str());
+							OpenScene(assetMeta.SourcePath.string().c_str());
 						}
 						else
 						{
@@ -840,6 +844,7 @@ namespace Borealis {
 		std::string filepath = FileDialogs::SaveFile("Folder");
 		if (!filepath.empty())
 		{
+			std::string originalFilePath = filepath;
 			// extract last part of the path
 			std::string projectName = filepath.substr(filepath.find_last_of("/\\") + 1);
 			// exclude project name from file path
@@ -847,6 +852,7 @@ namespace Borealis {
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 
+			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj"); //TEMP
 			// Create default empty scene
 			SceneManager::ClearSceneLibrary();
 			SceneManager::CreateScene("untitled", assetsPath);
@@ -854,6 +860,8 @@ namespace Borealis {
 
 			CBPanel.SetCurrDir(assetsPath);
 			EditorLayer::DeserialiseEditorScene();
+
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
