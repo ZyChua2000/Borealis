@@ -125,13 +125,13 @@ namespace Borealis
 				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 				ImGui::PopStyleVar();
 				ImGui::SameLine(ContentRegionAvailable.x - lineHeight * 0.5f); // Align to right (Button)
-				if (ImGui::Button("+", ImVec2{lineHeight,lineHeight}))
+				if (ImGui::Button(("+##" + name).c_str(), ImVec2{lineHeight,lineHeight}))
 				{
-					ImGui::OpenPopup("ComponentSettingsPopup");
+					ImGui::OpenPopup(("ComponentSettingsPopup##" + name).c_str());
 				}
 				
 
-				if (ImGui::BeginPopup("ComponentSettingsPopup"))
+				if (ImGui::BeginPopup(("ComponentSettingsPopup##" + name).c_str()))
 				{
 					if (ImGui::MenuItem("Remove Component"))
 					{
@@ -580,18 +580,18 @@ namespace Borealis
 			std::transform(search_text.begin(), search_text.end(), search_text.begin(), ::tolower);
 
 	
-			SearchBar<SpriteRendererComponent>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
-			SearchBar<CircleRendererComponent>( search_text, mSelectedEntity, "Circle Renderer", search_buffer);
-			SearchBar<CameraComponent>(search_text, mSelectedEntity, "Camera", search_buffer);
-			SearchBar<MeshFilterComponent	  >(search_text, mSelectedEntity,"Mesh Filter", search_buffer);
-			SearchBar<MeshRendererComponent	  >(search_text, mSelectedEntity,"Mesh Renderer", search_buffer);
-			SearchBar<BoxColliderComponent	  >(search_text, mSelectedEntity,"Box Collider", search_buffer);
-			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
-			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
-			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
-			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
-			SearchBar<AudioComponent		  >(search_text, mSelectedEntity, "Audio Component", search_buffer);
-			SearchBar<AudioListener		>(search_text, mSelectedEntity, "Audio Listener", search_buffer);
+			SearchBar<SpriteRendererComponent	>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
+			SearchBar<CircleRendererComponent	>(search_text, mSelectedEntity, "Circle Renderer", search_buffer);
+			SearchBar<CameraComponent			>(search_text, mSelectedEntity, "Camera", search_buffer);
+			SearchBar<MeshFilterComponent		>(search_text, mSelectedEntity, "Mesh Filter", search_buffer);
+			SearchBar<MeshRendererComponent		>(search_text, mSelectedEntity, "Mesh Renderer", search_buffer);
+			SearchBar<BoxColliderComponent		>(search_text, mSelectedEntity, "Box Collider", search_buffer);
+			SearchBar<CapsuleColliderComponent	>(search_text, mSelectedEntity, "Capsule Collider", search_buffer);
+			SearchBar<RigidBodyComponent		>(search_text, mSelectedEntity, "Rigidbody", search_buffer);
+			SearchBar<LightComponent			>(search_text, mSelectedEntity, "Light", search_buffer);
+			SearchBar<TextComponent				>(search_text, mSelectedEntity, "Text", search_buffer);
+			SearchBar<AudioSourceComponent		>(search_text, mSelectedEntity, "Audio Source", search_buffer);
+			SearchBar<AudioListenerComponent	>(search_text, mSelectedEntity, "Audio Listener", search_buffer);
 
 			ImGui::EndPopup();
 					
@@ -930,7 +930,7 @@ namespace Borealis
 				component.fontSize = textSize;
 			});
 
-			DrawComponent<AudioComponent>("Audio Source", mSelectedEntity, [](auto& component)
+			DrawComponent<AudioSourceComponent>("Audio Source", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Checkbox("Mute", &component.isMute);
 				ImGui::Checkbox("Loop", &component.isLoop);
@@ -948,7 +948,7 @@ namespace Borealis
 				
 			});
 
-		DrawComponent<AudioListener>("Audio Listener", mSelectedEntity, [](auto& component)
+		DrawComponent<AudioListenerComponent>("Audio Listener", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Checkbox("Audio Listener", &component.isAudioListener);
 

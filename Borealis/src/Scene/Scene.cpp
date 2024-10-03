@@ -154,10 +154,10 @@ namespace Borealis
 
 			if (listener == 1)
 			{
-				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioComponent>);
+				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioSource>);
 				for (auto& entity : group)
 				{
-					auto [transform, audio] = group.get<TransformComponent, AudioComponent>(entity);
+					auto [transform, audio] = group.get<TransformComponent, AudioSource>(entity);
 					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
 					{
 						audio.isPlaying = false;
@@ -442,7 +442,7 @@ namespace Borealis
 
 
 	template<>
-	void Scene::OnComponentAdded<AudioComponent>(Entity entity, AudioComponent& component)
+	void Scene::OnComponentAdded<AudioSource>(Entity entity, AudioSource& component)
 	{
 
 	}

@@ -289,7 +289,7 @@ namespace Borealis
 		}
 	};
 	
-	struct AudioComponent
+	struct AudioSource
 	{
 		bool isLoop = false;
 		bool isMute = false;
@@ -299,8 +299,8 @@ namespace Borealis
 
 		Ref<Audio> audio;
 
-		AudioComponent() = default;
-		AudioComponent(const AudioComponent&) = default;
+		AudioSource() = default;
+		AudioSource(const AudioSource&) = default;
 	};
 
 	struct AudioListener
