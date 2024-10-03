@@ -11,7 +11,8 @@ Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
  /******************************************************************************/
-#pragma once
+#ifndef C_SEQUENCER_HPP
+#define C_SEQUENCER_HPP
 #include "AI/BehaviourTree/BehaviourNode.hpp"
 namespace Borealis
 {
