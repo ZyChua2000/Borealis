@@ -335,6 +335,17 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& lightComponent = entity.GetComponent<LightComponent>();
+			out << YAML::Key << "Ambient" << YAML::Value << lightComponent.ambient;
+			out << YAML::Key << "Diffuse" << YAML::Value << lightComponent.diffuse;
+			out << YAML::Key << "Direction" << YAML::Value << lightComponent.direction;
+			out << YAML::Key << "Specular" << YAML::Value << lightComponent.specular;
+			out << YAML::Key << "InnerSpotX" << YAML::Value << lightComponent.InnerOuterSpot.x;
+			out << YAML::Key << "InnerSpotY" << YAML::Value << lightComponent.InnerOuterSpot.y;
+			out << YAML::Key << "Linear" << YAML::Value << lightComponent.linear;
+			out << YAML::Key << "Quadratic" << YAML::Value << lightComponent.quadratic;
+			out << YAML::Key << "Specular" << YAML::Value << lightComponent.specular;
+			out << YAML::Key << "Type" << YAML::Value << (int)lightComponent.type;
+
 			/*out << YAML::Key << "Colour" << YAML::Value << lightComponent.Colour;
 			out << YAML::Key << "InnerSpot" << YAML::Value << lightComponent.InnerOuterSpot.x;
 			out << YAML::Key << "OuterSpot" << YAML::Value << lightComponent.InnerOuterSpot.y;
@@ -537,6 +548,15 @@ namespace Borealis
 				if (lightComponent)
 				{
 					auto& lc = loadedEntity.AddComponent<LightComponent>();
+					lc.ambient = lightComponent["Ambient"].as<glm::vec3>();
+					lc.diffuse = lightComponent["Diffuse"].as<glm::vec3>();
+					lc.direction = lightComponent["Direction"].as<glm::vec3>();
+					lc.specular = lightComponent["Specular"].as<glm::vec3>();
+					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpotX"].as<float>(), lightComponent["InnerSpotY"].as<float>());
+					lc.linear = lightComponent["Linear"].as<float>();
+					lc.quadratic = lightComponent["Quadratic"].as<float>();
+					lc.specular = lightComponent["Specular"].as<glm::vec3>();
+					lc.type = (LightComponent::Type)lightComponent["Type"].as<int>();
 					/*lc.Colour = lightComponent["Colour"].as<glm::vec4>();
 					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpot"].as<float>(), lightComponent["OuterSpot"].as<float>());
 					lc.Temperature = lightComponent["Temperature"].as<float>();
