@@ -37,7 +37,9 @@ namespace BorealisRuntime
 
 		BOREALIS_CORE_ASSERT(found, "No Project File found!");
 
-		Borealis::Project::SetProjectPath(projectPath);
+		std::string activeSceneName = Borealis::Project::SetProjectPath(projectPath);
+		// Load Asset Registry here
+		Borealis::SceneManager::SetActiveScene(activeSceneName);
 		Borealis::ScriptingSystem::InitCoreAssembly();
 
 		auto view = Borealis::SceneManager::GetActiveScene()->GetRegistry().view<Borealis::CameraComponent>();

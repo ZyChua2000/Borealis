@@ -838,12 +838,14 @@ namespace Borealis {
 		if (!filepath.empty())
 		{
 			SceneManager::ClearSceneLibrary();
-			Project::SetProjectPath(filepath.c_str());
+			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+			SceneManager::SetActiveScene(activeSceneName);
+
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
 			DeserialiseEditorScene();
 
-			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
