@@ -135,9 +135,6 @@ namespace Borealis {
 		bool mIsRunning; //<! Flag to check if the application is running
 		bool mIsMinimized; //<! Flag to check if the application is minimized
 
-		EditorAssetManager mEditorAssetManager;
-		
-
 		static ApplicationManager* sInstance; //<! Pointer to the instance of the application manager
 	}; // End of class ApplicationManager
 

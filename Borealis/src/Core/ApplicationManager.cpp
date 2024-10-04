@@ -44,8 +44,6 @@ namespace Borealis
 		mImGuiLayer = new ImGuiLayer();
 		PushOverlay(mImGuiLayer);
 
-		//mEditorAssetManager.LoadAssetRegistryRunTime("AssetRegistry.brdb");
-
 		Renderer::Init();
 
 		ScriptingSystem::Init();

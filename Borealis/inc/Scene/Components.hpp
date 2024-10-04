@@ -255,7 +255,7 @@ namespace Borealis
 		//float Intensity = 1;
 		//float IndirectMultiplier = 1;
 		//float Range = 10;
-		Type type = Type::Point;
+		Type type = Type::Directional;
 		glm::vec3 direction = {0.0, -1.0, 0.0};
 		glm::vec3 ambient = {0.4, 0.4, 0.4};
 		glm::vec3 diffuse = {1.f, 1.f, 1.f};

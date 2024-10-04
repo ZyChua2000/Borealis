@@ -27,16 +27,33 @@ namespace Borealis
 		template<typename T>
 		static Ref<T> GetAsset(AssetHandle handle)
 		{
+			if(mRunTime)
+			{
+				Ref<Asset> asset = mAssetManager.GetAsset(handle);
+				return std::static_pointer_cast<T>(asset);
+			}
 			Ref<Asset> asset = Project::GetEditorAssetsManager()->GetAsset(handle);
 			return std::static_pointer_cast<T>(asset);
-
-			//Ref<Asset> asset = ApplicationManager::Get()
 		}
 
 		static AssetMetaData const& GetMetaData(AssetHandle handle)
 		{
+			if (mRunTime)
+			{
+				return mAssetManager.GetMetaData(handle);
+			}
 			return Project::GetEditorAssetsManager()->GetMetaData(handle);
 		}
+
+		static void SetRunTime()
+		{
+			mRunTime = true;
+			mAssetManager.LoadAssetRegistryRunTime("AssetRegistry.brdb");
+		}
+
+	private:
+		inline static bool mRunTime = false;
+		inline static EditorAssetManager mAssetManager;
 	};
 }
 

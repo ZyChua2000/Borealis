@@ -64,7 +64,7 @@ namespace Borealis
 		return metaData;
 	}
 
-	void EditorAssetManager::LoadAssetRegistryRunTime(std::filesystem::path path)
+	void EditorAssetManager::LoadAssetRegistryRunTime(std::string path)
 	{
 		if (!std::filesystem::exists(path)) {
 			BOREALIS_CORE_INFO("Registry file not found. Creating a new one");
@@ -113,6 +113,7 @@ namespace Borealis
 			asset = LoadAsset(assetHandle);
 			mLoadedAssets.insert({ assetHandle, asset });
 		}
+		BOREALIS_CORE_INFO("Get asset : {}", assetHandle);
 		return asset;
 	}
 
