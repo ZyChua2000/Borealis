@@ -118,7 +118,7 @@ namespace Borealis
 					if (audio.isPlaying && !Borealis::AudioEngine::isSoundPlaying(audio.channelID))
 					{
 						audio.isPlaying = false;
-						audio.channelID = Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath, {}, 5.0, audio.isMute, audio.isLoop);
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio.audio->AudioPath, {}, audio.Volume, audio.isMute, audio.isLoop);
 					}
 				}
 			}

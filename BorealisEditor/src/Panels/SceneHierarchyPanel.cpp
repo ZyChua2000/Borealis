@@ -592,7 +592,8 @@ namespace Borealis
 				ImGui::Checkbox("Mute", &component.isMute);
 				ImGui::Checkbox("Loop", &component.isLoop);
 
-				ImGui::DragFloat("Volume", &component.Volume, 5.0f);
+				// DragFloat for volume control (range: -80 dB to 0 dB)
+				ImGui::DragFloat("Volume", &component.Volume, 0.5f, -80.0f, 0.0f);
 				component.audio = MakeRef<Audio>();
 				component.audio->AudioPath = "assets/Audio/meow.mp3";
 
