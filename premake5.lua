@@ -285,6 +285,12 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmodL.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Deb/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPY} \"engineResources\" \"$(TargetDir)engineResources\"",
+				"{COPY} \"resources\" \"$(TargetDir)resources\"",
+				"{COPY} \"mono\" \"$(TargetDir)mono\"",
+				"{COPY} \"settings\" \"$(TargetDir)settings\"",
+				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
+				"{MKDIR} \"$(TargetDir)assets\""
 			 }
 			links
 			{
@@ -306,6 +312,12 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPY} \"engineResources\" \"$(TargetDir)engineResources\"",
+				"{COPY} \"resources\" \"$(TargetDir)resources\"",
+				"{COPY} \"mono\" \"$(TargetDir)mono\"",
+				"{COPY} \"settings\" \"$(TargetDir)settings\"",
+				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
+				"{MKDIR} \"$(TargetDir)assets\""
 			 }
 			 links
 			{
@@ -327,6 +339,12 @@ workspace "Borealis"
 			postbuildcommands {
 				"{COPYFILE} \"../Borealis/lib/FMOD/dll/fmod.dll\" \"$(TargetDir)\"",
 				"{COPYFILE} \"../Borealis/lib/mono/dll/Rel/mono-2.0-sgen.dll\" \"$(TargetDir)\"",
+				"{COPY} \"engineResources\" \"$(TargetDir)engineResources\"",
+				"{COPY} \"resources\" \"$(TargetDir)resources\"",
+				"{COPY} \"mono\" \"$(TargetDir)mono\"",
+				"{COPY} \"settings\" \"$(TargetDir)settings\"",
+				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
+				"{MKDIR} \"$(TargetDir)assets\""
 			 }
 			 links
 			{
