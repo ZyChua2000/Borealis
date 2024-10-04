@@ -144,6 +144,7 @@
     <Compile Include="src\KeyCode.cs" />
     <Compile Include="src\Attributes.cs" />
     <Compile Include="src\Behaviour.cs" />
+    <Compile Include="src\BehaviourTreeNode.cs" />
     <Compile Include="src\Components\Component.cs" />
     <Compile Include="src\Components\SpriteRenderer.cs" />
     <Compile Include="src\Components\Transform.cs" />

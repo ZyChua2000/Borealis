@@ -65,6 +65,14 @@ namespace Borealis
 				}
 			}
 
+			auto BTview = mRegistry.view<BehaviourTreeComponent>();
+			for (auto entity : BTview)
+			{
+				BTview.get<BehaviourTreeComponent>(entity).Update(dt);
+			}
+
+
+
 			int timeStep = dt / 1.66667f;
 			for (auto entity : view)
 			{
@@ -307,7 +315,7 @@ namespace Borealis
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
 		CopyComponent<ScriptComponent>(newEntity, entity);
-
+		CopyComponent<BehaviourTreeComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -397,7 +405,7 @@ namespace Borealis
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<ScriptComponent>(newRegistry, originalRegistry, UUIDtoENTT);
-
+		CopyComponent<BehaviourTreeComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
@@ -506,6 +514,12 @@ namespace Borealis
 
 	template<>
 	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BehaviourTreeComponent>(Entity entity, BehaviourTreeComponent& component)
 	{
 
 	}

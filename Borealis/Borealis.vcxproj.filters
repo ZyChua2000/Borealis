@@ -4,6 +4,18 @@
     <Filter Include="inc">
       <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\AI">
+      <UniqueIdentifier>{5850CA04-44F2-F4DA-2DAD-082F19EE7B2B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\AI\BehaviourTree">
+      <UniqueIdentifier>{FCC42480-E853-AE49-9172-C2447DE0BEEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\AI\BehaviourTree\ControlFlow">
+      <UniqueIdentifier>{64E4F1CC-5035-DD0E-7999-CBD065497078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\AI\BehaviourTree\Leaf">
+      <UniqueIdentifier>{832911B9-EFEB-4443-389C-D3CFA49D1D21}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -91,6 +103,18 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\AI">
+      <UniqueIdentifier>{A648661C-92EA-90F2-7BA5-A44667E61743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\AI\BehaviourTree">
+      <UniqueIdentifier>{CA2D163D-B6BC-9F06-5FDB-B3014B49B0AC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\AI\BehaviourTree\ControlFlow">
+      <UniqueIdentifier>{32F2B8F5-1E43-A437-47A7-92F9335737A1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\AI\BehaviourTree\Leaf">
+      <UniqueIdentifier>{1143AAAD-7D05-DE37-C6B5-6CC432B7B615}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -118,6 +142,33 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourNode.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTree.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\Blackboard.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\ControlFlow\C_Sequencer.hpp">
+      <Filter>inc\AI\BehaviourTree\ControlFlow</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_CheckMouseClick.hpp">
+      <Filter>inc\AI\BehaviourTree\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_Idle.hpp">
+      <Filter>inc\AI\BehaviourTree\Leaf</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp">
+      <Filter>inc\AI\BehaviourTree</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -1706,6 +1757,27 @@
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp">
       <Filter>lib\stb_image</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourNode.cpp">
+      <Filter>src\AI\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTree.cpp">
+      <Filter>src\AI\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp">
+      <Filter>src\AI\BehaviourTree\ControlFlow</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_CheckMouseClick.cpp">
+      <Filter>src\AI\BehaviourTree\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_Idle.cpp">
+      <Filter>src\AI\BehaviourTree\Leaf</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp">
+      <Filter>src\AI\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp">
+      <Filter>src\AI\BehaviourTree</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>
