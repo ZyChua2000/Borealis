@@ -28,6 +28,12 @@ namespace Borealis
 	class EditorAssetManager : public IAssetManager
 	{
 	public:
+
+		//TEMP
+		//===================================
+		void LoadAssetRegistryRunTime(std::string path);
+		//===================================
+
 		Ref<Asset> GetAsset(AssetHandle assetHandle) override;
 		AssetMetaData const& GetMetaData(AssetHandle assetHandle);
 		AssetRegistry& GetAssetRegistry();

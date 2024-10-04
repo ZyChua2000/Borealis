@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Core/Core.hpp>
 #include <Core/Project.hpp>
+#include <Core/ApplicationManager.hpp>
 
 namespace Borealis
 {
@@ -28,6 +29,8 @@ namespace Borealis
 		{
 			Ref<Asset> asset = Project::GetEditorAssetsManager()->GetAsset(handle);
 			return std::static_pointer_cast<T>(asset);
+
+			//Ref<Asset> asset = ApplicationManager::Get()
 		}
 
 		static AssetMetaData const& GetMetaData(AssetHandle handle)

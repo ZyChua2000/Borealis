@@ -304,7 +304,7 @@ namespace Borealis
 	{
 		PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjectionMatrix() * glm::inverse(transform);
+		glm::mat4 viewProj = camera.GetProjectionMatrix() *glm::inverse(transform);
 
 		sData->mQuadShader->Bind();
 		sData->mQuadShader->Set("u_ViewProjection", viewProj);
