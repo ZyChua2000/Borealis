@@ -23,6 +23,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <algorithm>
 #include <fstream>
 #include <thread>
+
 namespace Borealis
 {
 	struct ProfileResult
@@ -32,10 +33,10 @@ namespace Borealis
 		size_t mThreadID; // Thread ID of the profile
 	};
 
-	struct InstrumentationScope 
+	struct InstrumentationScope
 	{
 		std::string mName; // Name of the scope
-		
+
 	};
 
 	class Instrumentor
@@ -98,7 +99,7 @@ namespace Borealis
 			if (name.find("(void)") != std::string::npos)
 			{
 				size_t pos = name.find("(void)");
-				name.erase(pos+1, 4);
+				name.erase(pos + 1, 4);
 			}
 			std::replace(name.begin(), name.end(), '"', '\'');
 
@@ -152,7 +153,7 @@ namespace Borealis
 
 	class InstrumentationTimer
 	{
-		public:
+	public:
 
 		/*!***********************************************************************
 			\brief
@@ -167,8 +168,7 @@ namespace Borealis
 			\brief
 				Default destructor of the InstrumentationTimer
 		*************************************************************************/
-		~InstrumentationTimer()
-		{
+		~InstrumentationTimer() {
 			if (!mStopped)
 				Stop();
 		}
@@ -177,22 +177,74 @@ namespace Borealis
 			\brief
 				Stops the timer
 		*************************************************************************/
-		void Stop()
-		{
+		void Stop() {
 			auto endTimepoint = std::chrono::high_resolution_clock::now();
+
 			long long start = std::chrono::time_point_cast<std::chrono::microseconds>(mStartTimepoint).time_since_epoch().count();
 			long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
 			size_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+
 			Instrumentor::Get().WriteProfile({ mName, start, end, threadID });
 
 			mStopped = true;
 		}
 
-		private:
-			const char* mName; // The name of the timer
-			std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint; // The start timepoint
-			bool mStopped; // Whether the timer has stopped
+	private:
+		const char* mName; // The name of the timer
+		std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint; // The start timepoint
+		bool mStopped; // Whether the timer has stopped
+
+	};
+
+	struct vec4 {
+		float r;  // Red component (0.0 to 1.0)
+		float g;  // Green component (0.0 to 1.0)
+		float b;  // Blue component (0.0 to 1.0)
+		float a;  // Alpha component (0.0 to 1.0)
+	};
+
+	class TracyProfiler {
+	public:
+		// Default constructor
+		TracyProfiler() = default;
+
+		// Method to record a custom plot value
+		void recordPlot(const char* plotName, float value);
+
+		// Method to log a message in the profiler
+		void logMessage(const char* message);
+
+		// Method to log a colored message in the profiler
+		void logMessageColored(const char* message, const vec4& color);
+
+		// Methods for memory allocation tracking
+		void trackAllocation(void* ptr, size_t size);
+		void trackFree(void* ptr);
+		void trackSecureAllocation(void* ptr, size_t size);
+		void trackSecureFree(void* ptr);
+
+		// Mark the frame boundary
+		void markFrame(const char* frameName = nullptr);
+
+		//Application information
+		void sendAppInfo(const char* message);
+
+		// Method to start a custom profiling zone
+		void startZone(const char* name = nullptr);
+
+		// Method to end the custom profiling zone
+		void endZone();
+
+		// Destructor that ends the profiling zone
+		~TracyProfiler();
+
+		uint32_t vec4ToColor(const vec4& color);
+
+	private:
+		// Disable copying
+		TracyProfiler(const TracyProfiler&) = delete;
+		TracyProfiler& operator=(const TracyProfiler&) = delete;
 
 	};
 }
