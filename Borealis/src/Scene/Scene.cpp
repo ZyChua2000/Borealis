@@ -177,38 +177,38 @@ namespace Borealis
 				}
 			}
 
-			{
 				Renderer2D::Begin(*mainCamera, mainCameratransform);
+			{
 				auto group = mRegistry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
 				for (auto& entity : group)
 				{
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
 					Renderer2D::DrawQuad(transform, sprite.Colour);
 				}
-				Renderer2D::End();
+				//Renderer2D::End();
 			}
 
 			{
-				Renderer2D::Begin(*mainCamera, mainCameratransform);
+				//Renderer2D::Begin(*mainCamera, mainCameratransform);
 				auto group = mRegistry.group<>(entt::get<TransformComponent, CircleRendererComponent>);
 				for (auto& entity : group)
 				{
 					auto [transform, circle] = group.get<TransformComponent, CircleRendererComponent>(entity);
 					Renderer2D::DrawCircle(transform, circle.Colour, circle.thickness, circle.fade);
 				}
-				Renderer2D::End();
+				//Renderer2D::End();
 			}
 
 			{
-				Renderer2D::Begin(*mainCamera, mainCameratransform);
+				//Renderer2D::Begin(*mainCamera, mainCameratransform);
 				auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
 				for (auto& entity : group)
 				{
 					auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
 					Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
 				}
-				Renderer2D::End();
 			}
+				Renderer2D::End();
 			
 		}
 
@@ -246,6 +246,7 @@ namespace Borealis
 			}
 		}
 	}
+
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
 		Renderer3D::Begin(camera);

@@ -247,7 +247,7 @@ namespace Borealis
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
-			MaterialEditor::SetRender(false);
+			MaterialEditor::SetMaterial(nullptr);
 			DrawComponents(mSelectedEntity);
 		}
 		else if (ContentBrowserPanel::sSelectedAsset)
@@ -280,6 +280,7 @@ namespace Borealis
 				}
 				case AssetType::Material:
 				{
+					MaterialEditor::SetMaterial(AssetManager::GetAsset<Material>(metadata.Handle));
 					break;
 				}
 				default:

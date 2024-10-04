@@ -45,6 +45,16 @@ namespace Borealis
 			return Project::GetEditorAssetsManager()->GetMetaData(handle);
 		}
 
+		//TEMP
+		//===============================================================
+		static void InsertMetaData(AssetMetaData data)
+		{
+			if (!mRunTime)
+			{
+				Project::GetEditorAssetsManager()->GetAssetRegistry().insert({ data.Handle, data });
+			}
+		}
+
 		static void SetRunTime()
 		{
 			mRunTime = true;

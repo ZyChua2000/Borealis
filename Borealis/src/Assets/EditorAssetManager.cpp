@@ -188,6 +188,9 @@ namespace Borealis
 		case AssetType::Texture2D:
 			asset = Texture2D::Create(metaData.CachePath.string());
 			break;
+		case AssetType::Material:
+			asset = MakeRef<Material>(Material(metaData.SourcePath.string()));
+			break;
 		case AssetType::Mesh:
 			model.LoadModel(metaData.CachePath.string());
 			asset = MakeRef<Model>(model);

@@ -71,6 +71,12 @@ namespace Borealis
 		return {};
 	}
 
+	void AssetImporter::InsertAssetHandle(std::filesystem::path const& path, AssetHandle handle)
+	{
+		std::size_t hash = std::hash<std::string>{}(path.string());
+		mPathRegistry.insert({ hash,handle });
+	}
+
 	bool AssetImporter::ImportAsset(AssetMetaData metaData)
 	{
 		//check if assets needs to be imported

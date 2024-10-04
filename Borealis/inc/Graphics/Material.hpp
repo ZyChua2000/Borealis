@@ -16,12 +16,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define MATERIAL_HPP
 #include <unordered_map>
 #include <glm/glm.hpp>
+
+#include <Assets/Asset.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/Shader.hpp>
 #include <Core/Core.hpp>
+
 namespace Borealis
 {
-	class Material
+	class Material : public Asset
 	{
 	public:
 		enum TextureMaps : uint8_t
@@ -57,11 +60,17 @@ namespace Borealis
 		*************************************************************************/
 		Material(Ref<Shader> shader): mShader(shader) { Init(); }
 
+		Material(std::filesystem::path path);
+
 		/*!***********************************************************************
 			\brief
 				Destructor for Material
 		*************************************************************************/
 		~Material() {}
+
+		static Ref<Material> CreateNewMaterial(std::filesystem::path const& path);
+		void SerializeMaterial(std::filesystem::path const& path);
+
 
 		// Setter for texture maps
 		/*!***********************************************************************

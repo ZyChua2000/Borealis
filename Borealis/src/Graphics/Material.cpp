@@ -14,6 +14,80 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include "BorealisPCH.hpp"
 #include "Graphics/Material.hpp"
+#include "Assets/AssetManager.hpp"
+#include <yaml-cpp/yaml.h>
+
+namespace YAML
+{
+    template<>
+    struct convert<glm::vec2> {
+        static Node encode(const glm::vec2& rhs) {
+            Node node;
+            node.push_back(rhs.x);
+            node.push_back(rhs.y);
+            return node;
+        }
+
+        static bool decode(const Node& node, glm::vec2& rhs) {
+            if (!node.IsSequence() || node.size() != 2) return false;
+            rhs.x = node[0].as<float>();
+            rhs.y = node[1].as<float>();
+            return true;
+        }
+    };
+
+    template<>
+    struct convert<glm::vec4>
+    {
+        static Node encode(const glm::vec4& rhs)
+        {
+            Node node;
+            node.push_back(rhs.x);
+            node.push_back(rhs.y);
+            node.push_back(rhs.z);
+            node.push_back(rhs.w);
+            return node;
+        }
+
+        static bool decode(const Node& node, glm::vec4& rhs)
+        {
+            if (!node.IsSequence() || node.size() != 4)
+            {
+                return false;
+            }
+
+            rhs.x = node[0].as<float>();
+            rhs.y = node[1].as<float>();
+            rhs.z = node[2].as<float>();
+            rhs.w = node[3].as<float>();
+            return true;
+        }
+    };
+
+    template<>
+    struct convert<Borealis::Material::TextureMaps> {
+        static Node encode(const Borealis::Material::TextureMaps& rhs) {
+            return Node(static_cast<uint8_t>(rhs));
+        }
+
+        static bool decode(const Node& node, Borealis::Material::TextureMaps& rhs) {
+            rhs = static_cast<Borealis::Material::TextureMaps>(node.as<uint8_t>());
+            return true;
+        }
+    };
+
+    template<>
+    struct convert<Borealis::Material::Props> {
+        static Node encode(const Borealis::Material::Props& rhs) {
+            return Node(static_cast<uint8_t>(rhs));
+        }
+
+        static bool decode(const Node& node, Borealis::Material::Props& rhs) {
+            rhs = static_cast<Borealis::Material::Props>(node.as<uint8_t>());
+            return true;
+        }
+    };
+}
 
 namespace Borealis
 {
@@ -30,7 +104,106 @@ namespace Borealis
         mPropertiesFloat[Shininess] = 1.f;
     }
 
-	void Material::SetUniforms(Ref<Shader> shader)
+    Material::Material(std::filesystem::path path)
+    {
+        YAML::Node data = YAML::LoadFile(path.string());
+
+        mName = data["Name"].as<std::string>();
+
+        auto textureMaps = data["TextureMaps"];
+        for (auto it = textureMaps.begin(); it != textureMaps.end(); ++it) {
+            TextureMaps key = it->first.as<TextureMaps>();
+            AssetHandle handle = it->second.as<uint64_t>();
+            mTextureMaps[key] = AssetManager::GetAsset<Texture2D>(handle);
+        }
+
+        //auto textureMapColors = data["TextureMapColors"];
+        //for (auto it = textureMapColors.begin(); it != textureMapColors.end(); ++it) {
+        //    TextureMaps key = it->first.as<TextureMaps>();
+        //    glm::vec4 value = it->second.as<glm::vec4>();
+        //    mTextureMapColor[key] = value;
+        //}
+
+        // Deserialize Texture Map Floats
+        //auto textureMapFloats = data["TextureMapFloats"];
+        //for (auto it = textureMapFloats.begin(); it != textureMapFloats.end(); ++it) {
+        //    TextureMaps key = it->first.as<TextureMaps>();
+        //    float value = it->second.as<float>();
+        //    mTextureMapFloat[key] = value;
+        //}
+
+        //// Deserialize Properties Floats
+        //auto propertiesFloats = data["PropertiesFloats"];
+        //for (auto it = propertiesFloats.begin(); it != propertiesFloats.end(); ++it) {
+        //    Props key = it->first.as<Props>();
+        //    float value = it->second.as<float>();
+        //    mPropertiesFloat[key] = value;
+        //}
+
+        //// Deserialize Properties Vec2
+        //auto propertiesVec2 = data["PropertiesVec2"];
+        //for (auto it = propertiesVec2.begin(); it != propertiesVec2.end(); ++it) {
+        //    Props key = it->first.as<Props>();
+        //    glm::vec2 value = it->second.as<glm::vec2>();
+        //    mPropertiesVec2[key] = value;
+        //}
+    }
+
+    Ref<Material> Material::CreateNewMaterial(std::filesystem::path const& path)
+    {
+        Material material(Shader::Create("../Borealis/engineResources/Shaders/Renderer3D_Material.glsl"));
+        material.SerializeMaterial(path);
+        return MakeRef<Material>(material);
+    }
+
+    void Material::SerializeMaterial(std::filesystem::path const& path)
+    {
+        YAML::Emitter out;
+
+        out << YAML::BeginMap;
+        out << YAML::Key << "Name" << YAML::Value << mName;
+
+        // Serialize Texture Maps
+        out << YAML::Key << "TextureMaps" << YAML::Value << YAML::BeginMap;
+        for (const auto& [key, value] : mTextureMaps) {
+            out << YAML::Key << key << YAML::Value << value->mAssetHandle; // Assuming Ref<Texture2D> stores texture paths.
+        }
+        out << YAML::EndMap;
+
+        //Serialize Texture Map Colors
+        out << YAML::Key << "TextureMapColors" << YAML::Value << YAML::BeginMap;
+        for (const auto& [key, value] : mTextureMapColor) {
+            out << YAML::Key << key << YAML::Value << YAML::Flow << YAML::BeginSeq << value.r << value.g << value.b << value.a << YAML::EndSeq;
+        }
+        out << YAML::EndMap;
+
+        // Serialize Texture Map Floats
+        out << YAML::Key << "TextureMapFloats" << YAML::Value << YAML::BeginMap;
+        for (const auto& [key, value] : mTextureMapFloat) {
+            out << YAML::Key << key << YAML::Value << value;
+        }
+        out << YAML::EndMap;
+
+        // Serialize Properties Floats
+        out << YAML::Key << "PropertiesFloats" << YAML::Value << YAML::BeginMap;
+        for (const auto& [key, value] : mPropertiesFloat) {
+            out << YAML::Key << key << YAML::Value << value;
+        }
+        out << YAML::EndMap;
+
+        out << YAML::Key << "PropertiesVec2" << YAML::Value << YAML::BeginMap;
+        for (const auto& [key, value] : mPropertiesVec2) {
+            out << YAML::Key << key << YAML::Value << YAML::Flow << YAML::BeginSeq << value.x << value.y << YAML::EndSeq;
+        }
+        out << YAML::EndMap;
+
+        out << YAML::EndMap;
+
+        std::ofstream fout(path);
+        fout << out.c_str();
+    }
+
+    void Material::SetUniforms(Ref<Shader> shader)
 	{
 		shader->Bind();
         int textureUnit = 0;

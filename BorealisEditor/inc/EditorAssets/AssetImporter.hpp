@@ -31,6 +31,8 @@ namespace Borealis
 
 		static AssetHandle GetAssetHandle(std::filesystem::path const& path);
 
+		static void InsertAssetHandle(std::filesystem::path const& path, AssetHandle handle);
+
 	private:
 		bool ImportAsset(AssetMetaData metaData);
 

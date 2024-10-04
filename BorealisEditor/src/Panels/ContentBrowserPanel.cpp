@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Assets/AssetMetaData.hpp>
+#include <Assets/AssetManager.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
 #include <ResourceManager.hpp>
 
@@ -68,7 +69,16 @@ namespace Borealis
 				}
 				if (ImGui::MenuItem("Create New Material"))
 				{
-					MaterialEditor::SetRender(true);
+					std::filesystem::path materialPath = mCurrDir;
+					materialPath /= "NewMaterial.mat";
+					Ref<Material> material = Material::CreateNewMaterial(materialPath);
+					//TEMP
+					{
+						AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+						AssetManager::InsertMetaData(data);
+						AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+					}
+					MaterialEditor::SetMaterial(material);
 				}
 				ImGui::EndPopup();
 			}

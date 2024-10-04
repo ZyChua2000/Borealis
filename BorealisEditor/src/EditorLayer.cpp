@@ -60,7 +60,7 @@ namespace Borealis {
 		mViewportFrameBuffer = FrameBuffer::Create(props);
 		
 		FrameBufferProperties propsRuntime{ 1280, 720, false };
-		propsRuntime.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+		propsRuntime.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RedInteger,FramebufferTextureFormat::Depth };
 		mRuntimeFrameBuffer = FrameBuffer::Create(propsRuntime);
 
 		mEditorScene = MakeRef<Scene>();
