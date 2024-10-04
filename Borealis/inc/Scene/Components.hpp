@@ -14,6 +14,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
+#include <unordered_set>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -23,7 +24,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
+#include <AI/BehaviourTree/BehaviourTree.hpp>
 #include <Core/UUID.hpp>
+#include <Audio/Audio.hpp>
+
 namespace Borealis
 {
 	class ComponentRegistry
@@ -292,7 +296,49 @@ namespace Borealis
 			return mScripts.find(name) != mScripts.end();
 		}
 	};
+	
+	struct AudioSourceComponent
+	{
+		bool isLoop = false;
+		bool isMute = false;
+		bool isPlaying = false;
+		float Volume = 1.0f;
+		int channelID = 0;
 
+		Ref<Audio> audio;
+
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent&) = default;
+	};
+
+	struct AudioListenerComponent
+	{
+		bool isAudioListener = true;
+
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent&) = default;
+	};
+	struct BehaviourTreeComponent
+	{
+		std::unordered_set<Ref<BehaviourTree>> mBehaviourTrees;
+		void AddTree()
+		{
+			mBehaviourTrees.emplace(Ref<BehaviourTree>());
+		}
+		void AddTree(Ref<BehaviourTree> bt)
+		{
+			mBehaviourTrees.emplace(bt);
+		}
+
+		void Update(float dt)
+		{
+			for (auto& tree : mBehaviourTrees)
+			{
+				tree->Update(dt);
+			}
+		}
+
+	};
 
 }
 

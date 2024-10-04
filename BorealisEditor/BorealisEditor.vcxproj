@@ -93,7 +93,13 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmodL.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,7 +125,13 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -145,25 +157,35 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="inc\Assets\FontImporter.hpp" />
-    <ClInclude Include="inc\Assets\MaterialEditor.hpp" />
-    <ClInclude Include="inc\Assets\MeshImporter.hpp" />
-    <ClInclude Include="inc\Assets\SkinnedMeshImporter.hpp" />
+    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp" />
+    <ClInclude Include="inc\EditorAssets\FontImporter.hpp" />
+    <ClInclude Include="inc\EditorAssets\MaterialEditor.hpp" />
+    <ClInclude Include="inc\EditorAssets\MeshImporter.hpp" />
+    <ClInclude Include="inc\EditorAssets\MetaSerializer.hpp" />
+    <ClInclude Include="inc\EditorAssets\SkinnedMeshImporter.hpp" />
     <ClInclude Include="inc\EditorLayer.hpp" />
     <ClInclude Include="inc\Panels\ContentBrowserPanel.hpp" />
     <ClInclude Include="inc\Panels\SceneHierarchyPanel.hpp" />
     <ClInclude Include="inc\ResourceManager.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Assets\FontImporter.cpp" />
-    <ClCompile Include="src\Assets\MaterialEditor.cpp" />
-    <ClCompile Include="src\Assets\MeshImporter.cpp" />
-    <ClCompile Include="src\Assets\SkinnedMeshImporter.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />
+    <ClCompile Include="src\EditorAssets\AssetImporter.cpp" />
+    <ClCompile Include="src\EditorAssets\FontImporter.cpp" />
+    <ClCompile Include="src\EditorAssets\MaterialEditor.cpp" />
+    <ClCompile Include="src\EditorAssets\MeshImporter.cpp" />
+    <ClCompile Include="src\EditorAssets\MetaSerializer.cpp" />
+    <ClCompile Include="src\EditorAssets\SkinnedMeshImporter.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\Panels\SceneHierarchyPanel.cpp" />
@@ -172,6 +194,9 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
   <ItemGroup>
     <ProjectReference Include="..\Borealis\Borealis.vcxproj">
       <Project>{765073D6-621D-CEE1-8B36-BC8977620370}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\BorealisAssetCompiler\BorealisAssetCompiler.vcxproj">
+      <Project>{719FBB84-DD0B-777F-A6FF-0EDD122B99E7}</Project>
     </ProjectReference>
     <ProjectReference Include="lib\imgui-node-editor\ImGuiNodeEditor.vcxproj">
       <Project>{0D1D5786-79A8-C44A-82B9-473FEEC3204B}</Project>

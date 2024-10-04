@@ -24,11 +24,19 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
+//	#include <Project/Project.hpp>
+#include "Audio/AudioEngine.hpp"
 #include <ResourceManager.hpp>
 
-
+#include <Assets/AssetManager.hpp>
 #include <Graphics/Font.hpp>
-#include <Assets/FontImporter.hpp>
+
+#include <EditorAssets/AssetImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/MeshImporter.hpp>
+//#include <Assets/FontImporter.hpp>
+#include <AI/BehaviourTree/RegisterNodes.hpp>
+#include <AI/BehaviourTree/BehaviourTree.hpp>
 
 namespace Borealis {
 	EditorLayer::SceneState EditorLayer::mSceneState = EditorLayer::SceneState::Edit;
@@ -46,8 +54,6 @@ namespace Borealis {
 		}
 
 		PROFILE_FUNCTION();
-		mTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
-		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
 
 		FrameBufferProperties props{ 1280, 720, false };
 		props.Attachments = { FramebufferTextureFormat::RGBA8,  FramebufferTextureFormat::RedInteger, FramebufferTextureFormat::Depth };
@@ -70,12 +76,10 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			//Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
-			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
-
-			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+			Font font(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.dds"));
+			Font::SetDefaultFont(MakeRef<Font>(font));
 		}
-
 	}
 
 	void EditorLayer::Free()
@@ -148,7 +152,10 @@ namespace Borealis {
 			{
 				if (mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY) != -1)
 				{
+					//int id_ent = mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY);
 					mHoveredEntity = { (entt::entity)mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY), SceneManager::GetActiveScene().get()};
+					//BOREALIS_CORE_INFO("picking id {}", id_ent);
+					//BOREALIS_CORE_INFO("Name : {}", mHoveredEntity.GetName());
 				}
 				else
 				{
@@ -402,12 +409,15 @@ namespace Borealis {
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropSceneItem"))
 					{
-						const char* data= (const char*)payload->Data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						//const char* data= (const char*)payload->Data;
 						if (Project::GetProjectPath() != "")
 						{
 							std::string sceneName = Project::GetProjectPath() + "/assets/";
 							sceneName += data;
-							OpenScene(sceneName.c_str());
+							AssetMetaData assetMeta = AssetManager::GetMetaData(data);
+							//OpenScene(sceneName.c_str());
+							OpenScene(assetMeta.SourcePath.string().c_str());
 						}
 						else
 						{
@@ -693,6 +703,20 @@ namespace Borealis {
 
 			DeserialiseEditorScene();
 		}
+		//auto entity = SceneManager::GetActiveScene()->CreateEntity("testBehaviourTree");
+		//auto& btC = entity.AddComponent<BehaviourTreeComponent>();
+		//auto idleNode = NodeFactory::createNodeByName("L_Idle");
+		//auto sequenceNode = NodeFactory::createNodeByName("C_Sequencer");
+		//auto clickNode = NodeFactory::createNodeByName("L_CheckMouseClick");
+		//Ref<BehaviourTree> betree = MakeRef<BehaviourTree>();
+		//betree->SetBehaviourTreeName("Test-Tree");
+		//betree->SetRootNode(sequenceNode);
+		//betree->AddNode(betree->GetRootNode(), idleNode,1);
+		//betree->AddNode(betree->GetRootNode(), clickNode,1);
+		//betree->add selector(root)
+
+
+		//btC.AddTree(betree);
 	}
 
 	void EditorLayer::SaveScene()
@@ -712,6 +736,7 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+			Project::CopyIndividualFile(Project::GetProjectPath() + "\\AssetRegistry.brdb", filepath + "\\AssetRegistry.brdb");
 
 			// copy fmod dll and mono dll from editor
 			// Editor directory
@@ -724,6 +749,7 @@ namespace Borealis {
 			Project::CopyIndividualFile(editorPath + "\\mono-2.0-sgen.dll", filepath + "\\mono-2.0-sgen.dll");
 			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
 			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
+			Project::CopyFolder(editorPath + "\\engineResources", filepath + "\\engineResources");
 			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
 			// Copy and paste .exe file
 		}
@@ -812,10 +838,14 @@ namespace Borealis {
 		if (!filepath.empty())
 		{
 			SceneManager::ClearSceneLibrary();
-			Project::SetProjectPath(filepath.c_str());
+			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+			SceneManager::SetActiveScene(activeSceneName);
+
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
 			DeserialiseEditorScene();
+
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
@@ -829,6 +859,7 @@ namespace Borealis {
 		std::string filepath = FileDialogs::SaveFile("Folder");
 		if (!filepath.empty())
 		{
+			std::string originalFilePath = filepath;
 			// extract last part of the path
 			std::string projectName = filepath.substr(filepath.find_last_of("/\\") + 1);
 			// exclude project name from file path
@@ -836,6 +867,7 @@ namespace Borealis {
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 
+			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj"); //TEMP
 			// Create default empty scene
 			SceneManager::ClearSceneLibrary();
 			SceneManager::CreateScene("untitled", assetsPath);
@@ -843,6 +875,8 @@ namespace Borealis {
 
 			CBPanel.SetCurrDir(assetsPath);
 			EditorLayer::DeserialiseEditorScene();
+
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager

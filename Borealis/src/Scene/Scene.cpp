@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer2D.hpp>
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
+#include "Audio/AudioEngine.hpp"
 
 #include "Graphics/Light.hpp"
 
@@ -64,6 +65,14 @@ namespace Borealis
 					script->Update();
 				}
 			}
+
+			auto BTview = mRegistry.view<BehaviourTreeComponent>();
+			for (auto entity : BTview)
+			{
+				BTview.get<BehaviourTreeComponent>(entity).Update(dt);
+			}
+
+
 
 			int timeStep = dt / 1.66667f;
 			for (auto entity : view)
@@ -112,6 +121,46 @@ namespace Borealis
 		// Pre-Render
 		if (mainCamera)
 		{
+			Renderer3D::Begin(*mainCamera, mainCameratransform);
+			{
+				auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+				for (auto& entity : group)
+				{
+					auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
+					auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
+					MeshRendererComponent meshRenderer{};
+					if (!groupLight.empty())
+					{
+						auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+						Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
+					}
+					else
+					{
+						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
+					}
+				}
+			}
+			{
+				auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
+				for (auto& entity : group)
+				{
+					auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
+					auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
+
+					if (!groupLight.empty())
+					{
+						auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
+						Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
+						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
+					}
+					else
+					{
+						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
+					}
+				}
+			}
+
 			{
 				Renderer2D::Begin(*mainCamera, mainCameratransform);
 				auto group = mRegistry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
@@ -136,7 +185,38 @@ namespace Borealis
 			
 		}
 
-		//Post-Render
+		//Audio
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListenerComponent>);
+			int listener = 0;
+			for (auto& entity : group)
+			{
+				auto [transform, audioListener] = group.get<TransformComponent, AudioListenerComponent>(entity);
+				if (listener == 0)
+				{
+					listener = 1;
+				}
+				if (listener > 1)
+				{
+					BOREALIS_CORE_ASSERT(false, "More than 1 listener");
+				}
+			}
+
+			if (listener == 1)
+			{
+				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioSourceComponent>);
+				for (auto& entity : group)
+				{
+					auto [transform, audio] = group.get<TransformComponent, AudioSourceComponent>(entity);
+					if (audio.isPlaying && (!Borealis::AudioEngine::isSoundPlaying(audio.channelID) || !audio.isLoop))
+					{
+						AudioEngine::StopChannel(audio.channelID);
+						audio.isPlaying = false;
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio, {}, 5.0, audio.isMute, audio.isLoop);
+					}
+				}
+			}
+		}
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
@@ -266,6 +346,10 @@ namespace Borealis
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
+		CopyComponent<AudioSourceComponent>(newEntity, entity);
+		CopyComponent<AudioListenerComponent>(newEntity, entity);
+		CopyComponent<ScriptComponent>(newEntity, entity);
+		CopyComponent<BehaviourTreeComponent>(newEntity, entity);
 	}
 
 	void Scene::ResizeViewport(const uint32_t& width, const uint32_t& height)
@@ -295,6 +379,29 @@ namespace Borealis
 
 			auto srcComponent = view.get<Component>(srcEntity);
 			dst.emplace_or_replace<Component>(dstEntity, srcComponent);
+		}
+	}
+
+	template <>
+	static void CopyComponent <ScriptComponent> (entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& entitymap)
+	{
+		auto view = src.view<ScriptComponent>();
+		for (auto srcEntity : view)
+		{
+			UUID uuid = src.get<IDComponent>(srcEntity).ID;
+			auto dstEntity = entitymap.at(uuid);
+
+			auto srcComponent = view.get<ScriptComponent>(srcEntity);
+
+			auto& newScriptComponent = dst.emplace<ScriptComponent>(dstEntity);
+
+
+			for (auto script : srcComponent.mScripts)
+			{
+				Ref<ScriptInstance> newScript = MakeRef<ScriptInstance>(script.second->GetScriptClass());
+				newScript->Init(uuid);
+				newScriptComponent.AddScript(script.first, newScript);
+			}
 		}
 	}
 
@@ -331,6 +438,10 @@ namespace Borealis
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioSourceComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioListenerComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<ScriptComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<BehaviourTreeComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
 		return newScene;
 	}
@@ -439,6 +550,24 @@ namespace Borealis
 
 	template<>
 	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<AudioListenerComponent>(Entity entity, AudioListenerComponent& component)
+	{
+		
+	}
+
+	template<>
+	void Scene::OnComponentAdded<BehaviourTreeComponent>(Entity entity, BehaviourTreeComponent& component)
 	{
 
 	}

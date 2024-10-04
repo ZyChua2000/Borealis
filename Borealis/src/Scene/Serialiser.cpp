@@ -18,8 +18,11 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>
 #include <Scene/Entity.hpp>
 #include <Scene/Components.hpp>
+#include <AI/BehaviourTree/BehaviourNode.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
+#include <AI/BehaviourTree/RegisterNodes.hpp>
+#include <Assets/AssetManager.hpp>
 
 namespace YAML
 {
@@ -107,6 +110,31 @@ namespace YAML
 }
 namespace Borealis
 {
+	void Serialiser::ParseTree(YAML::Node& node, Ref<BehaviourNode> parentNode, BehaviourTree& tree, int parentDepth)
+	{
+		// Extract the node name and depth
+		std::string nodeName = node["name"].as<std::string>();
+		int depth = node["depth"].as<int>();
+
+		// Create the node using NodeFactory based on its name
+		Ref<BehaviourNode> currentNode = Borealis::NodeFactory::CreateNodeByName(nodeName);
+		currentNode->SetDepth(depth); // Assuming setDepth is implemented in BehaviourNode
+
+		// Add the current node to the tree
+		tree.AddNode(parentNode, currentNode, depth);
+
+		BOREALIS_CORE_TRACE("Deserialising node: {} at depth {}", nodeName, depth);
+
+		// Process children if they exist
+		if (node["children"])
+		{
+			for (auto childNode : node["children"])
+			{
+				// Recursively process each child node
+				ParseTree(childNode, currentNode, tree, depth);
+			}
+		}
+	}
 
 	// Overrides:
 	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vec)
@@ -134,6 +162,23 @@ namespace Borealis
 
 
 	Serialiser::Serialiser(const Ref<Scene>& scene) : mScene(scene) {}
+
+
+	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const Ref<BehaviourNode> node) {
+		out << YAML::Key << "name" << YAML::Value << node->GetName();
+		out << YAML::Key << "depth" << YAML::Value << node->GetDepth();
+		if (!node->mChildren.empty())
+		{
+			out << YAML::Key << "children" << YAML::Value << YAML::BeginSeq;
+			for (const auto& child : node->mChildren) {
+				out << YAML::BeginMap;
+				SerializeBehaviourNode(out, child); // Recursively serialize the child node
+				out << YAML::EndMap;
+			}
+			out << YAML::EndSeq;
+		}
+		return true;
+	}
 
 	static void SerializeEntity(YAML::Emitter& out, Entity& entity)
 	{
@@ -219,7 +264,7 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& meshFilterComponent = entity.GetComponent<MeshFilterComponent>();
-			out << YAML::Key << "Mesh" << YAML::Value << 3342312321; //UUID of Mesh
+			out << YAML::Key << "Mesh" << YAML::Value << meshFilterComponent.Model->mAssetHandle; //UUID of Mesh
 			out << YAML::EndMap;
 		}
 
@@ -290,6 +335,17 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& lightComponent = entity.GetComponent<LightComponent>();
+			out << YAML::Key << "Ambient" << YAML::Value << lightComponent.ambient;
+			out << YAML::Key << "Diffuse" << YAML::Value << lightComponent.diffuse;
+			out << YAML::Key << "Direction" << YAML::Value << lightComponent.direction;
+			out << YAML::Key << "Specular" << YAML::Value << lightComponent.specular;
+			out << YAML::Key << "InnerSpotX" << YAML::Value << lightComponent.InnerOuterSpot.x;
+			out << YAML::Key << "InnerSpotY" << YAML::Value << lightComponent.InnerOuterSpot.y;
+			out << YAML::Key << "Linear" << YAML::Value << lightComponent.linear;
+			out << YAML::Key << "Quadratic" << YAML::Value << lightComponent.quadratic;
+			out << YAML::Key << "Specular" << YAML::Value << lightComponent.specular;
+			out << YAML::Key << "Type" << YAML::Value << (int)lightComponent.type;
+
 			/*out << YAML::Key << "Colour" << YAML::Value << lightComponent.Colour;
 			out << YAML::Key << "InnerSpot" << YAML::Value << lightComponent.InnerOuterSpot.x;
 			out << YAML::Key << "OuterSpot" << YAML::Value << lightComponent.InnerOuterSpot.y;
@@ -305,6 +361,24 @@ namespace Borealis
 		}
 
 
+		if (entity.HasComponent<BehaviourTreeComponent>())
+		{
+			out << YAML::Key << "BehaviourTreeComponent";
+			out << YAML::BeginMap;
+
+			auto& behaviourTreeComponent = entity.GetComponent<BehaviourTreeComponent>();
+			
+			for (auto& tree : behaviourTreeComponent.mBehaviourTrees)
+			{
+				out << YAML::Key << "BehaviourTree";
+				out << YAML::BeginMap;
+				out << YAML::Key << "Tree Name" << YAML::Value << tree->GetBehaviourTreeName();
+				Serialiser::SerializeBehaviourNode(out, tree->GetRootNode());
+				out << YAML::EndMap;
+			}
+
+			out << YAML::EndMap;
+		}
 		out << YAML::EndMap;
 	}
 
@@ -418,7 +492,9 @@ namespace Borealis
 				if (meshFilterComponent)
 				{
 					auto& mfc = loadedEntity.AddComponent<MeshFilterComponent>();
-					mfc.Model = nullptr; // TODO: Load Mesh via UUID
+					uint64_t uuid = entity["MeshFilterComponent"]["Mesh"].as<uint64_t>(); // UUID
+					mfc.Model = AssetManager::GetAsset<Model>(uuid); // TODO: Load Mesh via UUID
+					BOREALIS_CORE_INFO(mfc.Model->mAssetHandle);
 				}
 
 				auto meshRendererComponent = entity["MeshRendererComponent"];
@@ -472,6 +548,15 @@ namespace Borealis
 				if (lightComponent)
 				{
 					auto& lc = loadedEntity.AddComponent<LightComponent>();
+					lc.ambient = lightComponent["Ambient"].as<glm::vec3>();
+					lc.diffuse = lightComponent["Diffuse"].as<glm::vec3>();
+					lc.direction = lightComponent["Direction"].as<glm::vec3>();
+					lc.specular = lightComponent["Specular"].as<glm::vec3>();
+					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpotX"].as<float>(), lightComponent["InnerSpotY"].as<float>());
+					lc.linear = lightComponent["Linear"].as<float>();
+					lc.quadratic = lightComponent["Quadratic"].as<float>();
+					lc.specular = lightComponent["Specular"].as<glm::vec3>();
+					lc.type = (LightComponent::Type)lightComponent["Type"].as<int>();
 					/*lc.Colour = lightComponent["Colour"].as<glm::vec4>();
 					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpot"].as<float>(), lightComponent["OuterSpot"].as<float>());
 					lc.Temperature = lightComponent["Temperature"].as<float>();
@@ -482,7 +567,41 @@ namespace Borealis
 					lc.shadowType = (LightComponent::ShadowType)lightComponent["ShadowType"].as<int>();
 					lc.lightAppearance = (LightComponent::LightAppearance)lightComponent["LightAppearance"].as<int>();*/
 				}
-//
+				auto behaviourTreeComponent = entity["BehaviourTreeComponent"];
+				/*
+					extract the name of tree and root node, then iteritivly build the tree, then call the clone method by createfromname function
+					behaviourNode["name"]
+				*/
+				if (behaviourTreeComponent) 
+				{
+					//BOREALIS_CORE_TRACE("Parsed YAML: {}", behaviourTreeComponent);//used for debugging to see what is being read
+					auto& btc = loadedEntity.AddComponent<BehaviourTreeComponent>();
+					Ref<BehaviourTree> tempTree = MakeRef<BehaviourTree>();
+
+					// Access the BehaviourTree node first
+					auto behaviourTree = behaviourTreeComponent["BehaviourTree"];
+
+					// Get the root node name and depth
+					std::string treeName = behaviourTree["Tree Name"].as<std::string>();
+					tempTree->SetBehaviourTreeName(treeName);
+					std::string rootName = behaviourTree["name"].as<std::string>();
+					int rootDepth = behaviourTree["depth"].as<int>();
+
+					// Create root node using NodeFactory
+					Ref<BehaviourNode> rootNode = Borealis::NodeFactory::CreateNodeByName(rootName);
+
+					// Set the root node of the tree
+					tempTree->SetRootNode(rootNode); //sets depth to 0 by default
+					BOREALIS_CORE_TRACE("Deserialising BT {}", treeName);
+
+					// If the root node has children, parse them recursively
+					if (behaviourTree["children"]) {
+						for (auto childNode : behaviourTree["children"]) {
+							ParseTree(childNode, rootNode, *tempTree, rootDepth);
+						}
+					}
+					btc.AddTree(tempTree);
+				}
 			}
 		}
 
@@ -633,6 +752,7 @@ namespace Borealis
 
 		return true;
 	}
+
 
 	bool Serialiser::SerialiseEditorStyle()
 	{

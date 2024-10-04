@@ -56,6 +56,9 @@ namespace Borealis
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
 
+	template <typename ClassObject>
+	using WeakRef = std::weak_ptr<ClassObject>;
+
 	template <typename classObject>
 	class RefDraft
 	{

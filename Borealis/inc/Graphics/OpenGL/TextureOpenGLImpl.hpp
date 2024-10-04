@@ -88,6 +88,8 @@ namespace Borealis
 		*************************************************************************/
 		void Bind(uint32_t unit = 0) const override;
 
+		bool IsValid() const override;
+
 		/*!***********************************************************************
 			\brief
 				Operator overload to check if two textures are the same
@@ -98,6 +100,7 @@ namespace Borealis
 		*************************************************************************/
 		bool operator==(const Texture& other) const override{return mRendererID == ((OpenGLTexture2D&)other).mRendererID;}
 	private:
+		bool mValid;
 		std::string mPath; // Path to the texture file
 		uint32_t mRendererID; // Renderer ID of the texture
 		uint32_t mWidth, mHeight, mChannels; // Width, Height and Channels of the texture
