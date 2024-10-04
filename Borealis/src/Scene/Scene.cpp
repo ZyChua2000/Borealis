@@ -79,7 +79,7 @@ namespace Borealis
 
 
 
-			int timeStep = dt / 1.66667f;
+			//timeStep = dt / 1.66667f;
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);

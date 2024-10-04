@@ -43,6 +43,9 @@
     <Filter Include="inc\ImGui">
       <UniqueIdentifier>{89503E75-F5BA-F2EB-3EF9-A391AAA2D040}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Physics">
+      <UniqueIdentifier>{9132CAD0-FDE7-42C6-86DC-3C9DF29039CA}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Scene">
       <UniqueIdentifier>{7C48EE75-E8B2-A2EC-31F1-53929D9A8041}</UniqueIdentifier>
     </Filter>
@@ -150,6 +153,9 @@
     </Filter>
     <Filter Include="src\ImGui">
       <UniqueIdentifier>{170E22B3-8378-D629-CCB6-87CF3860B47E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Physics">
+      <UniqueIdentifier>{9F8B9316-0B41-0C0C-9435-06E300EA0210}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Scene">
       <UniqueIdentifier>{0A06D2B3-7670-862A-BFAE-37D02B58647F}</UniqueIdentifier>
@@ -357,6 +363,9 @@
     </ClInclude>
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp">
       <Filter>inc\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Physics\PhysicsSystem.hpp">
+      <Filter>inc\Physics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Scene\Components.hpp">
       <Filter>inc\Scene</Filter>
@@ -2117,6 +2126,9 @@
     </ClCompile>
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp">
       <Filter>src\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Physics\PhysicsSystem.cpp">
+      <Filter>src\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\Scene\Components.cpp">
       <Filter>src\Scene</Filter>
