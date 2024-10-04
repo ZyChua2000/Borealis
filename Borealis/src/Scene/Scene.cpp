@@ -23,6 +23,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
 #include "Audio/AudioEngine.hpp"
+#include <Scene/SceneCamera.hpp>
 
 #include "Graphics/Light.hpp"
 #include <Physics/PhysicsSystem.hpp>
@@ -125,6 +126,7 @@ namespace Borealis
 
 				if (camera.Primary)
 				{
+					//camera.Camera.SetCameraType(SceneCamera::CameraType::Perspective);
 					mainCamera = &camera.Camera;
 					mainCameratransform = transform;
 					break;

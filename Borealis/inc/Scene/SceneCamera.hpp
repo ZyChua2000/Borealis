@@ -55,15 +55,15 @@ namespace Borealis
 		void RecalculateProjection();
 
 		CameraType mCameraType = CameraType::Orthographic;
-		float mOrthoSize = 10.0f;
+		float mOrthoSize = 1000.0f;
 		float mOrthoNear = -1.0f;
-		float mOrthoFar = 1.0f;
+		float mOrthoFar = 1000.0f;
 
 		float mPerspFOV = glm::radians(45.0f);
-		float mPerspNear = 0.01f;
+		float mPerspNear = 1.f;
 		float mPerspFar = 1000.0f;
 
-		float mAspectRatio = 0.0f;
+		float mAspectRatio = 1.78f;
 	};
 }
 

@@ -350,6 +350,16 @@ namespace Borealis
 				if (!mSelectedEntity.HasComponent<T>())
 				{
 					mSelectedEntity.AddComponent<T>();
+					
+					if (std::is_same<T, CameraComponent>::value)
+					{
+						mSelectedEntity.GetComponent<TransformComponent>().Translate.z = 350.f;
+					}
+
+					if (std::is_same<T, MeshFilterComponent>::value)
+					{
+						mSelectedEntity.AddComponent<MeshRendererComponent>();
+					}
 				}
 				ImGui::CloseCurrentPopup();
 				memset(search_buffer, 0, sizeof(search_buffer));
