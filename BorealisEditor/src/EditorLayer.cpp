@@ -24,11 +24,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <EditorLayer.hpp>
+//	#include <Project/Project.hpp>
+#include "Audio/AudioEngine.hpp"
 #include <ResourceManager.hpp>
 
-
+#include <Assets/AssetManager.hpp>
 #include <Graphics/Font.hpp>
-#include <Assets/FontImporter.hpp>
+
+#include <EditorAssets/AssetImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/MeshImporter.hpp>
+//#include <Assets/FontImporter.hpp>
 #include <AI/BehaviourTree/RegisterNodes.hpp>
 #include <AI/BehaviourTree/BehaviourTree.hpp>
 
@@ -48,7 +54,7 @@ namespace Borealis {
 		}
 
 		PROFILE_FUNCTION();
-		mTexture = Texture2D::Create("assets/textures/tilemap_packed.png");
+		mTexture = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
 		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
 
 		FrameBufferProperties props{ 1280, 720, false };
@@ -72,12 +78,13 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			//Ref<FontInfo> fontInfo = FontImporter::generateAtlas("C:\\Windows\\Fonts\\arialbd.ttf");
-			Ref<FontInfo> fontInfo = FontImporter::generateAtlas("assets/fonts/Open_Sans/OpenSans_SemiCondensed-Regular.ttf");
+			Font font(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
 
-			Font::SetDefaultFont(MakeRef<Font>(fontInfo));
+			Font::SetDefaultFont(MakeRef<Font>(font));
+
+			MeshImporter::LoadFBXModel("assets/meshes/Dragon_Baked_Actions_fbx_7.4_binary.fbx");
 		}
-;
 	}
 
 	void EditorLayer::Free()
@@ -150,7 +157,10 @@ namespace Borealis {
 			{
 				if (mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY) != -1)
 				{
+					//int id_ent = mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY);
 					mHoveredEntity = { (entt::entity)mViewportFrameBuffer->ReadPixel(1, mouseX, mouseY), SceneManager::GetActiveScene().get()};
+					//BOREALIS_CORE_INFO("picking id {}", id_ent);
+					//BOREALIS_CORE_INFO("Name : {}", mHoveredEntity.GetName());
 				}
 				else
 				{
@@ -404,12 +414,15 @@ namespace Borealis {
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropSceneItem"))
 					{
-						const char* data= (const char*)payload->Data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						//const char* data= (const char*)payload->Data;
 						if (Project::GetProjectPath() != "")
 						{
 							std::string sceneName = Project::GetProjectPath() + "/assets/";
 							sceneName += data;
-							OpenScene(sceneName.c_str());
+							AssetMetaData assetMeta = AssetManager::GetMetaData(data);
+							//OpenScene(sceneName.c_str());
+							OpenScene(assetMeta.SourcePath.string().c_str());
 						}
 						else
 						{
@@ -833,6 +846,8 @@ namespace Borealis {
 			CBPanel.SetCurrDir(assetsPath);
 			DeserialiseEditorScene();
 
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager
 			// Load Scenes in Assets Manager
@@ -845,6 +860,7 @@ namespace Borealis {
 		std::string filepath = FileDialogs::SaveFile("Folder");
 		if (!filepath.empty())
 		{
+			std::string originalFilePath = filepath;
 			// extract last part of the path
 			std::string projectName = filepath.substr(filepath.find_last_of("/\\") + 1);
 			// exclude project name from file path
@@ -852,6 +868,7 @@ namespace Borealis {
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 
+			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj"); //TEMP
 			// Create default empty scene
 			SceneManager::ClearSceneLibrary();
 			SceneManager::CreateScene("untitled", assetsPath);
@@ -859,6 +876,8 @@ namespace Borealis {
 
 			CBPanel.SetCurrDir(assetsPath);
 			EditorLayer::DeserialiseEditorScene();
+
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager

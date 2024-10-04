@@ -15,13 +15,16 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Assets/AssetMetaData.hpp>
+#include <EditorAssets/MetaSerializer.hpp>
 #include <ResourceManager.hpp>
 
-#include "Assets/MaterialEditor.hpp"
+#include "EditorAssets/MaterialEditor.hpp"
+#include <EditorAssets/AssetImporter.hpp>
 
 namespace Borealis
 {
-
+	UUID ContentBrowserPanel::sSelectedAsset = 0;
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
@@ -50,7 +53,7 @@ namespace Borealis
 
 		// Right click
 		{
-			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems;
+			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_NoOpenOverExistingPopup;
 			if (ImGui::BeginPopupContextWindow(0, popupFlagsItem))
 			{
 				if (ImGui::MenuItem("Create Folder"))
@@ -62,6 +65,10 @@ namespace Borealis
 					// Create a Scene
 					isCreatingScene = true;
 					latestMousePos = ImGui::GetMousePos();
+				}
+				if (ImGui::MenuItem("Create New Material"))
+				{
+					MaterialEditor::SetRender(true);
 				}
 				ImGui::EndPopup();
 			}
@@ -109,7 +116,6 @@ namespace Borealis
 				continue;
 			}
 			ImGui::PushID(filenameStr.c_str());
-
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
@@ -117,7 +123,12 @@ namespace Borealis
 			}
 			else
 			{
-				if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
+				if (extension == ".meta")
+				{
+					ImGui::PopID();
+					continue;
+				}
+				else if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
 				{
 
 				}
@@ -156,11 +167,21 @@ namespace Borealis
 				printedThumbnailSize = 0;
 				ImGui::Image((ImTextureID)screenID, { ImGui::GetFontSize(), ImGui::GetFontSize() });
 				ImGui::SameLine();
-				ImGui::Button(filenameStr.c_str());
+				if (ImGui::Button(filenameStr.c_str()))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)screenID, {printedThumbnailSize, printedThumbnailSize}, {0,1}, {1,0}, -1 , {0,0,0,0}, {1,1,1,1});
+				if (ImGui::ImageButton((ImTextureID)screenID, { printedThumbnailSize, printedThumbnailSize }, { 0,1 }, { 1,0 }, -1, { 0,0,0,0 }, { 1,1,1,1 }))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
+				if (sSelectedAsset == AssetImporter::GetAssetHandle(path))
+				{
+					ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 0, 0, 255));
+				}
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Delete"))
@@ -175,8 +196,13 @@ namespace Borealis
 			}
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, mAssetsDir);
-				std::string itemPath = relativePath.string();
+				//auto relativePath = std::filesystem::relative(path, mAssetsDir);
+				//std::string itemPath = relativePath.string();
+				std::string itemPath = std::filesystem::path(path).string();
+
+				//AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path(path).replace_extension(".meta"));
+				AssetHandle assetHandle = AssetImporter::GetAssetHandle(std::filesystem::path(path));
+				//get the meta file instead and pass the handle as the data?
 				const char* itemPathcStr = itemPath.c_str();
 
 				std::string payloadName;
@@ -200,9 +226,13 @@ namespace Borealis
 					{
 						payloadName = "DragDropMeshItem";
 					}
+					else if (extension == ".mp3" || extension == ".wav")
+					{
+						payloadName = "DragDropAudioItem";
+					}
 				}
 
-				ImGui::SetDragDropPayload(payloadName.c_str(), itemPathcStr, itemPath.length() + 1, ImGuiCond_Once);
+				ImGui::SetDragDropPayload(payloadName.c_str(), &assetHandle, sizeof(AssetHandle), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
 			
@@ -219,6 +249,11 @@ namespace Borealis
 				}
 			}
 
+			if (!ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			{
+				sSelectedAsset = 0;
+			}
+
 			if (mThumbnailSize != mMinThumbnailSize)
 			{
 				ImGui::TextWrapped(filenameStr.c_str());
@@ -230,20 +265,6 @@ namespace Borealis
 		{
 			ImGui::PopStyleColor();
 			ImGui::Columns(1);
-		}
-
-		// Material Creation
-		if (mCurrDir.filename() == "materials")
-		{
-			// Right-click popup for the Materials folder
-			if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
-			{
-				if (ImGui::MenuItem("Create New Material"))
-				{
-					MaterialEditor::SetRender(true);
-				}
-				ImGui::EndPopup();
-			}
 		}
 
 		// End the upper scrollable section

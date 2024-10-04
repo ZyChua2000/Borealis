@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Renderer2D.hpp>
 #include <Graphics/Renderer3D.hpp>
 #include <Core/LoggerSystem.hpp>
+#include "Audio/AudioEngine.hpp"
 
 #include "Graphics/Light.hpp"
 
@@ -184,7 +185,38 @@ namespace Borealis
 			
 		}
 
-		//Post-Render
+		//Audio
+		{
+			auto group = mRegistry.group<>(entt::get<TransformComponent, AudioListenerComponent>);
+			int listener = 0;
+			for (auto& entity : group)
+			{
+				auto [transform, audioListener] = group.get<TransformComponent, AudioListenerComponent>(entity);
+				if (listener == 0)
+				{
+					listener = 1;
+				}
+				if (listener > 1)
+				{
+					BOREALIS_CORE_ASSERT(false, "More than 1 listener");
+				}
+			}
+
+			if (listener == 1)
+			{
+				auto group = mRegistry.group<>(entt::get<TransformComponent, AudioSourceComponent>);
+				for (auto& entity : group)
+				{
+					auto [transform, audio] = group.get<TransformComponent, AudioSourceComponent>(entity);
+					if (audio.isPlaying && (!Borealis::AudioEngine::isSoundPlaying(audio.channelID) || !audio.isLoop))
+					{
+						AudioEngine::StopChannel(audio.channelID);
+						audio.isPlaying = false;
+						audio.channelID = Borealis::AudioEngine::PlayAudio(audio, {}, 5.0, audio.isMute, audio.isLoop);
+					}
+				}
+			}
+		}
 	}
 	void Scene::UpdateEditor(float dt, EditorCamera& camera)
 	{
@@ -314,6 +346,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newEntity, entity);
 		CopyComponent<CircleRendererComponent>(newEntity, entity);
 		CopyComponent<TextComponent>(newEntity, entity);
+		CopyComponent<AudioSourceComponent>(newEntity, entity);
+		CopyComponent<AudioListenerComponent>(newEntity, entity);
 		CopyComponent<ScriptComponent>(newEntity, entity);
 		CopyComponent<BehaviourTreeComponent>(newEntity, entity);
 	}
@@ -404,6 +438,8 @@ namespace Borealis
 		CopyComponent<LightComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<CircleRendererComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<TextComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioSourceComponent>(newRegistry, originalRegistry, UUIDtoENTT);
+		CopyComponent<AudioListenerComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<ScriptComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 		CopyComponent<BehaviourTreeComponent>(newRegistry, originalRegistry, UUIDtoENTT);
 
@@ -516,6 +552,18 @@ namespace Borealis
 	void Scene::OnComponentAdded<ScriptComponent>(Entity entity, ScriptComponent& component)
 	{
 
+	}
+
+	template<>
+	void Scene::OnComponentAdded<AudioSourceComponent>(Entity entity, AudioSourceComponent& component)
+	{
+
+	}
+
+	template<>
+	void Scene::OnComponentAdded<AudioListenerComponent>(Entity entity, AudioListenerComponent& component)
+	{
+		
 	}
 
 	template<>

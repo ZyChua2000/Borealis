@@ -9,16 +9,19 @@ layout(location = 4) in vec3 a_Bitangent;
 
 uniform mat4 u_ModelTransform;
 uniform mat4 u_ViewProjection;
+uniform int u_EntityID;
 
 out vec2 v_TexCoord;
 out vec3 v_FragPos;
 out vec3 v_Tangent;
 out vec3 v_Bitangent;
 out vec3 v_Normal;
+flat out int v_EntityID;
 
 void main()
 {
-	v_TexCoord = a_TexCoord;
+	//v_TexCoord = a_TexCoord;
+	v_TexCoord = vec2(a_TexCoord.x, 1.0 - a_TexCoord.y);
 
 	v_FragPos = vec3(u_ModelTransform * vec4(a_Position, 1.0));
 	//v_Normal = mat3(transpose(inverse(u_ModelTransform))) * a_Normal;
@@ -34,11 +37,14 @@ void main()
     v_Bitangent = B;
 
 	gl_Position = u_ViewProjection * vec4(v_FragPos, 1.0);	
+	v_EntityID = u_EntityID;
 }
 
 #type fragment
 #version 410 core			
+//layout(location = 0) out vec4 color;
 layout(location = 0) out vec4 fragColor;
+layout(location = 1) out int entityIDs;
 
 struct Material {
 	sampler2D albedoMap;
@@ -85,9 +91,11 @@ struct Light {
 
 in vec2 v_TexCoord;
 in vec3 v_FragPos;
+in vec3 v_Normal; 
+flat in int v_EntityID;
 in vec3 v_Tangent;
 in vec3 v_Bitangent;
-in vec3 v_Normal;
+//in vec3 v_Normal;
 
 uniform mat4 u_ViewProjection;
 uniform vec3 u_ViewPos;
@@ -251,4 +259,6 @@ void main() {
 	}
 
 	fragColor = color;
+	
+	entityIDs = v_EntityID;
 }

@@ -26,6 +26,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Font.hpp>
 #include <AI/BehaviourTree/BehaviourTree.hpp>
 #include <Core/UUID.hpp>
+#include <Audio/Audio.hpp>
+
 namespace Borealis
 {
 	class ComponentRegistry
@@ -293,6 +295,28 @@ namespace Borealis
 		{
 			return mScripts.find(name) != mScripts.end();
 		}
+	};
+	
+	struct AudioSourceComponent
+	{
+		bool isLoop = false;
+		bool isMute = false;
+		bool isPlaying = false;
+		float Volume = 1.0f;
+		int channelID = 0;
+
+		Ref<Audio> audio;
+
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent&) = default;
+	};
+
+	struct AudioListenerComponent
+	{
+		bool isAudioListener = true;
+
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent&) = default;
 	};
 	struct BehaviourTreeComponent
 	{

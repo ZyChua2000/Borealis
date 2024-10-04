@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="inc">
+      <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Importer">
+      <UniqueIdentifier>{0049E5DF-ECAB-7484-9531-AD3A81734007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Importer">
+      <UniqueIdentifier>{CEC3D9DE-BA26-6983-63AC-A1394FEE3406}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\Importer\AssetImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Importer\FontImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Importer\MeshImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Importer\TextureImporter.hpp">
+      <Filter>inc\Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\MetaSerializer.hpp">
+      <Filter>inc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Importer\AssetImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Importer\FontImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Importer\MeshImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Importer\TextureImporter.cpp">
+      <Filter>src\Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MetaSerializer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

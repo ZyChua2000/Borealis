@@ -43,22 +43,23 @@ namespace Borealis
 		Ref<Texture2D> fontAtlas;
 	};
 
-	class Font
+	class Font : public Asset
 	{
 	public:
 		Font();
-		Font(Ref<FontInfo> fontInfo);
+		Font(FontInfo const& fontInfo);
+		Font(std::filesystem::path const& filePath);
 		~Font();
 
-		Ref<FontInfo> GetFontInfo() const;
+		FontInfo const& GetFontInfo() const;
 
 		Ref<Texture2D> GetAtlasTexture() const;
-
+		void SetTexture(std::filesystem::path const& fontTexturePath); //Temp
 		static void SetDefaultFont(Ref<Font> defaultFont);
 		static Ref<Font> GetDefaultFont();
 
 	private:
-		Ref<FontInfo> mFontInfo = nullptr;
+		FontInfo mFontInfo;
 	};
 }
 

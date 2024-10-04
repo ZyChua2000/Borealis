@@ -32,6 +32,8 @@ namespace Borealis
 
 		//mVertices = vertices;
 		mIndices = indices;
+		mIndicesCount = indices.size();
+		mVerticesCount = vertices.size();
 		//mNormals = normals;
 
 		for (int i{}; i < vertices.size(); i++)
@@ -60,7 +62,7 @@ namespace Borealis
 			vertex.Position = vertices[i];
 			vertex.Normal = normals[i];
 			vertex.TexCoords = texCoords[i];
-			vertex.BoneData = boneData[i];
+			//vertex.BoneData = boneData[i];
 
 			mVertices.push_back(vertex);
 		}
@@ -72,6 +74,9 @@ namespace Borealis
 	{
 		mVertices = vertices;
 		mIndices = indices;
+
+		mVerticesCount = vertices.size();
+		mIndicesCount = indices.size();
 
 		SetupMesh();
 	}
@@ -127,31 +132,73 @@ namespace Borealis
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
 		// Tangents
 		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(VertexData, Tangent));
 		// Bitangents
 		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(VertexData, Bitangent));
 
 		// Unbind VAO
 		glBindVertexArray(0);
 	}
 
-	void Mesh::Draw(const glm::mat4& transform, Ref<Shader> shader)
+	void Mesh::Draw(const glm::mat4& transform, Ref<Shader> shader, int entityID)
 	{
 		shader->Bind();
 
 		shader->Set("u_ModelTransform", transform);
+		shader->Set("u_EntityID", entityID);
 
 		glBindVertexArray(VAO);
 		glDrawElements(GL_TRIANGLES, (int)mIndices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
 
-	void Mesh::ComputeTangents() {
+	std::vector<unsigned int> const& Mesh::GetIndices() const
+	{
+		return mIndices;
+	}
+
+	std::vector<unsigned int>& Mesh::GetIndices()
+	{
+		return mIndices;
+	}
+
+	std::vector<Vertex> const& Mesh::GetVertices() const
+	{
+		return mVertices;
+	}
+
+	std::vector<Vertex>& Mesh::GetVertices()
+	{
+		return mVertices;
+	}
+
+	uint32_t Mesh::GetVerticesCount() const
+	{
+		return mVerticesCount;
+	}
+
+	void Mesh::SetVerticesCount(uint32_t count)
+	{
+		mVerticesCount = count;
+	}
+
+	uint32_t Mesh::GetIndicesCount() const
+	{
+		return mIndicesCount;
+	}
+
+	void Mesh::SetIndicesCount(uint32_t count)
+	{
+		mIndicesCount = count;
+	}
+
+	void Mesh::ComputeTangents() 
+	{
 		// Initialize tangents and bitangents to zero
-		for (size_t i = 0; i < mVertices.size(); i++) {
-			mVertices[i].Tangent = glm::vec3(0.0f);
-			mVertices[i].Bitangent = glm::vec3(0.0f);
+		for (size_t i = 0; i < mVerticesData.size(); i++) {
+			mVerticesData[i].Tangent = glm::vec3(0.0f);
+			mVerticesData[i].Bitangent = glm::vec3(0.0f);
 		}
 
 		// Loop over each triangle
@@ -159,6 +206,10 @@ namespace Borealis
 			Vertex& v0 = mVertices[mIndices[i]];
 			Vertex& v1 = mVertices[mIndices[i + 1]];
 			Vertex& v2 = mVertices[mIndices[i + 2]];
+
+			VertexData& vd0 = mVerticesData[mIndices[i]];
+			VertexData& vd1 = mVerticesData[mIndices[i + 1]];
+			VertexData& vd2 = mVerticesData[mIndices[i + 2]];
 
 			// Positions
 			glm::vec3& p0 = v0.Position;
@@ -184,19 +235,19 @@ namespace Borealis
 			glm::vec3 bitangent = f * (-deltaPos1 * deltaUV2.x + deltaPos2 * deltaUV1.x);
 
 			// Accumulate the tangents and bitangents
-			v0.Tangent += tangent;
-			v1.Tangent += tangent;
-			v2.Tangent += tangent;
+			vd0.Tangent += tangent;
+			vd1.Tangent += tangent;
+			vd2.Tangent += tangent;
 
-			v0.Bitangent += bitangent;
-			v1.Bitangent += bitangent;
-			v2.Bitangent += bitangent;
+			vd0.Bitangent += bitangent;
+			vd1.Bitangent += bitangent;
+			vd2.Bitangent += bitangent;
 		}
 
 		// Normalize the tangents and bitangents
 		for (size_t i = 0; i < mVertices.size(); i++) {
-			mVertices[i].Tangent = glm::normalize(mVertices[i].Tangent);
-			mVertices[i].Bitangent = glm::normalize(mVertices[i].Bitangent);
+			mVerticesData[i].Tangent = glm::normalize(mVerticesData[i].Tangent);
+			mVerticesData[i].Bitangent = glm::normalize(mVerticesData[i].Bitangent);
 		}
 	}
 

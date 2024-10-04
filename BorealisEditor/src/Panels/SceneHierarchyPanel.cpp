@@ -19,13 +19,19 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
+#include <Panels/ContentBrowserPanel.hpp>
 
-#include <Assets/MeshImporter.hpp>
-#include <Assets/FontImporter.hpp>
+#include <EditorAssets/MeshImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/AssetImporter.hpp>
+#include <Assets/AssetManager.hpp>
+//#include <Assets/MeshImporter.hpp>
+//#include <Assets/FontImporter.hpp>
 #include <EditorLayer.hpp>
 
+#include <Core/Project.hpp>
 
-#include "Assets/MaterialEditor.hpp"
+#include "EditorAssets/MaterialEditor.hpp"
 
 namespace Borealis
 {
@@ -123,13 +129,13 @@ namespace Borealis
 				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 				ImGui::PopStyleVar();
 				ImGui::SameLine(ContentRegionAvailable.x - lineHeight * 0.5f); // Align to right (Button)
-				if (ImGui::Button("+", ImVec2{lineHeight,lineHeight}))
+				if (ImGui::Button(("+##" + name).c_str(), ImVec2{lineHeight,lineHeight}))
 				{
-					ImGui::OpenPopup("ComponentSettingsPopup");
+					ImGui::OpenPopup(("ComponentSettingsPopup##" + name).c_str());
 				}
 				
 
-				if (ImGui::BeginPopup("ComponentSettingsPopup"))
+				if (ImGui::BeginPopup(("ComponentSettingsPopup##" + name).c_str()))
 				{
 					if (ImGui::MenuItem("Remove Component"))
 					{
@@ -243,6 +249,45 @@ namespace Borealis
 		{
 			MaterialEditor::SetRender(false);
 			DrawComponents(mSelectedEntity);
+		}
+		else if (ContentBrowserPanel::sSelectedAsset)
+		{
+			AssetMetaData const& metadata = AssetManager::GetMetaData(ContentBrowserPanel::sSelectedAsset);
+#ifdef _DEB
+			ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
+#endif
+			ImGui::Text(("Name: " + metadata.name).c_str());
+			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
+			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
+
+			switch (metadata.Type)
+			{
+				case AssetType::Texture2D:
+				{
+					break;
+				}
+				case AssetType::Audio:
+				{
+					break;
+				}
+				case AssetType::Shader:
+				{
+					break;
+				}
+				case AssetType::Mesh:
+				{
+					break;
+				}
+				case AssetType::Material:
+				{
+					break;
+				}
+				default:
+				{
+					break;
+				}
+				
+			}
 		}
 		MaterialEditor::RenderEditor();
 
@@ -555,6 +600,8 @@ namespace Borealis
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
 			SearchBar<TextComponent				>(search_text, mSelectedEntity,"Text", search_buffer);
 			SearchBar<BehaviourTreeComponent	>(search_text, mSelectedEntity, "Behaviour Tree", search_buffer);
+			SearchBar<AudioSourceComponent		>(search_text, mSelectedEntity, "Audio Source", search_buffer);
+			SearchBar<AudioListenerComponent	>(search_text, mSelectedEntity, "Audio Listener", search_buffer);
 
 			// scripts
 			for (auto [name, klass] : ScriptingSystem::mScriptClasses)
@@ -577,7 +624,7 @@ namespace Borealis
 
 
 			ImGui::EndPopup();
-			
+					
 		}
 
 		DrawComponent<TransformComponent>("Transform", mSelectedEntity, [](auto& transformComponent)
@@ -661,10 +708,8 @@ namespace Borealis
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
-						component.Texture = Texture2D::Create(imageName);
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Texture = AssetManager::GetAsset<Texture2D>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -681,14 +726,19 @@ namespace Borealis
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Mesh");
+				//{
+				//	if (!component.Model)
+				//		component.Model = MakeRef<Model>();
+				//	component.Model->LoadModel();
+				//}
 				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string meshName = "assets/";
-						meshName += data;
+						//const char* data = (const char*)payload->Data;
+						//std::string meshName = "assets/";
+						//meshName += data;
 						// Should reference off asset manager's mesh
 						// imageName += ".meta";
 						// Read UUID from .meta
@@ -697,7 +747,11 @@ namespace Borealis
 						//Model model;
 						//LoadModel(meshName, model);
 						//component.Model = MakeRef<Model>(model); 
-						component.Model = MeshImporter::LoadFBXModel(meshName);
+						//component.Model = MeshImporter::LoadFBXModel(meshName);
+
+						//component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Model = AssetManager::GetAsset<Model>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -929,6 +983,50 @@ namespace Borealis
 				component.fontSize = textSize;
 			});
 
+			DrawComponent<AudioSourceComponent>("Audio Source", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Button("Audio");
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropAudioItem"))
+					{
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.audio = AssetManager::GetAsset<Audio>(data);
+					}
+					ImGui::EndDragDropTarget();
+				}
+
+				if(component.audio)
+				{
+					bool loop = component.isLoop;
+					ImGui::Checkbox("Mute", &component.isMute);
+					ImGui::Checkbox("Loop", &component.isLoop);
+					if (loop != component.isLoop)
+					{
+						component.isPlaying = true;
+					}
+
+					ImGui::DragFloat("Volume", &component.Volume, 5.0f);
+					//component.audio = MakeRef<Audio>();
+					//component.audio->AudioPath = "assets/Audio/meow.mp3";
+
+
+
+					if (ImGui::Button("Play"))
+					{
+						component.isPlaying = true;
+					}
+				}
+			});
+
+		DrawComponent<AudioListenerComponent>("Audio Listener", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Audio Listener", &component.isAudioListener);
+
+			});
+
+		
 		DrawComponent<BehaviourTreeComponent>("Behaviour Tree", mSelectedEntity, [](auto& component)
 			{
 				// Get the window size

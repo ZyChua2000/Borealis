@@ -14,8 +14,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <string>
 #include <filesystem>
+
 #ifndef PROJECT_HPP
 #define PROJECT_HPP
+
+#include <memory>
+
+#include <Core/ProjectInfo.hpp>
+
+#include <Assets/IAssetManager.hpp>
+#include <Assets/EditorAssetManager.hpp>
+
 namespace Borealis
 {
 	class Project
@@ -25,14 +34,21 @@ namespace Borealis
 		static void SetProjectPath(std::string path);
 		static std::string GetProjectPath();
 		static std::string GetProjectName();
+
+		static std::string GetAssetsPath();
 		static void SaveProject();
+
+		static ProjectInfo GetProjectInfo();
 
 		static void BuildExportSettings(std::string buildPath, std::string buildName);
 		static void CopyFolder(const std::filesystem::path& source, const std::filesystem::path& destination);
 		static void CopyIndividualFile(const std::filesystem::path& source, const std::filesystem::path& destination);
+
+		static std::shared_ptr<EditorAssetManager> GetEditorAssetsManager();
 	private:
-		static std::string mProjectPath;
-		static std::string  mProjectName;
+		static ProjectInfo mProjectInfo;
+
+		static std::shared_ptr<IAssetManager> mAssetManager;
 	};
 
 }

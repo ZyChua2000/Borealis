@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define NOMINMAX
 #include <windows.h>
 #include <GLFW/glfw3.h>
+#include <Audio/AudioEngine.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Core/ApplicationManager.hpp>
 #include <Core/InputSystem.hpp>
@@ -47,6 +48,7 @@ namespace Borealis
 
 		ScriptingSystem::Init();
 
+		AudioEngine::Init();
 		NodeFactory::Init();
 		InputSystem::Init();
 	}
@@ -60,8 +62,10 @@ namespace Borealis
 		PROFILE_FUNCTION();
 
 		Renderer::Free();
+		AudioEngine::Shutdown();
 		mLayerSystem.Clear();
 		ScriptingSystem::Free();
+
 		delete mWindowManager;
 		glfwTerminate(); // Terminate after system shuts down
 

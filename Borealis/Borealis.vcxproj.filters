@@ -16,6 +16,12 @@
     <Filter Include="inc\AI\BehaviourTree\Leaf">
       <UniqueIdentifier>{832911B9-EFEB-4443-389C-D3CFA49D1D21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Assets">
+      <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="inc\Audio">
+      <UniqueIdentifier>{6069B274-CCD3-66EB-1512-189181BB4440}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Core">
       <UniqueIdentifier>{D78FA160-C35C-FC6B-EC75-EA13D8A131FA}</UniqueIdentifier>
     </Filter>
@@ -57,6 +63,12 @@
     </Filter>
     <Filter Include="lib\FMOD\FMOD">
       <UniqueIdentifier>{C6587815-3219-F44B-FB53-3DC967D33828}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\gli">
+      <UniqueIdentifier>{87D44779-F3B3-C614-FCCB-51EB682A2D76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\gli\core">
+      <UniqueIdentifier>{5F71BF21-4BD4-4EC6-F459-877CE09B1A49}</UniqueIdentifier>
     </Filter>
     <Filter Include="lib\glm">
       <UniqueIdentifier>{8BD44779-F7B3-C614-00CC-51EB6C2A2D76}</UniqueIdentifier>
@@ -115,6 +127,12 @@
     <Filter Include="src\AI\BehaviourTree\Leaf">
       <UniqueIdentifier>{1143AAAD-7D05-DE37-C6B5-6CC432B7B615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Assets">
+      <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{EE2696B2-5A91-4A29-A3CF-FBCE0F79287E}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
@@ -169,6 +187,27 @@
     <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp">
       <Filter>inc\AI\BehaviourTree</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Assets\Asset.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Assets\IAssetManager.hpp">
+      <Filter>inc\Assets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\Audio.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Audio\AudioEngine.hpp">
+      <Filter>inc\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="inc\BorealisPCH.hpp">
       <Filter>inc</Filter>
     </ClInclude>
@@ -200,6 +239,9 @@
       <Filter>inc\Core</Filter>
     </ClInclude>
     <ClInclude Include="inc\Core\Project.hpp">
+      <Filter>inc\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Core\ProjectInfo.hpp">
       <Filter>inc\Core</Filter>
     </ClInclude>
     <ClInclude Include="inc\Core\UUID.hpp">
@@ -366,6 +408,165 @@
     </ClInclude>
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp">
       <Filter>lib\FMOD\FMOD</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\clear.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\comparison.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\convert.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\copy.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\bc.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\clear.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\convert_func.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\coord.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\file.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\filter.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\filter_compute.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\flip.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\mipmaps_compute.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\s3tc.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\core\storage_linear.hpp">
+      <Filter>lib\gli\core</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\duplicate.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\dx.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\format.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\generate_mipmaps.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\gl.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\gli.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\image.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\levels.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\load.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\load_dds.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\load_kmg.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\load_ktx.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\make_texture.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\reduce.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler1d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler1d_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler2d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler2d_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler3d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler_cube.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\sampler_cube_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\save.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\save_dds.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\save_kmg.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\save_ktx.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\target.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture1d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture1d_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture2d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture2d_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture3d.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture_cube.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\texture_cube_array.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\transform.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\type.hpp">
+      <Filter>lib\gli</Filter>
+    </ClInclude>
+    <ClInclude Include="lib\gli\view.hpp">
+      <Filter>lib\gli</Filter>
     </ClInclude>
     <ClInclude Include="lib\glm\glm\common.hpp">
       <Filter>lib\glm\glm</Filter>
@@ -1778,6 +1979,18 @@
     </ClCompile>
     <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp">
       <Filter>src\AI\BehaviourTree</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\Asset.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\AssetManager.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Assets\EditorAssetManager.cpp">
+      <Filter>src\Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Audio\AudioEngine.cpp">
+      <Filter>src\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\BorealisPCH.cpp">
       <Filter>src</Filter>
