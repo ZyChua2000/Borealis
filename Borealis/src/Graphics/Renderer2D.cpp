@@ -213,13 +213,13 @@ namespace Borealis
 			samplers[i] = i;
 		}
 
-		sData->mQuadShader = Shader::Create("../Borealis/Resources/shaders/Renderer2D_Quad.glsl");
+		sData->mQuadShader = Shader::Create("engineResources/shaders/Renderer2D_Quad.glsl");
 		sData->mQuadShader->Bind();
 		sData->mQuadShader->Set("u_Texture", samplers, Renderer2DData::MaxTextureSlots);
 
-		sData->mCircleShader = Shader::Create("../Borealis/Resources/shaders/Renderer2D_Circle.glsl");
-		sData->mLineShader = Shader::Create("../Borealis/Resources/shaders/Renderer2D_Line.glsl");
-		sData->mFontShader = Shader::Create("../Borealis/Resources/shaders/Renderer2D_Font.glsl");
+		sData->mCircleShader = Shader::Create("engineResources/shaders/Renderer2D_Circle.glsl");
+		sData->mLineShader = Shader::Create("engineResources/shaders/Renderer2D_Line.glsl");
+		sData->mFontShader = Shader::Create("engineResources/shaders/Renderer2D_Font.glsl");
 
 		sData->TextureSlots[0] = sData->mWhiteTexture;
 

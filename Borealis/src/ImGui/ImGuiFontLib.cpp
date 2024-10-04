@@ -20,8 +20,8 @@ namespace Borealis
 {
 	std::map <int, const char*> sImGuiFontLib
 	{
-		{ImGuiFonts::bold, "assets/fonts/Open_Sans/OpenSans-Bold.ttf"},
-		{ImGuiFonts::regular, "assets/fonts/Open_Sans/OpenSans-Regular.ttf"}
+		{ImGuiFonts::bold, "resources/fonts/OpenSans-Bold.ttf"},
+		{ImGuiFonts::regular, "resources/fonts/OpenSans-Regular.ttf"}
 	};
 
 	std::map <int, ImVec4> sImGuiDarkColours{};

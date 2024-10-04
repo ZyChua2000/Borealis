@@ -28,6 +28,9 @@ namespace Borealis
 		Audio,
 		Font,
 		Text,
+		Material,
+		Mesh,
+		Texture,
 		Unknown
 	};
 

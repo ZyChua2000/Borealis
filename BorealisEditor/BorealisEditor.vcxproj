@@ -93,7 +93,13 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmodL.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,7 +125,13 @@ copy /B /Y "..\Borealis\lib\mono\dll\Deb\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
@@ -145,7 +157,13 @@ copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Comm
     </Link>
     <PostBuildEvent>
       <Command>copy /B /Y "..\Borealis\lib\FMOD\dll\fmod.dll" "$(TargetDir)"
-copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"</Command>
+copy /B /Y "..\Borealis\lib\mono\dll\Rel\mono-2.0-sgen.dll" "$(TargetDir)"
+IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "$(TargetDir)engineResources" &gt; nul)
+IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
+IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
+IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
+copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
+IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

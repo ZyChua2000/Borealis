@@ -54,8 +54,6 @@ namespace Borealis {
 		}
 
 		PROFILE_FUNCTION();
-		mTexture = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
-		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
 
 		FrameBufferProperties props{ 1280, 720, false };
 		props.Attachments = { FramebufferTextureFormat::RGBA8,  FramebufferTextureFormat::RedInteger, FramebufferTextureFormat::Depth };
@@ -78,12 +76,9 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			Font font(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.bfi"));
-			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
-
+			Font font(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.dds"));
 			Font::SetDefaultFont(MakeRef<Font>(font));
-
-			MeshImporter::LoadFBXModel("assets/meshes/Dragon_Baked_Actions_fbx_7.4_binary.fbx");
 		}
 	}
 
@@ -741,6 +736,7 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+			Project::CopyIndividualFile(Project::GetProjectPath() + "\\AssetRegistry.brdb", filepath + "\\AssetRegistry.brdb");
 
 			// copy fmod dll and mono dll from editor
 			// Editor directory
@@ -753,6 +749,7 @@ namespace Borealis {
 			Project::CopyIndividualFile(editorPath + "\\mono-2.0-sgen.dll", filepath + "\\mono-2.0-sgen.dll");
 			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
 			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
+			Project::CopyFolder(editorPath + "\\engineResources", filepath + "\\engineResources");
 			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
 			// Copy and paste .exe file
 		}
@@ -841,12 +838,14 @@ namespace Borealis {
 		if (!filepath.empty())
 		{
 			SceneManager::ClearSceneLibrary();
-			Project::SetProjectPath(filepath.c_str());
+			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
+			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+			SceneManager::SetActiveScene(activeSceneName);
+
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
 			CBPanel.SetCurrDir(assetsPath);
 			DeserialiseEditorScene();
 
-			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
 
 			// Clear Scenes in Scene Manager
 			// Clear Assets in Assets Manager

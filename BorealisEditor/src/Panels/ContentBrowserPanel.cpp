@@ -130,7 +130,7 @@ namespace Borealis
 				}
 				else if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Texture)->GetRendererID());
 				}
 				else if (extension == ".txt")
 				{
@@ -142,23 +142,27 @@ namespace Borealis
 				}
 				else if (extension == ".glsl")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Shader)->GetRendererID());
 				}
 				else if (extension == ".ttf")
 				{
 					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Font)->GetRendererID());
 				}
-				else if (extension == ".prefab")
-				{
-
-				}
 				else if (extension == ".cs")
 				{
 					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Script)->GetRendererID());
 				}
+				else if (extension == ".fbx" || extension == ".obj")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Mesh)->GetRendererID());
+				}
+				else if (extension == ".mat")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Material)->GetRendererID());
+				}
 				else
 				{
-					// default case
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Unknown)->GetRendererID());
 				}
 			}
 			

@@ -194,7 +194,7 @@ namespace Borealis
 		default:
 			break;
 		}
-
+		asset->mAssetHandle = assetHandle;
 		return asset;
 	}
 

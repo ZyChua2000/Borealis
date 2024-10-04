@@ -22,6 +22,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 #include <AI/BehaviourTree/RegisterNodes.hpp>
+#include <Assets/AssetManager.hpp>
 
 namespace YAML
 {
@@ -263,7 +264,7 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& meshFilterComponent = entity.GetComponent<MeshFilterComponent>();
-			out << YAML::Key << "Mesh" << YAML::Value << 3342312321; //UUID of Mesh
+			out << YAML::Key << "Mesh" << YAML::Value << meshFilterComponent.Model->mAssetHandle; //UUID of Mesh
 			out << YAML::EndMap;
 		}
 
@@ -480,7 +481,9 @@ namespace Borealis
 				if (meshFilterComponent)
 				{
 					auto& mfc = loadedEntity.AddComponent<MeshFilterComponent>();
-					mfc.Model = nullptr; // TODO: Load Mesh via UUID
+					uint64_t uuid = entity["MeshFilterComponent"]["Mesh"].as<uint64_t>(); // UUID
+					mfc.Model = AssetManager::GetAsset<Model>(uuid); // TODO: Load Mesh via UUID
+					BOREALIS_CORE_INFO(mfc.Model->mAssetHandle);
 				}
 
 				auto meshRendererComponent = entity["MeshRendererComponent"];

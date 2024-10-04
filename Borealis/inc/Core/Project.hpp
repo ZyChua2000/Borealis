@@ -31,7 +31,7 @@ namespace Borealis
 	{
 	public:
 		static void CreateProject(std::string name, std::string path);
-		static void SetProjectPath(std::string path);
+		static std::string SetProjectPath(std::string path);
 		static std::string GetProjectPath();
 		static std::string GetProjectName();
 
