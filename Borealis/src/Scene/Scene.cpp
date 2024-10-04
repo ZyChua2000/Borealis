@@ -100,7 +100,7 @@ namespace Borealis
 			{
 				auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
 				//PhysicsSystem::createSphere(rigidbody.radius, transform.Translate, rigidbody.velocity, rigidbody);
-				PhysicsSystem::Update(dt, rigidbody);
+				PhysicsSystem::Update(dt, rigidbody, transform);
 				transform.Translate = rigidbody.translation;
 
 			}

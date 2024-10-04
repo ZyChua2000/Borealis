@@ -7,7 +7,7 @@ class PhysicsSystem
 {
 public:
 	static void Init();
-	static void Update(float dt, RigidBodyComponent& rigidbody);
+	static void Update(float dt, RigidBodyComponent& rigidbody, TransformComponent& transforms);
 	static void Free();
 
 	static void createSphere(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody);
