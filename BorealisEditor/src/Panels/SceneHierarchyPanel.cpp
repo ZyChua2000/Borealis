@@ -1007,12 +1007,8 @@ namespace Borealis
 						component.isPlaying = true;
 					}
 
-					ImGui::DragFloat("Volume", &component.Volume, 5.0f);
-					//component.audio = MakeRef<Audio>();
-					//component.audio->AudioPath = "assets/Audio/meow.mp3";
-
-
-
+					// DragFloat for volume control (range: -80 dB to 0 dB)
+					ImGui::DragFloat("Volume", &component.Volume, 0.5f, -80.0f, 0.0f);
 					if (ImGui::Button("Play"))
 					{
 						component.isPlaying = true;
