@@ -27,6 +27,11 @@ namespace Borealis
 		glm::vec3 Normal;
 		glm::vec2 TexCoords;
 		//VertexBoneData BoneData;
+
+	};
+
+	struct VertexData
+	{
 		glm::vec3 Tangent;
 		glm::vec3 Bitangent;
 
@@ -88,6 +93,7 @@ namespace Borealis
 	private:
 		std::vector<unsigned int> mIndices;
 		std::vector<Vertex> mVertices;
+		std::vector<VertexData> mVerticesData;
 
 		uint32_t mVerticesCount; // Number of vertices
 		uint32_t mIndicesCount; // Number of indices

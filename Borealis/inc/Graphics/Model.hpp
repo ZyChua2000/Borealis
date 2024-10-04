@@ -24,6 +24,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis
 {
+	struct MeshVertex
+	{
+		glm::vec3 Position;
+		glm::vec3 Normal;
+		glm::vec2 TexCoords;
+	};
+
 	class Model : public Asset
 	{
 	public:

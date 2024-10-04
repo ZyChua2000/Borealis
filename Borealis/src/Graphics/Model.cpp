@@ -46,7 +46,7 @@ namespace Borealis
 			mesh.GetVertices().resize(verticesCount);
 			mesh.GetIndices().resize(indicesCount);
 
-			inFile.read(reinterpret_cast<char*>(mesh.GetVertices().data()), verticesCount * sizeof(Vertex));
+			inFile.read(reinterpret_cast<char*>(mesh.GetVertices().data()), verticesCount * sizeof(MeshVertex));
 
 			inFile.read(reinterpret_cast<char*>(mesh.GetIndices().data()), indicesCount * sizeof(uint32_t));
 

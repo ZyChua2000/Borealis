@@ -565,6 +565,8 @@ namespace Borealis
 	{
 		
 	}
+
+	template<>
 	void Scene::OnComponentAdded<BehaviourTreeComponent>(Entity entity, BehaviourTreeComponent& component)
 	{
 
