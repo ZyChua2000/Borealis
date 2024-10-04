@@ -82,9 +82,16 @@ namespace Borealis
 			// Physics Simulation here
 			//------------------------
 
-			PhysicsSystem::Update(dt, timeStep);
-			
+		
+			auto physicsGroup = mRegistry.group<>(entt::get<TransformComponent, RigidBodyComponent>);
+			for (auto entity : physicsGroup)
+			{
+				auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
+				//PhysicsSystem::createSphere(rigidbody.radius, transform.Translate, rigidbody.velocity, rigidbody);
+				PhysicsSystem::Update(dt, rigidbody);
+				transform.Translate = rigidbody.translation;
 
+			}
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);

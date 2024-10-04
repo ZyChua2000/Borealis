@@ -24,6 +24,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
 #include <Core/UUID.hpp>
+
 namespace Borealis
 {
 	struct IDComponent
@@ -200,6 +201,9 @@ namespace Borealis
 
 	struct RigidBodyComponent
 	{
+		float radius = 0.5f;
+		glm::vec3 translation = { 0,0,0 };
+		glm::vec3 velocity = { 0,0,0 };
 		float mass = 1.f;
 		float drag = 0.f;
 		float angularDrag = 0.0f;

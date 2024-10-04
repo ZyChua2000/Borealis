@@ -304,7 +304,7 @@ void ::PhysicsSystem::Init()
 	ShapeRefC floor_shape = floor_shape_result.Get(); // We don't expect an error here, but you can check floor_shape_result for HasError() / GetError()
 
 	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-	BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -1.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
+	BodyCreationSettings floor_settings(floor_shape, RVec3(0.0_r, -3.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Static, Layers::NON_MOVING);
 
 	// Create the actual rigid body
 	Body* floor = sData.body_interface->CreateBody(floor_settings); // Note that if we run out of bodies this can return nullptr
@@ -314,7 +314,7 @@ void ::PhysicsSystem::Init()
 
 	// Now create a dynamic body to bounce on the floor
 	// Note that this uses the shorthand version of creating and adding a body to the world
-	BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 2.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+	BodyCreationSettings sphere_settings(new SphereShape(0.5f), RVec3(0.0_r, 0.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
 	sData.sphere_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
 
 	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
@@ -330,14 +330,18 @@ void ::PhysicsSystem::Init()
 	sData.mSystem->OptimizeBroadPhase();
 }
 
-void ::PhysicsSystem::Update(float dt, int step)
+void ::PhysicsSystem::Update(float dt, RigidBodyComponent& rigidbody)
 {
 	// Output current position and velocity of the sphere
 	RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.sphere_id);
 	Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.sphere_id);
 
 	sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
-
+	rigidbody.translation = glm::vec3(
+		sData.body_interface->GetPosition(sData.sphere_id).GetX(),
+		sData.body_interface->GetPosition(sData.sphere_id).GetY(),
+		sData.body_interface->GetPosition(sData.sphere_id).GetZ()
+	);
 	cout << "Position: " << position << " Velocity: " << velocity << endl;
 
 	cout << "Physics System Updated" << endl;
@@ -355,4 +359,33 @@ void ::PhysicsSystem::Free()
 	delete sData.mSystem;
 	
 	delete Factory::sInstance;
+}
+
+void ::PhysicsSystem::createSphere(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody) {
+	// Create the settings for the collision volume (the shape).
+	SphereShapeSettings sphere_shape_settings(radius);
+	sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+	// Create the shape
+	ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+	ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+
+	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+	BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+
+	// Create the actual rigid body
+	Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Note that if we run out of bodies this can return nullptr
+
+	// Add it to the world
+	sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+
+	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
+	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
+	sData.body_interface->SetLinearVelocity(sphere->GetID(), Vec3(velocity.x, velocity.y, velocity.z));
+
+	rigidbody.translation = glm::vec3(
+		sData.body_interface->GetPosition(sphere->GetID()).GetX(),
+		sData.body_interface->GetPosition(sphere->GetID()).GetY(),
+		sData.body_interface->GetPosition(sphere->GetID()).GetZ()
+	);
 }
