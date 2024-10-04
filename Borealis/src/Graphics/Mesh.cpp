@@ -108,6 +108,8 @@ namespace Borealis
 
 	void Mesh::SetupMesh()
 	{
+		ComputeTangents();
+
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
 		glGenBuffers(1, &EBO);
@@ -195,6 +197,8 @@ namespace Borealis
 
 	void Mesh::ComputeTangents() 
 	{
+		mVerticesData.resize(mVertices.size());
+
 		// Initialize tangents and bitangents to zero
 		for (size_t i = 0; i < mVerticesData.size(); i++) {
 			mVerticesData[i].Tangent = glm::vec3(0.0f);

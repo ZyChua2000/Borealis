@@ -34,6 +34,9 @@
     <Filter Include="inc\Graphics">
       <UniqueIdentifier>{3FDB5365-2B3E-E309-D4C3-1BC0C005AF8C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="inc\Graphics\Animation">
+      <UniqueIdentifier>{EEEEC6F7-DAE8-EF49-C355-865AAFEE55B6}</UniqueIdentifier>
+    </Filter>
     <Filter Include="inc\Graphics\OpenGL">
       <UniqueIdentifier>{93879F21-FFE8-7C2F-8856-C3E1F4B6B3EE}</UniqueIdentifier>
     </Filter>
@@ -139,6 +142,9 @@
     <Filter Include="src\Graphics">
       <UniqueIdentifier>{0D564864-F9B8-D708-A23E-10BF8E80A38B}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics\Animation">
+      <UniqueIdentifier>{3CC3B5B6-28BD-DE08-112A-7519FDC24475}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Graphics\OpenGL">
       <UniqueIdentifier>{A10E80C2-0D70-5DD0-96DD-A382023E948F}</UniqueIdentifier>
     </Filter>
@@ -150,12 +156,6 @@
     </Filter>
     <Filter Include="src\Scripting">
       <UniqueIdentifier>{6FBC2D98-DB7C-A9CE-A4B7-F24B1037EEAA}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="inc\Graphics\Animation">
-      <UniqueIdentifier>{d32e79b5-0fc6-4d3a-8154-b9df9f12e92a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Graphics\Animation">
-      <UniqueIdentifier>{38bfd6f0-68d2-4b2a-996d-89e0f673763e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,6 +262,12 @@
     <ClInclude Include="inc\Events\EventWindow.hpp">
       <Filter>inc\Events</Filter>
     </ClInclude>
+    <ClInclude Include="inc\Graphics\Animation\Bone.hpp">
+      <Filter>inc\Graphics\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp">
+      <Filter>inc\Graphics\Animation</Filter>
+    </ClInclude>
     <ClInclude Include="inc\Graphics\Buffer.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
@@ -278,6 +284,9 @@
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\Light.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\Material.hpp">
@@ -329,6 +338,9 @@
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\Shader.hpp">
+      <Filter>inc\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp">
       <Filter>inc\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp">
@@ -1939,24 +1951,6 @@
     <ClInclude Include="lib\xproperty\include\xproperty\xproperty_config.hpp">
       <Filter>lib\xproperty\include\xproperty</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Graphics\Renderer3D.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\Model.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\Animation\Bone.hpp">
-      <Filter>inc\Graphics\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp">
-      <Filter>inc\Graphics\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="inc\Graphics\Light.hpp">
-      <Filter>inc\Graphics</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="lib\imGuizmo\imGuizmo.cpp">
@@ -2034,6 +2028,9 @@
     <ClCompile Include="src\Events\EventWindow.cpp">
       <Filter>src\Events</Filter>
     </ClCompile>
+    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp">
+      <Filter>src\Graphics\Animation</Filter>
+    </ClCompile>
     <ClCompile Include="src\Graphics\Buffer.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
@@ -2044,6 +2041,12 @@
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Framebuffer.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Light.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\Material.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Mesh.cpp">
@@ -2092,6 +2095,9 @@
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\Shader.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Graphics\SkinnedMesh.cpp">
       <Filter>src\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\Graphics\SubTexture2D.cpp">
@@ -2150,18 +2156,6 @@
     </ClCompile>
     <ClCompile Include="src\Scripting\ScriptingUtils.cpp">
       <Filter>src\Scripting</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp">
-      <Filter>src\Graphics\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\SkinnedMesh.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Material.cpp">
-      <Filter>src\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Graphics\Light.cpp">
-      <Filter>src\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
