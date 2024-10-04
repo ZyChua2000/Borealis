@@ -12,10 +12,19 @@ namespace Borealis
         public GameObject()
         {
             InstanceID = InternalCalls.CreateEntity("untitled");
+            transform = new Transform(InstanceID);
+
         }
         public GameObject(string name)
         {
             InstanceID = InternalCalls.CreateEntity(name);
+            transform = new Transform(InstanceID);
+        }
+
+        internal GameObject(ulong id)
+        {
+            InstanceID = id;
+            transform = new Transform(id);
         }
         public T AddComponent<T>() where T : Component, new()
         {
@@ -30,12 +39,14 @@ namespace Borealis
                 {
                     InternalCalls.ScriptComponent_AddComponent(GetInstanceID(), typeof(T));
                     T component = new T { gameObject = this };
+                    component.InstanceID = GetInstanceID();
                     return component;
                 }
                 else
                 { 
                     InternalCalls.Entity_AddComponent(GetInstanceID(), typeof(T));
                     T component = new T { gameObject = this };
+                    component.InstanceID = GetInstanceID();
                     return component;
                 }
             }

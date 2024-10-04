@@ -27,6 +27,10 @@ namespace Borealis
 		glm::vec3 Normal;
 		glm::vec2 TexCoords;
 		//VertexBoneData BoneData;
+		glm::vec3 Tangent;
+		glm::vec3 Bitangent;
+
+		VertexBoneData BoneData;
 	};
 
 	class Mesh
@@ -90,6 +94,8 @@ namespace Borealis
 
 		unsigned int VAO, VBO, EBO;
 
+
+		void ComputeTangents();
 
 	}; // class Mesh
 } // namespace Borealis

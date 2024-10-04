@@ -43,6 +43,8 @@ namespace Borealis
 		// Temp
 		static void InitCoreAssembly();
 
+		static Ref<ScriptClass> GetScriptClass(const std::string& className) { return mScriptClasses[className]; }
+
 		static std::unordered_map<std::string, Ref<ScriptClass>> mScriptClasses; // Library of available scripts
 
 

@@ -17,6 +17,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <mono/metadata/appdomain.h>
 #include <Core/LoggerSystem.hpp>
 #include <Scripting/ScriptingUtils.hpp>
+#include <Scripting/ScriptingSystem.hpp>
+#include <Scripting/ScriptClass.hpp>
 
 namespace Borealis
 {
@@ -203,6 +205,11 @@ namespace Borealis
 			return ScriptFieldType::Vector4;
 		else
 			return ScriptFieldType::None;
+	}
+
+	Ref<ScriptClass> GetScriptClassUtils(const std::string& className)
+	{
+		return ScriptingSystem::GetScriptClass(className);
 	}
 
 

@@ -15,6 +15,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <BorealisPCH.hpp>
 #include <Scripting/ScriptInstance.hpp>
+#include <Scripting/ScriptingUtils.hpp>
 #include <mono/metadata/object.h>
 
 namespace Borealis
@@ -24,6 +25,17 @@ namespace Borealis
 		mScriptClass = scriptClass;
 		mInstance = scriptClass->Instantiate();
 		//mScriptClass->InvokeMethod(mInstance, mConstructor, &param);
+	}
+
+	void ScriptInstance::Init(uint64_t UUIDAddress)
+	{
+		mono_runtime_object_init(mInstance);
+
+		uint64_t number = UUIDAddress; // The integer you want to pass
+		void* params[1];
+		params[0] = &number;
+		auto Method = mono_class_get_method_from_name(GetScriptClassUtils("MonoBehaviour")->GetMonoClass(), "SetInstanceID", 1);
+		mono_runtime_invoke(Method, mInstance, params, nullptr);
 	}
 
 	Ref<ScriptClass> ScriptInstance::GetScriptClass()
