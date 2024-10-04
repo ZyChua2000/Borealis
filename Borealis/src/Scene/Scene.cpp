@@ -25,6 +25,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include "Audio/AudioEngine.hpp"
 
 #include "Graphics/Light.hpp"
+#include <Physics/PhysicsSystem.hpp>
 
 namespace Borealis
 {
@@ -65,6 +66,10 @@ namespace Borealis
 					script->Update();
 				}
 			}
+			static float accumDt = 0;
+			accumDt += dt;
+			int timeStep = std::max(1, (int)(accumDt / 1.66667f));
+			accumDt -= timeStep * 1.66667f;
 
 			auto BTview = mRegistry.view<BehaviourTreeComponent>();
 			for (auto entity : BTview)
@@ -89,7 +94,16 @@ namespace Borealis
 			// Physics Simulation here
 			//------------------------
 
+		
+			auto physicsGroup = mRegistry.group<>(entt::get<TransformComponent, RigidBodyComponent>);
+			for (auto entity : physicsGroup)
+			{
+				auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
+				//PhysicsSystem::createSphere(rigidbody.radius, transform.Translate, rigidbody.velocity, rigidbody);
+				PhysicsSystem::Update(dt, rigidbody);
+				transform.Translate = rigidbody.translation;
 
+			}
 			for (auto entity : view)
 			{
 				auto& scriptComponent = view.get<ScriptComponent>(entity);
