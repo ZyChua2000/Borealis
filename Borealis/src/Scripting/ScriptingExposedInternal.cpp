@@ -301,7 +301,7 @@ namespace Borealis
 		}
 
 		Ref<ScriptInstance> instance = MakeRef<ScriptInstance>(ScriptingSystem::mScriptClasses.at(className));
-		mono_runtime_object_init(instance->GetInstance());
+		instance->Init(Entity.GetUUID());
 		if (Entity.HasComponent<ScriptComponent>() == false)
 		{
 			Entity.AddComponent<ScriptComponent>();

@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
@@ -505,6 +506,7 @@ namespace Borealis
 				if (component.mScripts.empty())
 				{
 					entity.RemoveComponent<ScriptComponent>();
+					return;
 				}
 			}
 		}
@@ -544,7 +546,7 @@ namespace Borealis
 	
 			SearchBar<SpriteRendererComponent>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
 			SearchBar<CircleRendererComponent>( search_text, mSelectedEntity, "Circle Renderer", search_buffer);
-			SearchBar<CameraComponent>(search_text, mSelectedEntity, "Camera", search_buffer);
+			SearchBar<CameraComponent>			(search_text, mSelectedEntity, "Camera", search_buffer);
 			SearchBar<MeshFilterComponent	  >(search_text, mSelectedEntity,"Mesh Filter", search_buffer);
 			SearchBar<MeshRendererComponent	  >(search_text, mSelectedEntity,"Mesh Renderer", search_buffer);
 			SearchBar<BoxColliderComponent	  >(search_text, mSelectedEntity,"Box Collider", search_buffer);
@@ -552,6 +554,26 @@ namespace Borealis
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
 			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
+
+			// scripts
+			for (auto [name, klass] : ScriptingSystem::mScriptClasses)
+			{
+				if (name == "MonoBehaviour") { continue; }
+				if (search_text.empty() || name.find(search_text) != std::string::npos)
+					if (ImGui::MenuItem(name.c_str()))
+					{
+						if (mSelectedEntity.HasComponent<ScriptComponent>() == false)
+						{
+							mSelectedEntity.AddComponent<ScriptComponent>();
+						}
+						mSelectedEntity.GetComponent<ScriptComponent>().AddScript(name, MakeRef<ScriptInstance>(klass));
+						ImGui::CloseCurrentPopup();
+						memset(search_buffer, 0, sizeof(search_buffer));
+					}
+			}
+				
+				
+
 
 			ImGui::EndPopup();
 			
