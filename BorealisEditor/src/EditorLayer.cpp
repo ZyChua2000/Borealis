@@ -54,8 +54,6 @@ namespace Borealis {
 		}
 
 		PROFILE_FUNCTION();
-		mTexture = Texture2D::Create("assets/textures/OpenSans_Condensed-Bold.dds");
-		mSubTexture = SubTexture2D::CreateFromCoords(mTexture, { 0,14 }, { 16,16 });
 
 		FrameBufferProperties props{ 1280, 720, false };
 		props.Attachments = { FramebufferTextureFormat::RGBA8,  FramebufferTextureFormat::RedInteger, FramebufferTextureFormat::Depth };
@@ -78,12 +76,9 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			Font font(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.bfi"));
-			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
-
+			Font font(std::filesystem::path("Resources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("Resources/fonts/OpenSans_Condensed-Bold.dds"));
 			Font::SetDefaultFont(MakeRef<Font>(font));
-
-			MeshImporter::LoadFBXModel("assets/meshes/Dragon_Baked_Actions_fbx_7.4_binary.fbx");
 		}
 	}
 
