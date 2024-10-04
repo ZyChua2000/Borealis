@@ -45,6 +45,8 @@ namespace Borealis
 		Renderer::Init();
 
 		ScriptingSystem::Init();
+
+		InputSystem::Init();
 	}
 
 	/*!***********************************************************************
@@ -83,6 +85,7 @@ namespace Borealis
 
 			if (!mIsMinimized)
 			{
+				InputSystem::PollInput();
 				{
 					PROFILE_SCOPE("LayerStack Updates");
 					for (Layer* layer : mLayerSystem)
@@ -99,7 +102,7 @@ namespace Borealis
 				mImGuiLayer->EndFrame();
 			}
 
-
+			InputSystem::ResetScroll();
 			mWindowManager->OnUpdate();
 		}
 		

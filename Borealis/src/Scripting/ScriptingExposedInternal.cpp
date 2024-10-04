@@ -19,6 +19,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/SceneManager.hpp>
 #include <Core/UUID.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Core/InputSystem.hpp>
 
 
 namespace Borealis
@@ -37,6 +38,15 @@ namespace Borealis
 		BOREALIS_ADD_INTERNAL_CALL(Entity_AddComponent);
 		BOREALIS_ADD_INTERNAL_CALL(Entity_HasComponent);
 		BOREALIS_ADD_INTERNAL_CALL(Entity_RemoveComponent);
+
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetMousePosition);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetMouseScrollDelta);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetKey);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetKeyDown);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetKeyUp);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetMouse);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetMouseDown);
+		BOREALIS_ADD_INTERNAL_CALL(Input_GetMouseUp);
 
 		BOREALIS_ADD_INTERNAL_CALL(TransformComponent_GetTranslation);
 		BOREALIS_ADD_INTERNAL_CALL(TransformComponent_SetTranslation);
@@ -159,6 +169,46 @@ namespace Borealis
 			mono_free(typeName);
 			return false;
 		}
+	}
+	glm::vec3 Input_GetMousePosition()
+	{
+		return {InputSystem::GetMouseX(), InputSystem::GetMouseY(), 0.0f};
+	}
+	glm::vec3 Input_GetMouseScrollDelta()
+	{
+		return { 0.f, InputSystem::GetScroll() , 0.f};
+	}
+	bool Input_AnyKey()
+	{
+		return false;
+	}
+	bool Input_AnyKeyDown()
+	{
+		return false;
+	}
+	bool Input_GetKey(int key)
+	{
+		return InputSystem::IsKeyPressed(key);
+	}
+	bool Input_GetKeyDown(int key)
+	{
+		return InputSystem::IsKeyTriggered(key);
+	}
+	bool Input_GetKeyUp(int key)
+	{
+		return InputSystem::IsKeyReleased(key);
+	}
+	bool Input_GetMouse(int key)
+	{
+		return InputSystem::IsMouseButtonPressed(key);
+	}
+	bool Input_GetMouseDown(int key)
+	{
+		return InputSystem::IsMouseButtonTriggered(key);
+	}
+	bool Input_GetMouseUp(int key)
+	{
+		return InputSystem::IsMouseButtonReleased(key);
 	}
 	void TransformComponent_GetTranslation(UUID uuid, glm::vec3* outTranslation)
 	{
