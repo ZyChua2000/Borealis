@@ -77,6 +77,9 @@ namespace Borealis
 		int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
 		MonoClass* behaviourClass = mono_class_from_name(assemblyImage, "Borealis", "MonoBehaviour");
 
+
+		ScriptingSystem::RegisterCSharpClass(ScriptClass("Borealis", "MonoBehaviour", assembly));
+
 		for (int32_t i = 0; i < numTypes; i++)
 		{
 			uint32_t cols[MONO_TYPEDEF_SIZE];
@@ -86,6 +89,7 @@ namespace Borealis
 			const char* className = mono_metadata_string_heap(assemblyImage, cols[MONO_TYPEDEF_NAME]);
 
 			MonoClass* currClass = mono_class_from_name(assemblyImage, nameSpace, className);
+
 			if (currClass == behaviourClass)
 			{
 				continue;

@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "glm/gtc/type_ptr.hpp"
 #include "Graphics/Material.hpp"
 
 namespace Borealis
@@ -125,9 +126,12 @@ namespace Borealis
                     ImGui::EndDragDropTarget();
                 }
 
-                static glm::vec4 albedoColor = material->GetTextureMapColor()[Material::Albedo];
-                DrawVec4Control("Albedo:", albedoColor);
-                material->SetTextureMapColor(Material::Albedo, albedoColor);
+                ImGui::SameLine();
+                glm::vec4 albedoColor = material->GetTextureMapColor()[Material::Albedo];
+                if (ImGui::ColorEdit4("##Albedo", glm::value_ptr(albedoColor)))
+                {
+                    material->SetTextureMapColor(Material::Albedo, albedoColor);
+                }
 
                 break;
             }
@@ -146,9 +150,12 @@ namespace Borealis
                     ImGui::EndDragDropTarget();
                 }
 
-                static glm::vec4 specularColor = material->GetTextureMapColor()[Material::Specular];
-                DrawVec4Control("Specular", specularColor);
-                material->SetTextureMapColor(Material::Specular, specularColor);
+                ImGui::SameLine();
+                glm::vec4 specularColor = material->GetTextureMapColor()[Material::Specular];
+                if (ImGui::ColorEdit4("##Specular", glm::value_ptr(specularColor)))
+                {
+                    material->SetTextureMapColor(Material::Specular, specularColor);
+                }
 
                 break;
             }
@@ -253,9 +260,12 @@ namespace Borealis
                     ImGui::EndDragDropTarget();
                 }
 
-                static glm::vec4 emissionColor = material->GetTextureMapColor()[Material::Emission];
-                DrawVec4Control("Emission", emissionColor);
-                material->SetTextureMapColor(Material::Emission, emissionColor);
+                ImGui::SameLine();
+                glm::vec4 emissionColor = material->GetTextureMapColor()[Material::Emission];
+                if (ImGui::ColorEdit4("##Emission", glm::value_ptr(emissionColor)))
+                {
+                    material->SetTextureMapColor(Material::Emission, emissionColor);
+                }
 
                 break;
             }

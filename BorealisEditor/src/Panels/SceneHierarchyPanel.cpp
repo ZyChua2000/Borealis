@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 
@@ -505,6 +506,7 @@ namespace Borealis
 				if (component.mScripts.empty())
 				{
 					entity.RemoveComponent<ScriptComponent>();
+					return;
 				}
 			}
 		}
@@ -544,7 +546,7 @@ namespace Borealis
 	
 			SearchBar<SpriteRendererComponent>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
 			SearchBar<CircleRendererComponent>( search_text, mSelectedEntity, "Circle Renderer", search_buffer);
-			SearchBar<CameraComponent>(search_text, mSelectedEntity, "Camera", search_buffer);
+			SearchBar<CameraComponent>			(search_text, mSelectedEntity, "Camera", search_buffer);
 			SearchBar<MeshFilterComponent	  >(search_text, mSelectedEntity,"Mesh Filter", search_buffer);
 			SearchBar<MeshRendererComponent	  >(search_text, mSelectedEntity,"Mesh Renderer", search_buffer);
 			SearchBar<BoxColliderComponent	  >(search_text, mSelectedEntity,"Box Collider", search_buffer);
@@ -553,6 +555,26 @@ namespace Borealis
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
 			SearchBar<TextComponent				>(search_text, mSelectedEntity,"Text", search_buffer);
 			SearchBar<BehaviourTreeComponent	>(search_text, mSelectedEntity, "Behaviour Tree", search_buffer);
+
+			// scripts
+			for (auto [name, klass] : ScriptingSystem::mScriptClasses)
+			{
+				if (name == "MonoBehaviour") { continue; }
+				if (search_text.empty() || name.find(search_text) != std::string::npos)
+					if (ImGui::MenuItem(name.c_str()))
+					{
+						if (mSelectedEntity.HasComponent<ScriptComponent>() == false)
+						{
+							mSelectedEntity.AddComponent<ScriptComponent>();
+						}
+						mSelectedEntity.GetComponent<ScriptComponent>().AddScript(name, MakeRef<ScriptInstance>(klass));
+						ImGui::CloseCurrentPopup();
+						memset(search_buffer, 0, sizeof(search_buffer));
+					}
+			}
+				
+				
+
 
 			ImGui::EndPopup();
 			
@@ -683,6 +705,11 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if(!component.Material)
+				{
+					component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
+				}
+
 				if (component.Material)
 				{
 					MaterialEditor::RenderProperties(component.Material);
@@ -790,14 +817,38 @@ namespace Borealis
 						ImGui::EndCombo();
 					}
 
+					ImGui::ColorEdit3("Ambient", glm::value_ptr(component.ambient));
+					ImGui::ColorEdit3("Diffuse", glm::value_ptr(component.diffuse));
+					ImGui::ColorEdit3("Specular", glm::value_ptr(component.specular));
+					
+
 					if (component.type == LightComponent::Type::Spot)
 					{
 						ImGui::DragFloat("Inner Spot", &component.InnerOuterSpot.x, 0.025f);
 						ImGui::DragFloat("Outer Spot", &component.InnerOuterSpot.y, 0.025f);
 					}
+
+					if (component.type == LightComponent::Type::Directional)
+					{
+						ImGui::PushItemWidth(80.f);
+						ImGui::Text("Direction");
+						ImGui::SameLine(100.f);
+						ImGui::DragFloat("X##direction", &component.direction.x, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Y##direction", &component.direction.y, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Z##direction", &component.direction.z, 0.025f, -1, 1);
+						ImGui::PopItemWidth();
+					}
+
+					if (component.type == LightComponent::Type::Spot || component.type == LightComponent::Type::Point)
+					{
+						ImGui::DragFloat("Linear", &component.linear, 0.025f);
+						ImGui::DragFloat("Quadratic", &component.quadratic, 0.025f);
+					}
 				}
 
-				if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* LightAppearanceStr[]{ "Colour", "Filter and Temperature" };
 					const char* currentLightAppearanceStr = LightAppearanceStr[(int)component.lightAppearance];
@@ -832,10 +883,10 @@ namespace Borealis
 					ImGui::DragFloat("Intensity", &component.Intensity, 0.025f);
 					ImGui::DragFloat("Indirect Multiplier", &component.IndirectMultiplier, 0.025f);
 					ImGui::DragFloat("Range", &component.Range, 0.025f);
-				}
+				}*/
 
 				
-				if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* ShadowStr[]{ "No Shadows", "Soft Shadows", "Hard Shadows" };
 					const char* currentShadowStr = ShadowStr[(int)component.shadowType];
@@ -856,7 +907,7 @@ namespace Borealis
 						}
 						ImGui::EndCombo();
 					}
-				}
+				}*/
 			});
 
 		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)
