@@ -76,8 +76,8 @@ namespace Borealis {
 		
 		//TEMP
 		{
-			Font font(std::filesystem::path("Resources/fonts/OpenSans_Condensed-Bold.bfi"));
-			font.SetTexture(std::filesystem::path("Resources/fonts/OpenSans_Condensed-Bold.dds"));
+			Font font(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.bfi"));
+			font.SetTexture(std::filesystem::path("engineResources/fonts/OpenSans_Condensed-Bold.dds"));
 			Font::SetDefaultFont(MakeRef<Font>(font));
 		}
 	}
@@ -736,6 +736,7 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+			Project::CopyIndividualFile(Project::GetProjectPath() + "\\AssetRegistry.brdb", filepath + "\\AssetRegistry.brdb");
 
 			// copy fmod dll and mono dll from editor
 			// Editor directory
@@ -748,6 +749,7 @@ namespace Borealis {
 			Project::CopyIndividualFile(editorPath + "\\mono-2.0-sgen.dll", filepath + "\\mono-2.0-sgen.dll");
 			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
 			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
+			Project::CopyFolder(editorPath + "\\engineResources", filepath + "\\engineResources");
 			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
 			// Copy and paste .exe file
 		}

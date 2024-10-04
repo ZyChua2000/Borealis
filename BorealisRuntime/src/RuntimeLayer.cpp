@@ -47,6 +47,7 @@ namespace BorealisRuntime
 			cameraComponent.Camera.SetViewportSize(1920,1080); // Initialize all viewport aspect ratios: Should be serialised from a setting file in the future
 		}
 
+
 		Borealis::SceneManager::GetActiveScene()->RuntimeStart(); // Temporarily
 	}
 	void RuntimeLayer::UpdateFn(float dt)

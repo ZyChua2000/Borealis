@@ -91,6 +91,9 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;lib\RTTR\lib\Deb\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -116,6 +119,9 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <ClCompile>
@@ -141,6 +147,9 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />

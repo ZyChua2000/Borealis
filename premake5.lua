@@ -169,6 +169,8 @@ workspace "Borealis"
 
 		filter "files:Borealis/lib/ImGuizmo/**.cpp"
 		flags {"NoPCH"}
+		
+		
 
 		filter "configurations:Debug"
 			defines "_DEB"
@@ -185,6 +187,9 @@ workspace "Borealis"
 				"%{Library.IMGUI_Debug}",
 				"%{Library.RTTR_Debug}"
 			}
+			postbuildcommands {
+				"{COPY} \"engineResources\" \"../BorealisEditor/engineResources\""
+			 }
 
 		filter "configurations:Release"
 			defines "_REL"
@@ -201,6 +206,9 @@ workspace "Borealis"
 				"%{Library.IMGUI_Release}",
 				"%{Library.RTTR_Release}"
 			}
+			postbuildcommands {
+				"{COPY} \"engineResources\" \"../BorealisEditor/engineResources\""
+			 }
 
 		filter "configurations:Distribution"
 			defines "_DIST"
@@ -217,6 +225,9 @@ workspace "Borealis"
 				"%{Library.IMGUI_Release}",
 				"%{Library.RTTR_Release}"
 			}
+			postbuildcommands {
+				"{COPY} \"engineResources\" \"../BorealisEditor/engineResources\""
+			 }
 
 	project "BorealisEditor"
 		location "BorealisEditor"
