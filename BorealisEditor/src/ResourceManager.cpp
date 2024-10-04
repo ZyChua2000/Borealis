@@ -25,11 +25,11 @@ namespace Borealis
 		mFileIcons[FileIcon::Script] = Texture2D::Create("resources/icons/file-cs.dds");
 		mFileIcons[FileIcon::Font] = Texture2D::Create("resources/icons/file-ttf.dds");
 		mFileIcons[FileIcon::Text] = Texture2D::Create("resources/icons/file-txt.dds");
-		//mFileIcons[FileIcon::Directory] = Texture2D::Create("resources/icons/tilemap_packed.dds");
-		//mFileIcons[FileIcon::Scene] = Texture2D::Create("resources/icons/tilemap_packed.dds");
-		//mFileIcons[FileIcon::Script] = Texture2D::Create("resources/icons/tilemap_packed.dds");
-		//mFileIcons[FileIcon::Font] = Texture2D::Create("resources/icons/tilemap_packed.dds");
-		//mFileIcons[FileIcon::Text] = Texture2D::Create("resources/icons/tilemap_packed.dds");
+		mFileIcons[FileIcon::Shader] = Texture2D::Create("resources/icons/file-glsl.dds");
+		mFileIcons[FileIcon::Material] = Texture2D::Create("resources/icons/file-mat.dds");
+		mFileIcons[FileIcon::Mesh] = Texture2D::Create("resources/icons/file-mesh.dds");
+		mFileIcons[FileIcon::Texture] = Texture2D::Create("resources/icons/file-png.dds");
+		mFileIcons[FileIcon::Unknown] = Texture2D::Create("resources/icons/file-png.dds");
 	}
 	void ResourceManager::Init()
 	{
