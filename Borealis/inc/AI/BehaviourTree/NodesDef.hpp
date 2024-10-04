@@ -14,9 +14,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef NodesDef_HPP
 #define NodesDef_HPP
-#include <AI/BehaviourTree/RegisterNodes.hpp>
 #include <Core/Core.hpp>
-
+#include <AI/BehaviourTree/RegisterNodes.hpp>
 // Include all the nodes here
 #include <AI/BehaviourTree/ControlFlow/C_Sequencer.hpp>
 #include <AI/BehaviourTree/Leaf/L_Idle.hpp>

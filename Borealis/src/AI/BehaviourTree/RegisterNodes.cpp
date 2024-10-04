@@ -20,41 +20,41 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 namespace Borealis
 {
     // Map to store prototypes
-    std::unordered_map<std::string, Ref<BehaviourNode>> NodeFactory::nodePrototypes;
+    std::unordered_map<std::string, Ref<BehaviourNode>> NodeFactory::sNodePrototypes;
     // Name of the behavior tree
-    std::string NodeFactory::treeName;
+    std::string NodeFactory::sTreeName;
     // Tree root node
-    Ref<BehaviourNode> NodeFactory::rootNode;
+    Ref<BehaviourNode> NodeFactory::sRootNode;
     // Tracks the most recently added node for managing hierarchy
-    Ref<BehaviourNode> NodeFactory::previousNode;
+    Ref<BehaviourNode> NodeFactory::sPreviousNode;
 
-	void NodeFactory::recursive_add(Ref<BehaviourNode> parent, Ref<BehaviourNode> child)
+	void NodeFactory::RecursiveAdd(Ref<BehaviourNode> parent, Ref<BehaviourNode> child)
 	{
         // Add the child node to the parent node recursively, building the tree
         if (parent)
         {
-            parent->add_child(child);
+            parent->AddChild(child);
 
             // For each child in the current node, add them recursively
-            for (auto& childNode : child->children)
+            for (auto& childNode : child->mChildren)
             {
-                recursive_add(child, childNode);
+                RecursiveAdd(child, childNode);
             }
         }
 	}
 
-    Ref<BehaviourNode> NodeFactory::find_parent_node(int depth)
+    Ref<BehaviourNode> NodeFactory::FindParentNode(int depth)
     {
         // Find the correct parent node based on the depth
         // This could be a stack-based approach or simply walking the tree from the rootNode
-        Ref<BehaviourNode> currentNode = rootNode;
+        Ref<BehaviourNode> currentNode = sRootNode;
 
         // Traverse the tree to find the node at the desired depth
-        while (currentNode && currentNode->get_depth() != depth - 1)
+        while (currentNode && currentNode->GetDepth() != depth - 1)
         {
-            if (!currentNode->children.empty())
+            if (!currentNode->mChildren.empty())
             {
-                currentNode = currentNode->children.back();  // Move down the tree
+                currentNode = currentNode->mChildren.back();  // Move down the tree
             }
             else
             {
@@ -68,13 +68,13 @@ namespace Borealis
     {
         REGISTER_ALL_NODES;
     }
-    Ref<BehaviourNode> NodeFactory::createNodeByName(const std::string& nodeName)
+    Ref<BehaviourNode> NodeFactory::CreateNodeByName(const std::string& nodeName)
     {
-        auto it = nodePrototypes.find(nodeName);
-        if (it != nodePrototypes.end())
+        auto it = sNodePrototypes.find(nodeName);
+        if (it != sNodePrototypes.end())
         {
-            Ref<BehaviourNode> newNode = it->second->clone();
-            newNode->set_name(nodeName);
+            Ref<BehaviourNode> newNode = it->second->Clone();
+            newNode->SetName(nodeName);
             return newNode;// Clone the prototype to get a new instance
         }
         else
@@ -83,7 +83,7 @@ namespace Borealis
            return nullptr;
         }
     }
-    NodeType NodeFactory::string_to_node_type(const std::string& typeStr)
+    NodeType NodeFactory::StringToNodeType(const std::string& typeStr)
     {
         // Extract the first two characters
         if (typeStr.size() < 2) {

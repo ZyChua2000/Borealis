@@ -116,8 +116,8 @@ namespace Borealis
 		int depth = node["depth"].as<int>();
 
 		// Create the node using NodeFactory based on its name
-		Ref<BehaviourNode> currentNode = Borealis::NodeFactory::createNodeByName(nodeName);
-		currentNode->set_depth(depth); // Assuming setDepth is implemented in BehaviourNode
+		Ref<BehaviourNode> currentNode = Borealis::NodeFactory::CreateNodeByName(nodeName);
+		currentNode->SetDepth(depth); // Assuming setDepth is implemented in BehaviourNode
 
 		// Add the current node to the tree
 		tree.AddNode(parentNode, currentNode, depth);
@@ -164,12 +164,12 @@ namespace Borealis
 
 
 	bool Serialiser::SerializeBehaviourNode(YAML::Emitter& out, const Ref<BehaviourNode> node) {
-		out << YAML::Key << "name" << YAML::Value << node->get_name();
-		out << YAML::Key << "depth" << YAML::Value << node->get_depth();
-		if (!node->children.empty())
+		out << YAML::Key << "name" << YAML::Value << node->GetName();
+		out << YAML::Key << "depth" << YAML::Value << node->GetDepth();
+		if (!node->mChildren.empty())
 		{
 			out << YAML::Key << "children" << YAML::Value << YAML::BeginSeq;
-			for (const auto& child : node->children) {
+			for (const auto& child : node->mChildren) {
 				out << YAML::BeginMap;
 				SerializeBehaviourNode(out, child); // Recursively serialize the child node
 				out << YAML::EndMap;
@@ -565,7 +565,7 @@ namespace Borealis
 					int rootDepth = behaviourTree["depth"].as<int>();
 
 					// Create root node using NodeFactory
-					Ref<BehaviourNode> rootNode = Borealis::NodeFactory::createNodeByName(rootName);
+					Ref<BehaviourNode> rootNode = Borealis::NodeFactory::CreateNodeByName(rootName);
 
 					// Set the root node of the tree
 					tempTree->SetRootNode(rootNode); //sets depth to 0 by default

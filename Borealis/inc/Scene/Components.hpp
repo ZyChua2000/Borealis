@@ -304,7 +304,7 @@ namespace Borealis
 		{
 			for (auto& tree : mBehaviourTrees)
 			{
-				tree->update(dt);
+				tree->Update(dt);
 			}
 		}
 

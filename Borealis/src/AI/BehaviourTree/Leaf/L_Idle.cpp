@@ -22,13 +22,13 @@ namespace Borealis
     L_Idle::L_Idle()
     {}
 
-    void L_Idle::on_enter()
+    void L_Idle::OnEnter()
     {
         timer = 3.f;
-        BehaviourNode::on_leaf_enter();
+        BehaviourNode::OnLeafEnter();
     }
 
-    void L_Idle::on_update(float dt)
+    void L_Idle::OnUpdate(float dt)
     {
         timer -= dt;
 
@@ -37,7 +37,7 @@ namespace Borealis
         if (timer < 0.0f)
         {
             BOREALIS_CORE_TRACE("Idling completed");
-            on_success();
+            OnSuccess();
         }
 
     }

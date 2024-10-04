@@ -20,41 +20,68 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <optional>
 #include <type_traits>
 #include <stdexcept>
+#include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
 
     class Blackboard
     {
     public:
-        // Sets the value of a given key in the blackboard
+        /*!***********************************************************************
+            \brief
+                Sets the value of a given key in the blackboard
+            \tparam T
+                The type of the value to set
+            \param[in] key
+                The key to set the value to
+            \param[in] value
+                The value to set
+        *************************************************************************/
         template <typename T>
-        void set_value(const std::string& key, const T& value);
+        void SetValue(const std::string& key, const T& value);
 
-        // Attempts to get the value of a given key and cast it to the correct type
+        /*!***********************************************************************
+            \brief
+                Attempts to retrieve the value of a given key in the blackboard
+            \tparam T
+                The type of the value to get
+            \param[in] key
+                The key to get the value from
+            \return
+                An optional containing the value if the key exists, 
+                empty optional otherwise
+        *************************************************************************/
         template <typename T>
-        std::optional<T> get_value(const std::string& key) const;
+        std::optional<T> GetValue(const std::string& key) const;
 
-        // Option to directly check if the key exists in the blackboard
-        bool has_key(const std::string& key) const;
+        /*!***********************************************************************
+            \brief
+                Option to directly check if the key exists in the blackboard
+            \param[in] key
+                The key to check
+            \return
+				True if the key exists, false otherwise
+        *************************************************************************/
+        bool HasKey(const std::string& key) const;
 
     private:
-        std::unordered_map<std::string, std::any> data;
+        std::unordered_map<std::string, std::any> mBlackboardData; // data set in the blackboard
     };
 
     template<typename T>
-    inline void Blackboard::set_value(const std::string& key, const T& value)
+    inline void Blackboard::SetValue(const std::string& key, const T& value)
     {
-        static_assert(std::is_copy_constructible<T>::value, "Attempting to add non-copy-constructible type into blackboard");
-        data[key] = value;
+        BOREALIS_CORE_ASSERT(std::is_copy_constructible<T>::value, "Attempting to add non-copy-constructible type into blackboard");
+        mBlackboardData[key] = value;
     }
 
     template<typename T>
-    inline std::optional<T> Blackboard::get_value(const std::string& key) const
+    inline std::optional<T> Blackboard::GetValue(const std::string& key) const
     {
-        const auto result = data.find(key);
+        const auto result = mBlackboardData.find(key);
 
         // Make sure the key exists
-        if (result != data.end())
+        if (result != mBlackboardData.end())
         {
             try
             {
@@ -75,8 +102,9 @@ namespace Borealis
         }
     }
 
-    inline bool Blackboard::has_key(const std::string& key) const
+    inline bool Blackboard::HasKey(const std::string& key) const
     {
-        return data.find(key) != data.end();
+        return mBlackboardData.find(key) != mBlackboardData.end();
     }
 }
+#endif // BLACKBOARD_HPP

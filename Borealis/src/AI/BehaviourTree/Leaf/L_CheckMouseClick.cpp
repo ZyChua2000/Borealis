@@ -18,7 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 namespace Borealis
 {
-    void L_CheckMouseClick::on_update(float dt)
+    void L_CheckMouseClick::OnUpdate(float dt)
     {
 
         if (InputSystem::IsKeyPressed(Key::A))
@@ -39,13 +39,13 @@ namespace Borealis
                 //auto& bb = agent->get_blackboard();
                 //bb.set_value("Click Position", worldPos.first);
             BOREALIS_CORE_INFO("Key on Success");
-            on_success();
+            OnSuccess();
     
         }
         else
         {
             BOREALIS_CORE_INFO("Key on Failure");
-            on_failure();
+            OnFailure();
         }
 
     }

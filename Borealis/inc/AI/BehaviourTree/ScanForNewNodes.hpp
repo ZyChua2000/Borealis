@@ -23,20 +23,45 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 namespace Borealis
 {
 
-	// Function to scan files and get node names
+	/*!***********************************************************************
+		\brief
+			Function to scan files and get node names
+		\param[in] directory
+			The directory to scan
+		\param[in] type
+			The type of node to scan for
+	*************************************************************************/
 	std::set<std::string> ScanForNodes(const std::string& directory, const std::string& type);
 
-	// Function to check if a node is already registered
+	/*!***********************************************************************
+		\brief
+			Function to check if a node is already registered
+		\param[in] node
+			The name of the node to check
+		\param[in] registeredNodes
+			The list of registered nodes
+		\return
+			True if the node is already registered, false otherwise
+	*************************************************************************/
 	bool IsNodeRegistered(const std::string& node, const std::set<std::string>& registeredNodes);
 
-	// Function to read registered nodes from NodesDef.hpp
+	/*!***********************************************************************
+		\brief
+			Function to read registered nodes from NodesDef.hpp
+		\param[in] filepath
+			The path to NodesDef.hpp
+		\return
+			The set of registered nodes names
+	*************************************************************************/
 	std::set<std::string> GetRegisteredNodes(const std::string& filePath);
 
-	// Function to update NodesDef.hpp with new nodes
+	/*!***********************************************************************
+		\brief
+			Function to update registered nodes from NodesDef.hpp
+		\param[in] filepath
+			The path to NodesDef.hpp
+	*************************************************************************/
 	void UpdateNodesDef(const std::string& filePath);
-
-
-
 }
 
 #endif

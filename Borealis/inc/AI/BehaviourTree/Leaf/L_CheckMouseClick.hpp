@@ -19,13 +19,17 @@ namespace Borealis
     class L_CheckMouseClick : public BaseNode<L_CheckMouseClick>
     {
     protected:
-        /*
-            @brief Updates the node's logic to check for a mouse click event.
-            This function will be called on each frame to detect if a mouse click occurred.
-            If a click is detected, it will proceed with node-specific logic.
-            @param dt The delta time for the update.
-        */
-        virtual void on_update(float dt) override;
+         /*!***********************************************************************
+            \brief
+                Updates the node's logic to check for a mouse click event.
+                This function will be called on each frame to detect if a mouse 
+                click occurred. If a click is detected, it will proceed with 
+                node-specific logic.
+            \param[in] dt
+                The delta time for the update.
+         *************************************************************************/
+        virtual void OnUpdate(float dt) override;
     };
 }
 
+#endif

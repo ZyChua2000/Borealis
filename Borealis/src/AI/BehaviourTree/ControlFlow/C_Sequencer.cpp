@@ -18,32 +18,32 @@ namespace Borealis
     C_Sequencer::C_Sequencer() : currentIndex(0)
     {}
 
-    void C_Sequencer::on_enter()
+    void C_Sequencer::OnEnter()
     {
         currentIndex = 0;
-        BehaviourNode::on_enter();
+        BehaviourNode::OnEnter();
     }
 
-    void C_Sequencer::on_update(float dt)
+    void C_Sequencer::OnUpdate(float dt)
     {
         // if any child fails, the node fails
         // if all children succeed, the node succeeds
-        Ref<BehaviourNode> currentNode = children[currentIndex];
-        currentNode->tick(dt);
+        Ref<BehaviourNode> currentNode = mChildren[currentIndex];
+        currentNode->Tick(dt);
 
-        if (currentNode->failed() == true)
+        if (currentNode->HasFailed() == true)
         {
-            on_failure();
+            OnFailure();
         }
-        else if (currentNode->succeeded() == true)
+        else if (currentNode->HasSucceeded() == true)
         {
             // move to the next node
             ++currentIndex;
 
             // if we hit the size, then all nodes suceeded
-            if (currentIndex == children.size())
+            if (currentIndex == mChildren.size())
             {
-                on_success();
+                OnSuccess();
             }
         }
     }
