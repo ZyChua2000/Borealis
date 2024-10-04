@@ -79,6 +79,8 @@ namespace Borealis {
 			font.SetTexture(std::filesystem::path("../Borealis/Resources/fonts/OpenSans_Condensed-Bold.dds"));
 
 			Font::SetDefaultFont(MakeRef<Font>(font));
+
+			MeshImporter::LoadFBXModel("assets/meshes/Dragon_Baked_Actions_fbx_7.4_binary.fbx");
 		}
 	}
 
