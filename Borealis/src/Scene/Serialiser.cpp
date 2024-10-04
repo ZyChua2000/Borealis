@@ -548,15 +548,6 @@ namespace Borealis
 				if (lightComponent)
 				{
 					auto& lc = loadedEntity.AddComponent<LightComponent>();
-					lc.ambient = lightComponent["Ambient"].as<glm::vec3>();
-					lc.diffuse = lightComponent["Diffuse"].as<glm::vec3>();
-					lc.direction = lightComponent["Direction"].as<glm::vec3>();
-					lc.specular = lightComponent["Specular"].as<glm::vec3>();
-					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpotX"].as<float>(), lightComponent["InnerSpotY"].as<float>());
-					lc.linear = lightComponent["Linear"].as<float>();
-					lc.quadratic = lightComponent["Quadratic"].as<float>();
-					lc.specular = lightComponent["Specular"].as<glm::vec3>();
-					lc.type = (LightComponent::Type)lightComponent["Type"].as<int>();
 					/*lc.Colour = lightComponent["Colour"].as<glm::vec4>();
 					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpot"].as<float>(), lightComponent["OuterSpot"].as<float>());
 					lc.Temperature = lightComponent["Temperature"].as<float>();
