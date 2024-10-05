@@ -31,7 +31,6 @@ namespace Borealis
 	void Renderer3D::Init()
 	{
 		sData =  std::make_unique<Renderer3DData>();
-		//sData->mModelShader = Shader::Create("../Borealis/Resources/shaders/Renderer3D_Model.glsl");
 		sData->mModelShader = Shader::Create("engineResources/Shaders/Renderer3D_Material.glsl");
 	}
 

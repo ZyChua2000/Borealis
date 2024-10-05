@@ -158,13 +158,13 @@ namespace Borealis
 				}
 			}
 
-				Renderer2D::Begin(*mainCamera, mainCameratransform);
+			Renderer2D::Begin(*mainCamera, mainCameratransform);
 			{
 				auto group = mRegistry.group<>(entt::get<TransformComponent, SpriteRendererComponent>);
 				for (auto& entity : group)
 				{
 					auto [transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-					Renderer2D::DrawQuad(transform, sprite.Colour);
+					Renderer2D::DrawSprite(transform, sprite, (int)entity);
 				}
 				//Renderer2D::End();
 			}

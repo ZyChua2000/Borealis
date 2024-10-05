@@ -176,7 +176,13 @@ namespace Borealis
 		return out;
 	}
 
-
+	void SerializeTexture(YAML::Emitter& out, Ref<Texture2D> texture)
+	{
+		if (texture)
+		{
+			out << YAML::Key << "Texture" << YAML::Value << texture->mAssetHandle;
+		}
+	}
 
 	Serialiser::Serialiser(const Ref<Scene>& scene) : mScene(scene) {}
 
@@ -257,7 +263,7 @@ namespace Borealis
 
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Colour" << YAML::Value << spriteRendererComponent.Colour;
-
+			SerializeTexture(out, spriteRendererComponent.Texture);
 
 			out << YAML::EndMap;
 		}
@@ -477,6 +483,10 @@ namespace Borealis
 				{
 					auto& src = loadedEntity.AddComponent<SpriteRendererComponent>();
 					src.Colour = entity["SpriteRendererComponent"]["Colour"].as<glm::vec4>();
+					if (entity["SpriteRendererComponent"]["Texture"].IsDefined())
+					{
+						src.Texture = AssetManager::GetAsset<Texture2D>(entity["SpriteRendererComponent"]["Texture"].as<uint64_t>());
+					}
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];
