@@ -701,6 +701,12 @@ namespace Borealis {
 
 	void EditorLayer::OpenScene(const char* Cfilepath)
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot open scene");
+			return;
+		}
+
 		std::string filepath = Cfilepath;
 		if (!filepath.empty())
 		{
@@ -842,6 +848,12 @@ namespace Borealis {
 
 	void EditorLayer::LoadProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot open project");
+			return;
+		}
+
 		std::string filepath = FileDialogs::OpenFile("Borealis Project File (*.brproj)\0*.brproj\0");
 		if (!filepath.empty())
 		{
@@ -867,6 +879,12 @@ namespace Borealis {
 
 	void EditorLayer::NewProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot create new project");
+			return;
+		}
+
 		std::string filepath = FileDialogs::SaveFile("Folder");
 		if (!filepath.empty())
 		{
@@ -897,6 +915,11 @@ namespace Borealis {
 
 	void EditorLayer::SaveProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot save project");
+			return;
+		}
 		Project::SaveProject();
 		SceneManager::SaveActiveScene();
 	}
