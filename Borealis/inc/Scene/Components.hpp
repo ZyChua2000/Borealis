@@ -211,6 +211,8 @@ namespace Borealis
 
 	struct RigidBodyComponent
 	{
+		glm::vec3 position = { 0,0,0 };
+		unsigned int bodyID = 0;
 		float radius = 0.5f;
 		glm::vec3 translation = { 0,0,0 };
 		glm::vec3 velocity = { 0,0,0 };
