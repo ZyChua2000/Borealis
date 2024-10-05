@@ -168,6 +168,21 @@ namespace Borealis
 	{
 
 		ImGui::Begin("Scene Hierarchy");
+
+		//Create Entities from prefab
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
+			{
+				// Retrieve the file path from the payload
+				std::string droppedFilePath = (const char*)payload->Data;
+
+				// Use the file path to do something with the prefab, like deserialization
+				std::cout << "Prefab file path: " << droppedFilePath << std::endl;
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 		ImGuiIO& io = ImGui::GetIO();
 		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
 		ImGui::PushFont(bold);
@@ -248,12 +263,10 @@ namespace Borealis
 		uint64_t entityID = static_cast<uint64_t>((uint32_t)entity);
 		bool opened = ImGui::TreeNodeEx((void*)entityID, flags, tag.c_str());
 
-
-
 		//Dragging of items for creation of prefab
 		if (ImGui::BeginDragDropSource())
 		{
-			ImGui::SetDragDropPayload("DragPrefab", (const void*)&entity.GetUUID(), sizeof(UUID));
+			ImGui::SetDragDropPayload("DragCreatePrefab", (const void*)&entity.GetUUID(), sizeof(UUID));
 			ImGui::Text("%s", tag.c_str()); // Display the entity tag as the payload text
 			ImGui::EndDragDropSource();
 		}

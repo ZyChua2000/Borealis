@@ -32,41 +32,41 @@ namespace Borealis
 	{
 		ImGui::Begin("Content Browser");
 
-		
+		//WORK IN PROGRESS
+		//Dragged Prefab
+		// Content Browser panel drop target for creating prefabs
+		if (ImGui::BeginDragDropTarget() && (mCurrDir.filename() == "Prefab"))
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragCreatePrefab"))
+			{
+				std::cout << "DROPPED";
+				UUID droppedEntityID = *(const UUID*)payload->Data; // Retrieve the dragged entity ID
+
+				// Retrieve the entity using the dropped entity ID
+				Entity droppedEntity = SceneManager::GetActiveScene()->GetEntityByUUID(droppedEntityID); // Assuming you have a function to get an entity by UUID
+
+
+				Prefab prefab(droppedEntity);
+				prefab.AddChild(MakeRef<Entity>(droppedEntity));
+
+
+				Entity makePrefab(prefab.GetPrefabID(), PrefabManager::GetScenePtr());
+				std::string dir = mCurrDir.string();
+				dir += +"/" + droppedEntity.GetName() + ".prefab";
+				Serialiser::SerialisePrefab(dir.c_str(), makePrefab);
+
+
+				// You might want to add some feedback or a log message here to indicate success
+				std::cout << "Prefab created at: " << mCurrDir.string() << std::endl;
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		ImVec2 windowSize = ImGui::GetWindowSize();
 		float scrollableHeight = windowSize.y - 100; // Adjust for the fixed bottom row
 		ImGui::BeginChild("ScrollableRegion", ImVec2(windowSize.x, scrollableHeight), true);
 		
-		//WORK IN PROGRESS
-		//Dragged Prefab
-			// Content Browser panel drop target for creating prefabs
-			if (ImGui::BeginDragDropTarget() && (mCurrDir.filename() == "Prefab"))
-			{
-				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
-				{
-					std::cout << "DROPPED";
-					UUID droppedEntityID = *(const UUID*)payload->Data; // Retrieve the dragged entity ID
-
-					// Retrieve the entity using the dropped entity ID
-					Entity droppedEntity = SceneManager::GetActiveScene()->GetEntityByUUID(droppedEntityID); // Assuming you have a function to get an entity by UUID
-
-
-					Prefab prefab(droppedEntity);
-					prefab.AddChild(MakeRef<Entity>(droppedEntity));
-
-
-					Entity makePrefab(prefab.GetPrefabID(), PrefabManager::GetScenePtr());
-					std::string dir = mCurrDir.string();
-					dir += +"/" + droppedEntity.GetName() + ".prefab";
-					Serialiser::SerialisePrefab(dir.c_str(), makePrefab);
-
-
-					// You might want to add some feedback or a log message here to indicate success
-					std::cout << "Prefab created at: " << mCurrDir.string() << std::endl;
-				}
-				ImGui::EndDragDropTarget();
-			}
+		
 
 		if (ImGui::BeginDragDropTarget())
 		{
@@ -235,6 +235,23 @@ namespace Borealis
 					else if (extension == ".fbx" || extension == ".obj")
 					{
 						payloadName = "DragDropMeshItem";
+					}
+					else if (extension == ".prefab")
+					{
+						// Correct the assignment of payloadName
+						payloadName = "DragPrefab";
+
+						auto relativePath = std::filesystem::relative(path, mAssetsDir);
+						std::string itemPath = relativePath.string();
+
+						// Set the DragPrefab payload with the file path of the prefab
+						ImGui::SetDragDropPayload("DragPrefab", itemPath.c_str(), itemPath.size() + 1);
+
+						// Store the filename string into a local variable
+						std::string filenameStr = relativePath.filename().string();
+
+						// Display the filename as the drag text
+						ImGui::Text("%s", filenameStr.c_str());
 					}
 				}
 
