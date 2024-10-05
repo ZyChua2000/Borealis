@@ -175,7 +175,6 @@ namespace Borealis
 	}
 	void SceneHierarchyPanel::ImGuiRender()
 	{
-
 		ImGui::Begin("Scene Hierarchy");
 		ImGuiIO& io = ImGui::GetIO();
 		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
@@ -259,23 +258,26 @@ namespace Borealis
 			ImGui::Text(("Name: " + metadata.name).c_str());
 			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
 			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
-
 			switch (metadata.Type)
 			{
 				case AssetType::Texture2D:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Audio:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Shader:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Mesh:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Material:
@@ -285,6 +287,7 @@ namespace Borealis
 				}
 				default:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				

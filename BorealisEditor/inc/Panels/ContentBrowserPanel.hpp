@@ -39,6 +39,7 @@ namespace Borealis
 		 int mPadding = 2;
 		 const int mMinThumbnailSize = 62;
 		 bool isCreatingScene = false;
+		 bool isCreatingMaterial = false;
 
 	};
 }
