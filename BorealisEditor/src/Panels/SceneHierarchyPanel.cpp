@@ -276,9 +276,9 @@ namespace Borealis
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
 			{
-				// pass the entt id here
-				//Ref<Prefab> prefab = PrefabManager::GetPrefab(entt::entity(0));
-				//prefab->CreateChild(mContext);
+				AssetHandle data = *(const uint64_t*)payload->Data;
+				Ref<Prefab> prefab = PrefabManager::GetPrefab(data);
+				prefab->CreateChild(mContext);
 
 			}
 			ImGui::EndDragDropTarget();

@@ -314,18 +314,7 @@ namespace Borealis
 					{
 						// Correct the assignment of payloadName
 						payloadName = "DragPrefab";
-
-						auto relativePath = std::filesystem::relative(path, mAssetsDir);
-						std::string itemPath = relativePath.string();
-
-						// Set the DragPrefab payload with the file path of the prefab
-						ImGui::SetDragDropPayload("DragPrefab", itemPath.c_str(), itemPath.size() + 1);
-
-						// Store the filename string into a local variable
-						std::string filenameStr = relativePath.filename().string();
-
-						// Display the filename as the drag text
-						ImGui::Text("%s", filenameStr.c_str());
+					}
 					else if (extension == ".mp3" || extension == ".wav")
 					{
 						payloadName = "DragDropAudioItem";
@@ -388,10 +377,11 @@ namespace Borealis
 
 				Entity makePrefab(prefab->GetPrefabID(), PrefabManager::GetScenePtr());
 				std::string dir = mCurrDir.string();
-				dir += +"/" + droppedEntity.GetName() + ".prefab";
+				dir += +"\\" + droppedEntity.GetName() + ".prefab";
 				Serialiser::SerialisePrefab(dir.c_str(), makePrefab);
 				PrefabManager::Register(prefab);
 
+				AssetManager::InsertMetaData(MetaFileSerializer::CreateAssetMetaFile(dir, prefab->GetUUID()));
 
 				// You might want to add some feedback or a log message here to indicate success
 				std::cout << "Prefab created at: " << mCurrDir.string() << std::endl;

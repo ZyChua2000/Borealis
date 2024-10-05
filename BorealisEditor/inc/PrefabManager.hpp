@@ -54,6 +54,8 @@ namespace Borealis
 
 		static Ref<Prefab> GetPrefab(UUID mPrefabID) { return mPrefabs[mPrefabID]; }
 
+		static void DeserialisePrefab(std::string path);
+
 	private:
 		static std::unordered_map<UUID, Ref<Prefab>> mPrefabs;
 		static Scene mPrefabScene;

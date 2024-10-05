@@ -4,8 +4,8 @@
     <Filter Include="inc">
       <UniqueIdentifier>{1F80880B-8B89-887C-1405-9F7C800D947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="inc\Assets">
-      <UniqueIdentifier>{218EE30A-0D46-2558-764D-FEB36224C048}</UniqueIdentifier>
+    <Filter Include="inc\EditorAssets">
+      <UniqueIdentifier>{A8671577-9460-34C9-BD92-194EA9EA13D5}</UniqueIdentifier>
     </Filter>
     <Filter Include="inc\Panels">
       <UniqueIdentifier>{9177982C-7D2F-DA79-E636-B3D5D20D756A}</UniqueIdentifier>
@@ -13,19 +13,31 @@
     <Filter Include="src">
       <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Assets">
-      <UniqueIdentifier>{6FFD3E05-5BB5-8052-C4BC-59AEB0931B43}</UniqueIdentifier>
+    <Filter Include="src\EditorAssets">
+      <UniqueIdentifier>{7699467E-6292-65D0-8BC4-4A55771C45DC}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Panels">
       <UniqueIdentifier>{DFE6F326-CB9E-3574-34A6-0ED0207DD064}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\Assets\FontImporter.hpp">
-      <Filter>inc\Assets</Filter>
+    <ClInclude Include="inc\EditorAssets\AssetImporter.hpp">
+      <Filter>inc\EditorAssets</Filter>
     </ClInclude>
-    <ClInclude Include="inc\Assets\MeshImporter.hpp">
-      <Filter>inc\Assets</Filter>
+    <ClInclude Include="inc\EditorAssets\FontImporter.hpp">
+      <Filter>inc\EditorAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EditorAssets\MaterialEditor.hpp">
+      <Filter>inc\EditorAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EditorAssets\MeshImporter.hpp">
+      <Filter>inc\EditorAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EditorAssets\MetaSerializer.hpp">
+      <Filter>inc\EditorAssets</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EditorAssets\SkinnedMeshImporter.hpp">
+      <Filter>inc\EditorAssets</Filter>
     </ClInclude>
     <ClInclude Include="inc\EditorLayer.hpp">
       <Filter>inc</Filter>
@@ -45,16 +57,31 @@
     <ClInclude Include="inc\PrefabManager.hpp">
       <Filter>inc</Filter>
     </ClInclude>
+    <ClInclude Include="inc\ResourceManager.hpp">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Assets\FontImporter.cpp">
-      <Filter>src\Assets</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Assets\MeshImporter.cpp">
-      <Filter>src\Assets</Filter>
-    </ClCompile>
     <ClCompile Include="src\EditorApp.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\AssetImporter.cpp">
+      <Filter>src\EditorAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\FontImporter.cpp">
+      <Filter>src\EditorAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\MaterialEditor.cpp">
+      <Filter>src\EditorAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\MeshImporter.cpp">
+      <Filter>src\EditorAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\MetaSerializer.cpp">
+      <Filter>src\EditorAssets</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorAssets\SkinnedMeshImporter.cpp">
+      <Filter>src\EditorAssets</Filter>
     </ClCompile>
     <ClCompile Include="src\EditorLayer.cpp">
       <Filter>src</Filter>
@@ -69,6 +96,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\PrefabManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ResourceManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

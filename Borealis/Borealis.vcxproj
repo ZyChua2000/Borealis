@@ -76,8 +76,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_CROSS_PLATFORM_DETERMINISTIC;JPH_ENABLE_ASSERTS;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DEB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\gli;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -91,14 +91,17 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmodL_vc.lib;lib\mono\lib\Deb\mono-2.0-sgen.lib;lib\GLAD\lib\Deb\GLAD.lib;lib\GLFW\lib\Deb\GLFW.lib;lib\JoltPhysics\lib\Deb\JoltPhysics.lib;lib\yaml-cpp\lib\Deb\yaml-cpp.lib;lib\IMGUI\lib\Deb\IMGUI.lib;lib\RTTR\lib\Deb\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_CROSS_PLATFORM_DETERMINISTIC;JPH_ENABLE_ASSERTS;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_REL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\gli;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,14 +119,17 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Distribution|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>BorealisPCH.hpp</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;YAML_CPP_STATIC_DEFINE;JPH_FLOATING_POINT_EXCEPTIONS_ENABLED;JPH_CROSS_PLATFORM_DETERMINISTIC;JPH_ENABLE_ASSERTS;BOREALIS_BUILD_DLL;_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS;GLFW_INCLUDE_NONE;_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>inc;lib\spdlog\include;lib\GLFW\include;lib\GLAD\include;lib\imgui;lib\glm;lib\ENTT\include;lib\yaml-cpp\include;lib\ImGuizmo;lib\FMOD;lib\tracy;lib\stb_image;lib\JoltPhysics;lib\mono\include;lib\xproperty\include;lib\gli;lib\RTTR\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -141,9 +147,28 @@
     <Lib>
       <AdditionalDependencies>opengl32.lib;lib\FMOD\lib\fmod_vc.lib;lib\mono\lib\Rel\mono-2.0-sgen.lib;lib\GLAD\lib\Rel\GLAD.lib;lib\GLFW\lib\Rel\GLFW.lib;lib\JoltPhysics\lib\Rel\JoltPhysics.lib;lib\yaml-cpp\lib\Rel\yaml-cpp.lib;lib\IMGUI\lib\Rel\IMGUI.lib;lib\RTTR\lib\Rel\librttr_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul) ELSE (xcopy /Q /Y /I "engineResources" "..\BorealisEditor\engineResources" &gt; nul)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Borealis.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourNode.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\BehaviourTree.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Blackboard.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\ControlFlow\C_Sequencer.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_CheckMouseClick.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\Leaf\L_Idle.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\NodesDef.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\RegisterNodes.hpp" />
+    <ClInclude Include="inc\AI\BehaviourTree\ScanForNewNodes.hpp" />
+    <ClInclude Include="inc\Assets\Asset.hpp" />
+    <ClInclude Include="inc\Assets\AssetManager.hpp" />
+    <ClInclude Include="inc\Assets\AssetMetaData.hpp" />
+    <ClInclude Include="inc\Assets\EditorAssetManager.hpp" />
+    <ClInclude Include="inc\Assets\IAssetManager.hpp" />
+    <ClInclude Include="inc\Audio\Audio.hpp" />
+    <ClInclude Include="inc\Audio\AudioEngine.hpp" />
     <ClInclude Include="inc\BorealisPCH.hpp" />
     <ClInclude Include="inc\Core\ApplicationManager.hpp" />
     <ClInclude Include="inc\Core\Core.hpp" />
@@ -155,18 +180,22 @@
     <ClInclude Include="inc\Core\LayerSystem.hpp" />
     <ClInclude Include="inc\Core\LoggerSystem.hpp" />
     <ClInclude Include="inc\Core\Project.hpp" />
+    <ClInclude Include="inc\Core\ProjectInfo.hpp" />
     <ClInclude Include="inc\Core\UUID.hpp" />
     <ClInclude Include="inc\Core\Utils.hpp" />
     <ClInclude Include="inc\Core\WindowManager.hpp" />
     <ClInclude Include="inc\Debugging\Profiler.hpp" />
     <ClInclude Include="inc\Events\EventInput.hpp" />
     <ClInclude Include="inc\Events\EventWindow.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\Bone.hpp" />
+    <ClInclude Include="inc\Graphics\Animation\VertexBone.hpp" />
     <ClInclude Include="inc\Graphics\Buffer.hpp" />
     <ClInclude Include="inc\Graphics\Camera.hpp" />
     <ClInclude Include="inc\Graphics\EditorCamera.hpp" />
     <ClInclude Include="inc\Graphics\Font.hpp" />
     <ClInclude Include="inc\Graphics\Framebuffer.hpp" />
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp" />
+    <ClInclude Include="inc\Graphics\Light.hpp" />
     <ClInclude Include="inc\Graphics\Material.hpp" />
     <ClInclude Include="inc\Graphics\Mesh.hpp" />
     <ClInclude Include="inc\Graphics\Model.hpp" />
@@ -184,15 +213,14 @@
     <ClInclude Include="inc\Graphics\Renderer3D.hpp" />
     <ClInclude Include="inc\Graphics\RendererAPI.hpp" />
     <ClInclude Include="inc\Graphics\Shader.hpp" />
+    <ClInclude Include="inc\Graphics\SkinnedMesh.hpp" />
     <ClInclude Include="inc\Graphics\SubTexture2D.hpp" />
     <ClInclude Include="inc\Graphics\Texture.hpp" />
     <ClInclude Include="inc\Graphics\VertexArray.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiFontLib.hpp" />
     <ClInclude Include="inc\ImGui\ImGuiLayer.hpp" />
-    <ClInclude Include="inc\Scene\ComponentRegistry.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="inc\Physics\PhysicsSystem.hpp" />
+    <ClInclude Include="inc\Scene\ComponentRegistry.hpp" />
     <ClInclude Include="inc\Scene\Components.hpp" />
     <ClInclude Include="inc\Scene\Entity.hpp" />
     <ClInclude Include="inc\Scene\OrthographicCameraController.hpp" />
@@ -210,6 +238,59 @@
     <ClInclude Include="lib\ENTT\include\entt.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod.hpp" />
     <ClInclude Include="lib\FMOD\FMOD\fmod_studio.hpp" />
+    <ClInclude Include="lib\gli\clear.hpp" />
+    <ClInclude Include="lib\gli\comparison.hpp" />
+    <ClInclude Include="lib\gli\convert.hpp" />
+    <ClInclude Include="lib\gli\copy.hpp" />
+    <ClInclude Include="lib\gli\core\bc.hpp" />
+    <ClInclude Include="lib\gli\core\clear.hpp" />
+    <ClInclude Include="lib\gli\core\convert_func.hpp" />
+    <ClInclude Include="lib\gli\core\coord.hpp" />
+    <ClInclude Include="lib\gli\core\file.hpp" />
+    <ClInclude Include="lib\gli\core\filter.hpp" />
+    <ClInclude Include="lib\gli\core\filter_compute.hpp" />
+    <ClInclude Include="lib\gli\core\flip.hpp" />
+    <ClInclude Include="lib\gli\core\mipmaps_compute.hpp" />
+    <ClInclude Include="lib\gli\core\s3tc.hpp" />
+    <ClInclude Include="lib\gli\core\storage_linear.hpp" />
+    <ClInclude Include="lib\gli\duplicate.hpp" />
+    <ClInclude Include="lib\gli\dx.hpp" />
+    <ClInclude Include="lib\gli\format.hpp" />
+    <ClInclude Include="lib\gli\generate_mipmaps.hpp" />
+    <ClInclude Include="lib\gli\gl.hpp" />
+    <ClInclude Include="lib\gli\gli.hpp" />
+    <ClInclude Include="lib\gli\image.hpp" />
+    <ClInclude Include="lib\gli\levels.hpp" />
+    <ClInclude Include="lib\gli\load.hpp" />
+    <ClInclude Include="lib\gli\load_dds.hpp" />
+    <ClInclude Include="lib\gli\load_kmg.hpp" />
+    <ClInclude Include="lib\gli\load_ktx.hpp" />
+    <ClInclude Include="lib\gli\make_texture.hpp" />
+    <ClInclude Include="lib\gli\reduce.hpp" />
+    <ClInclude Include="lib\gli\sampler.hpp" />
+    <ClInclude Include="lib\gli\sampler1d.hpp" />
+    <ClInclude Include="lib\gli\sampler1d_array.hpp" />
+    <ClInclude Include="lib\gli\sampler2d.hpp" />
+    <ClInclude Include="lib\gli\sampler2d_array.hpp" />
+    <ClInclude Include="lib\gli\sampler3d.hpp" />
+    <ClInclude Include="lib\gli\sampler_cube.hpp" />
+    <ClInclude Include="lib\gli\sampler_cube_array.hpp" />
+    <ClInclude Include="lib\gli\save.hpp" />
+    <ClInclude Include="lib\gli\save_dds.hpp" />
+    <ClInclude Include="lib\gli\save_kmg.hpp" />
+    <ClInclude Include="lib\gli\save_ktx.hpp" />
+    <ClInclude Include="lib\gli\target.hpp" />
+    <ClInclude Include="lib\gli\texture.hpp" />
+    <ClInclude Include="lib\gli\texture1d.hpp" />
+    <ClInclude Include="lib\gli\texture1d_array.hpp" />
+    <ClInclude Include="lib\gli\texture2d.hpp" />
+    <ClInclude Include="lib\gli\texture2d_array.hpp" />
+    <ClInclude Include="lib\gli\texture3d.hpp" />
+    <ClInclude Include="lib\gli\texture_cube.hpp" />
+    <ClInclude Include="lib\gli\texture_cube_array.hpp" />
+    <ClInclude Include="lib\gli\transform.hpp" />
+    <ClInclude Include="lib\gli\type.hpp" />
+    <ClInclude Include="lib\gli\view.hpp" />
     <ClInclude Include="lib\glm\glm\common.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_features.hpp" />
     <ClInclude Include="lib\glm\glm\detail\_fixes.hpp" />
@@ -677,6 +758,17 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="lib\stb_image\stb_image.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourNode.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\BehaviourTree.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\ControlFlow\C_Sequencer.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_CheckMouseClick.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\Leaf\L_Idle.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\RegisterNodes.cpp" />
+    <ClCompile Include="src\AI\BehaviourTree\ScanForNewNodes.cpp" />
+    <ClCompile Include="src\Assets\Asset.cpp" />
+    <ClCompile Include="src\Assets\AssetManager.cpp" />
+    <ClCompile Include="src\Assets\EditorAssetManager.cpp" />
+    <ClCompile Include="src\Audio\AudioEngine.cpp" />
     <ClCompile Include="src\BorealisPCH.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -691,10 +783,13 @@
     <ClCompile Include="src\Core\WindowManager.cpp" />
     <ClCompile Include="src\Events\EventInput.cpp" />
     <ClCompile Include="src\Events\EventWindow.cpp" />
+    <ClCompile Include="src\Graphics\Animation\VertexBone.cpp" />
     <ClCompile Include="src\Graphics\Buffer.cpp" />
     <ClCompile Include="src\Graphics\EditorCamera.cpp" />
     <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
+    <ClCompile Include="src\Graphics\Light.cpp" />
+    <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
     <ClCompile Include="src\Graphics\OpenGL\BufferOpenGLImpl.cpp" />
@@ -711,12 +806,14 @@
     <ClCompile Include="src\Graphics\Renderer3D.cpp" />
     <ClCompile Include="src\Graphics\RendererAPI.cpp" />
     <ClCompile Include="src\Graphics\Shader.cpp" />
+    <ClCompile Include="src\Graphics\SkinnedMesh.cpp" />
     <ClCompile Include="src\Graphics\SubTexture2D.cpp" />
     <ClCompile Include="src\Graphics\Texture.cpp" />
     <ClCompile Include="src\Graphics\VertexArray.cpp" />
     <ClCompile Include="src\ImGui\ImGuiBuild.cpp" />
     <ClCompile Include="src\ImGui\ImGuiFontLib.cpp" />
     <ClCompile Include="src\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Physics\PhysicsSystem.cpp" />
     <ClCompile Include="src\Scene\ComponentRegistry.cpp" />
     <ClCompile Include="src\Scene\Entity.cpp" />
     <ClCompile Include="src\Scene\OrthographicCameraController.cpp" />

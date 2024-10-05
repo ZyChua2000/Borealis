@@ -36,6 +36,8 @@ namespace Borealis
 	class Prefab
 	{
 	public:
+
+		Prefab(UUID id);
 		Prefab(Entity entity);
 
 		// Add a component to the prefab
@@ -53,6 +55,12 @@ namespace Borealis
 		template <typename T>
 		bool HasComponent() {
 			return PrefabManager::HasComponent<T>(mPrefabID);
+		}
+
+		template <typename T, typename ...Args>
+		T& AddComponent(Args&&... args)
+		{
+			return PrefabManager::AddComponent<T>(mPrefabID, std::forward<Args>(args)...);
 		}
 
 		// Update all instances of the prefab

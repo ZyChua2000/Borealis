@@ -874,6 +874,14 @@ namespace Borealis {
 			SceneManager::ClearSceneLibrary();
 			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
 			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+			for (auto [handle,meta] : Project::GetEditorAssetsManager()->GetAssetRegistry())
+			{
+				if (meta.Type == AssetType::Prefab)
+				{
+					PrefabManager::DeserialisePrefab(meta.SourcePath.string());
+				}
+			}
+
 			SceneManager::SetActiveScene(activeSceneName);
 
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";

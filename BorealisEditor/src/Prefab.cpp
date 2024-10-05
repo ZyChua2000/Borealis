@@ -20,6 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <PrefabManager.hpp>
 #include <iostream>  // For testing/debugging purposes
 #include "PrefabComponent.hpp"
+#include <Core/LoggerSystem.hpp>
 
 namespace Borealis {
 
@@ -33,7 +34,8 @@ namespace Borealis {
 #define AddEntityComponent(ComponentName) \
 	if (HasComponent<ComponentName>()) \
 	{ \
-		entity->AddComponent<ComponentName>(GetComponent<ComponentName>()); \
+		auto& com = entity->AddComponent<ComponentName>(); \
+        com = GetComponent<ComponentName>(); \
 	} \
 
 
@@ -42,7 +44,17 @@ namespace Borealis {
 	{
 
 	}
-	//Creates Prefab base on exisiting entity
+    Prefab::Prefab(UUID id)
+    {
+        PrefabManager::CreateEntity();
+        mPrefabID = PrefabManager::CreateEntity();
+        PrefabManager::AddComponent<IDComponent>(mPrefabID);
+        PrefabManager::AddComponent<TagComponent>(mPrefabID);
+        PrefabManager::AddComponent<TransformComponent>(mPrefabID);
+
+        PrefabManager::GetRegistry().get<IDComponent>(mPrefabID).ID = id;
+    }
+    //Creates Prefab base on exisiting entity
 	Prefab::Prefab(Entity entity)
 	{
         if (!entity.HasComponent<PrefabComponent>())
@@ -56,7 +68,6 @@ namespace Borealis {
             AddPrefabComponent(SpriteRendererComponent);
 
             PrefabManager::GetRegistry().get<IDComponent>(mPrefabID).ID = UUID{}; // Reset the UUID
-
             prefabComponent.mPrefabID = mPrefabID;
         }
         mPrefabID = entity.GetComponent<PrefabComponent>().mPrefabID;
@@ -84,7 +95,8 @@ namespace Borealis {
     Ref<Entity> Prefab::CreateChild(Ref<Scene> scene)
     {
         // Create a new entity in the scene
-		auto entity = MakeRef<Entity>(scene->CreateEntity(GetComponent<TagComponent>().Tag));
+        auto ref = scene->CreateEntity(GetComponent<TagComponent>().Tag);
+        auto entity = MakeRef<Entity>(ref);
 
 		// Add the PrefabComponent to the entity
 		auto& prefabComponent = entity->AddComponent<PrefabComponent>();
@@ -92,12 +104,7 @@ namespace Borealis {
 
 
 		// Add all components from the prefab to the new entity
-        AddEntityComponent(TransformComponent);
-        AddEntityComponent(TagComponent);
-        AddEntityComponent(IDComponent);
         AddEntityComponent(SpriteRendererComponent);
-
-        entity->GetComponent<IDComponent>().ID = UUID{}; // Reset the UUID
 
 		// Add the new entity to the list of children
 		mChildren.insert(entity);
