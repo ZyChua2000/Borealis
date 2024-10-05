@@ -12,6 +12,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <Panels/ContentBrowserPanel.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
@@ -19,6 +20,28 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Scene.hpp>
 #include <Prefab.hpp>
 
+namespace ImGui
+{
+	static bool BeginDrapDropTargetWindow(const char* payload_type)
+	{
+		using namespace ImGui;
+		ImRect inner_rect = GetCurrentWindow()->InnerRect;
+		if (BeginDragDropTargetCustom(inner_rect, GetID("##WindowBgArea")))
+			if (const ImGuiPayload* payload = AcceptDragDropPayload(payload_type, ImGuiDragDropFlags_AcceptBeforeDelivery | ImGuiDragDropFlags_AcceptNoDrawDefaultRect))
+			{
+				if (payload->IsPreview())
+				{
+					ImDrawList* draw_list = GetForegroundDrawList();
+					draw_list->AddRectFilled(inner_rect.Min, inner_rect.Max, GetColorU32(ImGuiCol_DragDropTarget, 0.05f));
+					draw_list->AddRect(inner_rect.Min, inner_rect.Max, GetColorU32(ImGuiCol_DragDropTarget), 0.0f, 0, 2.0f);
+				}
+				if (payload->IsDelivery())
+					return true;
+				EndDragDropTarget();
+			}
+		return false;
+	}
+}
 namespace Borealis
 {
 	static ImVec2 latestMousePos;
@@ -28,14 +51,21 @@ namespace Borealis
 		mAssetsDir = "assets";
 	}
 
+
 	void ContentBrowserPanel::ImGuiRender() 
 	{
 		ImGui::Begin("Content Browser");
 
-		//WORK IN PROGRESS
+
+
+		ImVec2 windowSize = ImGui::GetWindowSize();
+		float scrollableHeight = windowSize.y - 100; // Adjust for the fixed bottom row
+		ImGui::BeginChild("ScrollableRegion", ImVec2(windowSize.x, scrollableHeight), true);
+		
+				//WORK IN PROGRESS
 		//Dragged Prefab
 		// Content Browser panel drop target for creating prefabs
-		if (ImGui::BeginDragDropTarget() && (mCurrDir.filename() == "Prefab"))
+		if(ImGui::BeginDrapDropTargetWindow("DragCreatePrefab"))
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragCreatePrefab"))
 			{
@@ -61,12 +91,6 @@ namespace Borealis
 			}
 			ImGui::EndDragDropTarget();
 		}
-
-		ImVec2 windowSize = ImGui::GetWindowSize();
-		float scrollableHeight = windowSize.y - 100; // Adjust for the fixed bottom row
-		ImGui::BeginChild("ScrollableRegion", ImVec2(windowSize.x, scrollableHeight), true);
-		
-		
 
 		if (ImGui::BeginDragDropTarget())
 		{
