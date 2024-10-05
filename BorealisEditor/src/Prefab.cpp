@@ -38,16 +38,21 @@ namespace Borealis {
 	//Creates Prefab base on exisiting entity
 	Prefab::Prefab(Entity entity)
 	{
-		mPrefabID = PrefabManager::CreateEntity();
-		AddPrefabComponent(TransformComponent);
-		AddPrefabComponent(TagComponent);
-		AddPrefabComponent(IDComponent);
-		AddPrefabComponent(SpriteRendererComponent);
+        if (!entity.HasComponent<PrefabComponent>())
+        {
+            auto& prefabComponent = entity.AddComponent<PrefabComponent>();
+
+            mPrefabID = PrefabManager::CreateEntity();
+            AddPrefabComponent(TransformComponent);
+            AddPrefabComponent(TagComponent);
+            AddPrefabComponent(IDComponent);
+            AddPrefabComponent(SpriteRendererComponent);
+
+            prefabComponent.mPrefabID = mPrefabID;
+        }
+        mPrefabID = entity.GetComponent<PrefabComponent>().mPrefabID;
 		// Add all components to prefab manager ECS
 
-		auto& prefabComponent = entity.AddComponent<PrefabComponent>();
-		prefabComponent.mPrefabID = mPrefabID;
-		
 	}
 
 	void Prefab::AddChild(Ref<Entity> entity)
