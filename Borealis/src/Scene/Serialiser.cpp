@@ -23,9 +23,38 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiFontLib.hpp>
 #include <AI/BehaviourTree/RegisterNodes.hpp>
 #include <Assets/AssetManager.hpp>
+#include <Scripting/ScriptInstance.hpp>
+#include <Scripting/ScriptField.hpp>
+#include <Scripting/ScriptingSystem.hpp>
 
 namespace YAML
 {
+	template<>
+	struct convert<glm::vec2>
+	{
+		static Node encode(const glm::vec2& rhs)
+		{
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs)
+		{
+			if (!node.IsSequence() || node.size() != 2)
+			{
+				return false;
+			}
+
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+
+
 	template<>
 	struct convert<glm::vec3>
 	{
@@ -137,6 +166,13 @@ namespace Borealis
 	}
 
 	// Overrides:
+	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec2& vec)
+	{
+		out << YAML::Flow;
+		out << YAML::BeginSeq << vec.x << vec.y << YAML::EndSeq;
+		return out;
+	}
+
 	YAML::Emitter& operator<<(YAML::Emitter& out, const glm::vec3& vec)
 	{
 		out << YAML::Flow;
@@ -379,6 +415,151 @@ namespace Borealis
 
 			out << YAML::EndMap;
 		}
+
+		if (entity.HasComponent<ScriptComponent>())
+		{
+			out << YAML::Key << "ScriptComponent";
+			out << YAML::BeginMap;
+
+			auto& scriptComponent = entity.GetComponent<ScriptComponent>();
+
+			for (auto[name, script]: scriptComponent.mScripts)
+			{
+				out << YAML::Key << name;
+				out << YAML::BeginMap;
+
+				for (auto [name,field] : script->GetScriptClass()->mFields)
+				{
+					if (field.mType == ScriptFieldType::Bool)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Bool";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<bool>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Float)
+					{
+						out <<  YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Float";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<float>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Int)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Int";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<int>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::String)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "String";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<std::string>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Vector2)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Vector2";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<glm::vec2>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Vector3)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Vector3";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<glm::vec3>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+
+					if (field.mType == ScriptFieldType::Vector4)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Vector4";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<glm::vec4>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::UChar)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "UChar";
+						out << YAML::Key << "Data" << YAML::Value << static_cast<unsigned>(script->GetFieldValue<unsigned char>(name));
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Char)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Char";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<char>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::UShort)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "UShort";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<unsigned short>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Short)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Short";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<short>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::UInt)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "UInt";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<unsigned>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Long)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Long";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<long long>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::ULong)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "ULong";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<unsigned long long>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+					if (field.mType == ScriptFieldType::Double)
+					{
+						out << YAML::Key << field.mName << YAML::BeginMap;
+						out << YAML::Key << "Type" << YAML::Value << "Double";
+						out << YAML::Key << "Data" << YAML::Value << script->GetFieldValue<double>(name);
+						out << YAML::EndMap;
+						continue;
+					}
+				}
+
+				out << YAML::EndMap;
+			}
+
+			out << YAML::EndMap;
+		}
+
+
 		out << YAML::EndMap;
 	}
 
@@ -601,6 +782,135 @@ namespace Borealis
 						}
 					}
 					btc.AddTree(tempTree);
+				}
+
+				auto scriptComponent = entity["ScriptComponent"];
+				if (scriptComponent)
+				{
+					auto& sc = loadedEntity.AddComponent<ScriptComponent>();
+					for (const auto& script : scriptComponent)
+					{
+						std::string scriptName = script.first.as<std::string>();
+						auto scriptInstance = MakeRef<ScriptInstance>(ScriptingSystem::GetScriptClass(scriptName));
+						scriptInstance->Init(loadedEntity.GetUUID()); // Initialise the script instance (set the entity reference
+						sc.AddScript(scriptName, scriptInstance);
+
+						const YAML::Node& fields = script.second;
+						if (fields) {
+							for (const auto& field : fields) {
+								// Each field will have a name and a corresponding node
+								std::string fieldName = field.first.as<std::string>();
+								const YAML::Node& fieldData = field.second;
+								fieldData["Type"].as<std::string>();
+
+								if (fieldData["Type"].as<std::string>() == "Bool")
+								{
+									bool data = fieldData["Data"].as<bool>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Float")
+								{
+									float data = fieldData["Data"].as<float>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Int")
+								{
+									int data = fieldData["Data"].as<int>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "String")
+								{
+									std::string data = fieldData["Data"].as<std::string>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Vector2")
+								{
+									glm::vec2 data = fieldData["Data"].as<glm::vec2>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Vector3")
+								{
+									glm::vec3 data = fieldData["Data"].as<glm::vec3>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Vector4")
+								{
+									glm::vec4 data = fieldData["Data"].as<glm::vec4>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "UChar")
+								{
+									unsigned char data = static_cast<unsigned char>(fieldData["Data"].as<unsigned>());
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Char")
+								{
+									char data = fieldData["Data"].as<char>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "UShort")
+								{
+									unsigned short data = fieldData["Data"].as<unsigned short>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Short")
+								{
+									short data = fieldData["Data"].as<short>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "UInt")
+								{
+									unsigned data = fieldData["Data"].as<unsigned>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Long")
+								{
+									long long data = fieldData["Data"].as<long long>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "ULong")
+								{
+									unsigned long long data = fieldData["Data"].as<unsigned long long>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+								if (fieldData["Type"].as<std::string>() == "Double")
+								{
+									double data = fieldData["Data"].as<double>();
+									scriptInstance->SetFieldValue(fieldName, &data);
+									continue;
+								}
+
+							}
+						}
+					}
 				}
 			}
 		}
