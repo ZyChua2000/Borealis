@@ -39,6 +39,7 @@ namespace BorealisRuntime
 
 		std::string activeSceneName = Borealis::Project::SetProjectPath(projectPath);
 		// Load Asset Registry here
+		Borealis::AssetManager::SetRunTime();
 		Borealis::SceneManager::SetActiveScene(activeSceneName);
 		Borealis::ScriptingSystem::InitCoreAssembly();
 

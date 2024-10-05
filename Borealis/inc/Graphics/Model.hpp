@@ -34,9 +34,21 @@ namespace Borealis
 	class Model : public Asset
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Renders the model
+		*************************************************************************/
 		void Draw(const glm::mat4& transform, Ref<Shader> shader, int entityID);
 
+		/*!***********************************************************************
+			\brief
+				Load the model from a file path
+		*************************************************************************/
 		void LoadModel(std::filesystem::path const& path);
+
+		/*!***********************************************************************
+				TO REMOVE
+		*************************************************************************/
 		void SaveModel();
 
 		std::vector<Mesh> mMeshes;

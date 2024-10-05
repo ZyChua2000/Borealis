@@ -26,12 +26,42 @@ namespace Borealis
 	class Renderer3D
 	{
 	public:
-
+		/*!***********************************************************************
+			\brief
+				Init for Renderer3d
+		*************************************************************************/
 		static void Init();
+
+		/*!***********************************************************************
+			\brief
+				Setup the renderer for editor camera
+			\param[in] camera
+				camera
+		*************************************************************************/
 		static void Begin(const EditorCamera& camera);
 
+		/*!***********************************************************************
+			\brief
+				Setup the renderer for camera
+			\param[in] camera
+				camera
+			\param[in] transform
+				transform
+		*************************************************************************/
 		static void Begin(const Camera& camera, const glm::mat4& transform);
 
+		/*!***********************************************************************
+			\brief
+				Draw the mesh
+			\param[in] transform
+				camera
+			\param[in] meshFilter
+				transform
+			\param[in] meshRenderer
+				transform
+			\param[in] light
+				transform
+		*************************************************************************/
 		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, Ref<Light> light, int entityID = -1);
 	};
 }

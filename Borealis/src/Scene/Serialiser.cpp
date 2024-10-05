@@ -27,6 +27,23 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 namespace YAML
 {
 	template<>
+	struct convert<glm::vec2> {
+		static Node encode(const glm::vec2& rhs) {
+			Node node;
+			node.push_back(rhs.x);
+			node.push_back(rhs.y);
+			return node;
+		}
+
+		static bool decode(const Node& node, glm::vec2& rhs) {
+			if (!node.IsSequence() || node.size() != 2) return false;
+			rhs.x = node[0].as<float>();
+			rhs.y = node[1].as<float>();
+			return true;
+		}
+	};
+
+	template<>
 	struct convert<glm::vec3>
 	{
 		static Node encode(const glm::vec3& rhs)
@@ -159,7 +176,13 @@ namespace Borealis
 		return out;
 	}
 
-
+	void SerializeTexture(YAML::Emitter& out, Ref<Texture2D> texture)
+	{
+		if (texture)
+		{
+			out << YAML::Key << "Texture" << YAML::Value << texture->mAssetHandle;
+		}
+	}
 
 	Serialiser::Serialiser(const Ref<Scene>& scene) : mScene(scene) {}
 
@@ -240,7 +263,7 @@ namespace Borealis
 
 			auto& spriteRendererComponent = entity.GetComponent<SpriteRendererComponent>();
 			out << YAML::Key << "Colour" << YAML::Value << spriteRendererComponent.Colour;
-
+			SerializeTexture(out, spriteRendererComponent.Texture);
 
 			out << YAML::EndMap;
 		}
@@ -274,7 +297,7 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& meshRendererComponent = entity.GetComponent<MeshRendererComponent>();
-			out << YAML::Key << "Material" << YAML::Value << 3342312321; //UUID of Material
+			out << YAML::Key << "Material" << YAML::Value << meshRendererComponent.Material->mAssetHandle;
 			out << YAML::Key << "CastShadow" << YAML::Value << meshRendererComponent.castShadow;
 			out << YAML::EndMap;
 		}
@@ -460,6 +483,10 @@ namespace Borealis
 				{
 					auto& src = loadedEntity.AddComponent<SpriteRendererComponent>();
 					src.Colour = entity["SpriteRendererComponent"]["Colour"].as<glm::vec4>();
+					if (entity["SpriteRendererComponent"]["Texture"].IsDefined())
+					{
+						src.Texture = AssetManager::GetAsset<Texture2D>(entity["SpriteRendererComponent"]["Texture"].as<uint64_t>());
+					}
 				}
 
 				auto circleRendererComponent = entity["CircleRendererComponent"];
@@ -501,7 +528,8 @@ namespace Borealis
 				if (meshRendererComponent)
 				{
 					auto& mrc = loadedEntity.AddComponent<MeshRendererComponent>();
-					mrc.Material = nullptr; // TODO: Load Material via UUID
+					uint64_t uuid = entity["MeshRendererComponent"]["Material"].as<uint64_t>();
+					mrc.Material = AssetManager::GetAsset<Material>(uuid);
 					mrc.castShadow = meshRendererComponent["CastShadow"].as<bool>();
 				}
 
@@ -548,15 +576,6 @@ namespace Borealis
 				if (lightComponent)
 				{
 					auto& lc = loadedEntity.AddComponent<LightComponent>();
-					lc.ambient = lightComponent["Ambient"].as<glm::vec3>();
-					lc.diffuse = lightComponent["Diffuse"].as<glm::vec3>();
-					lc.direction = lightComponent["Direction"].as<glm::vec3>();
-					lc.specular = lightComponent["Specular"].as<glm::vec3>();
-					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpotX"].as<float>(), lightComponent["InnerSpotY"].as<float>());
-					lc.linear = lightComponent["Linear"].as<float>();
-					lc.quadratic = lightComponent["Quadratic"].as<float>();
-					lc.specular = lightComponent["Specular"].as<glm::vec3>();
-					lc.type = (LightComponent::Type)lightComponent["Type"].as<int>();
 					/*lc.Colour = lightComponent["Colour"].as<glm::vec4>();
 					lc.InnerOuterSpot = glm::vec2(lightComponent["InnerSpot"].as<float>(), lightComponent["OuterSpot"].as<float>());
 					lc.Temperature = lightComponent["Temperature"].as<float>();

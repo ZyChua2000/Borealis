@@ -175,7 +175,6 @@ namespace Borealis
 	}
 	void SceneHierarchyPanel::ImGuiRender()
 	{
-
 		ImGui::Begin("Scene Hierarchy");
 		ImGuiIO& io = ImGui::GetIO();
 		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
@@ -247,7 +246,7 @@ namespace Borealis
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
-			MaterialEditor::SetRender(false);
+			MaterialEditor::SetMaterial(0);
 			DrawComponents(mSelectedEntity);
 		}
 		else if (ContentBrowserPanel::sSelectedAsset)
@@ -259,31 +258,36 @@ namespace Borealis
 			ImGui::Text(("Name: " + metadata.name).c_str());
 			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
 			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
-
 			switch (metadata.Type)
 			{
 				case AssetType::Texture2D:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Audio:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Shader:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Mesh:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				case AssetType::Material:
 				{
+					MaterialEditor::SetMaterial(metadata.Handle);
 					break;
 				}
 				default:
 				{
+					MaterialEditor::SetMaterial(0);
 					break;
 				}
 				
@@ -350,6 +354,17 @@ namespace Borealis
 				if (!mSelectedEntity.HasComponent<T>())
 				{
 					mSelectedEntity.AddComponent<T>();
+					
+					if (std::is_same<T, CameraComponent>::value)
+					{
+						mSelectedEntity.GetComponent<TransformComponent>().Translate.z = 350.f;
+						mSelectedEntity.GetComponent<CameraComponent>().Camera.SetCameraType(SceneCamera::CameraType::Perspective);
+					}
+
+					if (std::is_same<T, MeshFilterComponent>::value)
+					{
+						mSelectedEntity.AddComponent<MeshRendererComponent>();
+					}
 				}
 				ImGui::CloseCurrentPopup();
 				memset(search_buffer, 0, sizeof(search_buffer));
@@ -759,11 +774,6 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
-				if(!component.Material)
-				{
-					component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
-				}
-
 				if (component.Material)
 				{
 					MaterialEditor::RenderProperties(component.Material);
@@ -773,9 +783,8 @@ namespace Borealis
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Material = AssetManager::GetAsset<Material>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -1007,12 +1016,8 @@ namespace Borealis
 						component.isPlaying = true;
 					}
 
-					ImGui::DragFloat("Volume", &component.Volume, 5.0f);
-					//component.audio = MakeRef<Audio>();
-					//component.audio->AudioPath = "assets/Audio/meow.mp3";
-
-
-
+					// DragFloat for volume control (range: -80 dB to 0 dB)
+					ImGui::DragFloat("Volume", &component.Volume, 0.5f, -80.0f, 0.0f);
 					if (ImGui::Button("Play"))
 					{
 						component.isPlaying = true;

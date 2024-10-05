@@ -60,7 +60,7 @@ namespace Borealis {
 		mViewportFrameBuffer = FrameBuffer::Create(props);
 		
 		FrameBufferProperties propsRuntime{ 1280, 720, false };
-		propsRuntime.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::Depth };
+		propsRuntime.Attachments = { FramebufferTextureFormat::RGBA8, FramebufferTextureFormat::RedInteger,FramebufferTextureFormat::Depth };
 		mRuntimeFrameBuffer = FrameBuffer::Create(propsRuntime);
 
 		mEditorScene = MakeRef<Scene>();
@@ -736,6 +736,8 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+			std::filesystem::create_directory(filepath + "\\Cache");
+			Project::CopyFolder(Project::GetProjectPath() + "\\Cache", filepath + "\\Cache");
 			Project::CopyIndividualFile(Project::GetProjectPath() + "\\AssetRegistry.brdb", filepath + "\\AssetRegistry.brdb");
 
 			// copy fmod dll and mono dll from editor

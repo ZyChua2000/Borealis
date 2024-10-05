@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include <Scene/SceneManager.hpp>
 #include <Assets/AssetMetaData.hpp>
+#include <Assets/AssetManager.hpp>
 #include <EditorAssets/MetaSerializer.hpp>
 #include <ResourceManager.hpp>
 
@@ -68,8 +69,19 @@ namespace Borealis
 				}
 				if (ImGui::MenuItem("Create New Material"))
 				{
-					MaterialEditor::SetRender(true);
+					isCreatingMaterial = true;
+					latestMousePos = ImGui::GetMousePos();
+
+					//std::filesystem::path materialPath = mCurrDir;
+					//materialPath /= "NewMaterial.mat";
+					//Ref<Material> material = Material::CreateNewMaterial(materialPath);
+					////TEMP
+					//AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+					//AssetManager::InsertMetaData(data);
+					//AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+					//MaterialEditor::SetMaterial(data.Handle);
 				}
+
 				ImGui::EndPopup();
 			}
 		}
@@ -88,6 +100,30 @@ namespace Borealis
 
 			if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
 				isCreatingScene = false; // Cancel rename
+			}
+			ImGui::End();
+		}
+
+		if (isCreatingMaterial)
+		{
+			ImGui::SetNextWindowPos(latestMousePos);
+			ImGui::Begin("Create File ##material", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::InputText("##MaterialFilename", textBuffer, sizeof(textBuffer));
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+				isCreatingMaterial = false;
+
+				std::filesystem::path materialPath = mCurrDir;
+				materialPath /= std::string(textBuffer) + ".mat";
+				Ref<Material> material = Material::CreateNewMaterial(materialPath);
+				AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+				AssetManager::InsertMetaData(data);
+				AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+				MaterialEditor::SetMaterial(data.Handle);
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
+				isCreatingMaterial = false; 
 			}
 			ImGui::End();
 		}
@@ -160,6 +196,10 @@ namespace Borealis
 				{
 					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Material)->GetRendererID());
 				}
+				//else if (extension == ".mp3" || extension == ".wav")
+				//{
+				//	screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Audio)->GetRendererID());
+				//}
 				else
 				{
 					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Unknown)->GetRendererID());
@@ -233,6 +273,10 @@ namespace Borealis
 					else if (extension == ".mp3" || extension == ".wav")
 					{
 						payloadName = "DragDropAudioItem";
+					}
+					else if (extension == ".mat")
+					{
+						payloadName = "DragDropMaterialItem";
 					}
 				}
 
