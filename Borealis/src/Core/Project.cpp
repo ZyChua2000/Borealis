@@ -88,6 +88,7 @@ namespace Borealis
 					{
 						std::string sceneName = scene["SceneName"].as<std::string>();
 						std::string scenePath = scene["ScenePath"].as<std::string>();
+						scenePath = mProjectInfo.ProjectPath.string() + "\\" + scenePath;
 						SceneManager::AddScene(sceneName, scenePath);
 					}
 					retScene = data["ActiveScene"].as<std::string>();
@@ -127,6 +128,8 @@ namespace Borealis
 		out << YAML::Key << "Scenes" << YAML::Value << YAML::BeginSeq;
 		for (auto& [sceneName,scenePath] : SceneManager::GetSceneLibrary())
 		{
+			scenePath = scenePath.substr(mProjectInfo.ProjectPath.string().length() + 1);
+
 			out << YAML::BeginMap;
 			out << YAML::Key << "SceneName" << YAML::Value << sceneName;
 			out << YAML::Key << "ScenePath" << YAML::Value << scenePath;
