@@ -55,7 +55,7 @@ namespace Borealis
 		void RecalculateProjection();
 
 		CameraType mCameraType = CameraType::Orthographic;
-		float mOrthoSize = 1000.0f;
+		float mOrthoSize = 350.0f;
 		float mOrthoNear = -1.0f;
 		float mOrthoFar = 1000.0f;
 

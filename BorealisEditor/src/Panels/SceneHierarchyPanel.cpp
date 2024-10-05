@@ -355,6 +355,7 @@ namespace Borealis
 					if (std::is_same<T, CameraComponent>::value)
 					{
 						mSelectedEntity.GetComponent<TransformComponent>().Translate.z = 350.f;
+						mSelectedEntity.GetComponent<CameraComponent>().Camera.SetCameraType(SceneCamera::CameraType::Perspective);
 					}
 
 					if (std::is_same<T, MeshFilterComponent>::value)
@@ -770,11 +771,6 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
-				//if(!component.Material)
-				//{
-				//	component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
-				//}
-
 				if (component.Material)
 				{
 					MaterialEditor::RenderProperties(component.Material);
