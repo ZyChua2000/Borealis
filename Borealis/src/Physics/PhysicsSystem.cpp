@@ -334,22 +334,32 @@ void PhysicsSystem::Init()
 
 	void PhysicsSystem::PushTransform(unsigned int bodyID, TransformComponent& transform)
 	{
-		// Output current position and velocity of the sphere
+		// Convert position (glm::vec3 to Jolt's RVec3)
 		JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
-		glm::quat rotation = Math::EulerToQuat(transform.Rotation);
+
+		// Convert Euler angles (vec3) to quaternion (quat)
+		glm::quat rotation = glm::quat(glm::radians(transform.Rotation));  // Assuming Rotation is in degrees
+
+		// Convert glm::quat to Jolt's Quat (JPH::Quat)
 		JPH::Quat newRotation = JPH::Quat(rotation.x, rotation.y, rotation.z, rotation.w);
+
+		// Set position and rotation in the physics system
 		sData.body_interface->SetPosition((BodyID)bodyID, newPosition, EActivation::Activate);
 		sData.body_interface->SetRotation((BodyID)bodyID, newRotation, EActivation::Activate);
 	}
 
 	void PhysicsSystem::PullTransform(unsigned int bodyID, TransformComponent& transform)
 	{
-		// Output current position and velocity of the sphere
+		// Get position from the physics system (JPH::RVec3 to glm::vec3)
 		JPH::RVec3 newPosition = sData.body_interface->GetPosition((BodyID)bodyID);
 		transform.Translate = glm::vec3(newPosition.GetX(), newPosition.GetY(), newPosition.GetZ());
+
+		// Get rotation from the physics system (JPH::Quat to glm::quat)
 		JPH::Quat newRotation = sData.body_interface->GetRotation((BodyID)bodyID);
-		glm::quat rotation = glm::quat(newRotation.GetX(), newRotation.GetY(), newRotation.GetZ(), newRotation.GetW());
-		transform.Rotation = Math::QuatToEuler(rotation);
+		glm::quat rotation = glm::quat(newRotation.GetW(), newRotation.GetX(), newRotation.GetY(), newRotation.GetZ());
+
+		// Convert quaternion to Euler angles (quat to vec3) in degrees
+		transform.Rotation = glm::degrees(glm::eulerAngles(rotation));  // Euler angles in degrees
 	}
 
 	void PhysicsSystem::Update(float dt)
@@ -372,24 +382,28 @@ void PhysicsSystem::Init()
 	}
 
 	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
+
 		// Create the settings for the collision volume (the shape).
-		SphereShapeSettings sphere_shape_settings(radius);
-		sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+		BoxShapeSettings box_shape_settings(Vec3(radius, radius, radius)); // Use radius as half extents
+
+		// Mark it as embedded (prevent it from being freed when reference count goes to 0)
+		box_shape_settings.SetEmbedded();
 
 		// Create the shape
-		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
-		ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+		ShapeSettings::ShapeResult box_shape_result = box_shape_settings.Create();
+		ShapeRefC box_shape = box_shape_result.Get(); // Check for errors in a real-world scenario
 
-		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-		BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+		// Create the settings for the body itself. Note that here you can also set other properties like restitution/friction.
+		BodyCreationSettings box_settings(box_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
 
 		// Create the actual rigid body
-		Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Note that if we run out of bodies this can return nullptr
+		Body* box = sData.body_interface->CreateBody(box_settings); // Make sure to handle potential nullptr errors
 
 		// Add it to the world
-		sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+		sData.body_interface->AddBody(box->GetID(), EActivation::Activate);
 
-		rigidbody.bodyID = sphere->GetID().GetIndexAndSequenceNumber();
+		// Store the BodyID in the RigidBodyComponent
+		rigidbody.bodyID = box->GetID().GetIndexAndSequenceNumber();
 	}
 
 

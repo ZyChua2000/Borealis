@@ -213,7 +213,7 @@ namespace Borealis
 	{
 
 		bool isBox = false;
-		float radius = 0.5f; //radius for circle, side for cube
+		float radius = 1.5f; //radius for circle, side for cube
 
 		
 
