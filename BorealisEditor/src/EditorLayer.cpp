@@ -653,6 +653,14 @@ namespace Borealis {
 			break;
 		}
 
+		case Key::F:
+		{
+			if (SCPanel.GetSelectedEntity())
+			{
+				mEditorCamera.SetFocalPoint(SCPanel.GetSelectedEntity().GetComponent<TransformComponent>().Translate);
+			}
+		}
+
 		}
 
 		return true;
