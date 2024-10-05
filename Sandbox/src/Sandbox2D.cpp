@@ -16,6 +16,7 @@ void Sandbox2D::Init()
 
 	Borealis::FrameBufferProperties props{ 1280, 720, false };
 	mFrameBuffer = Borealis::FrameBuffer::Create(props);
+
 }
 
 void Sandbox2D::Free()

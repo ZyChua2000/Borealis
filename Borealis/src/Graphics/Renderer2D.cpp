@@ -213,13 +213,13 @@ namespace Borealis
 			samplers[i] = i;
 		}
 
-		sData->mQuadShader = Shader::Create("assets/shaders/Renderer2D_Quad.glsl");
+		sData->mQuadShader = Shader::Create("engineResources/shaders/Renderer2D_Quad.glsl");
 		sData->mQuadShader->Bind();
 		sData->mQuadShader->Set("u_Texture", samplers, Renderer2DData::MaxTextureSlots);
 
-		sData->mCircleShader = Shader::Create("assets/shaders/Renderer2D_Circle.glsl");
-		sData->mLineShader = Shader::Create("assets/shaders/Renderer2D_Line.glsl");
-		sData->mFontShader = Shader::Create("assets/shaders/Renderer2D_Font.glsl");
+		sData->mCircleShader = Shader::Create("engineResources/shaders/Renderer2D_Circle.glsl");
+		sData->mLineShader = Shader::Create("engineResources/shaders/Renderer2D_Line.glsl");
+		sData->mFontShader = Shader::Create("engineResources/shaders/Renderer2D_Font.glsl");
 
 		sData->TextureSlots[0] = sData->mWhiteTexture;
 
@@ -304,7 +304,7 @@ namespace Borealis
 	{
 		PROFILE_FUNCTION();
 
-		glm::mat4 viewProj = camera.GetProjectionMatrix() * glm::inverse(transform);
+		glm::mat4 viewProj = camera.GetProjectionMatrix() *glm::inverse(transform);
 
 		sData->mQuadShader->Bind();
 		sData->mQuadShader->Set("u_ViewProjection", viewProj);
@@ -623,17 +623,17 @@ namespace Borealis
 
 		sData->FontTexture = fontAtlas;
 
-		Ref<FontInfo> fontInfo = font->GetFontInfo();
+		FontInfo const& fontInfo = font->GetFontInfo();
 
 		double x = 0.0;
-		double fsScale = 1.0 / (fontInfo->ascenderY - fontInfo->descenderY);
+		double fsScale = 1.0 / (fontInfo.ascenderY - fontInfo.descenderY);
 		double y = 0.0;
 
 		for (int i{}; i < string.size(); i++)
 		{
 			char character = string[i];
 
-			FontGlyph glyph = fontInfo->glyphs[character];
+			FontGlyph glyph = fontInfo.glyphs.at(character);
 
 			glm::vec2 texCoordMin((float)glyph.altasBound.left, (float)glyph.altasBound.bottom);
 			glm::vec2 texCoordMax((float)glyph.altasBound.right, (float)glyph.altasBound.top);
@@ -684,7 +684,7 @@ namespace Borealis
 				double advance = glyph.advance;
 				char nextCharacter = string[i + 1];
 				//fontGeometry.getAdvance(advance, character, nextCharacter);
-				advance = fontInfo->kernings[{character, nextCharacter}];
+				advance = fontInfo.kernings.at({character, nextCharacter});
 
 				x += fsScale * advance;// +textParams.Kerning;
 			}

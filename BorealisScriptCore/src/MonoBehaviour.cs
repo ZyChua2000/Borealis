@@ -1,4 +1,6 @@
-﻿namespace Borealis
+﻿using System.Runtime.CompilerServices;
+
+namespace Borealis
 {
     public class MonoBehaviour : Behaviour
     {
@@ -31,6 +33,12 @@
         virtual public void OnJointBreak() { }
         virtual public void OnAnimatorMove() { }
         virtual public void OnAnimatorIK() { }
+
+        private void SetInstanceID(ulong id)
+        {
+            InstanceID = id;
+            gameObject = new GameObject(id);
+        }
 
     }
 }

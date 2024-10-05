@@ -19,6 +19,13 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scene/Serialiser.hpp>
 #include <Scene/Scene.hpp>
 #include <Prefab.hpp>
+#include <Assets/AssetMetaData.hpp>
+#include <Assets/AssetManager.hpp>
+#include <EditorAssets/MetaSerializer.hpp>
+#include <ResourceManager.hpp>
+
+#include "EditorAssets/MaterialEditor.hpp"
+#include <EditorAssets/AssetImporter.hpp>
 
 namespace ImGui
 {
@@ -44,10 +51,11 @@ namespace ImGui
 }
 namespace Borealis
 {
+	UUID ContentBrowserPanel::sSelectedAsset = 0;
 	static ImVec2 latestMousePos;
 	ContentBrowserPanel::ContentBrowserPanel() : mCurrDir("assets")
 	{
-		mDirectoryIcon = Texture2D::Create("resources/Icons/directoryIcon.png");
+		// Load by serialisation in the future
 		mAssetsDir = "assets";
 	}
 
@@ -86,7 +94,7 @@ namespace Borealis
 
 		// Right click
 		{
-			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems;
+			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_NoOpenOverExistingPopup;
 			if (ImGui::BeginPopupContextWindow(0, popupFlagsItem))
 			{
 				if (ImGui::MenuItem("Create Folder"))
@@ -99,6 +107,21 @@ namespace Borealis
 					isCreatingScene = true;
 					latestMousePos = ImGui::GetMousePos();
 				}
+				if (ImGui::MenuItem("Create New Material"))
+				{
+					isCreatingMaterial = true;
+					latestMousePos = ImGui::GetMousePos();
+
+					//std::filesystem::path materialPath = mCurrDir;
+					//materialPath /= "NewMaterial.mat";
+					//Ref<Material> material = Material::CreateNewMaterial(materialPath);
+					////TEMP
+					//AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+					//AssetManager::InsertMetaData(data);
+					//AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+					//MaterialEditor::SetMaterial(data.Handle);
+				}
+
 				ImGui::EndPopup();
 			}
 		}
@@ -121,6 +144,30 @@ namespace Borealis
 			ImGui::End();
 		}
 
+		if (isCreatingMaterial)
+		{
+			ImGui::SetNextWindowPos(latestMousePos);
+			ImGui::Begin("Create File ##material", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize);
+			ImGui::InputText("##MaterialFilename", textBuffer, sizeof(textBuffer));
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Enter)) {
+				isCreatingMaterial = false;
+
+				std::filesystem::path materialPath = mCurrDir;
+				materialPath /= std::string(textBuffer) + ".mat";
+				Ref<Material> material = Material::CreateNewMaterial(materialPath);
+				AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+				AssetManager::InsertMetaData(data);
+				AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+				MaterialEditor::SetMaterial(data.Handle);
+			}
+
+			if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
+				isCreatingMaterial = false; 
+			}
+			ImGui::End();
+		}
+
 
 		float panelWidth = ImGui::GetContentRegionAvail().x;
 		int cellSize = mThumbnailSize + mPadding;
@@ -137,60 +184,88 @@ namespace Borealis
 
 		for (auto& entry : std::filesystem::directory_iterator(mCurrDir))
 		{
-		;
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();
+			if (extension == ".meta") // Skip meta files
+			{
+				continue;
+			}
 			ImGui::PushID(filenameStr.c_str());
-			
-
 			uint64_t screenID = 0;
 			if (entry.is_directory())
 			{
-				screenID = static_cast<uint64_t>(mDirectoryIcon->GetRendererID());
+				screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Directory)->GetRendererID());
 			}
 			else
 			{
-				if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
+				if (extension == ".meta")
 				{
-
+					ImGui::PopID();
+					continue;
+				}
+				else if (extension == ".png" || extension == ".jpg" || extension == ".tiff" || extension == ".jpeg")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Texture)->GetRendererID());
 				}
 				else if (extension == ".txt")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Text)->GetRendererID());
 				}
 				else if (extension == ".sc")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Scene)->GetRendererID());
 				}
 				else if (extension == ".glsl")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Shader)->GetRendererID());
 				}
 				else if (extension == ".ttf")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Font)->GetRendererID());
 				}
-				else if (extension == ".prefab")
+				else if (extension == ".cs")
 				{
-
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Script)->GetRendererID());
 				}
+				else if (extension == ".fbx" || extension == ".obj")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Mesh)->GetRendererID());
+				}
+				else if (extension == ".mat")
+				{
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Material)->GetRendererID());
+				}
+				//else if (extension == ".mp3" || extension == ".wav")
+				//{
+				//	screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Audio)->GetRendererID());
+				//}
 				else
 				{
-					// default case
+					screenID = static_cast<uint64_t>(ResourceManager::GetFileIcon(FileIcon::Unknown)->GetRendererID());
 				}
 			}
-			#
+			
 			if (mThumbnailSize == mMinThumbnailSize)
 			{
 				printedThumbnailSize = 0;
 				ImGui::Image((ImTextureID)screenID, { ImGui::GetFontSize(), ImGui::GetFontSize() });
 				ImGui::SameLine();
-				ImGui::Button(filenameStr.c_str());
+				if (ImGui::Button(filenameStr.c_str()))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
 			}
 			else
 			{
-				ImGui::ImageButton((ImTextureID)screenID, {printedThumbnailSize, printedThumbnailSize}, {0,1}, {1,0}, -1 , {0,0,0,0}, {1,1,1,1});
+				if (ImGui::ImageButton((ImTextureID)screenID, { printedThumbnailSize, printedThumbnailSize }, { 0,1 }, { 1,0 }, -1, { 0,0,0,0 }, { 1,1,1,1 }))
+				{
+					sSelectedAsset = AssetImporter::GetAssetHandle(path);
+				}
+				if (sSelectedAsset == AssetImporter::GetAssetHandle(path))
+				{
+					ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(255, 0, 0, 255));
+				}
 				if (ImGui::BeginPopupContextItem())
 				{
 					if (ImGui::MenuItem("Delete"))
@@ -205,8 +280,13 @@ namespace Borealis
 			}
 			if (ImGui::BeginDragDropSource())
 			{
-				auto relativePath = std::filesystem::relative(path, mAssetsDir);
-				std::string itemPath = relativePath.string();
+				//auto relativePath = std::filesystem::relative(path, mAssetsDir);
+				//std::string itemPath = relativePath.string();
+				std::string itemPath = std::filesystem::path(path).string();
+
+				//AssetMetaData metaData = MetaFileSerializer::GetAssetMetaDataFile(std::filesystem::path(path).replace_extension(".meta"));
+				AssetHandle assetHandle = AssetImporter::GetAssetHandle(std::filesystem::path(path));
+				//get the meta file instead and pass the handle as the data?
 				const char* itemPathcStr = itemPath.c_str();
 
 				std::string payloadName;
@@ -246,10 +326,17 @@ namespace Borealis
 
 						// Display the filename as the drag text
 						ImGui::Text("%s", filenameStr.c_str());
+					else if (extension == ".mp3" || extension == ".wav")
+					{
+						payloadName = "DragDropAudioItem";
+					}
+					else if (extension == ".mat")
+					{
+						payloadName = "DragDropMaterialItem";
 					}
 				}
 
-				ImGui::SetDragDropPayload(payloadName.c_str(), itemPathcStr, itemPath.length() + 1, ImGuiCond_Once);
+				ImGui::SetDragDropPayload(payloadName.c_str(), &assetHandle, sizeof(AssetHandle), ImGuiCond_Once);
 				ImGui::EndDragDropSource();
 			}
 			
@@ -266,6 +353,10 @@ namespace Borealis
 				}
 			}
 
+			if (!ImGui::IsItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left))
+			{
+				sSelectedAsset = 0;
+			}
 
 			if (mThumbnailSize != mMinThumbnailSize)
 			{

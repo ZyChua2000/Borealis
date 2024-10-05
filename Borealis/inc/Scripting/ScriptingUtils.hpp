@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define SCRIPTING_UTILS_HPP
 #include <string>
 #include <Scripting/ScriptField.hpp>
+#include <Core/Core.hpp>
 
 extern "C" {
 	typedef struct _MonoClass MonoClass;
@@ -29,6 +30,7 @@ extern "C" {
 
 namespace Borealis
 {
+	class ScriptClass;
 	/*!***********************************************************************
 		\brief
 			Reads the bytes from a file
@@ -123,6 +125,8 @@ namespace Borealis
 			ScriptFieldType of the MonoType
 	*************************************************************************/
 	ScriptFieldType MonoType2ScriptFieldType(MonoType* type);
+
+	Ref<ScriptClass> GetScriptClassUtils(const std::string& className);
 
 }
 

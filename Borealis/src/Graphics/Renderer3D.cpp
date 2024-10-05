@@ -31,7 +31,7 @@ namespace Borealis
 	void Renderer3D::Init()
 	{
 		sData =  std::make_unique<Renderer3DData>();
-		sData->mModelShader = Shader::Create("assets/shaders/Renderer3D_Model.glsl");
+		sData->mModelShader = Shader::Create("engineResources/Shaders/Renderer3D_Material.glsl");
 	}
 
 
@@ -44,13 +44,25 @@ namespace Borealis
 
 	void Renderer3D::Begin(const Camera& camera, const glm::mat4& transform)
 	{
-
+		sData->mModelShader->Bind();
+		glm::mat4 viewProj = camera.GetProjectionMatrix() * glm::inverse(transform);
+		sData->mModelShader->Set("u_ViewProjection", viewProj);
 	}
 
-	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID)
+	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, Ref<Light> light, int entityID)
 	{
-		if(meshFilter.Model)
-			meshFilter.Model->Draw(transform, sData->mModelShader);
+		if (meshFilter.Model) {
+			if (meshRenderer.Material)
+			{
+				meshRenderer.Material->SetUniforms(sData->mModelShader);
+			}
+			
+			meshFilter.Model->Draw(transform, sData->mModelShader, entityID);
+		}
+		if (light)
+		{
+			light->SetUniforms(sData->mModelShader);
+		}
 	}
 
 }

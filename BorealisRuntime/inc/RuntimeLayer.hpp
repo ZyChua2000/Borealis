@@ -15,6 +15,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef RUNTIME_LAYER_HPP
 #define RUNTIME_LAYER_HPP
 #include <Borealis.hpp>
+#include <Assets/AssetManager.hpp>
+
 namespace BorealisRuntime
 {
 	class RuntimeLayer : public Borealis::Layer
@@ -25,6 +27,7 @@ namespace BorealisRuntime
 		void Free() override;
 	private:
 		Borealis::Ref<Borealis::FrameBuffer> mRuntimeFrameBuffer;
+		Borealis::EditorAssetManager mEditorAssetManager;
 	};
 }
 

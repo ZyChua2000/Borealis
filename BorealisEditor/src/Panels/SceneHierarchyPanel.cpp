@@ -17,14 +17,26 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
 #include <Scene/SceneManager.hpp>
+#include <Scripting/ScriptingSystem.hpp>
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
-
-#include <Assets/MeshImporter.hpp>
-#include <Assets/FontImporter.hpp>
+#include <Panels/ContentBrowserPanel.hpp>
 #include <PrefabManager.hpp>
 #include <Prefab.hpp>
 #include <PrefabComponent.hpp>
+
+#include <EditorAssets/MeshImporter.hpp>
+#include <EditorAssets/FontImporter.hpp>
+#include <EditorAssets/AssetImporter.hpp>
+#include <Assets/AssetManager.hpp>
+//#include <Assets/MeshImporter.hpp>
+//#include <Assets/FontImporter.hpp>
+#include <EditorLayer.hpp>
+
+#include <Core/Project.hpp>
+
+#include "EditorAssets/MaterialEditor.hpp"
+
 
 namespace ImGui
 {
@@ -48,6 +60,7 @@ namespace ImGui
 		return false;
 	}
 }
+
 
 namespace Borealis
 {
@@ -145,13 +158,13 @@ namespace Borealis
 				open = ImGui::CollapsingHeader(name.c_str(), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap);
 				ImGui::PopStyleVar();
 				ImGui::SameLine(ContentRegionAvailable.x - lineHeight * 0.5f); // Align to right (Button)
-				if (ImGui::Button("+", ImVec2{lineHeight,lineHeight}))
+				if (ImGui::Button(("+##" + name).c_str(), ImVec2{lineHeight,lineHeight}))
 				{
-					ImGui::OpenPopup("ComponentSettingsPopup");
+					ImGui::OpenPopup(("ComponentSettingsPopup##" + name).c_str());
 				}
 				
 
-				if (ImGui::BeginPopup("ComponentSettingsPopup"))
+				if (ImGui::BeginPopup(("ComponentSettingsPopup##" + name).c_str()))
 				{
 					if (ImGui::MenuItem("Remove Component"))
 					{
@@ -191,7 +204,6 @@ namespace Borealis
 	}
 	void SceneHierarchyPanel::ImGuiRender()
 	{
-
 		ImGui::Begin("Scene Hierarchy");
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -222,11 +234,15 @@ namespace Borealis
 				ImGui::PopFont();
 				if (ImGui::BeginPopupContextItem())
 				{
-					if (ImGui::MenuItem("Load Scene"))
+					if (EditorLayer::mSceneState == EditorLayer::SceneState::Edit)
 					{
-						SceneManager::SetActiveScene(name);
-						mContext = SceneManager::GetActiveScene();
-						mSelectedEntity = {};
+						if (ImGui::MenuItem("Load Scene"))
+						{
+							SceneManager::SaveActiveScene();
+							SceneManager::SetActiveScene(name);
+							mContext = SceneManager::GetActiveScene();
+							mSelectedEntity = {};
+						}
 					}
 					ImGui::EndPopup();
 				}
@@ -274,8 +290,55 @@ namespace Borealis
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
+			MaterialEditor::SetMaterial(0);
 			DrawComponents(mSelectedEntity);
 		}
+		else if (ContentBrowserPanel::sSelectedAsset)
+		{
+			AssetMetaData const& metadata = AssetManager::GetMetaData(ContentBrowserPanel::sSelectedAsset);
+#ifdef _DEB
+			ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
+#endif
+			ImGui::Text(("Name: " + metadata.name).c_str());
+			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
+			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
+			switch (metadata.Type)
+			{
+				case AssetType::Texture2D:
+				{
+					MaterialEditor::SetMaterial(0);
+					break;
+				}
+				case AssetType::Audio:
+				{
+					MaterialEditor::SetMaterial(0);
+					break;
+				}
+				case AssetType::Shader:
+				{
+					MaterialEditor::SetMaterial(0);
+					break;
+				}
+				case AssetType::Mesh:
+				{
+					MaterialEditor::SetMaterial(0);
+					break;
+				}
+				case AssetType::Material:
+				{
+					MaterialEditor::SetMaterial(metadata.Handle);
+					break;
+				}
+				default:
+				{
+					MaterialEditor::SetMaterial(0);
+					break;
+				}
+				
+			}
+		}
+		MaterialEditor::RenderEditor();
+
 		ImGui::End();
 
 	}
@@ -344,6 +407,17 @@ namespace Borealis
 				if (!mSelectedEntity.HasComponent<T>())
 				{
 					mSelectedEntity.AddComponent<T>();
+					
+					if (std::is_same<T, CameraComponent>::value)
+					{
+						mSelectedEntity.GetComponent<TransformComponent>().Translate.z = 350.f;
+						mSelectedEntity.GetComponent<CameraComponent>().Camera.SetCameraType(SceneCamera::CameraType::Perspective);
+					}
+
+					if (std::is_same<T, MeshFilterComponent>::value)
+					{
+						mSelectedEntity.AddComponent<MeshRendererComponent>();
+					}
 				}
 				ImGui::CloseCurrentPopup();
 				memset(search_buffer, 0, sizeof(search_buffer));
@@ -545,6 +619,7 @@ namespace Borealis
 				if (component.mScripts.empty())
 				{
 					entity.RemoveComponent<ScriptComponent>();
+					return;
 				}
 			}
 		}
@@ -584,17 +659,40 @@ namespace Borealis
 	
 			SearchBar<SpriteRendererComponent>(search_text, mSelectedEntity, "Sprite Renderer", search_buffer);
 			SearchBar<CircleRendererComponent>( search_text, mSelectedEntity, "Circle Renderer", search_buffer);
-			SearchBar<CameraComponent>(search_text, mSelectedEntity, "Camera", search_buffer);
+			SearchBar<CameraComponent>			(search_text, mSelectedEntity, "Camera", search_buffer);
 			SearchBar<MeshFilterComponent	  >(search_text, mSelectedEntity,"Mesh Filter", search_buffer);
 			SearchBar<MeshRendererComponent	  >(search_text, mSelectedEntity,"Mesh Renderer", search_buffer);
 			SearchBar<BoxColliderComponent	  >(search_text, mSelectedEntity,"Box Collider", search_buffer);
 			SearchBar<CapsuleColliderComponent>(search_text, mSelectedEntity,"Capsule Collider", search_buffer);
 			SearchBar<RigidBodyComponent	  >(search_text, mSelectedEntity,"Rigidbody", search_buffer);
 			SearchBar<LightComponent		  >(search_text, mSelectedEntity,"Light", search_buffer);
-			SearchBar<TextComponent		  >(search_text, mSelectedEntity,"Text", search_buffer);
+			SearchBar<TextComponent				>(search_text, mSelectedEntity,"Text", search_buffer);
+			SearchBar<BehaviourTreeComponent	>(search_text, mSelectedEntity, "Behaviour Tree", search_buffer);
+			SearchBar<AudioSourceComponent		>(search_text, mSelectedEntity, "Audio Source", search_buffer);
+			SearchBar<AudioListenerComponent	>(search_text, mSelectedEntity, "Audio Listener", search_buffer);
+
+			// scripts
+			for (auto [name, klass] : ScriptingSystem::mScriptClasses)
+			{
+				if (name == "MonoBehaviour") { continue; }
+				if (search_text.empty() || name.find(search_text) != std::string::npos)
+					if (ImGui::MenuItem(name.c_str()))
+					{
+						if (mSelectedEntity.HasComponent<ScriptComponent>() == false)
+						{
+							mSelectedEntity.AddComponent<ScriptComponent>();
+						}
+						mSelectedEntity.GetComponent<ScriptComponent>().AddScript(name, MakeRef<ScriptInstance>(klass));
+						ImGui::CloseCurrentPopup();
+						memset(search_buffer, 0, sizeof(search_buffer));
+					}
+			}
+				
+				
+
 
 			ImGui::EndPopup();
-			
+					
 		}
 
 		DrawComponent<TransformComponent>("Transform", mSelectedEntity, [](auto& transformComponent)
@@ -685,10 +783,8 @@ namespace Borealis
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropImageItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
-						component.Texture = Texture2D::Create(imageName);
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Texture = AssetManager::GetAsset<Texture2D>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -705,14 +801,19 @@ namespace Borealis
 		DrawComponent<MeshFilterComponent>("Mesh Filter", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Mesh");
+				//{
+				//	if (!component.Model)
+				//		component.Model = MakeRef<Model>();
+				//	component.Model->LoadModel();
+				//}
 				
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMeshItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string meshName = "assets/";
-						meshName += data;
+						//const char* data = (const char*)payload->Data;
+						//std::string meshName = "assets/";
+						//meshName += data;
 						// Should reference off asset manager's mesh
 						// imageName += ".meta";
 						// Read UUID from .meta
@@ -721,7 +822,11 @@ namespace Borealis
 						//Model model;
 						//LoadModel(meshName, model);
 						//component.Model = MakeRef<Model>(model); 
-						component.Model = MeshImporter::LoadFBXModel(meshName);
+						//component.Model = MeshImporter::LoadFBXModel(meshName);
+
+						//component.Model = MeshImporter::LoadFBXModel("assets/meshes/dragon.fbx");
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Model = AssetManager::GetAsset<Model>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -729,13 +834,17 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
+				if (component.Material)
+				{
+					MaterialEditor::RenderProperties(component.Material);
+				}
+
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Material = AssetManager::GetAsset<Material>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}
@@ -831,14 +940,38 @@ namespace Borealis
 						ImGui::EndCombo();
 					}
 
+					ImGui::ColorEdit3("Ambient", glm::value_ptr(component.ambient));
+					ImGui::ColorEdit3("Diffuse", glm::value_ptr(component.diffuse));
+					ImGui::ColorEdit3("Specular", glm::value_ptr(component.specular));
+					
+
 					if (component.type == LightComponent::Type::Spot)
 					{
 						ImGui::DragFloat("Inner Spot", &component.InnerOuterSpot.x, 0.025f);
 						ImGui::DragFloat("Outer Spot", &component.InnerOuterSpot.y, 0.025f);
 					}
+
+					if (component.type == LightComponent::Type::Directional)
+					{
+						ImGui::PushItemWidth(80.f);
+						ImGui::Text("Direction");
+						ImGui::SameLine(100.f);
+						ImGui::DragFloat("X##direction", &component.direction.x, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Y##direction", &component.direction.y, 0.025f, -1, 1);
+						ImGui::SameLine();
+						ImGui::DragFloat("Z##direction", &component.direction.z, 0.025f, -1, 1);
+						ImGui::PopItemWidth();
+					}
+
+					if (component.type == LightComponent::Type::Spot || component.type == LightComponent::Type::Point)
+					{
+						ImGui::DragFloat("Linear", &component.linear, 0.025f);
+						ImGui::DragFloat("Quadratic", &component.quadratic, 0.025f);
+					}
 				}
 
-				if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Emission", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* LightAppearanceStr[]{ "Colour", "Filter and Temperature" };
 					const char* currentLightAppearanceStr = LightAppearanceStr[(int)component.lightAppearance];
@@ -873,10 +1006,10 @@ namespace Borealis
 					ImGui::DragFloat("Intensity", &component.Intensity, 0.025f);
 					ImGui::DragFloat("Indirect Multiplier", &component.IndirectMultiplier, 0.025f);
 					ImGui::DragFloat("Range", &component.Range, 0.025f);
-				}
+				}*/
 
 				
-				if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
+				/*if (ImGui::CollapsingHeader("Shadows", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_AllowItemOverlap))
 				{
 					const char* ShadowStr[]{ "No Shadows", "Soft Shadows", "Hard Shadows" };
 					const char* currentShadowStr = ShadowStr[(int)component.shadowType];
@@ -897,7 +1030,7 @@ namespace Borealis
 						}
 						ImGui::EndCombo();
 					}
-				}
+				}*/
 			});
 
 		DrawComponent<TextComponent>("Text", mSelectedEntity, [](auto& component)
@@ -917,6 +1050,56 @@ namespace Borealis
 
 				component.text = inputText;
 				component.fontSize = textSize;
+			});
+
+			DrawComponent<AudioSourceComponent>("Audio Source", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Button("Audio");
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropAudioItem"))
+					{
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.audio = AssetManager::GetAsset<Audio>(data);
+					}
+					ImGui::EndDragDropTarget();
+				}
+
+				if(component.audio)
+				{
+					bool loop = component.isLoop;
+					ImGui::Checkbox("Mute", &component.isMute);
+					ImGui::Checkbox("Loop", &component.isLoop);
+					if (loop != component.isLoop)
+					{
+						component.isPlaying = true;
+					}
+
+					// DragFloat for volume control (range: -80 dB to 0 dB)
+					ImGui::DragFloat("Volume", &component.Volume, 0.5f, -80.0f, 0.0f);
+					if (ImGui::Button("Play"))
+					{
+						component.isPlaying = true;
+					}
+				}
+			});
+
+		DrawComponent<AudioListenerComponent>("Audio Listener", mSelectedEntity, [](auto& component)
+			{
+				ImGui::Checkbox("Audio Listener", &component.isAudioListener);
+
+			});
+
+		
+		DrawComponent<BehaviourTreeComponent>("Behaviour Tree", mSelectedEntity, [](auto& component)
+			{
+				// Get the window size
+				ImVec2 windowSize = ImGui::GetWindowSize();		
+				if (ImGui::Button("Open Node Editor", ImVec2(500,0)))
+				{
+					// Open the node editor
+				}
 			});
 	}
 }

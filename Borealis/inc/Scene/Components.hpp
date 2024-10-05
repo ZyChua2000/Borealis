@@ -15,6 +15,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef COMPONENTS_HPP
 #define COMPONENTS_HPP
 #include <any>
+#include <unordered_set>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -24,7 +25,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Graphics/Model.hpp>
 #include <Graphics/Material.hpp>
 #include <Graphics/Font.hpp>
+#include <AI/BehaviourTree/BehaviourTree.hpp>
 #include <Core/UUID.hpp>
+#include <Audio/Audio.hpp>
+
 namespace Borealis
 {
 
@@ -202,6 +206,9 @@ namespace Borealis
 
 	struct RigidBodyComponent
 	{
+		float radius = 0.5f;
+		glm::vec3 translation = { 0,0,0 };
+		glm::vec3 velocity = { 0,0,0 };
 		float mass = 1.f;
 		float drag = 0.f;
 		float angularDrag = 0.0f;
@@ -240,15 +247,21 @@ namespace Borealis
 		};
 
 		
-		glm::vec4 Colour = { 1,1,1,1 };
-		glm::vec2 InnerOuterSpot = { 10,120 };
-		float Temperature = 6500;
-		float Intensity = 1;
-		float IndirectMultiplier = 1;
-		float Range = 10;
-		Type type = Type::Point;
-		ShadowType shadowType = ShadowType::None;
-		LightAppearance lightAppearance = LightAppearance::Colour;
+		//glm::vec4 Colour = { 1,1,1,1 };
+		glm::vec2 InnerOuterSpot = { 100, 120 };
+		//float Temperature = 6500;
+		//float Intensity = 1;
+		//float IndirectMultiplier = 1;
+		//float Range = 10;
+		Type type = Type::Directional;
+		glm::vec3 direction = {0.0, -1.0, 0.0};
+		glm::vec3 ambient = {0.4, 0.4, 0.4};
+		glm::vec3 diffuse = {1.f, 1.f, 1.f};
+		glm::vec3 specular = {1.f, 1.f, 1.f};
+		float linear = 0.05f;
+		float quadratic = 0.032f;
+		/*ShadowType shadowType = ShadowType::None;
+		LightAppearance lightAppearance = LightAppearance::Colour;*/
 	};
 
 	struct TextComponent
@@ -281,8 +294,51 @@ namespace Borealis
 			return mScripts.find(name) != mScripts.end();
 		}
 	};
+	
+	struct AudioSourceComponent
+	{
+		bool isLoop = false;
+		bool isMute = false;
+		bool isPlaying = false;
+		float Volume = 1.0f;
+		int channelID = 0;
 
 	
+		Ref<Audio> audio;
+
+		AudioSourceComponent() = default;
+		AudioSourceComponent(const AudioSourceComponent&) = default;
+	};
+
+	struct AudioListenerComponent
+	{
+		bool isAudioListener = true;
+
+		AudioListenerComponent() = default;
+		AudioListenerComponent(const AudioListenerComponent&) = default;
+	};
+	struct BehaviourTreeComponent
+	{
+		std::unordered_set<Ref<BehaviourTree>> mBehaviourTrees;
+		void AddTree()
+		{
+			mBehaviourTrees.emplace(Ref<BehaviourTree>());
+		}
+		void AddTree(Ref<BehaviourTree> bt)
+		{
+			mBehaviourTrees.emplace(bt);
+		}
+
+		void Update(float dt)
+		{
+			for (auto& tree : mBehaviourTrees)
+			{
+				tree->Update(dt);
+			}
+		}
+
+	};
+
 }
 
 #endif

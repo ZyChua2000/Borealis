@@ -37,7 +37,10 @@ namespace BorealisRuntime
 
 		BOREALIS_CORE_ASSERT(found, "No Project File found!");
 
-		Borealis::Project::SetProjectPath(projectPath);
+		std::string activeSceneName = Borealis::Project::SetProjectPath(projectPath);
+		// Load Asset Registry here
+		Borealis::AssetManager::SetRunTime();
+		Borealis::SceneManager::SetActiveScene(activeSceneName);
 		Borealis::ScriptingSystem::InitCoreAssembly();
 
 		auto view = Borealis::SceneManager::GetActiveScene()->GetRegistry().view<Borealis::CameraComponent>();
@@ -46,6 +49,7 @@ namespace BorealisRuntime
 			auto& cameraComponent = view.get<Borealis::CameraComponent>(entity);
 			cameraComponent.Camera.SetViewportSize(1920,1080); // Initialize all viewport aspect ratios: Should be serialised from a setting file in the future
 		}
+
 
 		Borealis::SceneManager::GetActiveScene()->RuntimeStart(); // Temporarily
 	}

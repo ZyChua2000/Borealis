@@ -18,6 +18,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <glad/glad.h>
 #include <Core/LoggerSystem.hpp>
 #include "Core/WindowManager.hpp"
+#include <Core/InputSystem.hpp>
 #include <Events/EventWindow.hpp>
 #include <Events/EventInput.hpp>
 #include <Graphics/OpenGL/GraphicsContextOpenGLImpl.hpp>
@@ -222,6 +223,7 @@ namespace Borealis
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 			EventMouseScrolled event(xOffset, yOffset);
+			InputSystem::AccumulateScroll(yOffset);
 			data.mEventCallback(event);
 		});
 
