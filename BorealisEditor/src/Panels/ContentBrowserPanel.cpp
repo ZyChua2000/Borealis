@@ -292,13 +292,14 @@ namespace Borealis
 				// Retrieve the entity using the dropped entity ID
 				Entity droppedEntity = SceneManager::GetActiveScene()->GetEntityByUUID(droppedEntityID); // Assuming you have a function to get an entity by UUID
 
-				Prefab prefab(droppedEntity);
-				prefab.AddChild(MakeRef<Entity>(droppedEntity));
+				Ref<Prefab> prefab = MakeRef<Prefab>(droppedEntity);
+				prefab->AddChild(MakeRef<Entity>(droppedEntity));
 
-				Entity makePrefab(prefab.GetPrefabID(), PrefabManager::GetScenePtr());
+				Entity makePrefab(prefab->GetPrefabID(), PrefabManager::GetScenePtr());
 				std::string dir = mCurrDir.string();
 				dir += +"/" + droppedEntity.GetName() + ".prefab";
 				Serialiser::SerialisePrefab(dir.c_str(), makePrefab);
+				PrefabManager::Register(prefab);
 
 
 				// You might want to add some feedback or a log message here to indicate success

@@ -47,11 +47,18 @@ namespace Borealis
 		// Retrieve a component from the prefab
 		template <typename T>
 		T& GetComponent() {
-			return PrefabManager::GetRegistry().get<T>(mPrefabID);
+			return PrefabManager::GetComponent<T>(mPrefabID);
+		}
+
+		template <typename T>
+		bool HasComponent() {
+			return PrefabManager::HasComponent<T>(mPrefabID);
 		}
 
 		// Update all instances of the prefab
 		void UpdateAllInstances();
+
+		Ref<Entity> CreateChild(Ref<Scene> scene);
 
 		void AddChild(Ref<Entity> entity);
 		void RemoveChild(Ref<Entity> entity);
@@ -60,6 +67,8 @@ namespace Borealis
 		void PrintComponentList();
 
 		entt::entity GetPrefabID() { return mPrefabID; }
+
+		const UUID& GetUUID() { return GetComponent<IDComponent>().ID; }
 
 	private:
 		entt::entity mPrefabID;

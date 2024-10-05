@@ -22,6 +22,8 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #include <Assets/MeshImporter.hpp>
 #include <Assets/FontImporter.hpp>
+#include <PrefabManager.hpp>
+#include <Prefab.hpp>
 #include <PrefabComponent.hpp>
 
 namespace ImGui
@@ -258,11 +260,10 @@ namespace Borealis
 		{
 			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
 			{
-				// Retrieve the file path from the payload
-				std::string droppedFilePath = (const char*)payload->Data;
+				// pass the entt id here
+				//Ref<Prefab> prefab = PrefabManager::GetPrefab(entt::entity(0));
+				//prefab->CreateChild(mContext);
 
-				// Use the file path to do something with the prefab, like deserialization
-				std::cout << "Prefab file path: " << droppedFilePath << std::endl;
 			}
 			ImGui::EndDragDropTarget();
 		}

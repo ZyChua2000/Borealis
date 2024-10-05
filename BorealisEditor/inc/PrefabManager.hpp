@@ -48,11 +48,14 @@ namespace Borealis
 			return Component;
 		}
 
-		void Register(Ref<Prefab>prefab);
+		static void Register(Ref<Prefab>prefab);
 
 		static Scene* GetScenePtr() { return &mPrefabScene; }
 
+		static Ref<Prefab> GetPrefab(UUID mPrefabID) { return mPrefabs[mPrefabID]; }
+
 	private:
+		static std::unordered_map<UUID, Ref<Prefab>> mPrefabs;
 		static Scene mPrefabScene;
 	};
 }

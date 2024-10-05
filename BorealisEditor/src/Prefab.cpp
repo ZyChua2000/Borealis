@@ -30,6 +30,13 @@ namespace Borealis {
 		PrefabManager::AddOrReplaceComponent<ComponentName>(mPrefabID, entity.GetComponent<ComponentName>()); \
 	} \
 
+#define AddEntityComponent(ComponentName) \
+	if (HasComponent<ComponentName>()) \
+	{ \
+		entity->AddComponent<ComponentName>(GetComponent<ComponentName>()); \
+	} \
+
+
 	template<>
 	void Scene::OnComponentAdded<PrefabComponent>(Entity entity, PrefabComponent& component)
 	{
@@ -47,6 +54,8 @@ namespace Borealis {
             AddPrefabComponent(TagComponent);
             AddPrefabComponent(IDComponent);
             AddPrefabComponent(SpriteRendererComponent);
+
+            PrefabManager::GetRegistry().get<IDComponent>(mPrefabID).ID = UUID{}; // Reset the UUID
 
             prefabComponent.mPrefabID = mPrefabID;
         }
@@ -71,6 +80,29 @@ namespace Borealis {
 			mChildren.erase(entity);
 		}
 	}
+
+    Ref<Entity> Prefab::CreateChild(Ref<Scene> scene)
+    {
+        // Create a new entity in the scene
+		auto entity = MakeRef<Entity>(scene->CreateEntity(GetComponent<TagComponent>().Tag));
+
+		// Add the PrefabComponent to the entity
+		auto& prefabComponent = entity->AddComponent<PrefabComponent>();
+		prefabComponent.mPrefabID = mPrefabID;
+
+
+		// Add all components from the prefab to the new entity
+        AddEntityComponent(TransformComponent);
+        AddEntityComponent(TagComponent);
+        AddEntityComponent(IDComponent);
+        AddEntityComponent(SpriteRendererComponent);
+
+        entity->GetComponent<IDComponent>().ID = UUID{}; // Reset the UUID
+
+		// Add the new entity to the list of children
+		mChildren.insert(entity);
+        return entity;
+    }
 
 //void Prefab::UpdateAllInstances()
 //{
