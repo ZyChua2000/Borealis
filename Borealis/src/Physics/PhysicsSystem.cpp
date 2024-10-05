@@ -218,8 +218,9 @@ struct PhysicsSystemData
 };
 
 static PhysicsSystemData sData;
-
-void ::PhysicsSystem::Init()
+namespace Borealis
+{
+void PhysicsSystem::Init()
 {
 
 
@@ -331,80 +332,82 @@ void ::PhysicsSystem::Init()
 	sData.mSystem->OptimizeBroadPhase();
 }
 
-void  ::PhysicsSystem::PushTransform(unsigned int bodyID, TransformComponent& transform)
-{
-	// Output current position and velocity of the sphere
-	JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
-	sData.body_interface->SetPosition((BodyID)bodyID, newPosition, EActivation::Activate);
-}
+	void PhysicsSystem::PushTransform(unsigned int bodyID, TransformComponent& transform)
+	{
+		// Output current position and velocity of the sphere
+		JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
+		sData.body_interface->SetPosition((BodyID)bodyID, newPosition, EActivation::Activate);
+	}
 
-void  ::PhysicsSystem::PullTransform(unsigned int bodyID, TransformComponent& transform)
-{
-	// Output current position and velocity of the sphere
-	JPH::RVec3 newPosition = sData.body_interface->GetPosition((BodyID)bodyID);
-	transform.Translate = glm::vec3(newPosition.GetX(), newPosition.GetY(), newPosition.GetZ());
-}
+	void PhysicsSystem::PullTransform(unsigned int bodyID, TransformComponent& transform)
+	{
+		// Output current position and velocity of the sphere
+		JPH::RVec3 newPosition = sData.body_interface->GetPosition((BodyID)bodyID);
+		transform.Translate = glm::vec3(newPosition.GetX(), newPosition.GetY(), newPosition.GetZ());
+	}
 
-void ::PhysicsSystem::Update(float dt)
-{
-	sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
-}
+	void PhysicsSystem::Update(float dt)
+	{
+		sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
+	}
 
-void ::PhysicsSystem::Free()
-{
-	delete sData.body_activation_listener;
-	delete sData.broad_phase_layer_interface;
-	delete sData.object_vs_broadphase_layer_filter;
-	delete sData.object_vs_object_layer_filter;
-	delete sData.contact_listener;
-	delete sData.temp_allocator;
-	delete sData.job_system;
-	delete sData.mSystem;
-	
-	delete Factory::sInstance;
-}
+	void PhysicsSystem::Free()
+	{
+		delete sData.body_activation_listener;
+		delete sData.broad_phase_layer_interface;
+		delete sData.object_vs_broadphase_layer_filter;
+		delete sData.object_vs_object_layer_filter;
+		delete sData.contact_listener;
+		delete sData.temp_allocator;
+		delete sData.job_system;
+		delete sData.mSystem;
 
-void ::PhysicsSystem::addSphereBody(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody) {
-	// Create the settings for the collision volume (the shape).
-	SphereShapeSettings sphere_shape_settings(radius);
-	sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+		delete Factory::sInstance;
+	}
 
-	// Create the shape
-	ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
-	ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody) {
+		// Create the settings for the collision volume (the shape).
+		SphereShapeSettings sphere_shape_settings(radius);
+		sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
 
-	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-	BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+		// Create the shape
+		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+		ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
 
-	// Create the actual rigid body
-	Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Note that if we run out of bodies this can return nullptr
+		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+		BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
 
-	// Add it to the world
-	sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+		// Create the actual rigid body
+		Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Note that if we run out of bodies this can return nullptr
 
-	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	sData.body_interface->SetLinearVelocity(sphere->GetID(), Vec3(velocity.x, velocity.y, velocity.z));
+		// Add it to the world
+		sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
 
-	rigidbody.translation = glm::vec3(
-		sData.body_interface->GetPosition(sphere->GetID()).GetX(),
-		sData.body_interface->GetPosition(sphere->GetID()).GetY(),
-		sData.body_interface->GetPosition(sphere->GetID()).GetZ()
-	);
+		// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
+		// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
+		sData.body_interface->SetLinearVelocity(sphere->GetID(), Vec3(velocity.x, velocity.y, velocity.z));
 
-	rigidbody.bodyID = sphere->GetID().GetIndex();
-}
+		rigidbody.translation = glm::vec3(
+			sData.body_interface->GetPosition(sphere->GetID()).GetX(),
+			sData.body_interface->GetPosition(sphere->GetID()).GetY(),
+			sData.body_interface->GetPosition(sphere->GetID()).GetZ()
+		);
 
-static void UpdateSphereValues(RigidBodyComponent& rigidbody)
-{
-	// Create the settings for the collision volume (the shape).
-	SphereShapeSettings sphere_shape_settings(rigidbody.radius);
-	sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+		rigidbody.bodyID = sphere->GetID().GetIndexAndSequenceNumber();
+	}
 
-	// Create the shape
-	ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
-	ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
 
-	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-	sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), sphere_shape, true, EActivation::Activate);
+	static void UpdateSphereValues(RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		SphereShapeSettings sphere_shape_settings(rigidbody.radius);
+		sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+		// Create the shape
+		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+		ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+
+		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), sphere_shape, true, EActivation::Activate);
+	}
 }

@@ -100,7 +100,7 @@ namespace Borealis
 				for (auto entity : physicsGroup)
 				{
 					auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
-						PhysicsSystem::PushTransform(rigidbody.bodyID, transform);
+					PhysicsSystem::PushTransform(rigidbody.bodyID, transform);
 				}
 
 				PhysicsSystem::Update(dt);
@@ -109,7 +109,7 @@ namespace Borealis
 				for (auto entity : physicsGroup)
 				{
 					auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
-					//PhysicsSystem::PullTransform(rigidbody.bodyID, transform);
+					PhysicsSystem::PullTransform(rigidbody.bodyID, transform);
 				}
 				for (auto entity : view)
 				{
@@ -561,7 +561,8 @@ namespace Borealis
 	template<>
 	void Scene::OnComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 	{
-		PhysicsSystem::addSphereBody(component.radius, component.position, component.velocity, component);
+		TransformComponent& transform = entity.GetComponent<TransformComponent>();
+		PhysicsSystem::addSphereBody(component.radius, transform.Translate, component.velocity, component);
 	}
 	template<>
 	void Scene::OnComponentAdded<LightComponent>(Entity entity, LightComponent& component)
