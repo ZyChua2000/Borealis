@@ -73,12 +73,10 @@ namespace Borealis
 					materialPath /= "NewMaterial.mat";
 					Ref<Material> material = Material::CreateNewMaterial(materialPath);
 					//TEMP
-					{
-						AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
-						AssetManager::InsertMetaData(data);
-						AssetImporter::InsertAssetHandle(materialPath, data.Handle);
-					}
-					MaterialEditor::SetMaterial(material);
+					AssetMetaData data = MetaFileSerializer::CreateAssetMetaFile(materialPath);
+					AssetManager::InsertMetaData(data);
+					AssetImporter::InsertAssetHandle(materialPath, data.Handle);
+					MaterialEditor::SetMaterial(data.Handle);
 				}
 				ImGui::EndPopup();
 			}
@@ -243,6 +241,10 @@ namespace Borealis
 					else if (extension == ".mp3" || extension == ".wav")
 					{
 						payloadName = "DragDropAudioItem";
+					}
+					else if (extension == ".mat")
+					{
+						payloadName = "DragDropMaterialItem";
 					}
 				}
 

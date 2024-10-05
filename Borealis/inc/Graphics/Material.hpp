@@ -197,11 +197,27 @@ namespace Borealis
 
 		/*!***********************************************************************
 			\brief
+				Returns the Property enums in enum
+			\return
+				Property enums
+		*************************************************************************/
+		static TextureMaps StringToTextureMaps(const std::string& str);
+
+		/*!***********************************************************************
+			\brief
 				Returns the Property enums in strings
 			\return
 				Property enums
 		*************************************************************************/
 		static std::string PropsToString(Props prop);
+
+		/*!***********************************************************************
+			\brief
+				Returns the Property enums in enum
+			\return
+				Property enums
+		*************************************************************************/
+		static Props StringToProps(const std::string& str);
 
 	private:
 		/*!***********************************************************************

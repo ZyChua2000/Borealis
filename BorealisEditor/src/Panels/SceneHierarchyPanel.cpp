@@ -247,7 +247,7 @@ namespace Borealis
 		ImGui::Begin("Inspector");
 		if (mSelectedEntity)
 		{
-			MaterialEditor::SetMaterial(nullptr);
+			MaterialEditor::SetMaterial(0);
 			DrawComponents(mSelectedEntity);
 		}
 		else if (ContentBrowserPanel::sSelectedAsset)
@@ -280,7 +280,7 @@ namespace Borealis
 				}
 				case AssetType::Material:
 				{
-					MaterialEditor::SetMaterial(AssetManager::GetAsset<Material>(metadata.Handle));
+					MaterialEditor::SetMaterial(metadata.Handle);
 					break;
 				}
 				default:
@@ -770,10 +770,10 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
-				if(!component.Material)
-				{
-					component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
-				}
+				//if(!component.Material)
+				//{
+				//	component.Material = MakeRef<Material>(Shader::Create("assets/shaders/Renderer3D_Material.glsl"));
+				//}
 
 				if (component.Material)
 				{
@@ -784,9 +784,8 @@ namespace Borealis
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
 					{
-						const char* data = (const char*)payload->Data;
-						std::string imageName = "assets/";
-						imageName += data;
+						AssetHandle data = *(const uint64_t*)payload->Data;
+						component.Material = AssetManager::GetAsset<Material>(data);
 					}
 					ImGui::EndDragDropTarget();
 				}

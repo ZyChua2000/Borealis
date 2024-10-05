@@ -9,6 +9,7 @@
 
 namespace Borealis
 {
+    AssetHandle MaterialEditor::mMaterialHandle{};
 	Ref<Material> MaterialEditor::mMaterial = nullptr;
 
     void DrawVec4Control(std::string const& label, glm::vec4& values, float min = 0.0f, float max = 1.0f)
@@ -347,5 +348,19 @@ namespace Borealis
         }
 
         ImGui::Separator();
+    }
+    void MaterialEditor::SetMaterial(AssetHandle materialHandle)
+    {
+        if (materialHandle != mMaterialHandle)
+        {
+            if (materialHandle == 0)
+            {
+                mMaterial = nullptr;
+                mMaterialHandle = 0;
+                return;
+            }
+            mMaterial = AssetManager::GetAsset<Material>(materialHandle);
+            mMaterialHandle = materialHandle;
+        }
     }
 }

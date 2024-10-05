@@ -25,14 +25,14 @@ namespace Borealis
 		std::string extension = path.extension().string();
 		std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 
-		if (extension == ".png") return AssetType::Texture2D;
-		if (extension == ".sc") return AssetType::Scene;
-		if (extension == ".glsl") return AssetType::Shader;
-		if (extension == ".ttf") return AssetType::Font;
-		if (extension == ".fbx") return AssetType::Mesh;
-		if (extension == ".mat") return AssetType::Material;
-		if (extension == ".mp3") return AssetType::Audio;
-		if (extension == ".wav") return AssetType::Audio;
+		if (extension == ".png")	return AssetType::Texture2D;
+		if (extension == ".sc")		return AssetType::Scene;
+		if (extension == ".glsl")	return AssetType::Shader;
+		if (extension == ".ttf")	return AssetType::Font;
+		if (extension == ".fbx")	return AssetType::Mesh;
+		if (extension == ".mat")	return AssetType::Material;
+		if (extension == ".mp3")	return AssetType::Audio;
+		if (extension == ".wav")	return AssetType::Audio;
 
 		return AssetType::None;
 	}

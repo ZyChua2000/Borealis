@@ -37,9 +37,10 @@ namespace Borealis {
 			\param[in] render
 				Render editor if true
 		*************************************************************************/
-		static void SetMaterial(Ref<Material> material) { mMaterial = material; }
+		static void SetMaterial(AssetHandle materialHandle);
 		
 	private:
+		static AssetHandle mMaterialHandle;
 		static Ref<Material> mMaterial;
 	};
 }

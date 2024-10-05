@@ -291,7 +291,7 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& meshRendererComponent = entity.GetComponent<MeshRendererComponent>();
-			out << YAML::Key << "Material" << YAML::Value << 3342312321; //UUID of Material
+			out << YAML::Key << "Material" << YAML::Value << meshRendererComponent.Material->mAssetHandle;
 			out << YAML::Key << "CastShadow" << YAML::Value << meshRendererComponent.castShadow;
 			out << YAML::EndMap;
 		}
@@ -518,7 +518,8 @@ namespace Borealis
 				if (meshRendererComponent)
 				{
 					auto& mrc = loadedEntity.AddComponent<MeshRendererComponent>();
-					mrc.Material = nullptr; // TODO: Load Material via UUID
+					uint64_t uuid = entity["MeshRendererComponent"]["Material"].as<uint64_t>();
+					mrc.Material = AssetManager::GetAsset<Material>(uuid);
 					mrc.castShadow = meshRendererComponent["CastShadow"].as<bool>();
 				}
 

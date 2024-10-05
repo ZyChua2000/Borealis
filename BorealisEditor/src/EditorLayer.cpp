@@ -736,6 +736,8 @@ namespace Borealis {
 			// Copy and paste assets
 			std::filesystem::create_directory(filepath + "\\Assets");
 			Project::CopyFolder(Project::GetProjectPath() + "\\Assets", filepath + "\\Assets");
+			std::filesystem::create_directory(filepath + "\\Cache");
+			Project::CopyFolder(Project::GetProjectPath() + "\\Cache", filepath + "\\Cache");
 			Project::CopyIndividualFile(Project::GetProjectPath() + "\\AssetRegistry.brdb", filepath + "\\AssetRegistry.brdb");
 
 			// copy fmod dll and mono dll from editor

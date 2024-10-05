@@ -13,8 +13,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include "BorealisPCH.hpp"
-#include "Graphics/Material.hpp"
 #include "Assets/AssetManager.hpp"
+#include "Core/LoggerSystem.hpp"
+#include "Graphics/Material.hpp"
 #include <yaml-cpp/yaml.h>
 
 namespace YAML
@@ -117,36 +118,36 @@ namespace Borealis
             mTextureMaps[key] = AssetManager::GetAsset<Texture2D>(handle);
         }
 
-        //auto textureMapColors = data["TextureMapColors"];
-        //for (auto it = textureMapColors.begin(); it != textureMapColors.end(); ++it) {
-        //    TextureMaps key = it->first.as<TextureMaps>();
-        //    glm::vec4 value = it->second.as<glm::vec4>();
-        //    mTextureMapColor[key] = value;
-        //}
+        auto textureMapColors = data["TextureMapColors"];
+        for (auto it = textureMapColors.begin(); it != textureMapColors.end(); ++it) {
+            TextureMaps key = StringToTextureMaps(it->first.as<std::string>());
+            glm::vec4 value = it->second.as<glm::vec4>();
+            mTextureMapColor[key] = value;
+        }
 
-        // Deserialize Texture Map Floats
-        //auto textureMapFloats = data["TextureMapFloats"];
-        //for (auto it = textureMapFloats.begin(); it != textureMapFloats.end(); ++it) {
-        //    TextureMaps key = it->first.as<TextureMaps>();
-        //    float value = it->second.as<float>();
-        //    mTextureMapFloat[key] = value;
-        //}
+        //Deserialize Texture Map Floats
+        auto textureMapFloats = data["TextureMapFloats"];
+        for (auto it = textureMapFloats.begin(); it != textureMapFloats.end(); ++it) {
+            TextureMaps key = StringToTextureMaps(it->first.as<std::string>());
+            float value = it->second.as<float>();
+            mTextureMapFloat[key] = value;
+        }
 
-        //// Deserialize Properties Floats
-        //auto propertiesFloats = data["PropertiesFloats"];
-        //for (auto it = propertiesFloats.begin(); it != propertiesFloats.end(); ++it) {
-        //    Props key = it->first.as<Props>();
-        //    float value = it->second.as<float>();
-        //    mPropertiesFloat[key] = value;
-        //}
+        // Deserialize Properties Floats
+        auto propertiesFloats = data["PropertiesFloats"];
+        for (auto it = propertiesFloats.begin(); it != propertiesFloats.end(); ++it) {
+            Props key = StringToProps(it->first.as<std::string>());
+            float value = it->second.as<float>();
+            mPropertiesFloat[key] = value;
+        }
 
-        //// Deserialize Properties Vec2
-        //auto propertiesVec2 = data["PropertiesVec2"];
-        //for (auto it = propertiesVec2.begin(); it != propertiesVec2.end(); ++it) {
-        //    Props key = it->first.as<Props>();
-        //    glm::vec2 value = it->second.as<glm::vec2>();
-        //    mPropertiesVec2[key] = value;
-        //}
+        // Deserialize Properties Vec2
+        auto propertiesVec2 = data["PropertiesVec2"];
+        for (auto it = propertiesVec2.begin(); it != propertiesVec2.end(); ++it) {
+            Props key = StringToProps(it->first.as<std::string>());
+            glm::vec2 value = it->second.as<glm::vec2>();
+            mPropertiesVec2[key] = value;
+        }
     }
 
     Ref<Material> Material::CreateNewMaterial(std::filesystem::path const& path)
@@ -166,34 +167,34 @@ namespace Borealis
         // Serialize Texture Maps
         out << YAML::Key << "TextureMaps" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mTextureMaps) {
-            out << YAML::Key << key << YAML::Value << value->mAssetHandle; // Assuming Ref<Texture2D> stores texture paths.
+            out << YAML::Key << TextureMapToString(key) << YAML::Value << value->mAssetHandle;
         }
         out << YAML::EndMap;
 
         //Serialize Texture Map Colors
         out << YAML::Key << "TextureMapColors" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mTextureMapColor) {
-            out << YAML::Key << key << YAML::Value << YAML::Flow << YAML::BeginSeq << value.r << value.g << value.b << value.a << YAML::EndSeq;
+            out << YAML::Key << TextureMapToString(key) << YAML::Value << YAML::Flow << YAML::BeginSeq << value.r << value.g << value.b << value.a << YAML::EndSeq;
         }
         out << YAML::EndMap;
 
         // Serialize Texture Map Floats
         out << YAML::Key << "TextureMapFloats" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mTextureMapFloat) {
-            out << YAML::Key << key << YAML::Value << value;
+            out << YAML::Key << TextureMapToString(key) << YAML::Value << value;
         }
         out << YAML::EndMap;
 
         // Serialize Properties Floats
         out << YAML::Key << "PropertiesFloats" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mPropertiesFloat) {
-            out << YAML::Key << key << YAML::Value << value;
+            out << YAML::Key << PropsToString(key) << YAML::Value << value;
         }
         out << YAML::EndMap;
 
         out << YAML::Key << "PropertiesVec2" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mPropertiesVec2) {
-            out << YAML::Key << key << YAML::Value << YAML::Flow << YAML::BeginSeq << value.x << value.y << YAML::EndSeq;
+            out << YAML::Key << PropsToString(key) << YAML::Value << YAML::Flow << YAML::BeginSeq << value.x << value.y << YAML::EndSeq;
         }
         out << YAML::EndMap;
 
@@ -321,6 +322,27 @@ namespace Borealis
         }
     }
 
+    Material::TextureMaps Material::StringToTextureMaps(const std::string& str)
+    {
+        static const std::unordered_map<std::string, TextureMaps> map =
+        {
+            {"Albedo",       Albedo},
+            {"Specular",     Specular},
+            {"Metallic",     Metallic},
+            {"Normal Map",   NormalMap},
+            {"Height Map",   HeightMap},
+            {"Occlusion",    Occlusion},
+            {"Detail Mask",  DetailMask},
+            {"Emission",     Emission}
+        };
+
+        auto it = map.find(str);
+        if (it != map.end()) {
+            return it->second;
+        }
+        BOREALIS_CORE_ASSERT(false, "Invalid string for TextureMaps.");
+    }
+
     std::string Material::PropsToString(Props prop)
     {
         switch (prop)
@@ -336,5 +358,27 @@ namespace Borealis
         case HasDetailMask:   return "Has Detail Mask";
         default:              return "Unknown";
         }
+    }
+
+    Material::Props Material::StringToProps(const std::string& str)
+    {
+        static const std::unordered_map<std::string, Props> map =
+        {
+            {"Tiling",          Tiling},
+            {"Offset",          Offset},
+            {"Smoothness",      Smoothness},
+            {"Shininess",       Shininess},
+            {"Has Emission",     HasEmission},
+            {"Has Height Map",    HasHeightMap},
+            {"Has Normal Map",    HasNormalMap},
+            {"Has Occlusion",    HasOcclusion},
+            {"Has Detail Mask",   HasDetailMask}
+        };
+
+        auto it = map.find(str);
+        if (it != map.end()) {
+            return it->second;
+        }
+        BOREALIS_CORE_ASSERT(false, "Invalid string for Properties.");
     }
 }
