@@ -172,6 +172,8 @@ namespace Borealis
 
 	void EditorAssetManager::Clear()
 	{
+		mAssetRegistry.clear();
+		mAssetRegistryPath.clear();
 	}
 
 	Ref<Asset> EditorAssetManager::LoadAsset(AssetHandle assetHandle)

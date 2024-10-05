@@ -24,6 +24,10 @@ namespace Borealis
 	class AssetManager
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Get Asset by handle
+		*************************************************************************/
 		template<typename T>
 		static Ref<T> GetAsset(AssetHandle handle)
 		{
@@ -36,6 +40,10 @@ namespace Borealis
 			return std::static_pointer_cast<T>(asset);
 		}
 
+		/*!***********************************************************************
+			\brief
+				Get meta data by handle
+		*************************************************************************/
 		static AssetMetaData const& GetMetaData(AssetHandle handle)
 		{
 			if (mRunTime)

@@ -60,6 +60,12 @@ namespace Borealis
 		*************************************************************************/
 		Material(Ref<Shader> shader): mShader(shader) { Init(); }
 
+		/*!***********************************************************************
+			\brief
+				Constructor for a Material from a path
+			\param[in] path
+				Path of the material
+		*************************************************************************/
 		Material(std::filesystem::path path);
 
 		/*!***********************************************************************
@@ -68,9 +74,21 @@ namespace Borealis
 		*************************************************************************/
 		~Material() {}
 
+		/*!***********************************************************************
+			\brief
+				Create a new material
+			\param[in] path
+				Path to store the material file
+		*************************************************************************/
 		static Ref<Material> CreateNewMaterial(std::filesystem::path const& path);
-		void SerializeMaterial(std::filesystem::path const& path);
 
+		/*!***********************************************************************
+			\brief
+				Serialize the material
+			\param[in] path
+				Path to store the material file
+		*************************************************************************/
+		void SerializeMaterial(std::filesystem::path const& path);
 
 		// Setter for texture maps
 		/*!***********************************************************************

@@ -27,21 +27,56 @@ namespace Borealis
 	class AssetImporter
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Load registry
+		*************************************************************************/
 		void LoadRegistry(Borealis::ProjectInfo projectInfo);
 
+		/*!***********************************************************************
+			\brief
+				Get asset handle from path
+		*************************************************************************/
 		static AssetHandle GetAssetHandle(std::filesystem::path const& path);
 
+		//TEMP
 		static void InsertAssetHandle(std::filesystem::path const& path, AssetHandle handle);
 
 	private:
+		/*!***********************************************************************
+			\brief
+				Import Asset through compiler
+		*************************************************************************/
 		bool ImportAsset(AssetMetaData metaData);
 
+		/*!***********************************************************************
+			\brief
+				Serialize entire registry
+		*************************************************************************/
 		void SerializeRegistry();
+
+		/*!***********************************************************************
+			\brief
+				Deserialize registry
+		*************************************************************************/
 		void DeserializeRegistry(std::string const& registryFileString, AssetRegistry& assetRegistry);
 
+		/*!***********************************************************************
+			\brief
+				Register asset
+		*************************************************************************/
 		void RegisterAsset(std::filesystem::path path, AssetRegistry& assetRegistry);
+
+		/*!***********************************************************************
+			\brief
+				register all asset in a path
+		*************************************************************************/
 		void RegisterAllAssets(std::filesystem::path path, AssetRegistry& assetRegistry);
 
+		/*!***********************************************************************
+			\brief
+				verify meta file
+		*************************************************************************/
 		bool VerifyMetaFile(std::filesystem::path path, AssetRegistry& assetRegistry);
 
 
