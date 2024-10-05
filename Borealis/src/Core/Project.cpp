@@ -56,7 +56,7 @@ namespace Borealis
 
 		mProjectInfo.ProjectName = name;
 	}
-	std::string Project::SetProjectPath(std::string path)
+	bool Project::SetProjectPath(std::string path, std::string& activeSceneName)
 	{
 		// check if project path exists
 		std::string retScene = "";
@@ -88,23 +88,42 @@ namespace Borealis
 					{
 						std::string sceneName = scene["SceneName"].as<std::string>();
 						std::string scenePath = scene["ScenePath"].as<std::string>();
-						scenePath = mProjectInfo.ProjectPath.string() + "\\" + scenePath;
+						scenePath = projectFilePath + "\\" + scenePath;
+
+						// check if path exists
+						if (!std::filesystem::exists(scenePath))
+						{
+							BOREALIS_CORE_WARN("Scene file {} does not exist in the specified path, scene will not be loaded", scenePath);
+							continue;
+						}
+
 						SceneManager::AddScene(sceneName, scenePath);
 					}
-					retScene = data["ActiveScene"].as<std::string>();
+
+					if (SceneManager::GetSceneLibrary().empty())
+					{
+						BOREALIS_CORE_WARN("No scenes have been loaded");
+					}
+					else
+					{
+						activeSceneName = data["ActiveScene"].as<std::string>();
+					}
 				}
 				
 			}
 			else
 			{
+				return false;
 				BOREALIS_CORE_WARN("Project file does not exist in the specified path");
 			}
 		}
 		else
 		{
+			return false;
 			BOREALIS_CORE_WARN("Specified path does not exist");
 		}
-		return retScene;
+
+		return true;
 	}
 	std::string Project::GetProjectPath()
 	{

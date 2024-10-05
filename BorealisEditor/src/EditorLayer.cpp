@@ -838,13 +838,16 @@ namespace Borealis {
 		if (!filepath.empty())
 		{
 			SceneManager::ClearSceneLibrary();
-			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
-			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
-			SceneManager::SetActiveScene(activeSceneName);
+			std::string activeSceneName;
+			if (Project::SetProjectPath(filepath.c_str(), activeSceneName))
+			{
+				mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+				SceneManager::SetActiveScene(activeSceneName);
 
-			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
-			CBPanel.SetCurrDir(assetsPath);
-			DeserialiseEditorScene();
+				std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+				CBPanel.SetCurrDir(assetsPath);
+				DeserialiseEditorScene();
+			}
 
 
 			// Clear Scenes in Scene Manager
@@ -866,8 +869,8 @@ namespace Borealis {
 			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
-
-			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj"); //TEMP
+			std::string buffer;
+			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj", buffer); //TEMP
 			// Create default empty scene
 			SceneManager::ClearSceneLibrary();
 			SceneManager::CreateScene("untitled", assetsPath);
