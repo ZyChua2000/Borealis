@@ -12,6 +12,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  *
  /******************************************************************************/
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <ImGui/ImGuiFontLib.hpp>
 #include <Scene/Components.hpp>
@@ -23,6 +24,28 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Assets/FontImporter.hpp>
 #include <PrefabComponent.hpp>
 
+namespace ImGui
+{
+	static bool BeginDrapDropTargetWindow(const char* payload_type)
+	{
+		using namespace ImGui;
+		ImRect inner_rect = GetCurrentWindow()->InnerRect;
+		if (BeginDragDropTargetCustom(inner_rect, GetID("##WindowBgArea")))
+			if (const ImGuiPayload* payload = AcceptDragDropPayload(payload_type, ImGuiDragDropFlags_AcceptBeforeDelivery | ImGuiDragDropFlags_AcceptNoDrawDefaultRect))
+			{
+				if (payload->IsPreview())
+				{
+					ImDrawList* draw_list = GetForegroundDrawList();
+					draw_list->AddRectFilled(inner_rect.Min, inner_rect.Max, GetColorU32(ImGuiCol_DragDropTarget, 0.05f));
+					draw_list->AddRect(inner_rect.Min, inner_rect.Max, GetColorU32(ImGuiCol_DragDropTarget), 0.0f, 0, 2.0f);
+				}
+				if (payload->IsDelivery())
+					return true;
+				EndDragDropTarget();
+			}
+		return false;
+	}
+}
 
 namespace Borealis
 {
@@ -169,20 +192,6 @@ namespace Borealis
 
 		ImGui::Begin("Scene Hierarchy");
 
-		//Create Entities from prefab
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
-			{
-				// Retrieve the file path from the payload
-				std::string droppedFilePath = (const char*)payload->Data;
-
-				// Use the file path to do something with the prefab, like deserialization
-				std::cout << "Prefab file path: " << droppedFilePath << std::endl;
-			}
-			ImGui::EndDragDropTarget();
-		}
-
 		ImGuiIO& io = ImGui::GetIO();
 		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
 		ImGui::PushFont(bold);
@@ -244,6 +253,20 @@ namespace Borealis
 			ImGui::EndPopup();
 		}
 		
+		//Create Entities from prefab
+		if (ImGui::BeginDrapDropTargetWindow("DragPrefab"))
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragPrefab"))
+			{
+				// Retrieve the file path from the payload
+				std::string droppedFilePath = (const char*)payload->Data;
+
+				// Use the file path to do something with the prefab, like deserialization
+				std::cout << "Prefab file path: " << droppedFilePath << std::endl;
+			}
+			ImGui::EndDragDropTarget();
+		}
+
 
 		ImGui::End();
 
