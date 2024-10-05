@@ -15,6 +15,6 @@ namespace Borealis
 
 		static void PullTransform(unsigned int bodyID, TransformComponent& transform);
 
-		static void addSphereBody(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody);
+		static void addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody);
 	};
 }

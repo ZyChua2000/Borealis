@@ -53,8 +53,8 @@ namespace Borealis
 
 	struct Math
 	{
-		glm::vec3 QuatToEuler(glm::quat quat, bool radians = false);
-		glm::quat EulerToQuat(glm::vec3 euler, bool radians = false);
+		static glm::vec3 QuatToEuler(glm::quat quat, bool radians = false);
+		static glm::quat EulerToQuat(glm::vec3 euler, bool radians = false);
 	};
 }
 

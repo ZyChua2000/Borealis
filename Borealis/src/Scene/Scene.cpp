@@ -562,7 +562,7 @@ namespace Borealis
 	void Scene::OnComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 	{
 		TransformComponent& transform = entity.GetComponent<TransformComponent>();
-		PhysicsSystem::addSphereBody(component.radius, transform.Translate, component.velocity, component);
+		PhysicsSystem::addSphereBody(component.radius, transform.Translate, component);
 	}
 	template<>
 	void Scene::OnComponentAdded<LightComponent>(Entity entity, LightComponent& component)

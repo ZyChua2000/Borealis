@@ -211,21 +211,25 @@ namespace Borealis
 
 	struct RigidBodyComponent
 	{
-		glm::vec3 position = { 0,0,0 };
+
+		bool isBox = false;
+		float radius = 0.5f; //radius for circle, side for cube
+
+		
+
+		// not serialised
 		unsigned int bodyID = 0;
-		float radius = 0.5f;
-		glm::vec3 translation = { 0,0,0 };
-		glm::vec3 velocity = { 0,0,0 };
-		float mass = 1.f;
-		float drag = 0.f;
-		float angularDrag = 0.0f;
-		glm::vec3 centerOfMass = { 0,0,0 };
-		glm::vec3 inertiaTensor = { 1,1,1 };
-		glm::vec3 inertiaTensorRotation = { 0,0,0 };
-		bool AutomaticCenterOfMass = true;
-		bool AutomaticTensor = true;
-		bool useGravity = true;
-		bool isKinematic = false;
+		//glm::vec3 velocity = { 0,0,0 };
+		//float mass = 1.f;
+		//float drag = 0.f;
+		//float angularDrag = 0.0f;
+		//glm::vec3 centerOfMass = { 0,0,0 };
+		//glm::vec3 inertiaTensor = { 1,1,1 };
+		//glm::vec3 inertiaTensorRotation = { 0,0,0 };
+		//bool AutomaticCenterOfMass = true;
+		//bool AutomaticTensor = true;
+		//bool useGravity = true;
+		//bool isKinematic = false;
 
 		RigidBodyComponent() = default;
 		RigidBodyComponent(const RigidBodyComponent&) = default;

@@ -7,7 +7,7 @@
 #include <chrono>
 
 #include <Physics/PhysicsSystem.hpp>
-
+#include <Core/Utils.hpp>
 #include <Jolt/Jolt.h>
 
 // Jolt includes
@@ -164,7 +164,7 @@ public:
 	// See: ContactListener
 	virtual ValidateResult	OnContactValidate(const Body& inBody1, const Body& inBody2, RVec3Arg inBaseOffset, const CollideShapeResult& inCollisionResult) override
 	{
-		cout << "Contact validate callback" << endl;
+		//cout << "Contact validate callback" << endl;
 
 		// Allows you to ignore a contact before it is created (using layers to not make objects collide is cheaper!)
 		return ValidateResult::AcceptAllContactsForThisBodyPair;
@@ -172,17 +172,17 @@ public:
 
 	virtual void			OnContactAdded(const Body& inBody1, const Body& inBody2, const ContactManifold& inManifold, ContactSettings& ioSettings) override
 	{
-		cout << "A contact was added" << endl;
+		//cout << "A contact was added" << endl;
 	}
 
 	virtual void			OnContactPersisted(const Body& inBody1, const Body& inBody2, const ContactManifold& inManifold, ContactSettings& ioSettings) override
 	{
-		cout << "A contact was persisted" << endl;
+		//cout << "A contact was persisted" << endl;
 	}
 
 	virtual void			OnContactRemoved(const SubShapeIDPair& inSubShapePair) override
 	{
-		cout << "A contact was removed" << endl;
+		//cout << "A contact was removed" << endl;
 	}
 };
 
@@ -192,12 +192,12 @@ class MyBodyActivationListener : public BodyActivationListener
 public:
 	virtual void		OnBodyActivated(const BodyID& inBodyID, uint64 inBodyUserData) override
 	{
-		cout << "A body got activated" << endl;
+		//cout << "A body got activated" << endl;
 	}
 
 	virtual void		OnBodyDeactivated(const BodyID& inBodyID, uint64 inBodyUserData) override
 	{
-		cout << "A body went to sleep" << endl;
+		//cout << "A body went to sleep" << endl;
 	}
 };
 
@@ -336,7 +336,10 @@ void PhysicsSystem::Init()
 	{
 		// Output current position and velocity of the sphere
 		JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
+		glm::quat rotation = Math::EulerToQuat(transform.Rotation);
+		JPH::Quat newRotation = JPH::Quat(rotation.x, rotation.y, rotation.z, rotation.w);
 		sData.body_interface->SetPosition((BodyID)bodyID, newPosition, EActivation::Activate);
+		sData.body_interface->SetRotation((BodyID)bodyID, newRotation, EActivation::Activate);
 	}
 
 	void PhysicsSystem::PullTransform(unsigned int bodyID, TransformComponent& transform)
@@ -344,6 +347,9 @@ void PhysicsSystem::Init()
 		// Output current position and velocity of the sphere
 		JPH::RVec3 newPosition = sData.body_interface->GetPosition((BodyID)bodyID);
 		transform.Translate = glm::vec3(newPosition.GetX(), newPosition.GetY(), newPosition.GetZ());
+		JPH::Quat newRotation = sData.body_interface->GetRotation((BodyID)bodyID);
+		glm::quat rotation = glm::quat(newRotation.GetX(), newRotation.GetY(), newRotation.GetZ(), newRotation.GetW());
+		transform.Rotation = Math::QuatToEuler(rotation);
 	}
 
 	void PhysicsSystem::Update(float dt)
@@ -365,7 +371,7 @@ void PhysicsSystem::Init()
 		delete Factory::sInstance;
 	}
 
-	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody) {
+	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
 		// Create the settings for the collision volume (the shape).
 		SphereShapeSettings sphere_shape_settings(radius);
 		sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
@@ -382,16 +388,6 @@ void PhysicsSystem::Init()
 
 		// Add it to the world
 		sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
-
-		// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-		// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-		sData.body_interface->SetLinearVelocity(sphere->GetID(), Vec3(velocity.x, velocity.y, velocity.z));
-
-		rigidbody.translation = glm::vec3(
-			sData.body_interface->GetPosition(sphere->GetID()).GetX(),
-			sData.body_interface->GetPosition(sphere->GetID()).GetY(),
-			sData.body_interface->GetPosition(sphere->GetID()).GetZ()
-		);
 
 		rigidbody.bodyID = sphere->GetID().GetIndexAndSequenceNumber();
 	}
