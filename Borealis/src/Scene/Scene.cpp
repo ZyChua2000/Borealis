@@ -235,7 +235,7 @@ namespace Borealis
 			for (auto& entity : group)
 			{
 				auto [transform, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
-
+				lightComponent.offset = transform.Translate;
 				Renderer3D::AddLight(lightComponent);
 			}
 		}

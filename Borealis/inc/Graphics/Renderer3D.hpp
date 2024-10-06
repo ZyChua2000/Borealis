@@ -52,6 +52,8 @@ namespace Borealis
 		*************************************************************************/
 		static void Begin(const Camera& camera, const glm::mat4& transform);
 
+		static void End();
+
 		static void AddLight(LightComponent const& lightComponent);
 
 		static void SetLights(Ref<Shader> shader);

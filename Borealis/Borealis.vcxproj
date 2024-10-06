@@ -196,10 +196,7 @@
     <ClInclude Include="inc\Graphics\Framebuffer.hpp" />
     <ClInclude Include="inc\Graphics\GraphicsContext.hpp" />
     <ClInclude Include="inc\Graphics\Light.hpp" />
-    <ClInclude Include="inc\Graphics\LightEngine.hpp">
-      <SubType>
-      </SubType>
-    </ClInclude>
+    <ClInclude Include="inc\Graphics\LightEngine.hpp" />
     <ClInclude Include="inc\Graphics\Material.hpp" />
     <ClInclude Include="inc\Graphics\Mesh.hpp" />
     <ClInclude Include="inc\Graphics\Model.hpp" />
@@ -793,10 +790,7 @@
     <ClCompile Include="src\Graphics\Font.cpp" />
     <ClCompile Include="src\Graphics\Framebuffer.cpp" />
     <ClCompile Include="src\Graphics\Light.cpp" />
-    <ClCompile Include="src\Graphics\LightEngine.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
+    <ClCompile Include="src\Graphics\LightEngine.cpp" />
     <ClCompile Include="src\Graphics\Material.cpp" />
     <ClCompile Include="src\Graphics\Mesh.cpp" />
     <ClCompile Include="src\Graphics\Model.cpp" />
