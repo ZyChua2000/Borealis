@@ -24,7 +24,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include "Audio/AudioEngine.hpp"
 #include <Scene/SceneCamera.hpp>
-
 #include "Graphics/Light.hpp"
 #include <Physics/PhysicsSystem.hpp>
 
@@ -320,6 +319,10 @@ namespace Borealis
 	void Scene::DestroyEntity(Entity entity)
 	{		
 		mEntityMap.erase(entity.GetUUID());
+		if (entity.HasComponent<RigidBodyComponent>())
+		{
+			PhysicsSystem::FreeRigidBody(entity.GetComponent<RigidBodyComponent>());
+		}
 		mRegistry.destroy(entity);
 	}
 
@@ -328,6 +331,22 @@ namespace Borealis
 	{
 		if (src.HasComponent<Component>())
 			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+	}
+
+	template<>
+	static void CopyComponent<RigidBodyComponent>(Entity dst, Entity src)
+	{
+		if (src.HasComponent<RigidBodyComponent>())
+			dst.AddOrReplaceComponent<RigidBodyComponent>(src.GetComponent<RigidBodyComponent>());
+
+		if (dst.GetComponent<RigidBodyComponent>().isBox)
+		{
+			PhysicsSystem::UpdateBoxValues(dst.GetComponent<RigidBodyComponent>());
+		}
+		else
+		{
+			PhysicsSystem::UpdateSphereValues(dst.GetComponent<RigidBodyComponent>());
+		}
 	}
 
 	void Scene::DuplicateEntity(Entity entity)
@@ -402,6 +421,31 @@ namespace Borealis
 				Ref<ScriptInstance> newScript = MakeRef<ScriptInstance>(script.second->GetScriptClass());
 				newScript->Init(uuid);
 				newScriptComponent.AddScript(script.first, newScript);
+			}
+		}
+	}
+
+	template <>
+	static void CopyComponent <RigidBodyComponent>(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& entitymap)
+	{
+		auto view = src.view<RigidBodyComponent>();
+		for (auto srcEntity : view)
+		{
+			UUID uuid = src.get<IDComponent>(srcEntity).ID;
+			auto dstEntity = entitymap.at(uuid);
+
+			auto rbComponent = view.get<RigidBodyComponent>(srcEntity);
+
+			auto& newRbComponent = dst.emplace<RigidBodyComponent>(dstEntity);
+
+			newRbComponent = rbComponent;
+			if (newRbComponent.isBox)
+			{
+				PhysicsSystem::addSquareBody(newRbComponent.radius, dst.get<TransformComponent>(dstEntity).Translate, newRbComponent);
+			}
+			else
+			{
+				PhysicsSystem::addSphereBody(newRbComponent.radius, dst.get<TransformComponent>(dstEntity).Translate, newRbComponent);
 			}
 		}
 	}

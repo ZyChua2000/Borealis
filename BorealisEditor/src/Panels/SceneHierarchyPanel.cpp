@@ -158,6 +158,10 @@ namespace Borealis
 
 			if (deleteComponent)
 			{
+				if (typeid(T) == typeid(RigidBodyComponent))
+				{
+					PhysicsSystem::FreeRigidBody(entity.GetComponent<RigidBodyComponent>());
+				}
 				entity.RemoveComponent<T>();
 			}
 		}

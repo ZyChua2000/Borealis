@@ -455,4 +455,8 @@ void PhysicsSystem::Init()
 		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
 		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), box_shape, true, EActivation::Activate);
 	}
+	void PhysicsSystem::FreeRigidBody(RigidBodyComponent& rigidbody)
+	{
+		sData.body_interface->RemoveBody(JPH::BodyID(rigidbody.bodyID));
+	}
 }

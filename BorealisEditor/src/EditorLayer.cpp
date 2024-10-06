@@ -240,6 +240,7 @@ namespace Borealis {
 
 					if (ImGui::MenuItem("New Project...","Ctrl+N")) {
 						NewProject();
+						SaveProject();
 					}
 
 					if (ImGui::MenuItem("Open Project...","Ctrl+O")) {

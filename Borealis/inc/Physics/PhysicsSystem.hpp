@@ -83,6 +83,8 @@ namespace Borealis
 	*/
 		static void UpdateBoxValues(RigidBodyComponent& rigidbody);
 		
+		static void FreeRigidBody(RigidBodyComponent& rigidbody);
+
 	};
 
 }
