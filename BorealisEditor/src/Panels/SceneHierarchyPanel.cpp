@@ -490,7 +490,7 @@ namespace Borealis
 
 			if (field.mType == ScriptFieldType::Long)
 			{
-				int Data = component->GetFieldValue<int>(name);
+				long long Data = component->GetFieldValue<long long>(name);
 				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_S64, &Data))
 				{
 					component->SetFieldValue(name, &Data);
@@ -499,7 +499,7 @@ namespace Borealis
 
 			if (field.mType == ScriptFieldType::ULong)
 			{
-				unsigned long Data = component->GetFieldValue<unsigned long>(name);
+				unsigned long long Data = component->GetFieldValue<unsigned long long>(name);
 				if (ImGui::DragScalar((name + "##" + component->GetKlassName()).c_str(), ImGuiDataType_U64, &Data))
 				{
 					component->SetFieldValue(name, &Data);
@@ -629,7 +629,9 @@ namespace Borealis
 						{
 							mSelectedEntity.AddComponent<ScriptComponent>();
 						}
-						mSelectedEntity.GetComponent<ScriptComponent>().AddScript(name, MakeRef<ScriptInstance>(klass));
+						auto scriptInstance = MakeRef<ScriptInstance>(klass);
+						mSelectedEntity.GetComponent<ScriptComponent>().AddScript(name, scriptInstance);
+						scriptInstance->Init(mSelectedEntity.GetUUID());
 						ImGui::CloseCurrentPopup();
 						memset(search_buffer, 0, sizeof(search_buffer));
 					}

@@ -653,6 +653,14 @@ namespace Borealis {
 			break;
 		}
 
+		case Key::F:
+		{
+			if (SCPanel.GetSelectedEntity())
+			{
+				mEditorCamera.SetFocalPoint(SCPanel.GetSelectedEntity().GetComponent<TransformComponent>().Translate);
+			}
+		}
+
 		}
 
 		return true;
@@ -693,6 +701,12 @@ namespace Borealis {
 
 	void EditorLayer::OpenScene(const char* Cfilepath)
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot open scene");
+			return;
+		}
+
 		std::string filepath = Cfilepath;
 		if (!filepath.empty())
 		{
@@ -836,17 +850,26 @@ namespace Borealis {
 
 	void EditorLayer::LoadProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot open project");
+			return;
+		}
+
 		std::string filepath = FileDialogs::OpenFile("Borealis Project File (*.brproj)\0*.brproj\0");
 		if (!filepath.empty())
 		{
 			SceneManager::ClearSceneLibrary();
-			std::string activeSceneName = Project::SetProjectPath(filepath.c_str());
-			mAssetImporter.LoadRegistry(Project::GetProjectInfo());
-			SceneManager::SetActiveScene(activeSceneName);
+			std::string activeSceneName;
+			if (Project::SetProjectPath(filepath.c_str(), activeSceneName))
+			{
+				mAssetImporter.LoadRegistry(Project::GetProjectInfo());
+				SceneManager::SetActiveScene(activeSceneName);
 
-			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
-			CBPanel.SetCurrDir(assetsPath);
-			DeserialiseEditorScene();
+				std::string assetsPath = Project::GetProjectPath() + "\\Assets";
+				CBPanel.SetCurrDir(assetsPath);
+				DeserialiseEditorScene();
+			}
 
 
 			// Clear Scenes in Scene Manager
@@ -858,6 +881,12 @@ namespace Borealis {
 
 	void EditorLayer::NewProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot create new project");
+			return;
+		}
+
 		std::string filepath = FileDialogs::SaveFile("Folder");
 		if (!filepath.empty())
 		{
@@ -868,8 +897,8 @@ namespace Borealis {
 			filepath = filepath.substr(0, filepath.find_last_of("/\\"));
 			Project::CreateProject(projectName.c_str(), filepath.c_str());
 			std::string assetsPath = Project::GetProjectPath() + "\\Assets";
-
-			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj"); //TEMP
+			std::string buffer;
+			Project::SetProjectPath(Project::GetProjectPath() + "\\Project.brproj", buffer); //TEMP
 			// Create default empty scene
 			SceneManager::ClearSceneLibrary();
 			SceneManager::CreateScene("untitled", assetsPath);
@@ -888,6 +917,11 @@ namespace Borealis {
 
 	void EditorLayer::SaveProject()
 	{
+		if (mSceneState != SceneState::Edit)
+		{
+			BOREALIS_CORE_ERROR("Scene is running, cannot save project");
+			return;
+		}
 		Project::SaveProject();
 		SceneManager::SaveActiveScene();
 	}

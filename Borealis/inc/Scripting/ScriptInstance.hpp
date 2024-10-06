@@ -88,6 +88,21 @@ namespace Borealis
 			}
 		}
 
+		template <>
+		std::string GetFieldValue(const std::string& name)
+		{
+			std::string output;
+			if (GetFieldValueString(name, output))
+			{
+				return output;
+			}
+			else
+			{
+				BOREALIS_CORE_WARN("Failed to get field {0} in class {1}", name, mScriptClass->GetKlassName());
+			}
+			return std::string();
+		}
+
 		/*!***********************************************************************
 			\brief
 				Setter of a field Value
@@ -99,6 +114,14 @@ namespace Borealis
 		void SetFieldValue(const std::string& name, void* value)
 		{
 			if (!SetFieldValueInternal(name, value))
+			{
+				BOREALIS_CORE_WARN("Failed to set field {0} in class {1}", name, mScriptClass->GetKlassName());
+			}
+		}
+
+		void SetFieldValue(const std::string& name, std::string* value)
+		{
+			if (!SetFieldValueInternal(name, *value))
 			{
 				BOREALIS_CORE_WARN("Failed to set field {0} in class {1}", name, mScriptClass->GetKlassName());
 			}
@@ -148,6 +171,8 @@ namespace Borealis
 				True if successful, false otherwise
 		*************************************************************************/
 		bool SetFieldValueInternal(const std::string& name, void* value);
+
+		bool SetFieldValueInternal(const std::string& name, std::string value);
 		/*!***********************************************************************
 			\brief
 				Internal function for GetFieldValue to abstract it
@@ -159,6 +184,10 @@ namespace Borealis
 				True if successful, false otherwise
 		*************************************************************************/
 		bool GetFieldValueInternal(const std::string& name, const void* value);
+
+		bool GetFieldValueString(const std::string& name, std::string& output);
+
+		
 
 		Ref<ScriptClass> mScriptClass;				// Script Class
 		MonoObject* mInstance;						// MonoObject Instance
