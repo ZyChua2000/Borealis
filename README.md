@@ -20,7 +20,7 @@ To build and run the engine, you'll need:
 
 - [Microsoft Visual Studio](https://visualstudio.microsoft.com/) (2022 or later)
 - C++20 compatible compiler
-- .NET Frameework 4.7.2
+- .NET Framework 4.7.2
 
 ## Build Configurations
 
