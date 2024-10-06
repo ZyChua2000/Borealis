@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file		Profiler.hpp
+\author 	Liu Chengrong
+\par    	email: chengrong.liu\@digipen.edu
+\date   	July 10, 2024
+\brief		Implements the TracyProfiler class methods for profiling, logging, and memory tracking.
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
 #include <BorealisPCH.hpp>
 #include <Debugging/Profiler.hpp>
 #include <Tracy.hpp>
@@ -8,41 +22,45 @@
 
 namespace Borealis
 {
-    // Method to record a custom plot value
+    // Records a custom plot value in Tracy with a given plot name.
     void TracyProfiler::recordPlot(const char* plotName, float value) {
-        TracyPlot(plotName, value);  // Record a custom plot in Tracy
+        TracyPlot(plotName, value); 
     }
 
-    // Method to log a message in the profiler
+    // Logs a message in Tracy profiler.
     void TracyProfiler::logMessage(const char* message) {
-        TracyMessage(message, strlen(message));  // Log a message in Tracy
+        TracyMessage(message, strlen(message));
     }
 
-    // Method to log a colored message in the profiler
+    // Logs a colored message in Tracy profiler using a vec4 color.
     void TracyProfiler::logMessageColored(const char* message, const glm::vec4& color) {
         uint32_t packedColor = vec4ToColor(color);  // Convert vec4 to packed uint32_t color
-        TracyMessageC(message, strlen(message), packedColor);  // Log a colored message in Tracy
+        TracyMessageC(message, strlen(message), packedColor);  
     }
 
-    // Methods for memory allocation tracking
+    // Tracks a memory allocation in Tracy profiler.
     void TracyProfiler::trackAllocation(void* ptr, size_t size) {
         TracyAlloc(ptr, size);  // Track memory allocation in Tracy
     }
 
+    // Tracks a memory free operation in Tracy profiler.
     void TracyProfiler::trackFree(void* ptr) {
-        TracyFree(ptr);  // Track memory free in Tracy
+        TracyFree(ptr); 
     }
 
+    // Tracks a secure memory allocation in Tracy profiler.
     void TracyProfiler::trackSecureAllocation(void* ptr, size_t size) {
-        TracySecureAlloc(ptr, size);  // Track secure memory allocation in Tracy
+        TracySecureAlloc(ptr, size); 
     }
 
+    // Tracks a secure memory free operation in Tracy profiler.
     void TracyProfiler::trackSecureFree(void* ptr) {
-        TracySecureFree(ptr);  // Track secure memory free in Tracy
+        TracySecureFree(ptr);  
     }
 
+    // Sends custom application information to the Tracy profiler.
     void TracyProfiler::sendAppInfo(const char* message) {
-        TracyAppInfo(message, strlen(message));  // Send custom application info
+        TracyAppInfo(message, strlen(message)); 
     }
 
     // Mark the frame boundary, Help track overall performance at the frame level
@@ -55,13 +73,13 @@ namespace Borealis
         }
     }
 
-    //function marks the start of a frame with a specific name
+    // Function marks the start of a frame with a specific name
     void TracyProfiler::markFrameStart(const char* frameName)
     {
         FrameMarkStart(frameName);
     }
 
-    //function marks the end of a custom frame that was started using framemarkstart
+    // Function marks the end of a custom frame that was started using framemarkstart
     void TracyProfiler::markFrameEnd(const char* frameName)
     {
         FrameMarkEnd(frameName);
@@ -76,6 +94,7 @@ namespace Borealis
     TracyProfiler::~TracyProfiler() {
     }
 
+    // Converts a glm::vec4 color to a packed uint32_t format (0xAARRGGBB).
     uint32_t TracyProfiler::vec4ToColor(const glm::vec4& color) {
         uint8_t r = static_cast<uint8_t>(color.r * 255.0f);
         uint8_t g = static_cast<uint8_t>(color.g * 255.0f);
