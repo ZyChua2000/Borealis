@@ -99,8 +99,9 @@ namespace Borealis
 
 	protected:
 		std::string* mName; //!< Name of the layer
-	}; // End of Layer Class
 #endif
+	}; // End of Layer Class
+
 
 } // End of namespace Borealis
 

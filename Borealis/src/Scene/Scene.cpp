@@ -24,7 +24,6 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Core/LoggerSystem.hpp>
 #include "Audio/AudioEngine.hpp"
 #include <Scene/SceneCamera.hpp>
-
 #include "Graphics/Light.hpp"
 #include <Physics/PhysicsSystem.hpp>
 
@@ -37,7 +36,11 @@ namespace Borealis
 
 	Scene::~Scene()
 	{
-
+		auto view = mRegistry.view<RigidBodyComponent>();
+		for (auto entity : view)
+		{
+			PhysicsSystem::FreeRigidBody(view.get<RigidBodyComponent>(entity));
+		}
 	}
 	void Scene::UpdateRuntime(float dt)
 	{
@@ -147,6 +150,16 @@ namespace Borealis
 		{
 			Renderer3D::Begin(*mainCamera, mainCameratransform);
 			{
+				{
+					auto group = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
+					for (auto& entity : group)
+					{
+						auto [transform, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+						lightComponent.offset = transform.Translate;
+						Renderer3D::AddLight(lightComponent);
+					}
+				}
+
 				auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
 				for (auto& entity : group)
 				{
@@ -156,6 +169,7 @@ namespace Borealis
 					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 				}
 			}
+			Renderer3D::End();
 
 			Renderer2D::Begin(*mainCamera, mainCameratransform);
 			{
@@ -184,7 +198,9 @@ namespace Borealis
 				auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
 				for (auto& entity : group)
 				{
+
 					auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
+					// multiply text scale into transform
 					Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
 				}
 			}
@@ -309,6 +325,10 @@ namespace Borealis
 	void Scene::DestroyEntity(Entity entity)
 	{		
 		mEntityMap.erase(entity.GetUUID());
+		if (entity.HasComponent<RigidBodyComponent>())
+		{
+			PhysicsSystem::FreeRigidBody(entity.GetComponent<RigidBodyComponent>());
+		}
 		mRegistry.destroy(entity);
 	}
 
@@ -317,6 +337,22 @@ namespace Borealis
 	{
 		if (src.HasComponent<Component>())
 			dst.AddOrReplaceComponent<Component>(src.GetComponent<Component>());
+	}
+
+	template<>
+	static void CopyComponent<RigidBodyComponent>(Entity dst, Entity src)
+	{
+		if (src.HasComponent<RigidBodyComponent>())
+			dst.AddOrReplaceComponent<RigidBodyComponent>(src.GetComponent<RigidBodyComponent>());
+
+		if (dst.GetComponent<RigidBodyComponent>().isBox)
+		{
+			PhysicsSystem::UpdateBoxValues(dst.GetComponent<RigidBodyComponent>());
+		}
+		else
+		{
+			PhysicsSystem::UpdateSphereValues(dst.GetComponent<RigidBodyComponent>());
+		}
 	}
 
 	void Scene::DuplicateEntity(Entity entity)
@@ -391,6 +427,31 @@ namespace Borealis
 				Ref<ScriptInstance> newScript = MakeRef<ScriptInstance>(script.second->GetScriptClass());
 				newScript->Init(uuid);
 				newScriptComponent.AddScript(script.first, newScript);
+			}
+		}
+	}
+
+	template <>
+	static void CopyComponent <RigidBodyComponent>(entt::registry& dst, entt::registry& src, const std::unordered_map<UUID, entt::entity>& entitymap)
+	{
+		auto view = src.view<RigidBodyComponent>();
+		for (auto srcEntity : view)
+		{
+			UUID uuid = src.get<IDComponent>(srcEntity).ID;
+			auto dstEntity = entitymap.at(uuid);
+
+			auto rbComponent = view.get<RigidBodyComponent>(srcEntity);
+
+			auto& newRbComponent = dst.emplace<RigidBodyComponent>(dstEntity);
+
+			newRbComponent = rbComponent;
+			if (newRbComponent.isBox)
+			{
+				PhysicsSystem::addSquareBody(newRbComponent.radius, dst.get<TransformComponent>(dstEntity).Translate, newRbComponent);
+			}
+			else
+			{
+				PhysicsSystem::addSphereBody(newRbComponent.radius, dst.get<TransformComponent>(dstEntity).Translate, newRbComponent);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <entt.hpp>
 #include <Scene/Scene.hpp>
 #include <Scene/Components.hpp>
+#include <Physics/PhysicsSystem.hpp>
 
 namespace Borealis
 {
@@ -104,6 +105,9 @@ namespace Borealis
 		template<typename T>
 		void RemoveComponent()
 		{
+			if (typeid(T) == typeid(RigidBodyComponent))
+				PhysicsSystem::FreeRigidBody(GetComponent<RigidBodyComponent>());
+
 			mScene->mRegistry.remove<T>(mID);
 		}
 

@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file		PhysicsSystem.cpp
+\author 	Benjamin Lee Zhi Yuan
+\par    	email: benjaminzhiyuan.lee\@digipen.edu
+\date   	September 28, 2024
+\brief		Defines the PhysicsSystem class
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
 #include "BorealisPCH.hpp"
 
 // STL includes
@@ -222,8 +236,6 @@ namespace Borealis
 {
 void PhysicsSystem::Init()
 {
-
-
 	sData.broad_phase_layer_interface = new BPLayerInterfaceImpl();
 	sData.object_vs_broadphase_layer_filter = new ObjectVsBroadPhaseLayerFilterImpl();
 	sData.object_vs_object_layer_filter = new ObjectLayerPairFilterImpl();
@@ -291,10 +303,6 @@ void PhysicsSystem::Init()
 	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
 	sData.body_interface = &sData.mSystem->GetBodyInterface();
 
-	//============================\\
-	//========EXAMPLE=============\\
-	//============================\\
-
 	// Next we can create a rigid body to serve as the floor, we make a large box
 	// Create the settings for the collision volume (the shape).
 	// Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
@@ -313,18 +321,6 @@ void PhysicsSystem::Init()
 
 	// Add it to the world
 	sData.body_interface->AddBody(floor->GetID(), EActivation::DontActivate);
-
-	//// Now create a dynamic body to bounce on the floor
-	//// Note that this uses the shorthand version of creating and adding a body to the world
-	//BodyCreationSettings sphere_settings(new SphereShape(2.f), RVec3(0.0_r, 0.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
-	//sData.object1_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
-
-	//// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-	//// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	//sData.body_interface->SetLinearVelocity(sData.object1_id, Vec3(0.0f, 0.0f, 0.0f));
-
-	//// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
-	//const float cDeltaTime = 1.0f / 60.0f;
 
 	// Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
@@ -381,7 +377,7 @@ void PhysicsSystem::Init()
 		delete Factory::sInstance;
 	}
 
-	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
+	void PhysicsSystem::addSquareBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
 
 		// Create the settings for the collision volume (the shape).
 		BoxShapeSettings box_shape_settings(Vec3(radius, radius, radius)); // Use radius as half extents
@@ -407,7 +403,32 @@ void PhysicsSystem::Init()
 	}
 
 
-	static void UpdateSphereValues(RigidBodyComponent& rigidbody)
+	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		SphereShapeSettings sphere_shape_settings(radius); // Use radius as half extents
+
+		// Mark it as embedded (prevent it from being freed when reference count goes to 0)
+		sphere_shape_settings.SetEmbedded();
+
+		// Create the shape
+		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+		ShapeRefC sphere_shape = sphere_shape_result.Get(); // Check for errors in a real-world scenario
+
+		// Create the settings for the body itself. Note that here you can also set other properties like restitution/friction.
+		BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+
+		// Create the actual rigid body
+		Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Make sure to handle potential nullptr errors
+
+		// Add it to the world
+		sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+
+		// Store the BodyID in the RigidBodyComponent
+		rigidbody.bodyID = sphere->GetID().GetIndexAndSequenceNumber();
+	}
+
+	void PhysicsSystem::UpdateSphereValues(RigidBodyComponent& rigidbody)
 	{
 		// Create the settings for the collision volume (the shape).
 		SphereShapeSettings sphere_shape_settings(rigidbody.radius);
@@ -419,5 +440,23 @@ void PhysicsSystem::Init()
 
 		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
 		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), sphere_shape, true, EActivation::Activate);
+	}
+
+	void PhysicsSystem::UpdateBoxValues(RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		BoxShapeSettings box_shape_settings(Vec3(rigidbody.radius, rigidbody.radius, rigidbody.radius)); // Use radius as half extents
+		box_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+		// Create the shape
+		ShapeSettings::ShapeResult box_shape_result = box_shape_settings.Create();
+		ShapeRefC box_shape = box_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+
+		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), box_shape, true, EActivation::Activate);
+	}
+	void PhysicsSystem::FreeRigidBody(RigidBodyComponent& rigidbody)
+	{
+		sData.body_interface->RemoveBody(JPH::BodyID(rigidbody.bodyID));
 	}
 }
