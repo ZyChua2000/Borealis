@@ -70,7 +70,7 @@ namespace Borealis
 		if (mPathRegistry.contains(hash)) return mPathRegistry.at(hash);
 
 		//TEMP==============================================================================
-
+		BOREALIS_CORE_TRACE("Inserting file into registry (AssetImporter::GetAssetHandle)");
 		AssetRegistry& assetRegistry = Project::GetEditorAssetsManager()->GetAssetRegistry();
 		AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
 
