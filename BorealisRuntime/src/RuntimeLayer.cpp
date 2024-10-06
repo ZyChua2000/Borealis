@@ -37,7 +37,6 @@ namespace BorealisRuntime
 
 		BOREALIS_CORE_ASSERT(found, "No Project File found!");
 
-		std::string activeSceneName = Borealis::Project::SetProjectPath(projectPath);
 		std::string activeSceneName;
 		if (Borealis::Project::SetProjectPath(projectPath, activeSceneName))
 		{
@@ -63,7 +62,7 @@ namespace BorealisRuntime
 		Borealis::RenderCommand::Clear();
 		Borealis::RenderCommand::SetClearColor({ 0.f, 0.0f, 0.0f, 1 });
 		Borealis::SceneManager::GetActiveScene()->UpdateRuntime(dt);
-		}	
+	}	
 	void RuntimeLayer::Free()
 	{
 	}

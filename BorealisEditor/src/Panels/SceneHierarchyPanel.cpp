@@ -776,11 +776,6 @@ namespace Borealis
 		DrawComponent<MeshRendererComponent>("Mesh Renderer", mSelectedEntity, [](auto& component)
 			{
 				ImGui::Button("Material");
-				if (component.Material)
-				{
-					MaterialEditor::RenderProperties(component.Material);
-				}
-
 				if (ImGui::BeginDragDropTarget())
 				{
 					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropMaterialItem"))
@@ -790,6 +785,12 @@ namespace Borealis
 					}
 					ImGui::EndDragDropTarget();
 				}
+				if (component.Material)
+				{
+					MaterialEditor::RenderProperties(component.Material);
+				}
+
+				
 				ImGui::Checkbox("Cast Shadow", &component.castShadow);
 			});
 

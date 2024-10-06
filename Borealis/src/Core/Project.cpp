@@ -182,6 +182,7 @@ namespace Borealis
 		out << YAML::Key << "Scenes" << YAML::Value << YAML::BeginSeq;
 		for (auto& [sceneName, scenePath] : SceneManager::GetSceneLibrary())
 		{
+			scenePath = scenePath.substr(mProjectInfo.ProjectPath.string().length() + 1);
 			out << YAML::BeginMap;
 			out << YAML::Key << "SceneName" << YAML::Value << sceneName;
 			out << YAML::Key << "ScenePath" << YAML::Value << scenePath;

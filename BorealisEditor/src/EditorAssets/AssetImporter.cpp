@@ -85,7 +85,7 @@ namespace Borealis
 
 		//system()
 
-		std::filesystem::path compilerPath = std::filesystem::canonical("../build/Debug-x86_64/BorealisAssetCompiler/BorealisAssetCompiler.exe");
+		std::filesystem::path compilerPath = std::filesystem::canonical("BorealisAssetCompiler.exe");
 		std::string sourcePath = metaData.SourcePath.string();
 		std::string assetType = Asset::AssetTypeToString(metaData.Type);
 		std::string assetHandle = std::to_string(metaData.Handle);
