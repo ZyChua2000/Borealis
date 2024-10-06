@@ -31,9 +31,14 @@ namespace Borealis
 
 	void LightEngine::SetLights(Ref<Shader> shader)
 	{
-		if(!mLights.empty())
+		shader->Bind();
+		shader->Set("u_LightsCount", static_cast<int>(mLights.size()));
+		shader->Unbind();
+
+
+		for (int i{}; i < mLights.size(); ++i)
 		{
-			Light::SetUniforms(*mLights.front(), shader);
+			Light::SetUniforms(*mLights[i], i, shader);
 		}
 	}
 }
