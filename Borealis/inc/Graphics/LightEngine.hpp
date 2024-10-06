@@ -25,10 +25,22 @@ namespace Borealis
 	class LightEngine
 	{
 	public:
+		/*!***********************************************************************
+			\brief
+				Begin the light engine for the loop
+		*************************************************************************/
 		void Begin();
 
+		/*!***********************************************************************
+			\brief
+				Add light component to list
+		*************************************************************************/
 		void AddLight(LightComponent const& light);
 
+		/*!***********************************************************************
+			\brief
+				Set the uniforms for the lights
+		*************************************************************************/
 		void SetLights(Ref<Shader> shader);
 
 	private:
