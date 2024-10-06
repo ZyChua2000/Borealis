@@ -258,6 +258,7 @@ namespace Borealis
 		};
 
 		
+		glm::vec3 offset;
 		//glm::vec4 Colour = { 1,1,1,1 };
 		glm::vec2 InnerOuterSpot = { 100, 120 };
 		//float Temperature = 6500;

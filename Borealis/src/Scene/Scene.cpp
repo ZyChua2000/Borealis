@@ -153,16 +153,7 @@ namespace Borealis
 					auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
 					auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
 
-					if (!groupLight.empty())
-					{
-						auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
-						Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
-						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
-					}
-					else
-					{
-						Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
-					}
+					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 				}
 			}
 
@@ -240,22 +231,12 @@ namespace Borealis
 	{
 		Renderer3D::Begin(camera);
 		{
-			auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent>);
+			auto group = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
 			for (auto& entity : group)
 			{
-				auto [transform, meshFilter] = group.get<TransformComponent, MeshFilterComponent>(entity);
-				auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
-				MeshRendererComponent meshRenderer{};
-				if (!groupLight.empty())
-				{
-					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
-					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
-				}
-				else
-				{
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
-				}
+				auto [transform, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+
+				Renderer3D::AddLight(lightComponent);
 			}
 		}
 		{
@@ -264,17 +245,8 @@ namespace Borealis
 			{
 				auto [transform, meshFilter, meshRenderer] = group.get<TransformComponent, MeshFilterComponent, MeshRendererComponent>(entity);
 				auto groupLight = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
-				
-				if (!groupLight.empty())
-				{
-					auto [lighttransform, light] = groupLight.get<TransformComponent, LightComponent>(groupLight.front());
-					Ref<Light> lightS = MakeRef<Light>(lighttransform, light);
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, lightS, (int)entity);
-				}
-				else
-				{
-					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, nullptr, (int)entity);
-				}
+
+				Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 			}
 		}
 

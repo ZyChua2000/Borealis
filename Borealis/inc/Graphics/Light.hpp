@@ -28,6 +28,8 @@ namespace Borealis
 
 		void SetUniforms(Ref<Shader> shader) const;
 
+		static void SetUniforms(LightComponent const& lightComponent, Ref<Shader> shader);
+
 	private:
 		LightComponent mLight;
 		glm::vec3 mTranslate;

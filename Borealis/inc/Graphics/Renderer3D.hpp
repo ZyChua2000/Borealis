@@ -16,7 +16,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define RENDERER3D_HPP
 #include <Graphics/OrthographicCamera.hpp>
 #include <Graphics/Camera.hpp>
+#include <Graphics/Shader.hpp>
 #include <Graphics/EditorCamera.hpp>
+#include <Graphics/LightEngine.hpp>
 #include <Scene/Components.hpp>
 
 #include "Light.hpp"
@@ -50,6 +52,10 @@ namespace Borealis
 		*************************************************************************/
 		static void Begin(const Camera& camera, const glm::mat4& transform);
 
+		static void AddLight(LightComponent const& lightComponent);
+
+		static void SetLights(Ref<Shader> shader);
+
 		/*!***********************************************************************
 			\brief
 				Draw the mesh
@@ -62,7 +68,10 @@ namespace Borealis
 			\param[in] light
 				transform
 		*************************************************************************/
-		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, Ref<Light> light, int entityID = -1);
+		static void DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID = -1);
+
+	private:
+		static LightEngine mLightEngine;
 	};
 }
 

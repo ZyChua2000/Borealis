@@ -42,4 +42,23 @@ namespace Borealis
 
 		shader->Unbind();
 	}
+
+	void Light::SetUniforms(LightComponent const& lightComponent, Ref<Shader> shader)
+	{
+		shader->Bind();
+
+		glm::vec2 innerOuterSpot = glm::vec2{ cos(glm::radians(lightComponent.InnerOuterSpot.x)), cos(glm::radians(lightComponent.InnerOuterSpot.y)) };
+
+		shader->Set("u_Light.position", lightComponent.offset);
+		shader->Set("u_Light.ambient", lightComponent.ambient);
+		shader->Set("u_Light.diffuse", lightComponent.diffuse);
+		shader->Set("u_Light.specular", lightComponent.specular);
+		shader->Set("u_Light.direction", lightComponent.direction);
+		shader->Set("u_Light.innerOuterAngle", innerOuterSpot);
+		shader->Set("u_Light.linear", lightComponent.linear);
+		shader->Set("u_Light.quadratic", lightComponent.quadratic);
+		shader->Set("u_Light.type", static_cast<int>(lightComponent.type));
+
+		shader->Unbind();
+	}
 }
