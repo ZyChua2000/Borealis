@@ -14,9 +14,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 #ifndef ENTRYPOINT_HPP
 #define ENTRYPOINT_HPP
-
 #include <Core/ApplicationManager.hpp>
 #include <Core/LoggerSystem.hpp>
+#include <Debugging/Profiler.hpp>
 
 	int main(int argc, char** argv)
 	{

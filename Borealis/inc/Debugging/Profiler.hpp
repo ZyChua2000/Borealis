@@ -150,7 +150,7 @@ namespace Borealis
 #define PROFILE_FUNCTION() static mySourceLocationData CONCATENATE(__source_location,__LINE__){ nullptr, __FUNCTION__, __FILE__ , (uint32_t)__LINE__, 0 }; \
 ::Borealis::TracyProfiler::startZone(&CONCATENATE(__source_location,__LINE__));
 #else
-#define PROFILE_START(name, filepath) 
+#define PROFILE_START(name) 
 #define PROFILE_END() 
 #define PROFILE_FUNCTION()
 #define PROFILE_SCOPE(name)
