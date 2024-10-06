@@ -53,6 +53,7 @@ namespace Borealis
 		}
 
 		// Right click
+		if (Project::GetProjectPath() != "")
 		{
 			ImGuiPopupFlags popupFlagsItem = ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_NoOpenOverExistingPopup;
 			if (ImGui::BeginPopupContextWindow(0, popupFlagsItem))
@@ -141,9 +142,10 @@ namespace Borealis
 			ImGui::Columns(columnCount);
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0,0,0,0 });
 		}
-
+		if (Project::GetProjectPath() != "")
 		for (auto& entry : std::filesystem::directory_iterator(mCurrDir))
 		{
+
 			const std::filesystem::path& path = entry.path();
 			std::string filenameStr = path.filename().string();
 			std::string extension = path.extension().string();

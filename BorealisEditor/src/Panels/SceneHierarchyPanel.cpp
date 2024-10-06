@@ -176,53 +176,57 @@ namespace Borealis
 	void SceneHierarchyPanel::ImGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
-		ImGuiIO& io = ImGui::GetIO();
-		ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
-		ImGui::PushFont(bold);
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
-		for (auto& [name, path] : SceneManager::GetSceneLibrary())
-		{
-			
-			if (SceneManager::GetActiveScene()->GetName() == name)
-			{
-				ImGui::PopStyleColor();
-				ImGui::MenuItem(name.c_str());
-				ImGui::PopFont();
-				for (auto& item : mContext->mRegistry.view<entt::entity>())
-				{
-					
-					Entity entity{ item, mContext.get() };
-					DrawEntityNode(entity);
-				}
-				ImGui::PushFont(bold);
-				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
-			}
-			else
-			{
-				ImGui::MenuItem(name.c_str());
-				ImGui::PopStyleColor();
-				ImGui::PopFont();
-				if (ImGui::BeginPopupContextItem())
-				{
-					if (EditorLayer::mSceneState == EditorLayer::SceneState::Edit)
-					{
-						if (ImGui::MenuItem("Load Scene"))
-						{
-							SceneManager::SaveActiveScene();
-							SceneManager::SetActiveScene(name);
-							mContext = SceneManager::GetActiveScene();
-							mSelectedEntity = {};
-						}
-					}
-					ImGui::EndPopup();
-				}
-				ImGui::PushFont(bold);
-				ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
-			}
-		}
 
-		ImGui::PopFont();
-		ImGui::PopStyleColor();
+		if (Project::GetProjectPath() != "")
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			ImFont* bold = io.Fonts->Fonts[ImGuiFonts::bold];
+			ImGui::PushFont(bold);
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+			for (auto& [name, path] : SceneManager::GetSceneLibrary())
+			{
+
+				if (SceneManager::GetActiveScene()->GetName() == name)
+				{
+					ImGui::PopStyleColor();
+					ImGui::MenuItem(name.c_str());
+					ImGui::PopFont();
+					for (auto& item : mContext->mRegistry.view<entt::entity>())
+					{
+
+						Entity entity{ item, mContext.get() };
+						DrawEntityNode(entity);
+					}
+					ImGui::PushFont(bold);
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+				}
+				else
+				{
+					ImGui::MenuItem(name.c_str());
+					ImGui::PopStyleColor();
+					ImGui::PopFont();
+					if (ImGui::BeginPopupContextItem())
+					{
+						if (EditorLayer::mSceneState == EditorLayer::SceneState::Edit)
+						{
+							if (ImGui::MenuItem("Load Scene"))
+							{
+								SceneManager::SaveActiveScene();
+								SceneManager::SetActiveScene(name);
+								mContext = SceneManager::GetActiveScene();
+								mSelectedEntity = {};
+							}
+						}
+						ImGui::EndPopup();
+					}
+					ImGui::PushFont(bold);
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.1f, 0.1f, 0.4f));
+				}
+			}
+
+			ImGui::PopFont();
+			ImGui::PopStyleColor();
+		}
 
 		
 
@@ -232,6 +236,7 @@ namespace Borealis
 		}
 
 		// Right click on blank space	
+		if (Project::GetProjectPath() != "")
 		if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_MouseButtonRight | ImGuiPopupFlags_NoOpenOverExistingPopup))
 		{
 			if (ImGui::MenuItem("Create Empty Entity"))
@@ -244,22 +249,26 @@ namespace Borealis
 		ImGui::End();
 
 		ImGui::Begin("Inspector");
-		if (mSelectedEntity)
+
+		if (Project::GetProjectPath() != "")
+
 		{
-			MaterialEditor::SetMaterial(0);
-			DrawComponents(mSelectedEntity);
-		}
-		else if (ContentBrowserPanel::sSelectedAsset)
-		{
-			AssetMetaData const& metadata = AssetManager::GetMetaData(ContentBrowserPanel::sSelectedAsset);
-#ifdef _DEB
-			ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
-#endif
-			ImGui::Text(("Name: " + metadata.name).c_str());
-			ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
-			ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
-			switch (metadata.Type)
+			if (mSelectedEntity)
 			{
+				MaterialEditor::SetMaterial(0);
+				DrawComponents(mSelectedEntity);
+			}
+			else if (ContentBrowserPanel::sSelectedAsset)
+			{
+				AssetMetaData const& metadata = AssetManager::GetMetaData(ContentBrowserPanel::sSelectedAsset);
+#ifdef _DEB
+				ImGui::Text(("UUID: " + std::to_string(metadata.Handle)).c_str());
+#endif
+				ImGui::Text(("Name: " + metadata.name).c_str());
+				ImGui::Text(("Type: " + Asset::AssetTypeToString(metadata.Type)).c_str());
+				ImGui::Text(("Path: " + metadata.SourcePath.string()).c_str());
+				switch (metadata.Type)
+				{
 				case AssetType::Texture2D:
 				{
 					MaterialEditor::SetMaterial(0);
@@ -290,10 +299,11 @@ namespace Borealis
 					MaterialEditor::SetMaterial(0);
 					break;
 				}
-				
+
+				}
 			}
+			MaterialEditor::RenderEditor();
 		}
-		MaterialEditor::RenderEditor();
 
 		ImGui::End();
 
