@@ -147,6 +147,16 @@ namespace Borealis
 		{
 			Renderer3D::Begin(*mainCamera, mainCameratransform);
 			{
+				{
+					auto group = mRegistry.group<>(entt::get<TransformComponent, LightComponent>);
+					for (auto& entity : group)
+					{
+						auto [transform, lightComponent] = group.get<TransformComponent, LightComponent>(entity);
+						lightComponent.offset = transform.Translate;
+						Renderer3D::AddLight(lightComponent);
+					}
+				}
+
 				auto group = mRegistry.group<>(entt::get<TransformComponent, MeshFilterComponent, MeshRendererComponent>);
 				for (auto& entity : group)
 				{
@@ -156,6 +166,7 @@ namespace Borealis
 					Renderer3D::DrawMesh(transform, meshFilter, meshRenderer, (int)entity);
 				}
 			}
+			Renderer3D::End();
 
 			Renderer2D::Begin(*mainCamera, mainCameratransform);
 			{
