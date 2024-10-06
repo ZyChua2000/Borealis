@@ -43,6 +43,7 @@ namespace Borealis
 		}
 
 		mAssetRegistryPath = projectInfo.AssetsRegistryPath;
+		mAssetRegistryPathStatic = projectInfo.AssetsRegistryPath;
 
 		std::ifstream registryFile(projectInfo.AssetsRegistryPath);
 		std::stringstream registryStream;
@@ -91,6 +92,7 @@ namespace Borealis
 		}
 		assetRegistry.insert({ meta.Handle, meta });
 		mPathRegistry.insert({ hash, meta.Handle });
+		MetaFileSerializer::SerialzeRegistry(mAssetRegistryPathStatic, assetRegistry);
 		return meta.Handle;
 	}
 

@@ -84,6 +84,7 @@ namespace Borealis
 
 	private:
 		std::filesystem::path mAssetRegistryPath;
+		inline static std::filesystem::path mAssetRegistryPathStatic; //temp
 		inline static std::unordered_map<std::size_t, AssetHandle> mPathRegistry;
 	};
 }
