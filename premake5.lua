@@ -316,59 +316,6 @@ workspace "Borealis"
 				"Borealis/%{Library.YAML_Release}"
 			}
 
-			project "Sandbox"
-			location "Sandbox"
-			kind "ConsoleApp"
-			language "C++"
-			cppdialect "C++20"
-			staticruntime "on"
-			systemversion "latest"
-	
-			targetdir ("build/" .. outputdir .. "/%{prj.name}")
-			objdir ("build-int/" .. outputdir .. "/%{prj.name}")
-	
-			files
-			{
-				"%{prj.name}/inc/**.hpp",
-				"%{prj.name}/src/**.cpp"
-			}
-	
-			includedirs
-			{
-				"Borealis",
-				"Borealis/inc",
-				"Borealis/lib/spdlog/include",
-				"%{IncludeDir.GLM}",
-				"%{IncludeDir.ImGui}",
-				"%{prj.name}/inc",
-				"%{IncludeDir.ENTT}"
-			}
-	
-			defines
-			{
-				"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-			}
-	
-			links
-			{
-				"Borealis"
-			}
-			
-			filter "configurations:Debug"
-				defines "_DEB"
-				symbols "On"
-				runtime "Debug"
-	
-			filter "configurations:Release"
-				defines "_REL"
-				optimize "On"
-				runtime "Release"
-	
-			filter "configurations:Distribution"
-				defines "_DIST"
-				optimize "On"
-				runtime "Release"
-
 	project "BorealisScriptCore"
 		location "BorealisScriptCore"
 		kind "SharedLib"

@@ -68,18 +68,12 @@ namespace Borealis
     }
     
     // Start a custom profiling zone, provides detailed insight into those frame
-    void TracyProfiler::startZone(const char* name) {
-        if (name) {
-            ZoneScopedN(name);
-        }
-        else {
-            ZoneScoped;
-        }
+    void TracyProfiler::startZone(const mySourceLocationData* loc) {
+        tracy::ScopedZone ___tracy_scoped_zone(reinterpret_cast<const tracy::SourceLocationData*>(loc), true);
     }
     
     // Destructor that ends the profiling zone
     TracyProfiler::~TracyProfiler() {
-       
     }
 
     uint32_t TracyProfiler::vec4ToColor(const vec4& color) {

@@ -18,6 +18,9 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #ifndef PROFILER_HPP
 #define PROFILER_HPP
 
+#define CONCATENATE_IMPL(a, b) a##b
+#define CONCATENATE(a, b) CONCATENATE_IMPL(a, b)
+
 #include <string>
 #include <chrono>
 #include <algorithm>
@@ -204,6 +207,15 @@ namespace Borealis
 		float a;  // Alpha component (0.0 to 1.0)
 	};
 
+	struct mySourceLocationData
+	{
+		const char* name;
+		const char* function;
+		const char* file;
+		uint32_t line;
+		uint32_t color;
+	};
+
 	class TracyProfiler {
 	public:
 		// Default constructor
@@ -233,7 +245,7 @@ namespace Borealis
 		static void sendAppInfo(const char* message);
 
 		// Method to start a custom profiling zone
-		static void startZone(const char* name = nullptr);
+		static void startZone(const mySourceLocationData* srcLoc);
 
 		// Destructor that ends the profiling zone
 		~TracyProfiler();
@@ -246,14 +258,19 @@ namespace Borealis
 		TracyProfiler& operator=(const TracyProfiler&) = delete;
 
 	};
+
+
 }
+//tracy::ScopedZone varname( &TracyConcat(__tracy_source_location,TracyLine), active )
 
 // Macros for profiling
 #if ENGINE_PROFILE
 #define PROFILE_START(name) ::Borealis::TracyProfiler::markFrameStart(name)
 #define PROFILE_END() ::Borealis::TracyProfiler::markFrameEnd()
-#define PROFILE_SCOPE(name) ::Borealis::TracyProfiler::startZone(name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
+#define PROFILE_SCOPE(name) static mySourceLocationData CONCATENATE(__source_location,__LINE__){ name, __FUNCTION__, __FILE__ , (uint32_t)__LINE__, 0 }; \
+::Borealis::TracyProfiler::startZone(&CONCATENATE(__source_location,__LINE__));
+#define PROFILE_FUNCTION() static mySourceLocationData CONCATENATE(__source_location,__LINE__){ nullptr, __FUNCTION__, __FILE__ , (uint32_t)__LINE__, 0 }; \
+::Borealis::TracyProfiler::startZone(&CONCATENATE(__source_location,__LINE__));
 #else
 #define PROFILE_START(name, filepath) 
 #define PROFILE_END() 
