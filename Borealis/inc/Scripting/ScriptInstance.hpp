@@ -71,6 +71,8 @@ namespace Borealis
 		/*!***********************************************************************
 			\brief
 				Getter of a field value
+			\tparam
+				T - Type of the field
 			\param[in] name
 				Name of the field
 			\return
@@ -88,6 +90,14 @@ namespace Borealis
 			}
 		}
 
+		/*!***********************************************************************
+			\brief
+				Getter of a field value for strings
+			\param[in] name
+				Name of the field
+			\return
+				Value of the field
+		*************************************************************************/
 		template <>
 		std::string GetFieldValue(const std::string& name)
 		{
@@ -119,6 +129,14 @@ namespace Borealis
 			}
 		}
 
+		/*!***********************************************************************
+			\brief
+				Setter of a field Value for stirngs
+			\param[in] name
+				Name of the field
+			\param[in] value
+				Address of the value to set
+		*************************************************************************/
 		void SetFieldValue(const std::string& name, std::string* value)
 		{
 			if (!SetFieldValueInternal(name, *value))
@@ -172,6 +190,16 @@ namespace Borealis
 		*************************************************************************/
 		bool SetFieldValueInternal(const std::string& name, void* value);
 
+		/*!***********************************************************************
+			\brief
+				Internal function for SetFieldValue to abstract it for strings
+			\param[in] name
+				Name of the field
+			\param[in] value
+				Address of the value to set
+			\return
+				True if successful, false otherwise
+		*************************************************************************/
 		bool SetFieldValueInternal(const std::string& name, std::string value);
 		/*!***********************************************************************
 			\brief
@@ -185,6 +213,16 @@ namespace Borealis
 		*************************************************************************/
 		bool GetFieldValueInternal(const std::string& name, const void* value);
 
+		/*!***********************************************************************
+			\brief
+				Internal function for GetFieldValue to abstract it for strings
+			\param[in] name
+				Name of the field
+			\param[out] value
+				Address of the value to get
+			\return
+				True if successful, false otherwise
+		*************************************************************************/
 		bool GetFieldValueString(const std::string& name, std::string& output);
 
 		
