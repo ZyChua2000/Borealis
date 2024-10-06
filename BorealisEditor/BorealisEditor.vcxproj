@@ -98,7 +98,8 @@ IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)en
 IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
 IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
 IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
-IF EXIST "BorealisAssetCompiler.exe"\ (xcopy /Q /E /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul) ELSE (xcopy /Q /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul)
+copy /B /Y "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe"
+copy /B /Y "BorealisRuntime.exe" "$(TargetDir)BorealisRuntime.exe"
 copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
 IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
@@ -131,7 +132,8 @@ IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)en
 IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
 IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
 IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
-IF EXIST "BorealisAssetCompiler.exe"\ (xcopy /Q /E /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul) ELSE (xcopy /Q /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul)
+copy /B /Y "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe"
+copy /B /Y "BorealisRuntime.exe" "$(TargetDir)BorealisRuntime.exe"
 copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
 IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>
@@ -164,7 +166,8 @@ IF EXIST "engineResources"\ (xcopy /Q /E /Y /I "engineResources" "$(TargetDir)en
 IF EXIST "resources"\ (xcopy /Q /E /Y /I "resources" "$(TargetDir)resources" &gt; nul) ELSE (xcopy /Q /Y /I "resources" "$(TargetDir)resources" &gt; nul)
 IF EXIST "mono"\ (xcopy /Q /E /Y /I "mono" "$(TargetDir)mono" &gt; nul) ELSE (xcopy /Q /Y /I "mono" "$(TargetDir)mono" &gt; nul)
 IF EXIST "settings"\ (xcopy /Q /E /Y /I "settings" "$(TargetDir)settings" &gt; nul) ELSE (xcopy /Q /Y /I "settings" "$(TargetDir)settings" &gt; nul)
-IF EXIST "BorealisAssetCompiler.exe"\ (xcopy /Q /E /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul) ELSE (xcopy /Q /Y /I "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe" &gt; nul)
+copy /B /Y "BorealisAssetCompiler.exe" "$(TargetDir)BorealisAssetCompiler.exe"
+copy /B /Y "BorealisRuntime.exe" "$(TargetDir)BorealisRuntime.exe"
 copy /B /Y "imgui.ini" "$(TargetDir)imgui.ini"
 IF NOT EXIST "$(TargetDir)assets" (mkdir "$(TargetDir)assets")</Command>
     </PostBuildEvent>

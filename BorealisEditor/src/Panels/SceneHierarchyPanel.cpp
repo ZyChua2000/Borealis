@@ -377,7 +377,8 @@ namespace Borealis
 
 					if (std::is_same<T, MeshFilterComponent>::value)
 					{
-						mSelectedEntity.AddComponent<MeshRendererComponent>();
+						if (!mSelectedEntity.HasComponent<MeshRendererComponent>())
+							mSelectedEntity.AddComponent<MeshRendererComponent>();
 					}
 				}
 				ImGui::CloseCurrentPopup();

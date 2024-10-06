@@ -775,7 +775,9 @@ namespace Borealis {
 			Project::CopyFolder(editorPath + "\\mono", filepath + "\\mono");
 			Project::CopyFolder(editorPath + "\\resources", filepath + "\\resources");
 			Project::CopyFolder(editorPath + "\\engineResources", filepath + "\\engineResources");
-			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\" + projectName + ".exe");
+			Project::CopyIndividualFile(editorPath + "\\BorealisRuntime.exe", filepath + "\\BorealisRuntime.exe");
+			Project::CopyIndividualFile(editorPath + "\\BorealisAssetCompiler.exe", filepath + "\\BorealisAssetCompiler.exe");
+			Project::CopyIndividualFile(editorPath + "\\ispc_texcomp.dll", filepath + "\\" + "\\ispc_texcomp.dll");
 			// Copy and paste .exe file
 		}
 	}

@@ -297,7 +297,8 @@ workspace "Borealis"
 				"{COPY} \"resources\" \"$(TargetDir)resources\"",
 				"{COPY} \"mono\" \"$(TargetDir)mono\"",
 				"{COPY} \"settings\" \"$(TargetDir)settings\"",
-				"{COPY} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisRuntime.exe\" \"$(TargetDir)BorealisRuntime.exe\"",
 				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
 				"{MKDIR} \"$(TargetDir)assets\""
 			 }
@@ -326,7 +327,8 @@ workspace "Borealis"
 				"{COPY} \"resources\" \"$(TargetDir)resources\"",
 				"{COPY} \"mono\" \"$(TargetDir)mono\"",
 				"{COPY} \"settings\" \"$(TargetDir)settings\"",
-				"{COPY} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisRuntime.exe\" \"$(TargetDir)BorealisRuntime.exe\"",
 				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
 				"{MKDIR} \"$(TargetDir)assets\""
 			 }
@@ -355,7 +357,8 @@ workspace "Borealis"
 				"{COPY} \"resources\" \"$(TargetDir)resources\"",
 				"{COPY} \"mono\" \"$(TargetDir)mono\"",
 				"{COPY} \"settings\" \"$(TargetDir)settings\"",
-				"{COPY} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisAssetCompiler.exe\" \"$(TargetDir)BorealisAssetCompiler.exe\"",
+				"{COPYFILE} \"BorealisRuntime.exe\" \"$(TargetDir)BorealisRuntime.exe\"",
 				"{COPYFILE} \"imgui.ini\" \"$(TargetDir)imgui.ini\"",
 				"{MKDIR} \"$(TargetDir)assets\""
 			 }

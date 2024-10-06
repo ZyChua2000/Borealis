@@ -36,7 +36,11 @@ namespace Borealis
 
 	Scene::~Scene()
 	{
-
+		auto view = mRegistry.view<RigidBodyComponent>();
+		for (auto entity : view)
+		{
+			PhysicsSystem::FreeRigidBody(view.get<RigidBodyComponent>(entity));
+		}
 	}
 	void Scene::UpdateRuntime(float dt)
 	{
@@ -194,7 +198,9 @@ namespace Borealis
 				auto group = mRegistry.group<>(entt::get<TransformComponent, TextComponent>);
 				for (auto& entity : group)
 				{
+
 					auto [transform, text] = group.get<TransformComponent, TextComponent>(entity);
+					// multiply text scale into transform
 					Renderer2D::DrawString(text.text, text.font, transform, (int)entity);
 				}
 			}

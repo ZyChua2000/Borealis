@@ -113,7 +113,7 @@ namespace Borealis
 
         auto textureMaps = data["TextureMaps"];
         for (auto it = textureMaps.begin(); it != textureMaps.end(); ++it) {
-            TextureMaps key = it->first.as<TextureMaps>();
+            TextureMaps key = StringToTextureMaps(it->first.as<std::string>());
             AssetHandle handle = it->second.as<uint64_t>();
             mTextureMaps[key] = AssetManager::GetAsset<Texture2D>(handle);
         }
@@ -152,7 +152,7 @@ namespace Borealis
 
     Ref<Material> Material::CreateNewMaterial(std::filesystem::path const& path)
     {
-        Material material(Shader::Create("../Borealis/engineResources/Shaders/Renderer3D_Material.glsl"));
+        Material material(Shader::Create("engineResources/Shaders/Renderer3D_Material.glsl"));
         material.SerializeMaterial(path);
         return MakeRef<Material>(material);
     }
@@ -167,7 +167,8 @@ namespace Borealis
         // Serialize Texture Maps
         out << YAML::Key << "TextureMaps" << YAML::Value << YAML::BeginMap;
         for (const auto& [key, value] : mTextureMaps) {
-            out << YAML::Key << TextureMapToString(key) << YAML::Value << value->mAssetHandle;
+            if (value)
+                out << YAML::Key << TextureMapToString(key) << YAML::Value << value->mAssetHandle;
         }
         out << YAML::EndMap;
 
