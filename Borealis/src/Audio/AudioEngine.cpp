@@ -4,7 +4,7 @@
 \author 	Valerie Koh
 \par    	email: v.koh\@digipen.edu
 \date   	September 11, 2024
-\brief
+\brief      Implements the AudioEngine class for handling audio functionality
 
 Copyright (C) 2023 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
