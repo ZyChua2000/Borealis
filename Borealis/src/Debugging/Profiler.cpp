@@ -19,7 +19,7 @@ namespace Borealis
     }
 
     // Method to log a colored message in the profiler
-    void TracyProfiler::logMessageColored(const char* message, const vec4& color) {
+    void TracyProfiler::logMessageColored(const char* message, const glm::vec4& color) {
         uint32_t packedColor = vec4ToColor(color);  // Convert vec4 to packed uint32_t color
         TracyMessageC(message, strlen(message), packedColor);  // Log a colored message in Tracy
     }
@@ -76,7 +76,7 @@ namespace Borealis
     TracyProfiler::~TracyProfiler() {
     }
 
-    uint32_t TracyProfiler::vec4ToColor(const vec4& color) {
+    uint32_t TracyProfiler::vec4ToColor(const glm::vec4& color) {
         uint8_t r = static_cast<uint8_t>(color.r * 255.0f);
         uint8_t g = static_cast<uint8_t>(color.g * 255.0f);
         uint8_t b = static_cast<uint8_t>(color.b * 255.0f);
