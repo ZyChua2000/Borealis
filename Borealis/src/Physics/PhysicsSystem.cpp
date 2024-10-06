@@ -1,3 +1,17 @@
+/******************************************************************************/
+/*!
+\file		PhysicsSystem.cpp
+\author 	Benjamin Lee Zhi Yuan
+\par    	email: benjaminzhiyuan.lee\@digipen.edu
+\date   	September 28, 2024
+\brief		Defines the PhysicsSystem class
+
+Copyright (C) 2024 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the
+prior written consent of DigiPen Institute of Technology is prohibited.
+ */
+ /******************************************************************************/
+
 #include "BorealisPCH.hpp"
 
 // STL includes
@@ -222,8 +236,6 @@ namespace Borealis
 {
 void PhysicsSystem::Init()
 {
-
-
 	sData.broad_phase_layer_interface = new BPLayerInterfaceImpl();
 	sData.object_vs_broadphase_layer_filter = new ObjectVsBroadPhaseLayerFilterImpl();
 	sData.object_vs_object_layer_filter = new ObjectLayerPairFilterImpl();
@@ -291,10 +303,6 @@ void PhysicsSystem::Init()
 	// variant of this. We're going to use the locking version (even though we're not planning to access bodies from multiple threads)
 	sData.body_interface = &sData.mSystem->GetBodyInterface();
 
-	//============================\\
-	//========EXAMPLE=============\\
-	//============================\\
-
 	// Next we can create a rigid body to serve as the floor, we make a large box
 	// Create the settings for the collision volume (the shape).
 	// Note that for simple shapes (like boxes) you can also directly construct a BoxShape.
@@ -313,18 +321,6 @@ void PhysicsSystem::Init()
 
 	// Add it to the world
 	sData.body_interface->AddBody(floor->GetID(), EActivation::DontActivate);
-
-	//// Now create a dynamic body to bounce on the floor
-	//// Note that this uses the shorthand version of creating and adding a body to the world
-	//BodyCreationSettings sphere_settings(new SphereShape(2.f), RVec3(0.0_r, 0.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
-	//sData.object1_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
-
-	//// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-	//// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	//sData.body_interface->SetLinearVelocity(sData.object1_id, Vec3(0.0f, 0.0f, 0.0f));
-
-	//// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
-	//const float cDeltaTime = 1.0f / 60.0f;
 
 	// Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
@@ -381,7 +377,7 @@ void PhysicsSystem::Init()
 		delete Factory::sInstance;
 	}
 
-	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
+	void PhysicsSystem::addSquareBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
 
 		// Create the settings for the collision volume (the shape).
 		BoxShapeSettings box_shape_settings(Vec3(radius, radius, radius)); // Use radius as half extents
@@ -407,7 +403,7 @@ void PhysicsSystem::Init()
 	}
 
 
-	static void UpdateSphereValues(RigidBodyComponent& rigidbody)
+	void PhysicsSystem::UpdateSphereValues(RigidBodyComponent& rigidbody)
 	{
 		// Create the settings for the collision volume (the shape).
 		SphereShapeSettings sphere_shape_settings(rigidbody.radius);
