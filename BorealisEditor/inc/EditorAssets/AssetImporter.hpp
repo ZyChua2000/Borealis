@@ -49,6 +49,8 @@ namespace Borealis
 		*************************************************************************/
 		bool ImportAsset(AssetMetaData metaData);
 
+		static bool ImportAssetTEMP(AssetMetaData metaData);
+
 		/*!***********************************************************************
 			\brief
 				Serialize entire registry
