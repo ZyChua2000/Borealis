@@ -70,6 +70,7 @@ namespace Borealis
 
 	void Renderer3D::DrawMesh(const glm::mat4& transform, const MeshFilterComponent& meshFilter, const MeshRendererComponent& meshRenderer, int entityID)
 	{
+		SetLights(sData->mModelShader);
 		if (meshFilter.Model) {
 			if (meshRenderer.Material)
 			{
@@ -78,12 +79,6 @@ namespace Borealis
 			
 			meshFilter.Model->Draw(transform, sData->mModelShader, entityID);
 		}
-
-		SetLights(sData->mModelShader);
-		//if (light)
-		//{
-		//	light->SetUniforms(sData->mModelShader);
-		//}
 	}
 
 }
