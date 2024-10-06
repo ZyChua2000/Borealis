@@ -1,12 +1,12 @@
 /******************************************************************************/
 /*!
 \file		Profiler.hpp
-\author 	Chua Zheng Yang
-\par    	email: c.zhengyang\@digipen.edu
+\author 	Liu Chengrong
+\par    	email: chengrong.liu\@digipen.edu
 \date   	July 10, 2024
 \brief		Declares the classes for profiling tools
 
-Copyright (C) 2023 DigiPen Institute of Technology.
+Copyright (C) 2024 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the
 prior written consent of DigiPen Institute of Technology is prohibited.
  */
@@ -27,16 +27,17 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <fstream>
 #include <thread>
 #include <glm/glm.hpp>
+
 namespace Borealis
 {
 
 	struct mySourceLocationData
 	{
-		const char* name;
-		const char* function;
-		const char* file;
-		uint32_t line;
-		uint32_t color;
+		const char* name;		//name of profiling zone
+		const char* function;	//function name of where profiling is being used
+		const char* file;		//file name of where profiling is being used
+		uint32_t line;			//line number in the file
+		uint32_t color;			//color of profiling zone
 	};
 
 	class TracyProfiler {
@@ -44,35 +45,91 @@ namespace Borealis
 		// Default constructor
 		TracyProfiler() = delete;
 
-		// Method to record a custom plot value
+		/***********************************************************
+		 * @brief Record a custom plot value.
+		 * @param plotName The name of the custom plot.
+		 * @param value The value to record.
+		***********************************************************/
 		static void recordPlot(const char* plotName, float value);
 
-		// Method to log a message in the profiler
+		/***********************************************************
+		* @brief Log a message in the profiler.
+		* @param message The message to log.
+		***********************************************************/
 		static void logMessage(const char* message);
 
-		// Method to log a colored message in the profiler
+		/***********************************************************
+		* @brief Log a message with a specific color in the profiler.
+		* @param message The message to log.
+		* @param color The color for the message, encoded as a glm::vec4 (RGBA).
+		***********************************************************/
 		static void logMessageColored(const char* message, const glm::vec4& color);
 
-		// Methods for memory allocation tracking
+		/***********************************************************
+		* @brief Track a memory allocation.
+		* @param ptr A pointer to the allocated memory.
+		* @param size The size of the allocated memory in bytes.
+		***********************************************************/
 		static void trackAllocation(void* ptr, size_t size);
+
+		/***********************************************************
+		* @brief Track memory being freed.
+		* @param ptr A pointer to the memory to be freed.
+		***********************************************************/
 		static void trackFree(void* ptr);
+
+		/***********************************************************
+		 * @brief Track a secure memory allocation (e.g., for sensitive data).
+		 * @param ptr A pointer to the allocated memory.
+		 * @param size The size of the allocated memory in bytes.
+		***********************************************************/
 		static void trackSecureAllocation(void* ptr, size_t size);
+
+		/***********************************************************
+		* @brief Track secure memory being freed.
+		* @param ptr A pointer to the secure memory to be freed.
+		***********************************************************/
 		static void trackSecureFree(void* ptr);
 
-		// Mark the frame boundary
+		/***********************************************************
+		* @brief Mark the boundary of a frame in the application.
+		* @param frameName Optional name of the frame.
+		***********************************************************/
 		static void markFrame(const char* frameName = nullptr);
+
+		/***********************************************************
+		* @brief Mark the start of a frame in the application.
+		* @param frameName Optional name of the frame.
+		***********************************************************/
 		static void markFrameStart(const char* frameName = nullptr);
+
+		/***********************************************************
+		* @brief Mark the end of a frame in the application.
+		* @param frameName Optional name of the frame.
+		***********************************************************/
 		static void markFrameEnd(const char* frameName = nullptr);
 
-		//Application information
+		/***********************************************************
+		* @brief Send application information to the profiler.
+		* @param message The information message to send.
+		***********************************************************/
 		static void sendAppInfo(const char* message);
 
-		// Method to start a custom profiling zone
+		/***********************************************************
+		* @brief Start a custom profiling zone.
+		* @param srcLoc A pointer to the mySourceLocationData struct 
+		   containing information about the profiling zone.
+		***********************************************************/
 		static void startZone(const mySourceLocationData* srcLoc);
 
 		// Destructor that ends the profiling zone
 		~TracyProfiler();
 
+		/***********************************************************
+		* @brief Convert a glm::vec4 color to a 32-bit unsigned integer representation.
+		* @param color The glm::vec4 color to convert (RGBA format).
+		* @return The color encoded as a 32-bit unsigned integer.
+		***********************************************************/
 		static uint32_t vec4ToColor(const glm::vec4& color);
 
 	private:
