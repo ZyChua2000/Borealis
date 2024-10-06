@@ -31,9 +31,15 @@ namespace Borealis
 		\brief
 			Constructor for ImGuiLayer.
 	*************************************************************************/
+#ifndef _DIST
 	ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer"), mTime(0.0f)
 	{
 	}
+#else
+	ImGuiLayer::ImGuiLayer() : mTime(0.0f)
+	{
+	}
+#endif
 
 	/*!***********************************************************************
 		\brief

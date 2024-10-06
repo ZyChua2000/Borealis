@@ -13,16 +13,16 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-
+#include <yaml-cpp/yaml.h>
+#include <Core/Core.hpp>
 #include <Core/LoggerSystem.hpp>
 #include <Assets/EditorAssetManager.hpp>
-
+#include <Audio/Audio.hpp>
 #include <Audio/AudioEngine.hpp>
-
+#include <Graphics/Material.hpp>
 #include <Graphics/Texture.hpp>
 #include <Graphics/Model.hpp>
 
-#include <yaml-cpp/yaml.h>
 
 namespace Borealis
 {

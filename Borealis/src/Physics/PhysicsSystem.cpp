@@ -403,6 +403,31 @@ void PhysicsSystem::Init()
 	}
 
 
+	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		SphereShapeSettings sphere_shape_settings(radius); // Use radius as half extents
+
+		// Mark it as embedded (prevent it from being freed when reference count goes to 0)
+		sphere_shape_settings.SetEmbedded();
+
+		// Create the shape
+		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+		ShapeRefC sphere_shape = sphere_shape_result.Get(); // Check for errors in a real-world scenario
+
+		// Create the settings for the body itself. Note that here you can also set other properties like restitution/friction.
+		BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+
+		// Create the actual rigid body
+		Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Make sure to handle potential nullptr errors
+
+		// Add it to the world
+		sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+
+		// Store the BodyID in the RigidBodyComponent
+		rigidbody.bodyID = sphere->GetID().GetIndexAndSequenceNumber();
+	}
+
 	void PhysicsSystem::UpdateSphereValues(RigidBodyComponent& rigidbody)
 	{
 		// Create the settings for the collision volume (the shape).
@@ -415,5 +440,19 @@ void PhysicsSystem::Init()
 
 		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
 		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), sphere_shape, true, EActivation::Activate);
+	}
+
+	void PhysicsSystem::UpdateBoxValues(RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		BoxShapeSettings box_shape_settings(Vec3(rigidbody.radius, rigidbody.radius, rigidbody.radius)); // Use radius as half extents
+		box_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+		// Create the shape
+		ShapeSettings::ShapeResult box_shape_result = box_shape_settings.Create();
+		ShapeRefC box_shape = box_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+
+		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), box_shape, true, EActivation::Activate);
 	}
 }

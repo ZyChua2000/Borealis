@@ -40,10 +40,15 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 
 namespace Borealis {
 	EditorLayer::SceneState EditorLayer::mSceneState = EditorLayer::SceneState::Edit;
-
+#ifndef _DIST
 	EditorLayer::EditorLayer() : Layer("EditorLayer"), mCamera(1280.0f / 720.0f)
 	{
 	}
+#else
+	EditorLayer::EditorLayer() : mCamera(1280.0f / 720.0f)
+	{
+	}
+#endif
 
 	void EditorLayer::Init()
 	{

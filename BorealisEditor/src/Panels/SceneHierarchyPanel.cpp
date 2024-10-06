@@ -20,7 +20,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #include <Scripting/ScriptInstance.hpp>
 #include <Panels/SceneHierarchyPanel.hpp>
 #include <Panels/ContentBrowserPanel.hpp>
-
+#include <Physics/PhysicsSystem.hpp>
 #include <EditorAssets/MeshImporter.hpp>
 #include <EditorAssets/FontImporter.hpp>
 #include <EditorAssets/AssetImporter.hpp>
@@ -847,20 +847,27 @@ namespace Borealis
 
 				if (ImGui::Checkbox("isBox", &component.isBox))
 				{
-					// update shape
+					if (component.isBox)
+					{
+						PhysicsSystem::UpdateBoxValues(component);
+					}
+					else
+					{
+						PhysicsSystem::UpdateSphereValues(component);
+					}
 				}
 				if (component.isBox)
 				{
 					if (ImGui::DragFloat("HalfExtent", &component.radius))
 					{
-						//update shape
+						PhysicsSystem::UpdateBoxValues(component);
 					}
 				}
 				else
 				{
 					if (ImGui::DragFloat("Radius", &component.radius))
 					{
-						//update shape
+						PhysicsSystem::UpdateSphereValues(component);
 					}
 				}
 

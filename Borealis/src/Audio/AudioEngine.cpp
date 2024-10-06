@@ -13,8 +13,10 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 #include <BorealisPCH.hpp>
-#include "Audio/AudioEngine.hpp"
 #include <FMOD/fmod.hpp>
+#include <Audio/Audio.hpp>
+#include "Audio/AudioEngine.hpp"
+#include <Scene/Components.hpp>
 
 namespace Borealis
 {
@@ -105,6 +107,7 @@ namespace Borealis
     {
         sgpImplementation->Update();
     }
+
 
     Audio AudioEngine::LoadAudio(const std::string& strAudioName, bool b3d, bool bLooping, bool bStream)
     {

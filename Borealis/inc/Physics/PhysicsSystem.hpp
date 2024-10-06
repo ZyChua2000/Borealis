@@ -56,18 +56,35 @@ namespace Borealis
 
 		/**
    * \brief Adds a square body to the physics system.
-   * \param radius The radius of the square body.
+   * \param radius The half-extent of the square body.
    * \param position The position of the square body.
    * \param rigidbody The rigid body component of the square body.
    */
-		static void addSquareBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody);
+		static void addSquareBody(float halfextent, glm::vec3 position, RigidBodyComponent& rigidbody);
+
+			/**
+	* \brief Adds a sphere body to the physics system.
+	* \param radius The ardius of the sphere body.
+	* \param position The position of the sphere body.
+	* \param rigidbody The rigid body component of the sphere body.
+	*/
+		static void addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody);
+
 
 		/**
    * \brief Updates the sphere values of the specified rigid body.
    * \param rigidbody The rigid body component to update.
    */
 		static void UpdateSphereValues(RigidBodyComponent& rigidbody);
+
+			/**
+	* \brief Updates the box values of the specified rigid body.
+	* \param rigidbody The rigid body component to update.
+	*/
+		static void UpdateBoxValues(RigidBodyComponent& rigidbody);
+		
 	};
+
 }
 
 #endif // !PHYSICSSYSTEM_HPP
