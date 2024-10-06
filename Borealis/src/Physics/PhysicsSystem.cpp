@@ -7,7 +7,7 @@
 #include <chrono>
 
 #include <Physics/PhysicsSystem.hpp>
-
+#include <Core/Utils.hpp>
 #include <Jolt/Jolt.h>
 
 // Jolt includes
@@ -164,7 +164,7 @@ public:
 	// See: ContactListener
 	virtual ValidateResult	OnContactValidate(const Body& inBody1, const Body& inBody2, RVec3Arg inBaseOffset, const CollideShapeResult& inCollisionResult) override
 	{
-		cout << "Contact validate callback" << endl;
+		//cout << "Contact validate callback" << endl;
 
 		// Allows you to ignore a contact before it is created (using layers to not make objects collide is cheaper!)
 		return ValidateResult::AcceptAllContactsForThisBodyPair;
@@ -172,17 +172,17 @@ public:
 
 	virtual void			OnContactAdded(const Body& inBody1, const Body& inBody2, const ContactManifold& inManifold, ContactSettings& ioSettings) override
 	{
-		cout << "A contact was added" << endl;
+		//cout << "A contact was added" << endl;
 	}
 
 	virtual void			OnContactPersisted(const Body& inBody1, const Body& inBody2, const ContactManifold& inManifold, ContactSettings& ioSettings) override
 	{
-		cout << "A contact was persisted" << endl;
+		//cout << "A contact was persisted" << endl;
 	}
 
 	virtual void			OnContactRemoved(const SubShapeIDPair& inSubShapePair) override
 	{
-		cout << "A contact was removed" << endl;
+		//cout << "A contact was removed" << endl;
 	}
 };
 
@@ -192,12 +192,12 @@ class MyBodyActivationListener : public BodyActivationListener
 public:
 	virtual void		OnBodyActivated(const BodyID& inBodyID, uint64 inBodyUserData) override
 	{
-		cout << "A body got activated" << endl;
+		//cout << "A body got activated" << endl;
 	}
 
 	virtual void		OnBodyDeactivated(const BodyID& inBodyID, uint64 inBodyUserData) override
 	{
-		cout << "A body went to sleep" << endl;
+		//cout << "A body went to sleep" << endl;
 	}
 };
 
@@ -218,8 +218,9 @@ struct PhysicsSystemData
 };
 
 static PhysicsSystemData sData;
-
-void ::PhysicsSystem::Init()
+namespace Borealis
+{
+void PhysicsSystem::Init()
 {
 
 
@@ -313,17 +314,17 @@ void ::PhysicsSystem::Init()
 	// Add it to the world
 	sData.body_interface->AddBody(floor->GetID(), EActivation::DontActivate);
 
-	// Now create a dynamic body to bounce on the floor
-	// Note that this uses the shorthand version of creating and adding a body to the world
-	BodyCreationSettings sphere_settings(new SphereShape(2.f), RVec3(0.0_r, 0.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
-	sData.object1_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
+	//// Now create a dynamic body to bounce on the floor
+	//// Note that this uses the shorthand version of creating and adding a body to the world
+	//BodyCreationSettings sphere_settings(new SphereShape(2.f), RVec3(0.0_r, 0.0_r, 0.0_r), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+	//sData.object1_id = sData.body_interface->CreateAndAddBody(sphere_settings, EActivation::Activate);
 
-	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	sData.body_interface->SetLinearVelocity(sData.object1_id, Vec3(0.0f, 0.0f, 0.0f));
+	//// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
+	//// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
+	//sData.body_interface->SetLinearVelocity(sData.object1_id, Vec3(0.0f, 0.0f, 0.0f));
 
-	// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
-	const float cDeltaTime = 1.0f / 60.0f;
+	//// We simulate the physics world in discrete time steps. 60 Hz is a good rate to update the physics system.
+	//const float cDeltaTime = 1.0f / 60.0f;
 
 	// Optional step: Before starting the physics simulation you can optimize the broad phase. This improves collision detection performance (it's pointless here because we only have 2 bodies).
 	// You should definitely not call this every frame or when e.g. streaming in a new level section as it is an expensive operation.
@@ -331,65 +332,92 @@ void ::PhysicsSystem::Init()
 	sData.mSystem->OptimizeBroadPhase();
 }
 
-void ::PhysicsSystem::Update(float dt, RigidBodyComponent& rigidbody, TransformComponent& transform)
-{
-	// Output current position and velocity of the sphere
-	JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
-	sData.body_interface->SetPosition(sData.object1_id,newPosition,EActivation::Activate);
-	RVec3 position = sData.body_interface->GetCenterOfMassPosition(sData.object1_id);
-	Vec3 velocity = sData.body_interface->GetLinearVelocity(sData.object1_id);
+	void PhysicsSystem::PushTransform(unsigned int bodyID, TransformComponent& transform)
+	{
+		// Convert position (glm::vec3 to Jolt's RVec3)
+		JPH::RVec3 newPosition = JPH::RVec3(transform.Translate.x, transform.Translate.y, transform.Translate.z);
 
-	sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
+		// Convert Euler angles (vec3) to quaternion (quat)
+		glm::quat rotation = glm::quat(glm::radians(transform.Rotation));  // Assuming Rotation is in degrees
 
-	rigidbody.translation = glm::vec3(
-		sData.body_interface->GetPosition(sData.object1_id).GetX(),
-		sData.body_interface->GetPosition(sData.object1_id).GetY(),
-		sData.body_interface->GetPosition(sData.object1_id).GetZ()
-	);
-	cout << "Position: " << position << " Velocity: " << velocity << endl;
+		// Convert glm::quat to Jolt's Quat (JPH::Quat)
+		JPH::Quat newRotation = JPH::Quat(rotation.x, rotation.y, rotation.z, rotation.w);
 
-	cout << "Physics System Updated" << endl;
-}
+		// Set position and rotation in the physics system
+		sData.body_interface->SetPosition((BodyID)bodyID, newPosition, EActivation::Activate);
+		sData.body_interface->SetRotation((BodyID)bodyID, newRotation, EActivation::Activate);
+	}
 
-void ::PhysicsSystem::Free()
-{
-	delete sData.body_activation_listener;
-	delete sData.broad_phase_layer_interface;
-	delete sData.object_vs_broadphase_layer_filter;
-	delete sData.object_vs_object_layer_filter;
-	delete sData.contact_listener;
-	delete sData.temp_allocator;
-	delete sData.job_system;
-	delete sData.mSystem;
-	
-	delete Factory::sInstance;
-}
+	void PhysicsSystem::PullTransform(unsigned int bodyID, TransformComponent& transform)
+	{
+		// Get position from the physics system (JPH::RVec3 to glm::vec3)
+		JPH::RVec3 newPosition = sData.body_interface->GetPosition((BodyID)bodyID);
+		transform.Translate = glm::vec3(newPosition.GetX(), newPosition.GetY(), newPosition.GetZ());
 
-void ::PhysicsSystem::createSphere(float radius, glm::vec3 position, glm::vec3 velocity, RigidBodyComponent& rigidbody) {
-	// Create the settings for the collision volume (the shape).
-	SphereShapeSettings sphere_shape_settings(radius);
-	sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+		// Get rotation from the physics system (JPH::Quat to glm::quat)
+		JPH::Quat newRotation = sData.body_interface->GetRotation((BodyID)bodyID);
+		glm::quat rotation = glm::quat(newRotation.GetW(), newRotation.GetX(), newRotation.GetY(), newRotation.GetZ());
 
-	// Create the shape
-	ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
-	ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+		// Convert quaternion to Euler angles (quat to vec3) in degrees
+		transform.Rotation = glm::degrees(glm::eulerAngles(rotation));  // Euler angles in degrees
+	}
 
-	// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
-	BodyCreationSettings sphere_settings(sphere_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+	void PhysicsSystem::Update(float dt)
+	{
+		sData.mSystem->Update(dt, 1, sData.temp_allocator, sData.job_system);
+	}
 
-	// Create the actual rigid body
-	Body* sphere = sData.body_interface->CreateBody(sphere_settings); // Note that if we run out of bodies this can return nullptr
+	void PhysicsSystem::Free()
+	{
+		delete sData.body_activation_listener;
+		delete sData.broad_phase_layer_interface;
+		delete sData.object_vs_broadphase_layer_filter;
+		delete sData.object_vs_object_layer_filter;
+		delete sData.contact_listener;
+		delete sData.temp_allocator;
+		delete sData.job_system;
+		delete sData.mSystem;
 
-	// Add it to the world
-	sData.body_interface->AddBody(sphere->GetID(), EActivation::Activate);
+		delete Factory::sInstance;
+	}
 
-	// Now you can interact with the dynamic body, in this case we're going to give it a velocity.
-	// (note that if we had used CreateBody then we could have set the velocity straight on the body before adding it to the physics system)
-	sData.body_interface->SetLinearVelocity(sphere->GetID(), Vec3(velocity.x, velocity.y, velocity.z));
+	void PhysicsSystem::addSphereBody(float radius, glm::vec3 position, RigidBodyComponent& rigidbody) {
 
-	rigidbody.translation = glm::vec3(
-		sData.body_interface->GetPosition(sphere->GetID()).GetX(),
-		sData.body_interface->GetPosition(sphere->GetID()).GetY(),
-		sData.body_interface->GetPosition(sphere->GetID()).GetZ()
-	);
+		// Create the settings for the collision volume (the shape).
+		BoxShapeSettings box_shape_settings(Vec3(radius, radius, radius)); // Use radius as half extents
+
+		// Mark it as embedded (prevent it from being freed when reference count goes to 0)
+		box_shape_settings.SetEmbedded();
+
+		// Create the shape
+		ShapeSettings::ShapeResult box_shape_result = box_shape_settings.Create();
+		ShapeRefC box_shape = box_shape_result.Get(); // Check for errors in a real-world scenario
+
+		// Create the settings for the body itself. Note that here you can also set other properties like restitution/friction.
+		BodyCreationSettings box_settings(box_shape, RVec3(position.x, position.y, position.z), Quat::sIdentity(), EMotionType::Dynamic, Layers::MOVING);
+
+		// Create the actual rigid body
+		Body* box = sData.body_interface->CreateBody(box_settings); // Make sure to handle potential nullptr errors
+
+		// Add it to the world
+		sData.body_interface->AddBody(box->GetID(), EActivation::Activate);
+
+		// Store the BodyID in the RigidBodyComponent
+		rigidbody.bodyID = box->GetID().GetIndexAndSequenceNumber();
+	}
+
+
+	static void UpdateSphereValues(RigidBodyComponent& rigidbody)
+	{
+		// Create the settings for the collision volume (the shape).
+		SphereShapeSettings sphere_shape_settings(rigidbody.radius);
+		sphere_shape_settings.SetEmbedded(); // A ref counted object on the stack (base class RefTarget) should be marked as such to prevent it from being freed when its reference count goes to 0.
+
+		// Create the shape
+		ShapeSettings::ShapeResult sphere_shape_result = sphere_shape_settings.Create();
+		ShapeRefC sphere_shape = sphere_shape_result.Get(); // We don't expect an error here, but you can check sphere_shape_result for HasError() / GetError()
+
+		// Create the settings for the body itself. Note that here you can also set other properties like the restitution / friction.
+		sData.body_interface->SetShape(JPH::BodyID(rigidbody.bodyID), sphere_shape, true, EActivation::Activate);
+	}
 }

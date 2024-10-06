@@ -94,23 +94,31 @@ namespace Borealis
 			//------------------------
 			// Physics Simulation here
 			//------------------------
-
-		
-			auto physicsGroup = mRegistry.group<>(entt::get<TransformComponent, RigidBodyComponent>);
-			for (auto entity : physicsGroup)
+			
+			// Set Jolt values to entity transform.
 			{
-				auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
-				//PhysicsSystem::createSphere(rigidbody.radius, transform.Translate, rigidbody.velocity, rigidbody);
-				PhysicsSystem::Update(dt, rigidbody, transform);
-				transform.Translate = rigidbody.translation;
-
-			}
-			for (auto entity : view)
-			{
-				auto& scriptComponent = view.get<ScriptComponent>(entity);
-				for (auto& [name, script] : scriptComponent.mScripts)
+				auto physicsGroup = mRegistry.group<>(entt::get<TransformComponent, RigidBodyComponent>);
+				for (auto entity : physicsGroup)
 				{
-					script->LateUpdate();
+					auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
+					PhysicsSystem::PushTransform(rigidbody.bodyID, transform);
+				}
+
+				PhysicsSystem::Update(dt);
+
+				// Set entity values to Jolt transform.
+				for (auto entity : physicsGroup)
+				{
+					auto [transform, rigidbody] = physicsGroup.get<TransformComponent, RigidBodyComponent>(entity);
+					PhysicsSystem::PullTransform(rigidbody.bodyID, transform);
+				}
+				for (auto entity : view)
+				{
+					auto& scriptComponent = view.get<ScriptComponent>(entity);
+					for (auto& [name, script] : scriptComponent.mScripts)
+					{
+						script->LateUpdate();
+					}
 				}
 			}
 		}
@@ -538,7 +546,8 @@ namespace Borealis
 	template<>
 	void Scene::OnComponentAdded<RigidBodyComponent>(Entity entity, RigidBodyComponent& component)
 	{
-
+		TransformComponent& transform = entity.GetComponent<TransformComponent>();
+		PhysicsSystem::addSphereBody(component.radius, transform.Translate, component);
 	}
 	template<>
 	void Scene::OnComponentAdded<LightComponent>(Entity entity, LightComponent& component)

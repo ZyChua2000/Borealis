@@ -834,7 +834,27 @@ namespace Borealis
 
 		DrawComponent<RigidBodyComponent>("Rigidbody", mSelectedEntity, [](auto& component)
 			{
-				ImGui::DragFloat("Mass", &component.mass, 0.025f);
+
+				if (ImGui::Checkbox("isBox", &component.isBox))
+				{
+					// update shape
+				}
+				if (component.isBox)
+				{
+					if (ImGui::DragFloat("HalfExtent", &component.radius))
+					{
+						//update shape
+					}
+				}
+				else
+				{
+					if (ImGui::DragFloat("Radius", &component.radius))
+					{
+						//update shape
+					}
+				}
+
+				/*ImGui::DragFloat("Mass", &component.mass, 0.025f);
 				ImGui::DragFloat("Drag", &component.drag, 0.025f);
 				ImGui::DragFloat("Angular Drag", &component.angularDrag, 0.025f);
 				ImGui::Checkbox("Automatic Center of Mass", &component.AutomaticCenterOfMass);
@@ -851,7 +871,7 @@ namespace Borealis
 					DrawVec3Controller("Inertia Tensor Rotation", component.inertiaTensorRotation, 0.f, textScale * 100.f);
 				}
 				ImGui::Checkbox("Use Gravity", &component.useGravity);
-				ImGui::Checkbox("Kinematic", &component.isKinematic);
+				ImGui::Checkbox("Kinematic", &component.isKinematic);*/
 			});
 
 		if (mSelectedEntity.HasComponent<ScriptComponent>())

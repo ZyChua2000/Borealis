@@ -356,16 +356,19 @@ namespace Borealis
 			out << YAML::BeginMap;
 
 			auto& rigidBodyComponent = entity.GetComponent<RigidBodyComponent>();
-			out << YAML::Key << "mass" << YAML::Value << rigidBodyComponent.mass;
-			out << YAML::Key << "drag" << YAML::Value << rigidBodyComponent.drag;
-			out << YAML::Key << "angularDrag" << YAML::Value << rigidBodyComponent.angularDrag;
-			out << YAML::Key << "centerOfMass" << YAML::Value << rigidBodyComponent.centerOfMass;
-			out << YAML::Key << "inertiaTensor" << YAML::Value << rigidBodyComponent.inertiaTensor;
-			out << YAML::Key << "inertiaTensorRotation" << YAML::Value << rigidBodyComponent.inertiaTensorRotation;
-			out << YAML::Key << "AutomaticCenterOfMass" << YAML::Value << rigidBodyComponent.AutomaticCenterOfMass;
-			out << YAML::Key << "AutomaticTensor" << YAML::Value << rigidBodyComponent.AutomaticTensor;
-			out << YAML::Key << "useGravity" << YAML::Value << rigidBodyComponent.useGravity;
-			out << YAML::Key << "isKinematic" << YAML::Value << rigidBodyComponent.isKinematic;
+
+			out << YAML::Key << "isBox" << YAML::Value << rigidBodyComponent.isBox;
+			out << YAML::Key << "Radius" << YAML::Value << rigidBodyComponent.radius;
+			//out << YAML::Key << "mass" << YAML::Value << rigidBodyComponent.mass;
+			//out << YAML::Key << "drag" << YAML::Value << rigidBodyComponent.drag;
+			//out << YAML::Key << "angularDrag" << YAML::Value << rigidBodyComponent.angularDrag;
+			//out << YAML::Key << "centerOfMass" << YAML::Value << rigidBodyComponent.centerOfMass;
+			//out << YAML::Key << "inertiaTensor" << YAML::Value << rigidBodyComponent.inertiaTensor;
+			//out << YAML::Key << "inertiaTensorRotation" << YAML::Value << rigidBodyComponent.inertiaTensorRotation;
+			//out << YAML::Key << "AutomaticCenterOfMass" << YAML::Value << rigidBodyComponent.AutomaticCenterOfMass;
+			//out << YAML::Key << "AutomaticTensor" << YAML::Value << rigidBodyComponent.AutomaticTensor;
+			//out << YAML::Key << "useGravity" << YAML::Value << rigidBodyComponent.useGravity;
+			//out << YAML::Key << "isKinematic" << YAML::Value << rigidBodyComponent.isKinematic;
 
 			out << YAML::EndMap;
 		}
@@ -723,7 +726,12 @@ namespace Borealis
 				if (rigidBodyComponent)
 				{
 					auto& rbc = loadedEntity.AddComponent<RigidBodyComponent>();
-					rbc.mass = rigidBodyComponent["mass"].as<float>();
+					rbc.isBox = rigidBodyComponent["isBox"].as<bool>();
+					rbc.radius = rigidBodyComponent["Radius"].as<float>();
+					// run the update of the shape here once
+
+
+					/*rbc.mass = rigidBodyComponent["mass"].as<float>();
 					rbc.drag = rigidBodyComponent["drag"].as<float>();
 					rbc.angularDrag = rigidBodyComponent["angularDrag"].as<float>();
 					rbc.centerOfMass = rigidBodyComponent["centerOfMass"].as<glm::vec3>();
@@ -732,7 +740,7 @@ namespace Borealis
 					rbc.AutomaticCenterOfMass = rigidBodyComponent["AutomaticCenterOfMass"].as<bool>();
 					rbc.AutomaticTensor = rigidBodyComponent["AutomaticTensor"].as<bool>();
 					rbc.useGravity = rigidBodyComponent["useGravity"].as<bool>();
-					rbc.isKinematic = rigidBodyComponent["isKinematic"].as<bool>();
+					rbc.isKinematic = rigidBodyComponent["isKinematic"].as<bool>();*/
 				}
 
 				auto lightComponent = entity["LightComponent"];

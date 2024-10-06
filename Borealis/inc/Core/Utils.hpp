@@ -16,6 +16,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
 #define UTILS_HPP
 #include <string>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <Graphics/Framebuffer.hpp>
 namespace Borealis
 {
@@ -118,6 +119,12 @@ namespace Borealis
 				The height of the texture
 		*************************************************************************/
 		static void AttachDepthTexture(uint32_t id, int samples, unsigned format, unsigned attachmentType, uint32_t width, uint32_t height);
+	};
+
+	struct Math
+	{
+		static glm::vec3 QuatToEuler(glm::quat quat, bool radians = false);
+		static glm::quat EulerToQuat(glm::vec3 euler, bool radians = false);
 	};
 }
 
