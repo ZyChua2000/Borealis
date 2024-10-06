@@ -13,7 +13,7 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 
-#define ENGINE_PROFILE 0
+#define ENGINE_PROFILE 1
 
 #ifndef PROFILER_HPP
 #define PROFILER_HPP
@@ -207,38 +207,38 @@ namespace Borealis
 	class TracyProfiler {
 	public:
 		// Default constructor
-		TracyProfiler() = default;
+		TracyProfiler() = delete;
 
 		// Method to record a custom plot value
-		void recordPlot(const char* plotName, float value);
+		static void recordPlot(const char* plotName, float value);
 
 		// Method to log a message in the profiler
-		void logMessage(const char* message);
+		static void logMessage(const char* message);
 
 		// Method to log a colored message in the profiler
-		void logMessageColored(const char* message, const vec4& color);
+		static void logMessageColored(const char* message, const vec4& color);
 
 		// Methods for memory allocation tracking
-		void trackAllocation(void* ptr, size_t size);
-		void trackFree(void* ptr);
-		void trackSecureAllocation(void* ptr, size_t size);
-		void trackSecureFree(void* ptr);
+		static void trackAllocation(void* ptr, size_t size);
+		static void trackFree(void* ptr);
+		static void trackSecureAllocation(void* ptr, size_t size);
+		static void trackSecureFree(void* ptr);
 
 		// Mark the frame boundary
-		void markFrame(const char* frameName = nullptr);
-		void markFrameStart(const char* frameName = nullptr);
-		void markFrameEnd(const char* frameName = nullptr);
+		static void markFrame(const char* frameName = nullptr);
+		static void markFrameStart(const char* frameName = nullptr);
+		static void markFrameEnd(const char* frameName = nullptr);
 
 		//Application information
-		void sendAppInfo(const char* message);
+		static void sendAppInfo(const char* message);
 
 		// Method to start a custom profiling zone
-		void startZone(const char* name = nullptr);
+		static void startZone(const char* name = nullptr);
 
 		// Destructor that ends the profiling zone
 		~TracyProfiler();
 
-		uint32_t vec4ToColor(const vec4& color);
+		static uint32_t vec4ToColor(const vec4& color);
 
 	private:
 		// Disable copying
@@ -250,9 +250,9 @@ namespace Borealis
 
 // Macros for profiling
 #if ENGINE_PROFILE
-#define PROFILE_START(name, filepath) ::Borealis::Instrumentor::Get().Start(name, filepath)
-#define PROFILE_END() ::Borealis::Instrumentor::Get().End()
-#define PROFILE_SCOPE(name) ::Borealis::InstrumentationTimer timer##__LINE__(name)
+#define PROFILE_START(name) ::Borealis::TracyProfiler::markFrameStart(name)
+#define PROFILE_END() ::Borealis::TracyProfiler::markFrameEnd()
+#define PROFILE_SCOPE(name) ::Borealis::TracyProfiler::startZone(name)
 #define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
 #else
 #define PROFILE_START(name, filepath) 

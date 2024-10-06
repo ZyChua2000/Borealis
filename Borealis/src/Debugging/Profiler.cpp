@@ -70,10 +70,10 @@ namespace Borealis
     // Start a custom profiling zone, provides detailed insight into those frame
     void TracyProfiler::startZone(const char* name) {
         if (name) {
-            static constexpr tracy::SourceLocationData __tracy_source_location61{ "name", __FUNCTION__, "C:\\Users\\cheng\\OneDrive\\Desktop\\Borealis\\Borealis\\src\\Debugging\\Profiler.cpp", (uint32_t)61, 0 }; tracy::ScopedZone ___tracy_scoped_zone(&__tracy_source_location61, true); // Start a named profiling zone
+            ZoneScopedN(name);
         }
         else {
-            static constexpr tracy::SourceLocationData __tracy_source_location64{ nullptr, __FUNCTION__, "C:\\Users\\cheng\\OneDrive\\Desktop\\Borealis\\Borealis\\src\\Debugging\\Profiler.cpp", (uint32_t)64, 0 }; tracy::ScopedZone ___tracy_scoped_zone(&__tracy_source_location64, true); // Start an unnamed profiling zone
+            ZoneScoped;
         }
     }
     
