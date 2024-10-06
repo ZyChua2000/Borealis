@@ -68,7 +68,30 @@ namespace Borealis
 	{
 		std::size_t hash = std::hash<std::string>{}(path.string());
 		if (mPathRegistry.contains(hash)) return mPathRegistry.at(hash);
-		return {};
+
+		//TEMP==============================================================================
+		BOREALIS_CORE_TRACE("Inserting file into registry (AssetImporter::GetAssetHandle)");
+		AssetRegistry& assetRegistry = Project::GetEditorAssetsManager()->GetAssetRegistry();
+		AssetMetaData meta = MetaFileSerializer::CreateAssetMetaFile(path);
+
+		bool imported = false;
+		std::filesystem::path metaPath = {};
+
+		switch (meta.Type)
+		{
+		case AssetType::Mesh:
+		case AssetType::Texture2D:
+		case AssetType::Font:
+			imported = ImportAssetTEMP(meta);
+			metaPath = path;
+			meta = MetaFileSerializer::GetAssetMetaDataFile(metaPath.replace_extension(".meta"));
+			break;
+		default:
+			break;
+		}
+		assetRegistry.insert({ meta.Handle, meta });
+		mPathRegistry.insert({ hash, meta.Handle });
+		return meta.Handle;
 	}
 
 	void AssetImporter::InsertAssetHandle(std::filesystem::path const& path, AssetHandle handle)
@@ -78,6 +101,26 @@ namespace Borealis
 	}
 
 	bool AssetImporter::ImportAsset(AssetMetaData metaData)
+	{
+		//check if assets needs to be imported
+
+		//if yes pass info to compiler
+
+		//system()
+
+		std::filesystem::path compilerPath = std::filesystem::canonical("BorealisAssetCompiler.exe");
+		std::string sourcePath = metaData.SourcePath.string();
+		std::string assetType = Asset::AssetTypeToString(metaData.Type);
+		std::string assetHandle = std::to_string(metaData.Handle);
+
+		std::string command = compilerPath.string() + " " + sourcePath;// +" " + assetType + " " + assetHandle;
+
+		int result = system(command.c_str());
+
+		return false;
+	}
+
+	bool AssetImporter::ImportAssetTEMP(AssetMetaData metaData)
 	{
 		//check if assets needs to be imported
 
