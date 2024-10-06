@@ -6,11 +6,11 @@ Borealis Game Engine is a game development framework written in C++. The engine 
 
 ## Features
 
-- **Cross-platform support**: Build and run on Windows, macOS, and Linux.
-- **Modular architecture**: Easily add or remove components as needed.
-- **High-performance rendering**: Leverage modern graphics APIs.
-- **User-friendly API**: Designed with developers in mind.
-- **Extensive documentation**: In-depth guides and tutorials to get you started.
+- **C# Scripting**: Create game logic using C#, allowing for flexible and dynamic gameplay programming.
+- **Project Management**: Tools to organize and manage game projects efficiently.
+- **In-built AI Systems**: Predefined systems to handle common AI behaviors, making it easier to implement intelligent characters.
+- **Profilers**: Tools to analyze and optimize performance, helping developers identify bottlenecks in their code.
+- **Physics Engine**: Integrated physics support for realistic simulations and interactions in your game environment.
 
 ## Getting Started
 
