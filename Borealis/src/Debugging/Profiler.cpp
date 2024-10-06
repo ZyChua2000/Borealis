@@ -45,7 +45,7 @@ namespace Borealis
         TracyAppInfo(message, strlen(message));  // Send custom application info
     }
 
-    // Mark the frame boundary
+    // Mark the frame boundary, Help track overall performance at the frame level
     void TracyProfiler::markFrame(const char* frameName) {
         if (frameName) {
             FrameMarkNamed(frameName);  // Mark a frame with a custom name
@@ -54,17 +54,29 @@ namespace Borealis
             FrameMark;  // Use the default frame marker
         }
     }
+
+    //function marks the start of a frame with a specific name
+    void TracyProfiler::markFrameStart(const char* frameName)
+    {
+        FrameMarkStart(frameName);
+    }
+
+    //function marks the end of a custom frame that was started using framemarkstart
+    void TracyProfiler::markFrameEnd(const char* frameName)
+    {
+        FrameMarkEnd(frameName);
+    }
     
-    // Method to start a custom profiling zone
+    // Start a custom profiling zone, provides detailed insight into those frame
     void TracyProfiler::startZone(const char* name) {
-        
+        if (name) {
+            static constexpr tracy::SourceLocationData __tracy_source_location61{ "name", __FUNCTION__, "C:\\Users\\cheng\\OneDrive\\Desktop\\Borealis\\Borealis\\src\\Debugging\\Profiler.cpp", (uint32_t)61, 0 }; tracy::ScopedZone ___tracy_scoped_zone(&__tracy_source_location61, true); // Start a named profiling zone
+        }
+        else {
+            static constexpr tracy::SourceLocationData __tracy_source_location64{ nullptr, __FUNCTION__, "C:\\Users\\cheng\\OneDrive\\Desktop\\Borealis\\Borealis\\src\\Debugging\\Profiler.cpp", (uint32_t)64, 0 }; tracy::ScopedZone ___tracy_scoped_zone(&__tracy_source_location64, true); // Start an unnamed profiling zone
+        }
     }
-
-    // Method to end the custom profiling zone
-    void TracyProfiler::endZone() {
-        
-    }
-
+    
     // Destructor that ends the profiling zone
     TracyProfiler::~TracyProfiler() {
        

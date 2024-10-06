@@ -186,7 +186,7 @@ namespace Borealis
 			size_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
 
 			Instrumentor::Get().WriteProfile({ mName, start, end, threadID });
-
+			 
 			mStopped = true;
 		}
 
@@ -226,15 +226,14 @@ namespace Borealis
 
 		// Mark the frame boundary
 		void markFrame(const char* frameName = nullptr);
+		void markFrameStart(const char* frameName = nullptr);
+		void markFrameEnd(const char* frameName = nullptr);
 
 		//Application information
 		void sendAppInfo(const char* message);
 
 		// Method to start a custom profiling zone
 		void startZone(const char* name = nullptr);
-
-		// Method to end the custom profiling zone
-		void endZone();
 
 		// Destructor that ends the profiling zone
 		~TracyProfiler();
