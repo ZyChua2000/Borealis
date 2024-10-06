@@ -129,6 +129,7 @@ workspace "Borealis"
 			"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
 			"JPH_CROSS_PLATFORM_DETERMINISTIC",
 			"JPH_ENABLE_ASSERTS"
+			"TRACY_ENABLE"
 		}
 
 		includedirs
@@ -370,74 +371,6 @@ workspace "Borealis"
 				"%{Library.MSDF_Release_LibBrotliCommon}",
 				"Borealis/%{Library.YAML_Release}",
 				"Borealis/%{Library.Jolt_Release}"
-			}
-
-			project "Sandbox"
-			location "Sandbox"
-			kind "ConsoleApp"
-			language "C++"
-			cppdialect "C++20"
-			staticruntime "on"
-			systemversion "latest"
-	
-			targetdir ("build/" .. outputdir .. "/%{prj.name}")
-			objdir ("build-int/" .. outputdir .. "/%{prj.name}")
-	
-			files
-			{
-				"%{prj.name}/inc/**.hpp",
-				"%{prj.name}/src/**.cpp"
-			}
-	
-			includedirs
-			{
-				"Borealis",
-				"Borealis/inc",
-				"Borealis/lib/spdlog/include",
-				"%{IncludeDir.GLM}",
-				"%{IncludeDir.ImGui}",
-				"%{prj.name}/inc",
-				"%{IncludeDir.ENTT}"
-			}
-	
-			defines
-			{
-				"_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS",
-				"JPH_FLOATING_POINT_EXCEPTIONS_ENABLED",
-				"JPH_CROSS_PLATFORM_DETERMINISTIC",
-				"JPH_ENABLE_ASSERTS"
-			}
-	
-			links
-			{
-				"Borealis"
-			}
-			
-			filter "configurations:Debug"
-				defines "_DEB"
-				symbols "On"
-				runtime "Debug"
-			links
-			{
-				"Borealis/%{Library.Jolt_Debug}"
-			}
-	
-			filter "configurations:Release"
-				defines "_REL"
-				optimize "On"
-				runtime "Release"
-			links
-			{
-				"Borealis/%{Library.Jolt_Release}",
-			}
-	
-			filter "configurations:Distribution"
-				defines "_DIST"
-				optimize "On"
-				runtime "Release"
-			links
-			{
-				"Borealis/%{Library.Jolt_Release}",
 			}
 
 	project "BorealisScriptCore"

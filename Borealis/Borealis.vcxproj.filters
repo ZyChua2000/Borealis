@@ -139,6 +139,9 @@
     <Filter Include="src\Core">
       <UniqueIdentifier>{A5D31CCF-91A0-77DA-BAB9-6582A6E5AC68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Debugging">
+      <UniqueIdentifier>{28E516E9-94A5-921F-5DE0-DB9CC95FD7FB}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Events">
       <UniqueIdentifier>{7162C20E-5D1A-045C-C621-DDB7B2F89E4C}</UniqueIdentifier>
     </Filter>
@@ -2030,6 +2033,9 @@
     </ClCompile>
     <ClCompile Include="src\Core\WindowManager.cpp">
       <Filter>src\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Debugging\Profiler.cpp">
+      <Filter>src\Debugging</Filter>
     </ClCompile>
     <ClCompile Include="src\Events\EventInput.cpp">
       <Filter>src\Events</Filter>

@@ -13,196 +13,85 @@ prior written consent of DigiPen Institute of Technology is prohibited.
  /******************************************************************************/
 
 
-#define ENGINE_PROFILE 0
+#define ENGINE_PROFILE 1
 
 #ifndef PROFILER_HPP
 #define PROFILER_HPP
+
+#define CONCATENATE_IMPL(a, b) a##b
+#define CONCATENATE(a, b) CONCATENATE_IMPL(a, b)
 
 #include <string>
 #include <chrono>
 #include <algorithm>
 #include <fstream>
 #include <thread>
+#include <glm/glm.hpp>
 namespace Borealis
 {
-	struct ProfileResult
+
+	struct mySourceLocationData
 	{
-		std::string mName; // Name of the profile
-		long long mStart, mEnd; // Start and end time of the profile
-		size_t mThreadID; // Thread ID of the profile
+		const char* name;
+		const char* function;
+		const char* file;
+		uint32_t line;
+		uint32_t color;
 	};
 
-	struct InstrumentationScope 
-	{
-		std::string mName; // Name of the scope
-		
-	};
-
-	class Instrumentor
-	{
+	class TracyProfiler {
 	public:
+		// Default constructor
+		TracyProfiler() = delete;
 
-		/*!***********************************************************************
-			\brief
-				Default constructor for the Instrumentor class
-		*************************************************************************/
-		Instrumentor() : mScope(nullptr), mProfileCount(0) {}
+		// Method to record a custom plot value
+		static void recordPlot(const char* plotName, float value);
 
-		/*!***********************************************************************
-			\brief
-				Starts the instrumentation process
-			\param[in] name
-				The name of the scope
-			\param[in] filepath
-				The filepath to write the results to
-		*************************************************************************/
-		void Start(const std::string& name, const std::string& filepath = "results.json")
-		{
-			mOutputStream.open(filepath);
-			WriteHeader();
-			mScope = new InstrumentationScope{ name };
-		}
+		// Method to log a message in the profiler
+		static void logMessage(const char* message);
 
-		/*!***********************************************************************
-			\brief
-				Ends the instrumentation process
-		*************************************************************************/
-		void End()
-		{
-			WriteFooter();
-			mOutputStream.close();
-			delete mScope;
-			mScope = nullptr;
-			mProfileCount = 0;
-		}
+		// Method to log a colored message in the profiler
+		static void logMessageColored(const char* message, const glm::vec4& color);
 
-		/*!***********************************************************************
-			\brief
-				Writes the profile results to the output stream
-			\param[in] result
-				The profile result to write
-		*************************************************************************/
-		void WriteProfile(const ProfileResult& result)
-		{
-			if (mProfileCount++ > 0)
-				mOutputStream << ",";
+		// Methods for memory allocation tracking
+		static void trackAllocation(void* ptr, size_t size);
+		static void trackFree(void* ptr);
+		static void trackSecureAllocation(void* ptr, size_t size);
+		static void trackSecureFree(void* ptr);
 
-			std::string name = result.mName;
-			// Remove __cdecl
-			if (name.find("__cdecl") != std::string::npos)
-			{
-				name.erase(name.find("__cdecl"), 7);
-			}
+		// Mark the frame boundary
+		static void markFrame(const char* frameName = nullptr);
+		static void markFrameStart(const char* frameName = nullptr);
+		static void markFrameEnd(const char* frameName = nullptr);
 
-			// remove void from void inputs
-			if (name.find("(void)") != std::string::npos)
-			{
-				size_t pos = name.find("(void)");
-				name.erase(pos+1, 4);
-			}
-			std::replace(name.begin(), name.end(), '"', '\'');
+		//Application information
+		static void sendAppInfo(const char* message);
 
-			mOutputStream << "{";
-			mOutputStream << "\"cat\":\"function\",";
-			mOutputStream << "\"dur\":" << (result.mEnd - result.mStart) << ',';
-			mOutputStream << "\"name\":\"" << name << "\",";
-			mOutputStream << "\"ph\":\"X\",";
-			mOutputStream << "\"pid\":0,";
-			mOutputStream << "\"tid\":" << result.mThreadID << ",";
-			mOutputStream << "\"ts\":" << result.mStart;
-			mOutputStream << "}";
+		// Method to start a custom profiling zone
+		static void startZone(const mySourceLocationData* srcLoc);
 
-			mOutputStream.flush();
-		}
+		// Destructor that ends the profiling zone
+		~TracyProfiler();
 
-		/*!***********************************************************************
-			\brief
-				Writes the header of the output stream
-		*************************************************************************/
-		void WriteHeader()
-		{
-			mOutputStream << "{\"otherData\": {},\"traceEvents\":[";
-			mOutputStream.flush();
-		}
+		static uint32_t vec4ToColor(const glm::vec4& color);
 
-		/*!***********************************************************************
-			\brief
-				Writes the footer of the output stream
-		*************************************************************************/
-		void WriteFooter()
-		{
-			mOutputStream << "]}";
-			mOutputStream.flush();
-		}
-
-		/*!***********************************************************************
-			\brief
-				Returns the instance of the Instrumentor
-		*************************************************************************/
-		static Instrumentor& Get()
-		{
-			static Instrumentor instance;
-			return instance;
-		}
 	private:
-		InstrumentationScope* mScope; // The current scope
-		std::ofstream mOutputStream; // The output stream
-		int mProfileCount; // The number of profiles
+		// Disable copying
+		TracyProfiler(const TracyProfiler&) = delete;
+		TracyProfiler& operator=(const TracyProfiler&) = delete;
 	};
 
-	class InstrumentationTimer
-	{
-		public:
 
-		/*!***********************************************************************
-			\brief
-				Default constructor of the InstrumentationTimer
-		*************************************************************************/
-		InstrumentationTimer(const char* name) : mName(name), mStopped(false)
-		{
-			mStartTimepoint = std::chrono::high_resolution_clock::now();
-		}
-
-		/*!***********************************************************************
-			\brief
-				Default destructor of the InstrumentationTimer
-		*************************************************************************/
-		~InstrumentationTimer()
-		{
-			if (!mStopped)
-				Stop();
-		}
-
-		/*!***********************************************************************
-			\brief
-				Stops the timer
-		*************************************************************************/
-		void Stop()
-		{
-			auto endTimepoint = std::chrono::high_resolution_clock::now();
-			long long start = std::chrono::time_point_cast<std::chrono::microseconds>(mStartTimepoint).time_since_epoch().count();
-			long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
-
-			size_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
-			Instrumentor::Get().WriteProfile({ mName, start, end, threadID });
-
-			mStopped = true;
-		}
-
-		private:
-			const char* mName; // The name of the timer
-			std::chrono::time_point<std::chrono::high_resolution_clock> mStartTimepoint; // The start timepoint
-			bool mStopped; // Whether the timer has stopped
-
-	};
 }
 
 // Macros for profiling
 #if ENGINE_PROFILE
-#define PROFILE_START(name, filepath) ::Borealis::Instrumentor::Get().Start(name, filepath)
-#define PROFILE_END() ::Borealis::Instrumentor::Get().End()
-#define PROFILE_SCOPE(name) ::Borealis::InstrumentationTimer timer##__LINE__(name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
+#define PROFILE_START(name) ::Borealis::TracyProfiler::markFrameStart(name)
+#define PROFILE_END() ::Borealis::TracyProfiler::markFrameEnd()
+#define PROFILE_SCOPE(name) static mySourceLocationData CONCATENATE(__source_location,__LINE__){ name, __FUNCTION__, __FILE__ , (uint32_t)__LINE__, 0 }; \
+::Borealis::TracyProfiler::startZone(&CONCATENATE(__source_location,__LINE__));
+#define PROFILE_FUNCTION() static mySourceLocationData CONCATENATE(__source_location,__LINE__){ nullptr, __FUNCTION__, __FILE__ , (uint32_t)__LINE__, 0 }; \
+::Borealis::TracyProfiler::startZone(&CONCATENATE(__source_location,__LINE__));
 #else
 #define PROFILE_START(name, filepath) 
 #define PROFILE_END() 
