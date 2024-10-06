@@ -78,7 +78,7 @@ namespace Borealis {
 			\brief
 				Render the EditorLayer
 		*************************************************************************/
-		void ImGuiRender() override;
+		void ImGuiRender(float dt) override;
 
 		/*!***********************************************************************
 			\brief

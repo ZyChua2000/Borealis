@@ -85,7 +85,7 @@ namespace Borealis
 			\brief
 				ImGui Rendering function of the layer
 		*************************************************************************/
-		virtual void ImGuiRender() {};
+		virtual void ImGuiRender(float dt) {};
 
 #ifndef _DIST
 

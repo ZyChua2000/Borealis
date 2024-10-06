@@ -181,7 +181,7 @@ namespace Borealis {
 		dispatcher.Dispatch<EventMouseButtonTriggered>(BIND_EVENT(EditorLayer::onMousePressed));
 	}
 
-	void EditorLayer::ImGuiRender()
+	void EditorLayer::ImGuiRender(float dt)
 	{
 		PROFILE_FUNCTION();
 
@@ -259,6 +259,9 @@ namespace Borealis {
 			}
 
 			ImGui::Begin("Settings");
+				float fps = 1.0f / dt;
+				std::string FPSNote = "FPS: " + std::to_string(fps);
+				ImGui::Text(FPSNote.c_str());
 				auto stats = Renderer2D::GetStats();
 				ImGui::Text("Renderer2D Stats:");
 				ImGui::Text("Draw Calls: %d", stats.DrawCalls);

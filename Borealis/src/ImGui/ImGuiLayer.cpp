@@ -164,7 +164,7 @@ namespace Borealis
 		}
 	}
 
-	void ImGuiLayer::ImGuiRender()
+	void ImGuiLayer::ImGuiRender(float dt)
 	{
 
 	}

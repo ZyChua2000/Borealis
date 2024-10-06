@@ -106,7 +106,7 @@ namespace Borealis
 				{
 					PROFILE_SCOPE("LayerStack ImGuiRender");
 					for (Layer* layer : mLayerSystem)
-						layer->ImGuiRender();
+						layer->ImGuiRender(g_dt);
 				}
 				mImGuiLayer->EndFrame();
 			}
