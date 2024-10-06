@@ -32,8 +32,8 @@ namespace Borealis
 
 		//mVertices = vertices;
 		mIndices = indices;
-		mIndicesCount = indices.size();
-		mVerticesCount = vertices.size();
+		mIndicesCount = (uint32_t)indices.size();
+		mVerticesCount = (uint32_t)vertices.size();
 		//mNormals = normals;
 
 		for (int i{}; i < vertices.size(); i++)
@@ -75,8 +75,8 @@ namespace Borealis
 		mVertices = vertices;
 		mIndices = indices;
 
-		mVerticesCount = vertices.size();
-		mIndicesCount = indices.size();
+		mVerticesCount = (uint32_t)vertices.size();
+		mIndicesCount = (uint32_t)indices.size();
 
 		SetupMesh();
 	}

@@ -414,7 +414,7 @@ namespace Borealis {
 						if (Project::GetProjectPath() != "")
 						{
 							std::string sceneName = Project::GetProjectPath() + "/assets/";
-							sceneName += data;
+							sceneName += std::to_string(data);
 							AssetMetaData assetMeta = AssetManager::GetMetaData(data);
 							//OpenScene(sceneName.c_str());
 							OpenScene(assetMeta.SourcePath.string().c_str());
@@ -422,7 +422,7 @@ namespace Borealis {
 						else
 						{
 							std::string sceneName = "assets/";
-							sceneName += data;
+							sceneName += std::to_string(data);
 							OpenScene(sceneName.c_str());
 						}
 					}

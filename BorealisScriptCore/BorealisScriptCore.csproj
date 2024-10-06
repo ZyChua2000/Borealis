@@ -62,8 +62,8 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffer">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffer.dll</HintPath>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
@@ -91,8 +91,8 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffer">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffer.dll</HintPath>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
@@ -120,8 +120,8 @@
     <Reference Include="Microsoft.CodeAnalysis.CSharp.Analyzers">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Analyzers.3.3.4\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Buffer">
-      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffer.dll</HintPath>
+    <Reference Include="System.Buffers">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\System.Collections.Immutable.8.0.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>

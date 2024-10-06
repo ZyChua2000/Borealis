@@ -36,7 +36,8 @@ namespace Borealis
 			HeightMap,
 			Occlusion,
 			DetailMask,
-			Emission
+			Emission,
+			UnknownTextureMap
 		};
 
 		enum Props : uint8_t
@@ -50,6 +51,7 @@ namespace Borealis
 			HasNormalMap,
 			HasOcclusion,
 			HasDetailMask,
+			UnknownProperty
 		};
 
 		/*!***********************************************************************

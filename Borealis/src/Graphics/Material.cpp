@@ -341,6 +341,7 @@ namespace Borealis
             return it->second;
         }
         BOREALIS_CORE_ASSERT(false, "Invalid string for TextureMaps.");
+        return UnknownTextureMap;
     }
 
     std::string Material::PropsToString(Props prop)
@@ -372,7 +373,7 @@ namespace Borealis
             {"Has Height Map",    HasHeightMap},
             {"Has Normal Map",    HasNormalMap},
             {"Has Occlusion",    HasOcclusion},
-            {"Has Detail Mask",   HasDetailMask}
+            {"Has Detail Mask",   HasDetailMask},
         };
 
         auto it = map.find(str);
@@ -380,5 +381,6 @@ namespace Borealis
             return it->second;
         }
         BOREALIS_CORE_ASSERT(false, "Invalid string for Properties.");
+        return UnknownProperty;
     }
 }
