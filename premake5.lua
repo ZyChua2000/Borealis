@@ -33,6 +33,7 @@ workspace "Borealis"
 	IncludeDir["assimp"] = "BorealisEditor/lib/assimp/include"
 	IncludeDir["ImGuiNodeEditor"] = "BorealisEditor/lib/imgui-node-editor"
 	IncludeDir["MSDF"] = "BorealisEditor/lib/MSDF/Include"
+	IncludeDir["filewatch"] = "BorealisEditor/lib/filewatch"
 
 	IncludeDir["STBI_Compiler"] = "BorealisAssetCompiler/lib/stb_image"
   	IncludeDir["ISPC"] = "BorealisAssetCompiler/lib/ispc"
@@ -265,6 +266,7 @@ workspace "Borealis"
 			"%{IncludeDir.ImGuiNodeEditor}",
 			"%{IncludeDir.assimp}",
 			"%{IncludeDir.MSDF}",
+			"%{IncludeDir.filewatch}",
 		}
 
 		defines
